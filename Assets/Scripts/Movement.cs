@@ -17,6 +17,8 @@ public class Movement : MonoBehaviour
     int attackrange; 
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
     public int tilesTraveled_damage = 0;
+    public int tilesfat = 0;
+    public int turnsElapsed = 0;
     public bool isMoving = false;
     public bool turn = false;
     public bool moved = false;
@@ -167,6 +169,7 @@ public class Movement : MonoBehaviour
                     tilesTraveled_damage = tilesTraveled;
                     this.gameObject.GetComponent<StatUpdate>().Damage += tilesTraveled;
                 }
+                tilesfat = tilesTraveled;
                 tilesTraveled = 0; 
                 isMoving = false;
             }
@@ -177,6 +180,7 @@ public class Movement : MonoBehaviour
                 tilesTraveled_damage = tilesTraveled;    
                 this.gameObject.GetComponent<StatUpdate>().Damage += tilesTraveled;
             }
+            tilesfat = tilesTraveled;
             tilesTraveled = 0; 
             isMoving = false;
         }
@@ -253,7 +257,7 @@ Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
         List<Node> lst = new List<Node>();
         foreach(Node n in gridGraph.GetReachableTiles()){
             //Vector3Int cellpos = tilemap.WorldToCell(transform.position);
-            if(Mathf.Abs((int)(n.gridX - (cellpos.x + gridGraph.GridSize.x/2))) + Mathf.Abs((int)(n.gridY - (cellpos.y+ gridGraph.GridSize.y/2))) <= tilescheck){
+            if(Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y))) <= tilescheck){
                 lst.Add(n);
             }
         }
@@ -264,7 +268,7 @@ Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
         List<Node> lst = new List<Node>();
         foreach(Node n in gridGraph.GetReachableTiles_en()){
             //Vector3Int cellpos = tilemap.WorldToCell(transform.position);
-            if(Mathf.Abs((int)(n.gridX - (cellpos.x + gridGraph.GridSize.x/2))) + Mathf.Abs((int)(n.gridY - (cellpos.y+ gridGraph.GridSize.y/2))) <= tilescheck){
+            if(Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y))) <= tilescheck){
                 lst.Add(n);
             }
         }
@@ -273,7 +277,7 @@ Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
 
     public bool inArea(Vector3Int target){
         foreach(Node n in GetTilesInArea_en(originNode)){
-            if(n.gridX == target.x + gridGraph.GridSize.x/2 && n.gridY == target.y + gridGraph.GridSize.y/2){
+            if(n.gridX == target.x  && n.gridY == target.y){
                 return true;
             }
         }
@@ -282,7 +286,7 @@ Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
 
     bool ValidTile(Vector3Int target){
         foreach(Node n in GetTilesInArea_en(originNode)){
-            if(n.gridX == target.x + gridGraph.GridSize.x/2 && n.gridY == target.y + gridGraph.GridSize.y/2){
+            if(n.gridX == target.x  && n.gridY == target.y){
                 return true;
             }
         }
@@ -297,7 +301,7 @@ Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
         foreach(Node n in GetTilesInArea(originNode)){
             Vector3Int cellpos = tilemap.WorldToCell(player.transform.position);
             Vector3Int target = tilemap.WorldToCell(new Vector3Int((int)n.worldPosition.x,(int)n.worldPosition.y,0));
-            int distance = Mathf.Abs((int)(n.gridX - (cellpos.x + gridGraph.GridSize.x/2))) + Mathf.Abs((int)(n.gridY - (cellpos.y+ gridGraph.GridSize.y/2)));
+            int distance = Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y)));
             //List<Vector3Int> testpath = new List<Vector3Int>();
             //pathfinder.GenerateAstarPath(originNode, target, out testpath);
             //Debug.Log(target+": "+testpath.Count);

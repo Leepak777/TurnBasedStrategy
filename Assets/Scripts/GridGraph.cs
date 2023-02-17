@@ -49,8 +49,8 @@ public class GridGraph : MonoBehaviour
         {
             for (int y = 0; y < gridSize.y; y++)
             {
-                Vector3Int tilePos = new Vector3Int(x - gridSize.x/2, y- gridSize.y/2, 0);
-                //Debug.Log(tilemap.GetCellCenterWorld(tilePos));
+                Vector3Int tilePos = new Vector3Int(x, y, 0);
+                Debug.Log(tilePos);
                 RaycastHit2D hit = Physics2D.BoxCast(tilemap.GetCellCenterWorld(tilePos), new Vector2(8f, 8f), 0f, Vector2.zero, 0f, unwalkableMask);
                 bool walkable = (hit.collider == null);
                 grid[x, y] = new Node(walkable, tilemap.GetCellCenterWorld(tilePos), x, y);

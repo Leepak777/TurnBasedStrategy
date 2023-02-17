@@ -13,6 +13,7 @@ public class MovementAI : MonoBehaviour
     [SerializeField] float movementSpeed = 100f;  // Add this to control the movement speed
     int maxTiles; // Add this to limit the number of tiles the object can travel
     int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
+    public int turnsElapsed = 0;
     bool isMoving = false;
     public bool turn = false;
     public bool moved = false;
@@ -189,7 +190,7 @@ GameObject getClosestPlayer(){
         //Debug.Log(Mathf.Abs((int)(n.worldPosition.x - transform.position.x)) + Mathf.Abs((int)(n.worldPosition.y - transform.position.y)));
         Vector3Int cellpos = tilemap.WorldToCell(n.transform.position);
         Vector3Int curpos = tilemap.WorldToCell(transform.position);
-        int distance = Mathf.Abs((int)(((curpos.x - cellpos.x) + gridGraph.GridSize.x/2))) + Mathf.Abs((int)((curpos.y - cellpos.y)+ gridGraph.GridSize.y/2));
+        int distance = Mathf.Abs((int)(((curpos.x - cellpos.x) ))) + Mathf.Abs((int)((curpos.y - cellpos.y)));
         if( distance< mindis){
             mindis = distance;
             close = n;
@@ -213,7 +214,7 @@ GameObject CheckPlayerNear(){
         List<Node> lst = new List<Node>();
         foreach(Node n in gridGraph.GetReachableTiles()){
             Vector3Int cellpos = tilemap.WorldToCell(transform.position);
-            if(Mathf.Abs((int)(n.gridX - (cellpos.x + gridGraph.GridSize.x/2))) + Mathf.Abs((int)(n.gridY - (cellpos.y+ gridGraph.GridSize.y/2))) <= maxTiles){
+            if(Mathf.Abs((int)(n.gridX - (cellpos.x ))) + Mathf.Abs((int)(n.gridY - (cellpos.y))) <= maxTiles){
                 lst.Add(n);
             }
         }
@@ -226,7 +227,7 @@ GameObject CheckPlayerNear(){
         int mindis = int.MaxValue;   
         foreach(Node n in GetTilesInArea()){
             Vector3Int cellpos = tilemap.WorldToCell(player.transform.position);
-            int distance = Mathf.Abs((int)(n.gridX - (cellpos.x + gridGraph.GridSize.x/2))) + Mathf.Abs((int)(n.gridY - (cellpos.y+ gridGraph.GridSize.y/2)));
+            int distance = Mathf.Abs((int)(n.gridX - (cellpos.x ))) + Mathf.Abs((int)(n.gridY - (cellpos.y)));
             if(distance < mindis ){
                 if(n.walkable){
                 mindis = distance;

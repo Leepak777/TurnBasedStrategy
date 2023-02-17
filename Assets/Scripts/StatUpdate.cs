@@ -47,6 +47,7 @@ public class StatUpdate : MonoBehaviour
     public float ene = 0;  //energy
     public float fat = 0;  //fatigue
     public float stb = 0;  //stability
+    public float maxStb = 0;
     public float mov = 0;  //movement range
     public float bite = 0; //base initiative
     public float enc = 0;  //encumbrance
@@ -125,6 +126,7 @@ public class StatUpdate : MonoBehaviour
         ene = mid * 4 + acu + base_ene;
         fat = 0;
         stb = mid*5 +acu*3 + tou *2;
+        maxStb = mid * 7 + acu * 4 + tou * 3;
         mov = base_mov + pow/2 + eq_mov;
         maxTiles = (int)mov;
         enc = w_enc + eq_enc + base_enc - pow/4;
@@ -184,7 +186,9 @@ public class StatUpdate : MonoBehaviour
         }
         if(drn_check){
             Damage = drn.getDRN() + wd + pscal * pow + dscal*dex;
+            attackingFatigue();
             targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
+            targetEnemy.GetComponent<StatUpdate>().attackedFatigue();
         }
         if(!buff[3]){
             targetEnemy.GetComponent<StatUpdate>().flag = false;
@@ -283,4 +287,52 @@ public class StatUpdate : MonoBehaviour
     public int getAttackRange(){
         return (int)rng;
     }
+
+    public void attackingFatigue(){
+        fat += enc;
+    }
+
+    public void attackedFatigue(){
+        fat++;
+    }
+
+    public void tileFatigue(int tiles){
+        
+        fat += tiles;
+        //Debug.Log("Fatigue: "+fat);
+
+    }
+
+    public void restoreFatigue(){
+        fat -= tou;
+        //Debug.Log("Fatigue: "+fat);
+        //Debug.Log("Toughness: "+tou);
+        if(fat <= 0){
+            fat = 0;
+        }
+    }
+
+    public void checkFatigue(){
+        if(fat >= 75){
+            rd -=fat / 5;
+            md -= fat / 10;
+            ma -= fat / 20;
+            ra -= fat / 30;
+        }
+        if(fat >= 100){
+            stb -= fat - 100;
+            fat = 100;
+        }
+
+    }
+
+    public void destablize(){
+        
+    }
+
+    public void stabilityCheck(){
+
+    }
+
+
 }

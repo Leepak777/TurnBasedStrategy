@@ -39,7 +39,15 @@ public class SetMap : MonoBehaviour
 
         // Cache RectTransform and Vector3Int
         RectTransform rec = GameObject.Find("Canvas").GetComponent<RectTransform>();
-        Vector3Int size = new Vector3Int((int)rec.sizeDelta.x / 32, (int)rec.sizeDelta.y / 32, 1);
+        int x_size = (int)rec.sizeDelta.x / 32;
+        int y_size = (int)rec.sizeDelta.y / 32;
+        if(x_size%2 != 0){
+            x_size++;
+        }
+        if(y_size%2 != 0){
+            y_size++;
+        }
+        Vector3Int size = new Vector3Int(x_size, y_size, 0);
         tilemap.size = size;
         // Calculate total number of tiles
         int tileCount = size.x * size.y;
@@ -62,7 +70,7 @@ public class SetMap : MonoBehaviour
         }
 
         // Set scale and position of tilemap
-        tilemap.transform.localScale = new Vector3(32, 32, 1);
+        tilemap.transform.localScale = new Vector3(32, 32, 0);
         tilemap.transform.position = new Vector3(rec.anchoredPosition.x - rec.sizeDelta.x/2, rec.anchoredPosition.y- rec.sizeDelta.y/2, 0);
 
     }
