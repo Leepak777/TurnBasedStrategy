@@ -37,23 +37,20 @@ public class GridGraph : MonoBehaviour
         Debug.Log(tilemap.size);
         gridSize = tilemap.size;
         grid = new Node[gridSize.x, gridSize.y];
+        reachableTiles = new List<Node>();
         CreateGrid();
         //printGrid();
     }
     
     void CreateGrid()
     {
-        //grid = new Node[gridSize.x, gridSize.y];
-        //Debug.Log(gridSize);
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector3Int tilePos = new Vector3Int(x, y, 0);
-                Debug.Log(tilePos);
-                RaycastHit2D hit = Physics2D.BoxCast(tilemap.GetCellCenterWorld(tilePos), new Vector2(8f, 8f), 0f, Vector2.zero, 0f, unwalkableMask);
-                bool walkable = (hit.collider == null);
-                grid[x, y] = new Node(walkable, tilemap.GetCellCenterWorld(tilePos), x, y);
+                grid[x, y] = new Node(true, tilemap.GetCellCenterWorld(tilePos), x, y);
+                reachableTiles.Add(grid[x,y]);
             }
         }
     }
@@ -78,18 +75,19 @@ public class GridGraph : MonoBehaviour
     }
 
     void Update(){
-         for(int i = 0; i < gridSize.x; i++){
-                for(int j = 0; j < gridSize.y; j++){
-                    if(!grid[i,j].walkable && grid[i,j].occupant ==null){
-                        grid[i,j].walkable = true;
-                    }
-        
-                }
-            }
+         
     }
 
-    public void setWalkable(Vector3Int world,bool walkable){
-        GetNodeFromWorld(world).walkable = walkable;
+    public void setWalkable(GameObject Ch, Vector3Int world,bool walkable){
+        if(walkable && !GetNodeFromWorld(world).walkable){
+            GetNodeFromWorld(world).walkable = walkable;
+            GetNodeFromWorld(world).occupant = null;
+        }
+        else if(!walkable && GetNodeFromWorld(world).walkable){
+            GetNodeFromWorld(world).walkable = walkable;
+            GetNodeFromWorld(world).occupant = Ch;
+        }
+
     }
     public void resetOccupant(Vector3Int world){
         GetNodeFromWorld(world).occupant = null;
@@ -115,43 +113,23 @@ public class GridGraph : MonoBehaviour
     
     public List<Node> GetReachableTiles()
     {
-        reachableTiles = new List<Node>();
-
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                if (grid[x, y].walkable)
-                {
-                    reachableTiles.Add(grid[x, y]);
-                }
-            }
-        }
-
         return reachableTiles;
     }
 
-    public List<Node> GetReachableTiles_en()
-    {
-        reachableTiles = new List<Node>();
 
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                if (grid[x, y].walkable)
-                {
-                    reachableTiles.Add(grid[x, y]);
+
+    public List<Node> GetTilesInArea(Vector3Int center, float range){
+        List<Node> Area = new List<Node>();
+        for(int x = (int)-range; x <= (int)range; x++){
+            for(int y = (int)-range; y <= (int)range; y++){
+                Vector3Int target = new Vector3Int(center.x+x, center.y+y,center.z);
+                if(GetNodeFromWorld(target)!=null){
+                    Area.Add(GetNodeFromWorld(target));
                 }
-                else if(grid[x,y].occupant != null){
-                    reachableTiles.Add(grid[x, y]);
-                }
-            }
+            }    
         }
-
-        return reachableTiles;
+        return Area;
     }
-
 
   
 

@@ -16,7 +16,6 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         transform.position += new Vector3(horizontal, vertical, 0) * speed * Time.deltaTime;

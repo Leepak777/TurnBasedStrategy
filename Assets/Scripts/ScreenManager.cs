@@ -32,7 +32,7 @@ public class ScreenManager : MonoBehaviour
     public static void CreateCharacterFile() {
         string filePath = Application.dataPath + "/Character.txt";
         if (File.Exists(filePath)) {
-            File.Delete (filePath);
+            File.Delete(filePath);
         }
         string input = "Poggers,Praetorian Guard,Light Glaive,Kite Shield,Praetorian Armor,Buckler,War Horse";
         string input2 = "早上好中國,Imperial Conscript,Great Sword,Tower Shield,Assault Vest,kekw,kekw";

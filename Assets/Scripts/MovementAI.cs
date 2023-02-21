@@ -58,8 +58,8 @@ public class MovementAI : MonoBehaviour
                 Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
                 return;
             }
-            gridGraph.setWalkable(startNode,true);
-            gridGraph.resetOccupant(startNode);
+            gridGraph.setWalkable(this.gameObject,startNode,true);
+            
             path = new List<Vector3Int>();
             if (startNode != targetNode && pathfinder.GenerateAstarPath(startNode, targetNode, out path))
             {
@@ -120,8 +120,7 @@ public class MovementAI : MonoBehaviour
 
     }
     else{
-        gridGraph.setWalkable(tilemap.WorldToCell(transform.position), false);
-        gridGraph.GetNodeFromWorld(tilemap.WorldToCell(transform.position)).occupant = this.gameObject;
+        gridGraph.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
         hightlightReachableTile.UnhighlightReachable();
     }
     }

@@ -151,8 +151,8 @@ public class StatUpdate : MonoBehaviour
         float player_roll = drn.getDRN() + ra+ acc + dex + acu/2 - movement.GetDistance(enpos, playerpos);
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
         float enemy_roll = drn.getDRN() + en_stat.rd + en_stat.rdb + en_stat.dex/2 + en_stat.acu/2;
-        Debug.Log("Player: "+player_roll);
-        Debug.Log("Enemy: " +enemy_roll);
+        //Debug.Log("Player: "+player_roll);
+        //Debug.Log("Enemy: " +enemy_roll);
         if(player_roll > enemy_roll){
             return true;
         }
@@ -190,7 +190,9 @@ public class StatUpdate : MonoBehaviour
             targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
             targetEnemy.GetComponent<StatUpdate>().attackedFatigue();
         }
-        if(!buff[3]){
+        
+    }
+    /*if(!buff[3]){
             targetEnemy.GetComponent<StatUpdate>().flag = false;
         }
         if(targetEnemy.GetComponent<StatUpdate>().currentHealth <= 0 && this.gameObject.GetComponent<skills>().bloodlust){
@@ -198,9 +200,7 @@ public class StatUpdate : MonoBehaviour
                 this.gameObject.GetComponent<StatUpdate>().setbuff(14,true);
                 
             }
-        }
-    }
-
+        }*/
     public void  attackPl(GameObject player){
          Vector3Int enpos = tilemap.WorldToCell(player.transform.position);
         Vector3Int playerpos = tilemap.WorldToCell(transform.position);
@@ -233,7 +233,7 @@ public class StatUpdate : MonoBehaviour
     }
     void Update(){
         if(currentHealth <= 0){
-            gridGraph.setWalkable(tilemap.WorldToCell(transform.position),true);
+            gridGraph.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
             tm.turnOrder2.Remove(this.gameObject);
             Destroy(this.gameObject);
         }

@@ -25,6 +25,7 @@ public class Movement : MonoBehaviour
     public bool origin = false;
     public bool attacking= false;
     public bool dead = false;
+    public bool setPath = false;
     GridGraph gridGraph;
     //Vector3Int targetNode;
     Vector3Int originNode;
@@ -59,30 +60,22 @@ public class Movement : MonoBehaviour
     }
 
     public void notmoving(){
-         if(this.gameObject.GetComponent<StatUpdate>().getbuff(7)){
+            /*if(this.gameObject.GetComponent<StatUpdate>().getbuff(7)){
                     this.gameObject.GetComponent<StatUpdate>().Damage -= tilesTraveled_damage;
                     tilesTraveled_damage = 0;      
-            }
+            }*/
             origin = false;
-            gridGraph.setWalkable(tilemap.WorldToCell(transform.position), false);
-            gridGraph.GetNodeFromWorld(tilemap.WorldToCell(transform.position)).occupant = this.gameObject;
+            gridGraph.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
             hightlightReachableTile.UnhighlightReachable();
             hightlightReachableTile.UnhighlightEnemy();
     }
 
-    public void moving(){
-            hightlightReachableTile.UnhighlightReachable();
-            setRange();
-            //Debug.Log(targetEnemy);
-            setOrigin();
-            highlight();
-            if (Input.GetMouseButtonDown(0)) //check for a new target
-            {
-            Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int targetNode = tilemap.WorldToCell(target);
-            Vector3Int startNode = tilemap.WorldToCell(transform.position);
-            int distance = Mathf.Abs(startNode.x - targetNode.x) + Mathf.Abs(startNode.y - targetNode.y); // Manhattan distance
-            if(gridGraph.GetNodeFromWorld(targetNode)!=null){
+    public void setPathAI(){
+        if(!setPath){
+            GameObject targetPlayer = getClosestPlayer();
+            Vector3Int targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
+            Vector3Int startNode = tilemap.WorldToCell(transform.position);           
+            
             if(!gridGraph.GetNodeFromWorld(targetNode).walkable && gridGraph.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
                 //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
@@ -90,31 +83,82 @@ public class Movement : MonoBehaviour
             }
             
             if(gridGraph.GetNodeFromWorld(targetNode).occupant != null){
-                if(gridGraph.GetNodeFromWorld(targetNode).occupant.tag == "Enemy"){
-                    //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
-                    targetEnemy = gridGraph.GetNodeFromWorld(targetNode).occupant;
-                    targetEnemy.GetComponent<StatUpdate>().flag = true;
-                    targetNode = tilemap.WorldToCell(getClosestTiletoPlayer());
-                    if(this.gameObject.GetComponent<StatUpdate>().getbuff(10)){
-                        flagAdjacent();
+                GameObject go = gridGraph.GetNodeFromWorld(targetNode).occupant;
+                if(go.tag == "Player"){
+                    if(inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
+                        targetEnemy = go;
+                        targetEnemy.GetComponent<StatUpdate>().flag = true;
+                        AttackCheck("Player");
+                        return;
                     }
-                   
+                    //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
+                    targetNode = tilemap.WorldToCell(getClosestTiletoObject(go));
+                    /*if(this.gameObject.GetComponent<StatUpdate>().getbuff(10)){
+                        flagAdjacent();
+                    }*/
                 }
+                
             }
-            }
-            if(targetEnemy!=null){
-                Debug.Log(GetDistance(tilemap.WorldToCell(targetEnemy.transform.position), tilemap.WorldToCell(transform.position)));
-            }
-            if(attacking && targetEnemy != null && GetDistance(tilemap.WorldToCell(targetEnemy.transform.position), tilemap.WorldToCell(transform.position)) <= attackrange){
-                    AttackCheck();
-                    return;
-            }
-            if(!ValidTile(targetNode)){
-                //Debug.Log("pog");
+             if(!inArea(originNode,targetNode, tilescheck)){
                 return;
             }
-            gridGraph.setWalkable(startNode,true);
-            gridGraph.resetOccupant(startNode);
+            gridGraph.setWalkable(this.gameObject,startNode,true);
+            path = new List<Vector3Int>();
+            /*Debug.Log("Start Node: " + startNode);
+            Debug.Log("Closest Reachable Tile: " + targetNode);
+            Debug.Log("GetDistance: " + GetDistance(startNode, targetNode));
+            Debug.Log("GetNeighbourNodes: " + GetNeighbourNodes(startNode));*/
+            
+            if (pathfinder.GenerateAstarPath(startNode, targetNode, out path))
+            {
+                if(path.Count > tilescheck && !inArea(originNode,targetNode,tilescheck)){
+                    Debug.Log("Target is too far away.");
+                    isMoving = false;
+                    path = null;
+                }
+                else{
+                    tilesTraveled = 0;
+                    isMoving = true;
+                }
+                 setPath = true;
+            }
+            }
+    }
+
+    public void setPathPlayer(){
+        if (Input.GetMouseButtonDown(0)) //check for a new target
+            {
+            Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int targetNode = tilemap.WorldToCell(target);
+            Vector3Int startNode = tilemap.WorldToCell(transform.position);           
+            
+            if(!gridGraph.GetNodeFromWorld(targetNode).walkable && gridGraph.GetNodeFromWorld(targetNode).occupant == null){
+                Debug.Log("Target occupied.");
+                //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
+                return;
+            }
+            
+            if(gridGraph.GetNodeFromWorld(targetNode).occupant != null){
+                GameObject go = gridGraph.GetNodeFromWorld(targetNode).occupant;
+                if(go.tag == "Enemy"){
+                    if(attacking && inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
+                        targetEnemy = go;
+                        targetEnemy.GetComponent<StatUpdate>().flag = true;
+                        AttackCheck("Enemy");
+                        return;
+                    }
+                    //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
+                    targetNode = tilemap.WorldToCell(getClosestTiletoObject(go));
+                    /*if(this.gameObject.GetComponent<StatUpdate>().getbuff(10)){
+                        flagAdjacent();
+                    }*/
+                }
+                
+            }
+             if(!inArea(originNode,targetNode, tilescheck)){
+                return;
+            }
+            gridGraph.setWalkable(this.gameObject,startNode,true);
             path = new List<Vector3Int>();
             //Debug.Log("Start Node: " + startNode);
             //Debug.Log("Closest Reachable Tile: " + targetNode);
@@ -123,7 +167,7 @@ public class Movement : MonoBehaviour
             
             if (pathfinder.GenerateAstarPath(startNode, targetNode, out path))
             {
-                if(path.Count > tilescheck && !ValidTile(targetNode)){
+                if(path.Count > tilescheck && !inArea(originNode,targetNode,tilescheck)){
                     Debug.Log("Target is too far away.");
                     isMoving = false;
                     path = null;
@@ -133,58 +177,69 @@ public class Movement : MonoBehaviour
                     isMoving = true;
                 }
             }
-            
-
         }
-        if(isMoving && tilesTraveled_damage>0){
-                this.gameObject.GetComponent<StatUpdate>().Damage -= tilesTraveled_damage;
-                tilesTraveled_damage = 0;
-        }
+    }
 
-        if (path != null && path.Count > 0)
-        {
-            Vector3 targetPosition = tilemap.GetCellCenterWorld(path[0]);
-            Vector3 dir = (targetPosition - transform.position).normalized;
+    public void moveTo(){
+         if(isMoving && tilesTraveled_damage>0){
+                    this.gameObject.GetComponent<StatUpdate>().Damage -= tilesTraveled_damage;
+                    tilesTraveled_damage = 0;
+            }
 
-            if (path.Count > 1)
+            if (path != null && path.Count > 0)
             {
-                if (!IsAdjacent(path[0], path[1]))
+                Vector3 targetPosition = tilemap.GetCellCenterWorld(path[0]);
+                Vector3 dir = (targetPosition - transform.position).normalized;
+
+                if (path.Count > 1)
+                {
+                    if (!IsAdjacent(path[0], path[1]))
+                    {
+                        path.RemoveAt(0);
+                        return;
+                    }
+                }
+
+                if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
                 {
                     path.RemoveAt(0);
-                    return;
+                    tilesTraveled++; // Increment the tiles traveled
+                    
                 }
+                transform.position += dir * movementSpeed * Time.deltaTime;  // Move the character based on the movement speed
             }
+    }
 
-            if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
-            {
-                path.RemoveAt(0);
-                tilesTraveled++; // Increment the tiles traveled
-                
+    public void moving(){
+            hightlightReachableTile.UnhighlightReachable();
+            setRange();
+            //Debug.Log(targetEnemy);
+            setOrigin();
+            highlight();
+            if(gameObject.tag == "Player"){
+                setPathPlayer();
             }
-            transform.position += dir * movementSpeed * Time.deltaTime;  // Move the character based on the movement speed
-        }
-        if ((path == null || path.Count == 0) && isMoving)
+            else{
+                setPathAI();
+            }
+            moveTo();
+           
+            if ((path == null || path.Count == 0))
             {
-                if(this.gameObject.GetComponent<StatUpdate>().getbuff(7)){
+                /*if(this.gameObject.GetComponent<StatUpdate>().getbuff(7)){
                     tilesTraveled_damage = tilesTraveled;
                     this.gameObject.GetComponent<StatUpdate>().Damage += tilesTraveled;
+                }*/
+                if(isMoving || tilesTraveled >= tilescheck){
+                    tilesfat = tilesTraveled;
+                    isMoving = false;
+                    if(this.gameObject.tag == "Enemy"){
+                        turn = false;
+                        moved = true;   
+                    }
+                    tilesTraveled = 0;
                 }
-                tilesfat = tilesTraveled;
-                tilesTraveled = 0; 
-                isMoving = false;
             }
-
-        if ((path == null || path.Count == 0) && tilesTraveled >= tilescheck)
-        {   
-            if(this.gameObject.GetComponent<StatUpdate>().getbuff(7)){
-                tilesTraveled_damage = tilesTraveled;    
-                this.gameObject.GetComponent<StatUpdate>().Damage += tilesTraveled;
-            }
-            tilesfat = tilesTraveled;
-            tilesTraveled = 0; 
-            isMoving = false;
-        }
-        
     }
     void setRange(){
          if(this.gameObject.GetComponent<StatUpdate>().getbuff(14)){
@@ -229,54 +284,29 @@ public class Movement : MonoBehaviour
         return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);
     }
 
-Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
-{
-    Dictionary<Vector3Int, float> neighbours = new Dictionary<Vector3Int, float>();
-    for (int i = -1; i < 2; i++)
+    Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos) 
     {
-        for (int j = -1; j < 2; j++)
+        Dictionary<Vector3Int, float> neighbours = new Dictionary<Vector3Int, float>();
+        for (int i = -1; i < 2; i++)
         {
-            if (i == 0 && j == 0) continue;{
-                if (Mathf.Abs(i) == Mathf.Abs(j)) continue;{
-                    Vector3Int neighbourPos = new Vector3Int(pos.x + i, pos.y + j, pos.z);
-                    if (tilemap.HasTile(neighbourPos) && gridGraph.GetNodeFromWorld(neighbourPos)!=null && gridGraph.GetNodeFromWorld(neighbourPos).walkable && ValidTile(neighbourPos))
-                    {
-                        neighbours.Add(neighbourPos, 1);
+            for (int j = -1; j < 2; j++)
+            {
+                if (i == 0 && j == 0) continue;{
+                    if (Mathf.Abs(i) == Mathf.Abs(j)) continue;{
+                        Vector3Int neighbourPos = new Vector3Int(pos.x + i, pos.y + j, pos.z);
+                        if (inArea(originNode,neighbourPos,tilescheck) && gridGraph.GetNodeFromWorld(neighbourPos)!=null && gridGraph.GetNodeFromWorld(neighbourPos).walkable)
+                        {
+                            neighbours.Add(neighbourPos, 1);
+                        }
                     }
-                    /*else if(!gridGraph.GetNodeFromWorld(neighbourPos).walkable && gridGraph.GetNodeFromWorld(neighbourPos).occupant != null){
-                        neighbours.Add(neighbourPos, 1);
-                    }*/
                 }
             }
         }
-    }
-    return neighbours;
-}
-
-    List<Node> GetTilesInArea(Vector3Int cellpos){
-        List<Node> lst = new List<Node>();
-        foreach(Node n in gridGraph.GetReachableTiles()){
-            //Vector3Int cellpos = tilemap.WorldToCell(transform.position);
-            if(Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y))) <= tilescheck){
-                lst.Add(n);
-            }
-        }
-        return lst;
+        return neighbours;
     }
 
-    List<Node> GetTilesInArea_en(Vector3Int cellpos){
-        List<Node> lst = new List<Node>();
-        foreach(Node n in gridGraph.GetReachableTiles_en()){
-            //Vector3Int cellpos = tilemap.WorldToCell(transform.position);
-            if(Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y))) <= tilescheck){
-                lst.Add(n);
-            }
-        }
-        return lst;
-    }
-
-    public bool inArea(Vector3Int target){
-        foreach(Node n in GetTilesInArea_en(originNode)){
+    public bool inArea(Vector3Int start,Vector3Int target, float range){
+        foreach(Node n in gridGraph.GetTilesInArea(start,range)){
             if(n.gridX == target.x  && n.gridY == target.y){
                 return true;
             }
@@ -284,48 +314,62 @@ Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
         return false;
     }
 
-    bool ValidTile(Vector3Int target){
-        foreach(Node n in GetTilesInArea_en(originNode)){
+    public Vector3Int inAreaTile(Vector3Int start,Vector3Int target, float range){
+        foreach(Node n in gridGraph.GetTilesInArea(start,range)){
             if(n.gridX == target.x  && n.gridY == target.y){
-                return true;
+                return new Vector3Int((int)n.worldPosition.x, (int) n.worldPosition.y, 0);
             }
         }
-        return false;
+        return originNode;
     }
 
-    Vector3Int getClosestTiletoPlayer(){
-        GameObject player = targetEnemy;
-        //Debug.Log(player.name);
-        Node ans = null;
+    GameObject getClosestPlayer(){
         int mindis = int.MaxValue;   
-        foreach(Node n in GetTilesInArea(originNode)){
-            Vector3Int cellpos = tilemap.WorldToCell(player.transform.position);
+        GameObject close = null; 
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject n in objectsWithTag){
+            //Debug.Log(n.occupant.name);
+            //Debug.Log(Mathf.Abs((int)(n.worldPosition.x - transform.position.x)) + Mathf.Abs((int)(n.worldPosition.y - transform.position.y)));
+            Vector3Int cellpos = tilemap.WorldToCell(n.transform.position);
+            Vector3Int curpos = tilemap.WorldToCell(transform.position);
+            int distance = Mathf.Abs((int)(((curpos.x - cellpos.x) ))) + Mathf.Abs((int)((curpos.y - cellpos.y)));
+            if( distance< mindis){
+                mindis = distance;
+                close = n;
+            }  
+        }
+        return close;
+    }
+
+    Vector3Int getClosestTiletoObject(GameObject go){
+        GameObject player = go;
+        Node ans = null;
+        int mindis = int.MaxValue;    
+        Vector3Int cellpos = tilemap.WorldToCell(player.transform.position);
+        foreach(Node n in gridGraph.GetTilesInArea(originNode,tilescheck)){
             Vector3Int target = tilemap.WorldToCell(new Vector3Int((int)n.worldPosition.x,(int)n.worldPosition.y,0));
             int distance = Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y)));
-            //List<Vector3Int> testpath = new List<Vector3Int>();
-            //pathfinder.GenerateAstarPath(originNode, target, out testpath);
-            //Debug.Log(target+": "+testpath.Count);
-            if(distance <= mindis /*&& testpath.Count <= maxTiles*/){
-                if( n.walkable){
-                mindis = distance;
-                ans = n;}
-            }
+                if(n.walkable && distance < mindis && distance >= (int)attackrange){
+                    mindis = distance;
+                    ans = n;
+                }
         }
+        
         return new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0);
     }
 
     public void Attack(){
         if(!attacking && hightlightReachableTile.EnemyInRange()){
-        hightlightReachableTile.HighlightEnemy();
-        attacking = true;
+            hightlightReachableTile.HighlightEnemy();
+            attacking = true;
         }
         else{
             attacking = false;
             hightlightReachableTile.UnhighlightEnemy();
         }
     }
-    public void AttackCheck(){
-        foreach(GameObject en in GameObject.FindGameObjectsWithTag("Enemy")){
+    public void AttackCheck(string tag){
+        foreach(GameObject en in GameObject.FindGameObjectsWithTag(tag)){
             if(en.GetComponent<StatUpdate>().flag){
                 this.gameObject.GetComponent<StatUpdate>().attackEn(en);
             }
@@ -337,15 +381,15 @@ Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
         
     }
 
-    public void AttackFlaged(){
+    /*public void AttackFlaged(){
         foreach(GameObject en in GameObject.FindGameObjectsWithTag("Enemy")){
             if(en.GetComponent<StatUpdate>().flag){
                 this.gameObject.GetComponent<StatUpdate>().attackEn(en);
             }
         }
-    }
+    }*/
 
-    void flagAdjacent(){
+    /*void flagAdjacent(){
         foreach(GameObject en in GameObject.FindGameObjectsWithTag("Enemy")){
             Vector3Int cellpos = tilemap.WorldToCell(targetEnemy.transform.position);
             Vector3Int enpos = tilemap.WorldToCell(en.transform.position);
@@ -353,10 +397,14 @@ Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
                 en.GetComponent<StatUpdate>().flag = true;;
             }
         }
-    }
+    }*/
 
     public bool getTurn(){
         return turn;
+    }
+
+    public Vector3Int getOrigin(){
+        return originNode;
     }
 
     

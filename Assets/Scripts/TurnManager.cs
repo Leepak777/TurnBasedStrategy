@@ -27,18 +27,7 @@ public class TurnManager : MonoBehaviour
         turnOrder[currentTurnIndex].GetComponent<Movement>().turn = true;
         turnOrder[currentTurnIndex].GetComponent<Movement>().moved = false;
     }
-
-    private void Update()
-    { 
-        if(player){
-            checkdead();
-            
-            if(turnOrder[currentTurnIndex] != null && turnOrder[currentTurnIndex].GetComponent<Movement>().moved && !turnOrder[currentTurnIndex].GetComponent<Movement>().turn){
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().tileFatigue(turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat);
-                turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat = 0;
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().restoreFatigue();
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue();
-                if(turnOrder[currentTurnIndex].GetComponent<StatUpdate>().getbuff(1)){
+    /*if(turnOrder[currentTurnIndex].GetComponent<StatUpdate>().getbuff(1)){
                     if(turnOrder[currentTurnIndex].GetComponent<skills>().as_turn == 0){
                         turnOrder[currentTurnIndex].GetComponent<Movement>().origin = false;
                         turnOrder[currentTurnIndex].GetComponent<skills>().as_turn++;
@@ -69,13 +58,24 @@ public class TurnManager : MonoBehaviour
                     }
                    
                 }
-                else {
-                    currentTurnIndex++;
+                else {*/
+                   
+
+                //}
+    private void Update()
+    { 
+        if(player){
+            checkdead();
+            
+            if(turnOrder[currentTurnIndex] != null && turnOrder[currentTurnIndex].GetComponent<Movement>().moved && !turnOrder[currentTurnIndex].GetComponent<Movement>().turn){
+                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().tileFatigue(turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat);
+                turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat = 0;
+                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().restoreFatigue();
+                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue();
+                
+                currentTurnIndex++;
                     checkdead();
                     player = false;
-
-                }
-               
             }
             if(currentTurnIndex >= turnOrder.Count){
                 currentTurnIndex = 0;
@@ -101,24 +101,24 @@ public class TurnManager : MonoBehaviour
         else{
             checkdead2(); 
             
-            if(turnOrder2[currentTurnIndex] != null &&turnOrder2[currentTurnIndex2].GetComponent<MovementAI>().moved && !turnOrder2[currentTurnIndex2].GetComponent<MovementAI>().turn){
-                turnOrder2[currentTurnIndex2].GetComponent<MovementAI>().setPath = false;
+            if(turnOrder2[currentTurnIndex] != null &&turnOrder2[currentTurnIndex2].GetComponent<Movement>().moved && !turnOrder2[currentTurnIndex2].GetComponent<Movement>().turn){
+                turnOrder2[currentTurnIndex2].GetComponent<Movement>().setPath = false;
                 currentTurnIndex2++;
                 checkdead2();
                 player = true;
-                foreach (GameObject g in turnOrder){
+                /*foreach (GameObject g in turnOrder){
                     if(g!=null && g.GetComponent<StatUpdate>().getbuff(3)){
                         g.GetComponent<Movement>().AttackFlaged();
                     }
-                }
+                }*/
             }
             if(currentTurnIndex2 >= turnOrder2.Count){
                 currentTurnIndex2 = 0;
                 reset2();
             }
             if(!player){
-                turnOrder2[currentTurnIndex2].GetComponent<MovementAI>().turn = true;
-                turnOrder2[currentTurnIndex2].GetComponent<MovementAI>().moved = false;
+                turnOrder2[currentTurnIndex2].GetComponent<Movement>().turn = true;
+                turnOrder2[currentTurnIndex2].GetComponent<Movement>().moved = false;
                 
             }
         }
@@ -154,8 +154,8 @@ public class TurnManager : MonoBehaviour
     private void reset2(){
         foreach(GameObject go in turnOrder2){
             if(go != null){
-            go.GetComponent<MovementAI>().turn = false;
-            go.GetComponent<MovementAI>().moved = false;
+            go.GetComponent<Movement>().turn = false;
+            go.GetComponent<Movement>().moved = false;
         }
         }
     }

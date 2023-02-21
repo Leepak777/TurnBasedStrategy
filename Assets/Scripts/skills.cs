@@ -64,15 +64,15 @@ public class skills : MonoBehaviour
     void Update()
     {
         //movement = this.gameObject.GetComponent<Movement>();
-        if(movement.getTurn()){
+        /*if(movement.getTurn()){
             checkSkills();
-        }
+        }*/
     }
 
     void checkLeaderShip(){
             foreach(GameObject g in GameObject.FindGameObjectsWithTag("Player")){
                 Vector3Int targetPos = tilemap.WorldToCell(g.transform.position);
-                if(movement.inArea(targetPos) ){
+                if(movement.inArea(movement.getOrigin(),targetPos,movement.tilescheck) ){
                     if(!g.GetComponent<StatUpdate>().getbuff(0)){
                         g.GetComponent<StatUpdate>().setbuff(0,true);
                         g.GetComponent<StatUpdate>().Damage +=1;
@@ -91,7 +91,7 @@ public class skills : MonoBehaviour
     public void checkIntercept(){
             foreach(GameObject g in GameObject.FindGameObjectsWithTag("Enemy")){
                 Vector3Int targetPos = tilemap.WorldToCell(g.transform.position);
-                if(movement.inArea(targetPos) ){
+                if(movement.inArea(movement.getOrigin(),targetPos, movement.tilescheck) ){
                     if(!g.GetComponent<StatUpdate>().flag){
                         g.GetComponent<StatUpdate>().flag = true;
                     }
