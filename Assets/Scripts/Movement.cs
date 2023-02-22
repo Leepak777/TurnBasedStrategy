@@ -231,6 +231,9 @@ public class Movement : MonoBehaviour
 
                 if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
                 {
+                    Node node =gridGraph.GetNodeFromWorld(tilemap.WorldToCell(targetPosition));
+                    Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
+                    tilemap.SetColor(tilePos, Color.red);
                     path.RemoveAt(0);
                     tilesTraveled++; // Increment the tiles traveled
                     
