@@ -403,6 +403,22 @@ public class Movement : MonoBehaviour
         return turn;
     }
 
+    public void startTurn(){
+        turn = true;
+        moved = false;
+    }
+
+
+    public void endTurn(){
+        tilesfat = 0;
+        turn = false;
+        moved = true;
+    }
+
+    public int getTilesFat(){
+        return tilesfat;
+    }
+
     public Vector3Int getOrigin(){
         return originNode;
     }

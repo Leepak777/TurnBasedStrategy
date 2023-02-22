@@ -299,7 +299,7 @@ public class StatUpdate : MonoBehaviour
     public void tileFatigue(int tiles){
         
         fat += tiles;
-        //Debug.Log("Fatigue: "+fat);
+        Debug.Log("Fatigue: "+fat);
 
     }
 
@@ -312,7 +312,9 @@ public class StatUpdate : MonoBehaviour
         }
     }
 
-    public void checkFatigue(){
+    public void checkFatigue(int tiles){
+        tileFatigue(tiles);
+        restoreFatigue();
         if(fat >= 75){
             rd -=fat / 5;
             md -= fat / 10;

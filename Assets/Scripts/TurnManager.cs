@@ -24,8 +24,6 @@ public class TurnManager : MonoBehaviour
         
         currentTurnIndex = 0;
         currentTurnIndex2 = 0;
-        turnOrder[currentTurnIndex].GetComponent<Movement>().turn = true;
-        turnOrder[currentTurnIndex].GetComponent<Movement>().moved = false;
     }
     /*if(turnOrder[currentTurnIndex].GetComponent<StatUpdate>().getbuff(1)){
                     if(turnOrder[currentTurnIndex].GetComponent<skills>().as_turn == 0){
@@ -68,11 +66,8 @@ public class TurnManager : MonoBehaviour
             checkdead();
             
             if(turnOrder[currentTurnIndex] != null && turnOrder[currentTurnIndex].GetComponent<Movement>().moved && !turnOrder[currentTurnIndex].GetComponent<Movement>().turn){
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().tileFatigue(turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat);
-                turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat = 0;
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().restoreFatigue();
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue();
-                
+                //turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat = 0;
+                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(turnOrder[currentTurnIndex].GetComponent<Movement>().getTilesFat());
                 currentTurnIndex++;
                     checkdead();
                     player = false;
@@ -82,17 +77,12 @@ public class TurnManager : MonoBehaviour
                 reset1();
             }
             if(player && turnOrder[currentTurnIndex].GetComponent<StatUpdate>().fat < 100){
-                turnOrder[currentTurnIndex].GetComponent<Movement>().turn = true;
-                turnOrder[currentTurnIndex].GetComponent<Movement>().moved = false;
+                turnOrder[currentTurnIndex].GetComponent<Movement>().startTurn();
                 currentPlay = turnOrder[currentTurnIndex];
             }
             else if(turnOrder[currentTurnIndex].GetComponent<StatUpdate>().fat >= 100){
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().tileFatigue(turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat);
-                turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat = 0;
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().restoreFatigue();
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue();
-                turnOrder[currentTurnIndex].GetComponent<Movement>().turn = false;
-                turnOrder[currentTurnIndex].GetComponent<Movement>().moved = true;
+                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(turnOrder[currentTurnIndex].GetComponent<Movement>().getTilesFat());
+                turnOrder[currentTurnIndex].GetComponent<Movement>().endTurn();
                 currentTurnIndex++;
                 checkdead();
                 player = false;
@@ -100,7 +90,6 @@ public class TurnManager : MonoBehaviour
         }
         else{
             checkdead2(); 
-            
             if(turnOrder2[currentTurnIndex] != null &&turnOrder2[currentTurnIndex2].GetComponent<Movement>().moved && !turnOrder2[currentTurnIndex2].GetComponent<Movement>().turn){
                 turnOrder2[currentTurnIndex2].GetComponent<Movement>().setPath = false;
                 currentTurnIndex2++;
@@ -116,10 +105,16 @@ public class TurnManager : MonoBehaviour
                 currentTurnIndex2 = 0;
                 reset2();
             }
-            if(!player){
-                turnOrder2[currentTurnIndex2].GetComponent<Movement>().turn = true;
-                turnOrder2[currentTurnIndex2].GetComponent<Movement>().moved = false;
+            if(!player && turnOrder2[currentTurnIndex].GetComponent<StatUpdate>().fat < 100){
+                turnOrder2[currentTurnIndex2].GetComponent<Movement>().startTurn();
                 
+            }
+            else if(turnOrder2[currentTurnIndex].GetComponent<StatUpdate>().fat >= 100){
+                turnOrder2[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(turnOrder2[currentTurnIndex].GetComponent<Movement>().getTilesFat());
+                turnOrder2[currentTurnIndex].GetComponent<Movement>().endTurn();
+                currentTurnIndex2++;
+                checkdead();
+                player = true;
             }
         }
     }
