@@ -14,6 +14,7 @@ public class SetMap : MonoBehaviour
     public Tile tile;
     public List<string> mapData;
     public Sprite sprite;
+    
     void Awake()
     {
         // Load sprite from resources
@@ -26,6 +27,7 @@ public class SetMap : MonoBehaviour
         tile = ScriptableObject.CreateInstance<Tile>();
         tile.sprite = sprite;
         setStage();
+        
     }
 
     public void createTilemap()

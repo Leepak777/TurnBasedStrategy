@@ -68,9 +68,10 @@ public class TurnManager : MonoBehaviour
             if(turnOrder[currentTurnIndex] != null && turnOrder[currentTurnIndex].GetComponent<Movement>().moved && !turnOrder[currentTurnIndex].GetComponent<Movement>().turn){
                 //turnOrder[currentTurnIndex].GetComponent<Movement>().tilesfat = 0;
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(turnOrder[currentTurnIndex].GetComponent<Movement>().getTilesFat());
+                checkText(turnOrder[currentTurnIndex]);
                 currentTurnIndex++;
-                    checkdead();
-                    player = false;
+                checkdead();
+                player = false;
             }
             if(currentTurnIndex >= turnOrder.Count){
                 currentTurnIndex = 0;
@@ -83,6 +84,7 @@ public class TurnManager : MonoBehaviour
             else if(turnOrder[currentTurnIndex].GetComponent<StatUpdate>().fat >= 100){
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(turnOrder[currentTurnIndex].GetComponent<Movement>().getTilesFat());
                 turnOrder[currentTurnIndex].GetComponent<Movement>().endTurn();
+                checkText(turnOrder[currentTurnIndex]);
                 currentTurnIndex++;
                 checkdead();
                 player = false;
@@ -90,8 +92,9 @@ public class TurnManager : MonoBehaviour
         }
         else{
             checkdead2(); 
-            if(turnOrder2[currentTurnIndex] != null &&turnOrder2[currentTurnIndex2].GetComponent<Movement>().moved && !turnOrder2[currentTurnIndex2].GetComponent<Movement>().turn){
+            if(turnOrder2[currentTurnIndex2] != null &&turnOrder2[currentTurnIndex2].GetComponent<Movement>().moved && !turnOrder2[currentTurnIndex2].GetComponent<Movement>().turn){
                 turnOrder2[currentTurnIndex2].GetComponent<Movement>().setPath = false;
+                checkText(turnOrder2[currentTurnIndex2]);
                 currentTurnIndex2++;
                 checkdead2();
                 player = true;
@@ -105,17 +108,24 @@ public class TurnManager : MonoBehaviour
                 currentTurnIndex2 = 0;
                 reset2();
             }
-            if(!player && turnOrder2[currentTurnIndex].GetComponent<StatUpdate>().fat < 100){
+            if(!player && turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().fat < 100){
                 turnOrder2[currentTurnIndex2].GetComponent<Movement>().startTurn();
                 
             }
-            else if(turnOrder2[currentTurnIndex].GetComponent<StatUpdate>().fat >= 100){
-                turnOrder2[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(turnOrder2[currentTurnIndex].GetComponent<Movement>().getTilesFat());
-                turnOrder2[currentTurnIndex].GetComponent<Movement>().endTurn();
+            else if(turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().fat >= 100){
+                turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().checkFatigue(turnOrder2[currentTurnIndex2].GetComponent<Movement>().getTilesFat());
+                turnOrder2[currentTurnIndex2].GetComponent<Movement>().endTurn();
+                checkText(turnOrder2[currentTurnIndex2]);
                 currentTurnIndex2++;
                 checkdead();
                 player = true;
             }
+        }
+    }
+
+    void checkText(GameObject go){
+        if(go.GetComponent<StatUpdate>().getTextEnabled()){
+            go.GetComponent<StatUpdate>().setTextActive(false);
         }
     }
 

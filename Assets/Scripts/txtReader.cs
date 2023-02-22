@@ -16,12 +16,18 @@ public class txtReader : MonoBehaviour
     float[] bst;
     float[] mst;
     public Tilemap tilemap;
-
+    Dictionary<string,Sprite> Daemons = new Dictionary<string,Sprite>();
     // Start is called before the first frame update
     void Start()
     { 
+        Sprite[] allsprites = Resources.LoadAll<Sprite>("Daemons");
+        foreach(Sprite s in allsprites){
+            //Debug.Log(s.name);
+            Daemons.Add(s.name,s);
+        }
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         setStage();
+        
     }
 
     //words
@@ -77,8 +83,10 @@ public class txtReader : MonoBehaviour
                 player.GetComponent<StatUpdate>().setCalStat();
             }
             else if(words[0] == "早上好中國"){
-                GameObject prefab = Resources.Load<GameObject>("Enemy") as GameObject;
+                GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
                 GameObject enemy = Instantiate(prefab) as GameObject;
+                enemy.tag = "Enemy";
+                enemy.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_5"];
                 enemy.transform.SetParent(transform);
                 enemy.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(24,12,0));
                 //imperial legionary, synthe armor, pike

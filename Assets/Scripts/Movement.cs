@@ -137,6 +137,7 @@ public class Movement : MonoBehaviour
     public void setPathPlayer(){
         if (GetMouseButtonDown(0)) //check for a new target
             {
+            
             Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int targetNode = tilemap.WorldToCell(target);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);           

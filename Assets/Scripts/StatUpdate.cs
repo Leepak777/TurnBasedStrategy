@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 
 public class StatUpdate : MonoBehaviour
@@ -173,6 +174,7 @@ public class StatUpdate : MonoBehaviour
     DRN drn;
     int maxTiles = 3;
     int attackrange = 1;
+    Text text;
 
     public void attackEn(GameObject targetEnemy){
         Vector3Int enpos = tilemap.WorldToCell(targetEnemy.transform.position);
@@ -221,6 +223,7 @@ public class StatUpdate : MonoBehaviour
     {   
         drn = this.gameObject.GetComponent<DRN>();
         movement = this.gameObject.GetComponent<Movement>(); 
+        text = this.gameObject.GetComponentInChildren<Text>();
         currentHealth = maxHealth;
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
@@ -237,13 +240,17 @@ public class StatUpdate : MonoBehaviour
             tm.turnOrder2.Remove(this.gameObject);
             Destroy(this.gameObject);
         }
+        
     }
 
     public void TakeDamage(float damage)
     {
+        
         float protection = drn.getDRN() + sv * (100-sp)/100 + av*(100 -ap)/100 + tou/4;
-        Debug.Log("Damage: "+damage);
-        Debug.Log("Protection: " +protection);
+        //Debug.Log("Damage: "+damage);
+        //Debug.Log("Protection: " +protection);
+        text.text = ""+Damage;
+        text.enabled = true;
         damage -= protection;
         if(damage <= 0){
             damage = 0;
@@ -262,6 +269,14 @@ public class StatUpdate : MonoBehaviour
 
     public void setbuff(int i, bool b){
         buff[i] = b;
+    }
+
+    public bool getTextEnabled(){
+        return text.enabled;
+    }
+
+    public void setTextActive(bool active){
+        text.enabled = active;
     }
 
     public int getMaxTiles(){
