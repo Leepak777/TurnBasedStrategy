@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aoiti.Pathfinding; //import the pathfinding library
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public class Movement : MonoBehaviour
 {
@@ -125,8 +126,16 @@ public class Movement : MonoBehaviour
             }
     }
 
+    public bool GetMouseButtonDown(int button)
+    {
+        if(GameObject.Find("AttackPrompt").GetComponent<AttackPrompt>().checkOnButton()){
+            return false;
+        }
+        return Input.GetMouseButtonDown(button);
+    }
+
     public void setPathPlayer(){
-        if (Input.GetMouseButtonDown(0)) //check for a new target
+        if (GetMouseButtonDown(0)) //check for a new target
             {
             Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int targetNode = tilemap.WorldToCell(target);
