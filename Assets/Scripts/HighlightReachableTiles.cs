@@ -113,9 +113,11 @@ public class HighlightReachableTiles : MonoBehaviour
     {
         for (int i = 0; i < reachableTiles.Count; i++)
         {
+            
             Vector3Int tilePos = reachableTiles[i];
-            tilemap.SetTileFlags(tilePos, TileFlags.None);
-            tilemap.SetColor(tilePos, Color.white);
+            if(tilemap.GetColor(tilePos) != Color.red){
+                tilemap.SetTileFlags(tilePos, TileFlags.None);
+                tilemap.SetColor(tilePos, Color.white);}
         }
         reachableTiles.Clear();
     }

@@ -77,9 +77,11 @@ public class Movement : MonoBehaviour
 
     public void setPathAI(){
         if(!setPath){
+            
             GameObject targetPlayer = getClosestPlayer();
             Vector3Int targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
-            Vector3Int startNode = tilemap.WorldToCell(transform.position);           
+            Vector3Int startNode = tilemap.WorldToCell(transform.position);  
+                     
             
             if(!gridGraph.GetNodeFromWorld(targetNode).walkable && gridGraph.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
@@ -154,6 +156,9 @@ public class Movement : MonoBehaviour
         }
         if (GetMouseButtonDown(0)) //check for a new target
             {
+            if(tilemap.WorldToCell(transform.position) != originNode){
+                transform.position = tilemap.GetCellCenterWorld(originNode);    
+            }
             this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
             //this.gameObject.GetComponentInChildren<Ghost>().enabled = false;
             //this.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
@@ -232,8 +237,10 @@ public class Movement : MonoBehaviour
                 if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
                 {
                     Node node =gridGraph.GetNodeFromWorld(tilemap.WorldToCell(targetPosition));
+                    Color c = Color.red;
+                    c.a = 0.5f;
                     Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
-                    tilemap.SetColor(tilePos, Color.red);
+                    tilemap.SetColor(tilePos, c);
                     path.RemoveAt(0);
                     tilesTraveled++; // Increment the tiles traveled
                     
@@ -243,7 +250,6 @@ public class Movement : MonoBehaviour
     }
 
     public void moving(){
-            hightlightReachableTile.UnhighlightReachable();
             setRange();
             //Debug.Log(targetEnemy);
             setOrigin();
