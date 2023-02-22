@@ -44,6 +44,10 @@ public class Movement : MonoBehaviour
     hightlightReachableTile.HighlightReachable(); // Highlight the reachable tiles at the start of the game
     transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
     tilescheck = maxTiles;
+    Node locn = gridGraph.GetNodeFromWorld(tilemap.WorldToCell(transform.position));
+    Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
+    this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
+
     }
 
     private void Update()
@@ -135,13 +139,28 @@ public class Movement : MonoBehaviour
     }
 
     public void setPathPlayer(){
+        //this.gameObject.GetComponentInChildren<Ghost>().enabled = true;
+        //this.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        this.gameObject.GetComponentInChildren<Ghost>().setOnOff(true);
+        Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
+        if(inArea(originNode,shadowtargetNode, tilescheck)){
+            Node locn = gridGraph.GetNodeFromWorld(shadowtargetNode);
+            Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
+            this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
+        }
+        else{
+            this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
+        }
         if (GetMouseButtonDown(0)) //check for a new target
             {
-            
+            this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
+            //this.gameObject.GetComponentInChildren<Ghost>().enabled = false;
+            //this.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
             Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int targetNode = tilemap.WorldToCell(target);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);           
-            
+
             if(!gridGraph.GetNodeFromWorld(targetNode).walkable && gridGraph.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
                 //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);

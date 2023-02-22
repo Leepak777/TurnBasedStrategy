@@ -42,7 +42,6 @@ public class HighlightReachableTiles : MonoBehaviour
                         {*/
                             // Save the original tile
                             var temp = tilemap.GetTile(tilePos);
-
                             // Highlight the tile
                             tilemap.SetTileFlags(tilePos, TileFlags.None);
                             tilemap.SetColor(tilePos, highlightColor);

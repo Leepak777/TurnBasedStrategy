@@ -77,6 +77,8 @@ public class txtReader : MonoBehaviour
                 GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
                 GameObject player = Instantiate(prefab) as GameObject;
                 player.transform.SetParent(transform);
+                player.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_9"];
+                player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
                 player.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(20,12,0));
                 //Praetorian Guard, plate, light glaive
                 setStats(player,words[1],words[2],words[3],words[4],words[5],words[6]);
