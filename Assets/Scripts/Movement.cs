@@ -40,7 +40,6 @@ public class Movement : MonoBehaviour
     gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
     hightlightReachableTile = this.gameObject.GetComponent<HighlightReachableTiles>();
     pathfinder = new Pathfinder<Vector3Int>(GetDistance, GetNeighbourNodes);
-    hightlightReachableTile.HighlightReachable(); // Highlight the reachable tiles at the start of the game
     transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
     tilescheck = maxTiles;
     Node locn = gridGraph.GetNodeFromWorld(tilemap.WorldToCell(transform.position));
@@ -62,10 +61,6 @@ public class Movement : MonoBehaviour
     }
 
     public void notmoving(){
-            /*if(this.gameObject.GetComponent<StatUpdate>().getbuff(7)){
-                    this.gameObject.GetComponent<StatUpdate>().Damage -= tilesTraveled_damage;
-                    tilesTraveled_damage = 0;      
-            }*/
             origin = false;
             gridGraph.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
             hightlightReachableTile.UnhighlightReachable();
@@ -82,7 +77,6 @@ public class Movement : MonoBehaviour
             
             if(!gridGraph.GetNodeFromWorld(targetNode).walkable && gridGraph.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
-                //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
                 return;
             }
             
@@ -95,11 +89,8 @@ public class Movement : MonoBehaviour
                         AttackCheck("Player");
                         return;
                     }
-                    //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
                     targetNode = tilemap.WorldToCell(getClosestTiletoObject(go));
-                    /*if(this.gameObject.GetComponent<StatUpdate>().getbuff(10)){
-                        flagAdjacent();
-                    }*/
+
                 }
                 
             }
@@ -253,7 +244,6 @@ public class Movement : MonoBehaviour
             setRange();
             //Debug.Log(targetEnemy);
             setOrigin();
-            highlight();
             if(gameObject.tag == "Player"){
                 setPathPlayer();
             }
@@ -274,9 +264,11 @@ public class Movement : MonoBehaviour
                     tilesTraveled = 0;
                 }
             }
+            highlight();
+
     }
     void setRange(){
-        tilescheck = maxTiles;
+        tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();
     }
 
     void setOrigin(){
@@ -293,6 +285,7 @@ public class Movement : MonoBehaviour
             }
             else
             {        
+                hightlightReachableTile.UnhighlightReachable();
                 hightlightReachableTile.HighlightReachable();
             }
     }
@@ -331,6 +324,16 @@ public class Movement : MonoBehaviour
             }
         }
         return neighbours;
+    }
+
+    public List<GameObject> getTaginArea(Vector3Int start, float range, string tag){
+        List<GameObject> tags = new List<GameObject>(); 
+        foreach(Node n in gridGraph.GetTilesInArea(start,range)){
+            if(n.occupant != null && n.occupant.tag == tag){
+                tags.Add(n.occupant);
+            }
+        }
+        return tags;
     }
 
     public bool inArea(Vector3Int start,Vector3Int target, float range){
@@ -407,6 +410,19 @@ public class Movement : MonoBehaviour
         turn = false;
         moved = true;
         
+    }
+
+    public GameObject getTargetEnemy(){
+        return targetEnemy;
+    }
+
+    public void switchCheckTiles(bool change, int x){
+        if(change){
+            tilescheck /= x;
+        }
+        else{
+            tilescheck = maxTiles;
+        }
     }
 
     public bool getTurn(){

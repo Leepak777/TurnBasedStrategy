@@ -42,6 +42,7 @@ public class txtReader : MonoBehaviour
     */
 
     void setStats(GameObject character, string type, string weapon, string shield, string armor, string buckler, string mount){
+        
         tst = this.gameObject.GetComponent<Types>().getTypeStat(type);
         wst = this.gameObject.GetComponent<Equipments>().getWeaponStat(weapon);
         sst = this.gameObject.GetComponent<Equipments>().getShieldStat(shield);
@@ -79,8 +80,9 @@ public class txtReader : MonoBehaviour
                 player.transform.SetParent(transform);
                 player.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_9"];
                 player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
-                player.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(20,12,0));
+                player.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(20+i,12,0));
                 //Praetorian Guard, plate, light glaive
+                player.GetComponent<StatUpdate>().setUp();
                 setStats(player,words[1],words[2],words[3],words[4],words[5],words[6]);
                 player.GetComponent<StatUpdate>().setCalStat();
             }
@@ -90,8 +92,9 @@ public class txtReader : MonoBehaviour
                 enemy.tag = "Enemy";
                 enemy.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_5"];
                 enemy.transform.SetParent(transform);
-                enemy.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(24,12,0));
+                enemy.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(24,12+i,0));
                 //imperial legionary, synthe armor, pike
+                enemy.GetComponent<StatUpdate>().setUp();
                 setStats(enemy,words[1],words[2],words[3],words[4],words[5],words[6]);
                 enemy.GetComponent<StatUpdate>().setCalStat();
             }

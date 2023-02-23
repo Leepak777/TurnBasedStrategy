@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 3201166153161494739}
   - component: {fileID: 1906857175640176302}
   - component: {fileID: 5031924927382362670}
+  - component: {fileID: 2449693778180260812}
   m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
@@ -177,6 +178,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: pog
+--- !u!114 &2449693778180260812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8135656054248947953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6615b6b7cce3d4c4b991f6e7a074809b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8321727165239358837
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,49 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9672ac2063fb984eb802eb9d008d34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pow: 0
-  dex: 0
-  tou: 0
-  acu: 0
-  mid: 0
-  ma: 0
-  ra: 0
-  md: 0
-  rd: 0
-  sa: 0
-  mr: 0
-  base_hp: 0
-  base_mov: 0
-  base_init: 0
-  base_enc: 0
-  base_ene: 0
-  wd: 0
-  rng: 0
-  pscal: 0
-  dscal: 0
-  sp: 0
-  ap: 0
-  acc: 0
-  pr: 0
-  pv: 0
-  w_enc: 0
-  attack_num: 0
-  av: 0
-  sv: 0
-  mdb: 0
-  rdb: 0
-  eq_mov: 0
-  eq_init: 0
-  eq_enc: 0
-  hp: 0
-  ene: 0
-  fat: 0
-  stb: 0
-  maxStb: 0
-  mov: 0
-  bite: 0
-  enc: 0
-  size: 0
   maxHealth: 100
   Damage: 50
   healthBar: {fileID: 8906131547528253649}
@@ -347,7 +317,6 @@ MonoBehaviour:
   tilesTraveled: 0
   tilesTraveled_damage: 0
   tilesfat: 0
-  turnsElapsed: 0
   isMoving: 0
   turn: 0
   moved: 0
@@ -402,7 +371,6 @@ MonoBehaviour:
   agileForm: 0
   defensiveMatrix: 0
   bl_turn: 0
-  as_turn: 0
 --- !u!114 &4623373925719051760
 MonoBehaviour:
   m_ObjectHideFlags: 0

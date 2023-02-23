@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class HighlightReachableTiles : MonoBehaviour
 {
     Tilemap tilemap;
-    int maxTiles;
+    //int maxTiles;
     public Color highlightColor;
     public Color highlightColor2;
     private List<Vector3Int> reachableTiles = new List<Vector3Int>();
@@ -17,12 +17,13 @@ public class HighlightReachableTiles : MonoBehaviour
     void Start(){
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
-        maxTiles = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();
+        
                         
     }
 
   public void HighlightReachable()
     {   
+        //maxTiles = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         if(gridGraph == null){
             gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
@@ -32,7 +33,7 @@ public class HighlightReachableTiles : MonoBehaviour
         reachableTiles.Clear();
         // maxTiles = this.gameObject.GetComponent<Movement>().tilescheck;
         Vector3Int currentPos = highlightorigin;//tilemap.WorldToCell(transform.position);
-        foreach(Node node in gridGraph.GetTilesInArea(currentPos,maxTiles)){
+        foreach(Node node in gridGraph.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getMaxTiles())){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
                 if (tilemap.HasTile(tilePos) ){
                     if(gridGraph.GetNodeFromWorld(tilePos)!= null && gridGraph.GetNodeFromWorld(tilePos).occupant == null)

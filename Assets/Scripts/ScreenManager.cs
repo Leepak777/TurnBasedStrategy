@@ -38,6 +38,8 @@ public class ScreenManager : MonoBehaviour
         string input2 = "早上好中國,Imperial Conscript,Great Sword,Tower Shield,Assault Vest,kekw,kekw";
         using StreamWriter file = new(filePath, append: true);
         file.WriteLineAsync(input);
+        file.WriteLineAsync(input);
+        file.WriteLineAsync(input2);
         file.WriteLineAsync(input2);
 
         Debug.Log("pog");

@@ -375,11 +375,11 @@
 "Assets/Aoiti/Example/2DGrid/MovementController2D.cs"
 "Assets/Aoiti/Example/Tilemap/MoveOnTilemap.cs"
 "Assets/demoMap.cs"
-"Assets/Ghost.cs"
 "Assets/Scripts/AttackPrompt.cs"
 "Assets/Scripts/CameraController.cs"
 "Assets/Scripts/DRN.cs"
 "Assets/Scripts/Equipments.cs"
+"Assets/Scripts/Ghost.cs"
 "Assets/Scripts/GridGraph.cs"
 "Assets/Scripts/HealthBar.cs"
 "Assets/Scripts/HighlightReachableTiles.cs"
@@ -427,6 +427,7 @@
 "Assets/TextMesh Pro/Examples & Extras/Scripts/VertexShakeB.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/VertexZoom.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/WarpTextExample.cs"
+"Assets/Waiter.cs"
 -langversion:9.0
 
 /deterministic

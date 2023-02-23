@@ -9,9 +9,11 @@ public class TurnManager : MonoBehaviour
     private int currentTurnIndex;
     private int currentTurnIndex2;
     public bool player = true;
+    bool skillUpdate = false;
+    bool Active = false;
     public GameObject currentPlay;
     private int turnElasped;
-    private int actions = 3;
+    private int actions = 1;
 
     void Start()
     {
@@ -36,6 +38,10 @@ public class TurnManager : MonoBehaviour
         {
             UpdateEnemyTurn();
         }
+
+        /*if(!Active){
+            checkText();
+        }*/
     }
 
     void UpdatePlayerTurn()
@@ -47,17 +53,29 @@ public class TurnManager : MonoBehaviour
             if (currentMovement.moved && !currentMovement.turn)
             {
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(currentMovement.getTilesFat());
-                checkText(turnOrder[currentTurnIndex]);
+                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
                 updateTurn(currentMovement);
+                turnOrder[currentTurnIndex].GetComponent<skills>().setChTurn2(false);
+                skillUpdate = false;
+                Active = false;
             }
-            else if (turnOrder[currentTurnIndex].GetComponent<StatUpdate>().fat < 100)
+            else if (checkFat(turnOrder[currentTurnIndex]))
             {
                 turnOrder[currentTurnIndex].GetComponent<Movement>().startTurn();
+                if(!skillUpdate){
+                    turnOrder[currentTurnIndex].GetComponent<skills>().setUpdate(true);
+                    skillUpdate = true;
+                }
+                Active = true;
                 currentPlay = turnOrder[currentTurnIndex];
             }
-            else if (turnOrder[currentTurnIndex].GetComponent<StatUpdate>().fat > 100)
+            else if (checkFat(turnOrder[currentTurnIndex]))
             {
                 currentMovement.endTurn();
+                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
+                turnOrder[currentTurnIndex].GetComponent<skills>().setChTurn2(false);
+                skillUpdate = false;
+                Active = false;
             }
         }
     }
@@ -71,34 +89,62 @@ public class TurnManager : MonoBehaviour
             if (currentMovement.moved && !currentMovement.turn)
             {
                 turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().checkFatigue(currentMovement.getTilesFat());
+                turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
                 currentMovement.setPath = false;
-                checkText(turnOrder2[currentTurnIndex2]);
                 updateTurn(currentMovement);
+                turnOrder2[currentTurnIndex2].GetComponent<skills>().setChTurn2(false);
+                skillUpdate = false;
+                Active = false;
             }
-            else if (turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().fat < 100)
+            else if (checkFat(turnOrder2[currentTurnIndex2]))
             {
                 turnOrder2[currentTurnIndex2].GetComponent<Movement>().startTurn();
+                if(!skillUpdate){
+                    turnOrder2[currentTurnIndex2].GetComponent<skills>().setUpdate(true);
+                    skillUpdate = true;
+                }
+                currentPlay = turnOrder2[currentTurnIndex2];
+                Active = true;
             }
-            else if (turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().fat > 100)
+            else if (checkFat(turnOrder2[currentTurnIndex2]))
             {
                 currentMovement.endTurn();
+                turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
+                turnOrder2[currentTurnIndex2].GetComponent<skills>().setChTurn2(false);
+                skillUpdate = false;
+                Active = false;
             }
         }
     }
 
+    bool checkFat(GameObject go){
+        return go.GetComponent<StatUpdate>().getDictStats("fat") < 100;
+    }
 
-    void checkText(GameObject go)
+
+    void checkText()
     {
-        if (go.GetComponent<StatUpdate>().getTextEnabled())
-        {
-            go.GetComponent<StatUpdate>().setTextActive(false);
+        if(player){
+        foreach(GameObject go in turnOrder){
+            if (go.GetComponent<StatUpdate>().getTextEnabled())
+            {
+                go.GetComponent<StatUpdate>().setTextActive(false);
+            }
         }
+        }
+        else{
+        foreach(GameObject go in turnOrder2){
+            if (go.GetComponent<StatUpdate>().getTextEnabled())
+            {
+                go.GetComponent<StatUpdate>().setTextActive(false);
+            }
+        }}
     }
 
     private void updateTurn(Movement currentMovement)
     {
         turnElasped++;
-                if(turnElasped >= actions){
+                if(turnElasped >= currentPlay.GetComponent<StatUpdate>().getDictStats("attack_num")){
                     updateIndex();
                     turnElasped = 0;
                 }
@@ -116,8 +162,8 @@ public class TurnManager : MonoBehaviour
             {
                 reset1();
                 currentTurnIndex = 0;
-                this.player = false; // switch to enemy's turn
-            }
+                 
+            }this.player = false;// switch to enemy's turn
         }
         else
         {
@@ -126,8 +172,8 @@ public class TurnManager : MonoBehaviour
             {
                 reset2();
                 currentTurnIndex2 = 0;
-                this.player = true; // switch to player's turn
-            }
+                
+            }this.player = true; // switch to player's turn
         }
     }
 
@@ -152,5 +198,13 @@ public class TurnManager : MonoBehaviour
                 go.GetComponent<Movement>().resetTurn();
             }
         }
+    }
+
+    public bool getActive(){
+        return Active;
+    }
+
+    public int getTurnElasped(){
+        return turnElasped;
     }
 }
