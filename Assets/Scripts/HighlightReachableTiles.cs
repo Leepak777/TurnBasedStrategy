@@ -35,7 +35,7 @@ public class HighlightReachableTiles : MonoBehaviour
         foreach(Node node in gridGraph.GetTilesInArea(currentPos,maxTiles)){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
                 if (tilemap.HasTile(tilePos) ){
-                    if(gridGraph.GetNodeFromWorld(tilePos)!= null && gridGraph.GetNodeFromWorld(tilePos).walkable)
+                    if(gridGraph.GetNodeFromWorld(tilePos)!= null && gridGraph.GetNodeFromWorld(tilePos).occupant == null)
                     {
                         /*int distance = Mathf.Abs(tilePos.x - currentPos.x) + Mathf.Abs(tilePos.y - currentPos.y);
                         if (distance <= maxTiles)
@@ -115,9 +115,9 @@ public class HighlightReachableTiles : MonoBehaviour
         {
             
             Vector3Int tilePos = reachableTiles[i];
-            if(tilemap.GetColor(tilePos) != Color.red){
+            //if(tilemap.GetColor(tilePos) != Color.red){
                 tilemap.SetTileFlags(tilePos, TileFlags.None);
-                tilemap.SetColor(tilePos, Color.white);}
+                tilemap.SetColor(tilePos, Color.white);
         }
         reachableTiles.Clear();
     }

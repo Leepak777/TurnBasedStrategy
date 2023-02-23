@@ -122,9 +122,11 @@ public class GridGraph : MonoBehaviour
         List<Node> Area = new List<Node>();
         for(int x = (int)-range; x <= (int)range; x++){
             for(int y = (int)-range; y <= (int)range; y++){
-                Vector3Int target = new Vector3Int(center.x+x, center.y+y,center.z);
-                if(GetNodeFromWorld(target)!=null){
-                    Area.Add(GetNodeFromWorld(target));
+                if(Mathf.Sqrt(x*x + y*y) <= range){
+                    Vector3Int target = new Vector3Int(center.x+x, center.y+y,center.z);
+                    if(GetNodeFromWorld(target)!=null){
+                        Area.Add(GetNodeFromWorld(target));
+                    }
                 }
             }    
         }

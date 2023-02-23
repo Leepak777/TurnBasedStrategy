@@ -19,7 +19,6 @@ public class Movement : MonoBehaviour
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
     public int tilesTraveled_damage = 0;
     public int tilesfat = 0;
-    public int turnsElapsed = 0;
     public bool isMoving = false;
     public bool turn = false;
     public bool moved = false;
@@ -52,8 +51,6 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
-
         targetEnemy = null;
         if(turn && !moved)
          {
@@ -140,6 +137,7 @@ public class Movement : MonoBehaviour
         return Input.GetMouseButtonDown(button);
     }
 
+
     public void setPathPlayer(){
         //this.gameObject.GetComponentInChildren<Ghost>().enabled = true;
         //this.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
@@ -156,7 +154,7 @@ public class Movement : MonoBehaviour
         }
         if (GetMouseButtonDown(0)) //check for a new target
             {
-            if(tilemap.WorldToCell(transform.position) != originNode){
+            if(tilemap.WorldToCell(transform.position) != originNode && !attacking){
                 transform.position = tilemap.GetCellCenterWorld(originNode);    
             }
             this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
@@ -237,10 +235,12 @@ public class Movement : MonoBehaviour
                 if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
                 {
                     Node node =gridGraph.GetNodeFromWorld(tilemap.WorldToCell(targetPosition));
-                    Color c = Color.red;
-                    c.a = 0.5f;
-                    Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
-                    tilemap.SetColor(tilePos, c);
+                    if(this.gameObject.tag == "Player"){
+                        Color c = Color.red;
+                        c.a = 0.5f;
+                        Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
+                        tilemap.SetColor(tilePos, c);
+                    }
                     path.RemoveAt(0);
                     tilesTraveled++; // Increment the tiles traveled
                     
@@ -264,10 +264,6 @@ public class Movement : MonoBehaviour
            
             if ((path == null || path.Count == 0))
             {
-                /*if(this.gameObject.GetComponent<StatUpdate>().getbuff(7)){
-                    tilesTraveled_damage = tilesTraveled;
-                    this.gameObject.GetComponent<StatUpdate>().Damage += tilesTraveled;
-                }*/
                 if(isMoving || tilesTraveled >= tilescheck){
                     tilesfat = tilesTraveled;
                     isMoving = false;
@@ -280,13 +276,7 @@ public class Movement : MonoBehaviour
             }
     }
     void setRange(){
-         if(this.gameObject.GetComponent<StatUpdate>().getbuff(14)){
-                
-                tilescheck = maxTiles/2;
-            }
-            else{
-                tilescheck = maxTiles;
-            }
+        tilescheck = maxTiles;
     }
 
     void setOrigin(){
@@ -419,33 +409,23 @@ public class Movement : MonoBehaviour
         
     }
 
-    /*public void AttackFlaged(){
-        foreach(GameObject en in GameObject.FindGameObjectsWithTag("Enemy")){
-            if(en.GetComponent<StatUpdate>().flag){
-                this.gameObject.GetComponent<StatUpdate>().attackEn(en);
-            }
-        }
-    }*/
-
-    /*void flagAdjacent(){
-        foreach(GameObject en in GameObject.FindGameObjectsWithTag("Enemy")){
-            Vector3Int cellpos = tilemap.WorldToCell(targetEnemy.transform.position);
-            Vector3Int enpos = tilemap.WorldToCell(en.transform.position);
-            if(IsAdjacent(cellpos,enpos)){
-                en.GetComponent<StatUpdate>().flag = true;;
-            }
-        }
-    }*/
-
     public bool getTurn(){
         return turn;
     }
 
     public void startTurn(){
-        turn = true;
-        moved = false;
+        if(!turn){
+            tilesfat = 0;
+            turn = true;
+            moved = false;
+        }
     }
 
+    public void resetTurn(){
+        tilesfat = 0;
+        turn = false;
+        moved = false;
+    }
 
     public void endTurn(){
         tilesfat = 0;

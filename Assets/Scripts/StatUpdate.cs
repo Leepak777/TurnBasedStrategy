@@ -314,7 +314,7 @@ public class StatUpdate : MonoBehaviour
     public void tileFatigue(int tiles){
         
         fat += tiles;
-        Debug.Log("Fatigue: "+fat);
+        Debug.Log(this.gameObject.tag + "Fatigue: "+fat);
 
     }
 
