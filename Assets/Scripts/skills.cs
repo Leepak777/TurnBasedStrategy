@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System;
 
-public class skills : MonoBehaviour
+public class Skills : MonoBehaviour
 {    
-    public bool leadershipAura= true;         //0
-    public bool actionSurge = true;            //1
+    public bool leadershipAura;         //0
+    public bool actionSurge;            //1
     public bool inspiringPresence;      //2
-    public bool intercept= true;              //3
+    public bool intercept;              //3
     public bool protect;                //4
     public bool closeFormation;         //5
     public bool aiming;                 //6
     public bool charge;                 //7
     public bool disengage;              //8
     public bool rabble;                 //9
-    public bool splash= true;                 //10
+    public bool splash;                 //10
     public bool cleave;                 //11
     public bool regenerate;             //12
     public bool packTatic;              //13
@@ -27,53 +28,79 @@ public class skills : MonoBehaviour
     
     public int bl_turn = 0;
     public int as_turn = 0;
-    GridGraph gridGraph;
+    public int charge_bonus = 0;
+    TileManager tileM;
     Tilemap tilemap;
     Movement movement;
     StatUpdate statupdate;
     TurnManager TM;
     bool gameTurn = true;
     bool characterTurn = false;
-    bool characterTurn2 = false;
-    Dictionary<string,float> leaderShipBuff;
     // Start is called before the first frame update
     void Start()
     {
+        // Load the method.ini file
+
+        /*var interpreter = new Interpreter();
+        interpreter.Interpret(Application.dataPath+ "/Resources/Skills.ini");*/
+
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         movement = this.gameObject.GetComponent<Movement>();
         statupdate = this.gameObject.GetComponent<StatUpdate>();
-        leaderShipBuff = new Dictionary<string,float>(){{"wd",1},{"pow",1},{"dex",1}};
     }
 
-    void checkChTurnSkills(){
-        if(leadershipAura){
-            checkLeaderShipAura();
+    void checkChStartTurnSkills(){
+        if(splash){
+            //methods["checkSplash"].DynamicInvoke(1);
+            checkSplash(1);
         }
         if(actionSurge){
-            checkActionSurge();
+            //methods["checkActionsSurge"].DynamicInvoke(true);
+            checkActionSurge(true);
+        }
+        if(bloodlust){
+            //methods["checkBloodLust"].DynamicInvoke(1);
+            checkBloodLust(1);
         }
 
     }
-    void checkGameTurnSkills(){
+    void checkChEndTurnSkills(){
+        if(actionSurge){
+            //methods["checkActionsSurge"].DynamicInvoke(false);
+            checkActionSurge(false);
+        }
+        if(bloodlust){
+            //methods["checkBloodLust"].DynamicInvoke(2);
+            checkBloodLust(2);
+        }
+        if(splash){
+            //methods["checkSplash"].DynamicInvoke(2);
+            checkSplash(2);
+        }
+    }
+    void checkGameStartTurnSkills(){
+        if(leadershipAura){
+            //methods["checkLeaderShipAura"].DynamicInvoke();
+            checkLeaderShipAura();
+        }
+    }
+
+    void checkGameEndTurnSkills(){
         if(intercept){
+            //methods["checkIntercept"].DynamicInvoke();
             checkIntercept();
         }
     }
     void checkDuringTurnSkills(){
-        if(splash){
-            checkSplash();
+        if(bloodlust){
+            //methods["checkBloodLust"].DynamicInvoke(0);
+            checkBloodLust(0);
         }
-    }
-
-    void checkSplash(){
-        if(movement.getTargetEnemy() != null){
-            foreach(Node n in gridGraph.GetTilesInArea(tilemap.WorldToCell(movement.getTargetEnemy().transform.position),1)){
-                if(n.occupant != null&& n.occupant.tag == movement.getTargetEnemy().tag){
-                    n.occupant.GetComponent<StatUpdate>().flag = true;
-                }
-            }
+        if(charge){
+            //methods["checkCharge"].DynamicInvoke(0);
+            checkCharge(0);
         }
     }
 
@@ -90,11 +117,66 @@ public class skills : MonoBehaviour
         }
     }
 
+    void checkBloodLust(int x){
+        StatUpdate checker = this.gameObject.GetComponent<StatUpdate>();
+        if(x == 0){
+            //during turn
+            if(movement.getTargetEnemy() == null){
+                statupdate.setbuff(14,true);
+                checker.modifyStat(new Dictionary<string,float>(){{"attack_num",1}}, true);
+            }
+        }
+        if(x == 1){
+            //start turn
+            if(TM.getTurnElasped() == 1){
+                checker.multiplyStat(new Dictionary<string,float>(){{"mov",2}}, false);
+            }
+        }
+        if(x == 2){
+            //end turn
+            if(checker.getbuff(14) && TM.getTurnElasped() == 0){            
+                checker.modifyStat(new Dictionary<string,float>(){{"attack_num",1}}, false);
+                checker.multiplyStat(new Dictionary<string,float>(){{"mov",2}}, true);
+                checker.setbuff(14,false);
+            }
+        }
+    }
+
+    void checkSplash(int x){
+        if(x == 1){
+            //during turn
+            movement.setAttackArea(1);
+        }
+        if(x == 2){
+           movement.setAttackArea(0);
+        }
+    }
+
     void checkIntercept(){
         opportunity();
     }
-    void checkCharge(){
-
+    void checkCharge(int x){
+        if(x == 0){
+            //during turn
+            if(!movement.getisMoving() && movement.getTilesFat() > 0 && !statupdate.getbuff(7)){
+                statupdate.setbuff(7,true);
+                statupdate.setBonus(movement.getTilesFat());
+                charge_bonus = movement.getTilesFat();
+            }
+            if(movement.getisMoving() && movement.getTilesFat() > 0 && statupdate.getbuff(7)){
+                statupdate.setbuff(7,false);
+                statupdate.setBonus(-movement.getTilesFat());
+                charge_bonus = 0;
+            }
+        }
+        if(x == 2){
+            //end turn
+            if(statupdate.getbuff(7) && charge_bonus > 0){
+                statupdate.setbuff(7,false);
+                statupdate.setBonus(-charge_bonus);
+                charge_bonus = 0;
+            }
+        }
     }
     void checkLeaderShipAura(){
         string tag = "Enemy";
@@ -102,67 +184,75 @@ public class skills : MonoBehaviour
         {
             tag = "Player";
         }
-        foreach(GameObject go in movement.getTaginArea(movement.getOrigin(),3,tag)){
-            StatUpdate checker = go.GetComponent<StatUpdate>();
-                if(!checker.getbuff(0)){
-                    checker.setbuff(0,true);
-                    checker.modifyStat(leaderShipBuff,true);
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag(tag)){
+                StatUpdate checker = go.GetComponent<StatUpdate>();
+                if(movement.inArea(movement.getOrigin(), tilemap.WorldToCell(go.transform.position),3)){
+                    if(!checker.getbuff(0)){
+                        checker.setbuff(0,true);
+                        checker.setBonus(1);
+                    }
                 }
-                if(checker.getbuff(0)){
-                    checker.setbuff(0,false);
-                    checker.modifyStat(leaderShipBuff,false);
+                else{
+                    if(checker.getbuff(0)){
+                        checker.setbuff(0,false);
+                        checker.setBonus(-1);
+                    }
                 }
         }
     }
-    void checkActionSurge(){
+    void checkActionSurge(bool startEnd){
         StatUpdate checker = this.gameObject.GetComponent<StatUpdate>();
-        if(TM.getTurnElasped() == 1){
-            checker.multiplyStat(new Dictionary<string,float>(){{"mov",2}}, false);
-        }
-        if(as_turn == 0){
-            checker.setbuff(1,true);
-            checker.multiplyStat(new Dictionary<string,float>(){{"attack_num",2}}, true);
+        if (startEnd){
             
-        }
-        else if (as_turn == 2){
-            if(checker.getbuff(1)){            
-                checker.multiplyStat(new Dictionary<string,float>(){{"attack_num",2}}, false);
-                checker.multiplyStat(new Dictionary<string,float>(){{"mov",2}}, true);
-                checker.setbuff(1,false);
+            if(as_turn == 0){
+                checker.setbuff(1,true);
+                checker.multiplyStat(new Dictionary<string,float>(){{"attack_num",2}}, true);
+                
             }
         }
-        as_turn++;
-        if(as_turn >=5){
-            as_turn = 0;
+        else{
+            if(checker.getbuff(1) && TM.getTurnElasped() == 0){            
+                checker.multiplyStat(new Dictionary<string,float>(){{"attack_num",2}}, false);
+                checker.setbuff(1,false);
+            }
+
+            as_turn++;
+            if(as_turn >=5){
+                as_turn = 0;
+            }
         }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(characterTurn2){
-            checkDuringTurnSkills();
-        }
-        if(characterTurn){
-            checkChTurnSkills();
-            characterTurn = false;
-        }
+        //check when a turn start
         if(TM.getActive() && gameTurn){
-            checkGameTurnSkills();
+            //check when character turn start
+            if(TM.getCurrenPlay() == this.gameObject){
+                checkChStartTurnSkills();
+                characterTurn = true;
+            }    
+            //overall startturn check
+            checkGameStartTurnSkills();
             gameTurn = false;
-            //Debug.Log("pog");
         }else if(!TM.getActive()){
             gameTurn = true;
+            //character end turn check
+            if(TM.getCurrenPlay() == this.gameObject){
+                checkChEndTurnSkills();
+                characterTurn = false;
+            }
+            //overall endturn check
+            checkGameEndTurnSkills();
+        }
+        //check during character turn
+        if(characterTurn){
+            checkDuringTurnSkills();
         }
     }
 
-    public void setUpdate(bool set){
-        characterTurn = set;
-        characterTurn2 = set;
-    }
-
-    public void setChTurn2(bool set){
-        characterTurn2 = set;
-    }
 
 }
+

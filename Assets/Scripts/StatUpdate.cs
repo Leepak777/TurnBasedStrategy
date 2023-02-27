@@ -1,12 +1,29 @@
-using UnityEngine;
-using UnityEngine.Tilemaps;
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
+
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.AI;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditorInternal;
+#endif
+
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
+
 
 
 public class StatUpdate : MonoBehaviour
 {
-    public Dictionary<string,float> stats = new Dictionary<string,float>();
+    public UDictionary<string,float> stats = new UDictionary<string,float>();
     public void setUp(){
         //Raw stat
         stats.Add("pow",0);//power
@@ -172,10 +189,9 @@ public class StatUpdate : MonoBehaviour
     public bool flag = false;
     public float bonus = 0;
     Tilemap tilemap;
-    GridGraph gridGraph;
+    TileManager tileM;
     Movement movement;
     DRN drn;
-    int maxTiles = 3;
     int attackrange = 1;
     Text text;
 
@@ -190,7 +206,7 @@ public class StatUpdate : MonoBehaviour
             drn_check = rangeRoll(targetEnemy);
         }
         if(drn_check){
-            Damage = drn.getDRN() + stats["wd"] + stats["pscal"] * stats["pow"] + stats["dscal"]*stats["dex"];
+            Damage = drn.getDRN() + stats["wd"] + stats["pscal"] * stats["pow"] + stats["dscal"]*stats["dex"] + bonus;
             attackingFatigue();
             targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
             targetEnemy.GetComponent<StatUpdate>().attackedFatigue();
@@ -207,7 +223,7 @@ public class StatUpdate : MonoBehaviour
         text = this.gameObject.GetComponentInChildren<Text>();
         currentHealth = maxHealth;
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         //healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
         for(int i = 0; i < 18; i++){
@@ -217,7 +233,7 @@ public class StatUpdate : MonoBehaviour
     }
     void Update(){
         if(currentHealth <= 0){
-            gridGraph.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
+            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
             tm.turnOrder2.Remove(this.gameObject);
             Destroy(this.gameObject);
         }
@@ -240,12 +256,14 @@ public class StatUpdate : MonoBehaviour
         float protection = drn.getDRN() + stats["sv"] * (100-stats["sp"])/100 + stats["av"]*(100 -stats["ap"])/100 + stats["tou"]/4;
         //Debug.Log("Damage: "+damage);
         //Debug.Log("Protection: " +protection);
-        text.text = ""+Damage;
-        showText();
+        
         damage -= protection;
+        
         if(damage <= 0){
             damage = 0;
         }
+        text.text = ""+damage;
+        showText();
         Debug.Log("hit!" + damage);
         currentHealth -= damage;
         if(currentHealth < 0){
@@ -302,6 +320,10 @@ public class StatUpdate : MonoBehaviour
     }
     public void saddDamage(int i){
         Damage += i;
+    }
+
+    public void setBonus(int i ){
+        bonus += i;
     }
 
     public bool getTextEnabled(){

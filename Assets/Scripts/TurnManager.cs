@@ -9,11 +9,9 @@ public class TurnManager : MonoBehaviour
     private int currentTurnIndex;
     private int currentTurnIndex2;
     public bool player = true;
-    bool skillUpdate = false;
     bool Active = false;
     public GameObject currentPlay;
     private int turnElasped;
-    private int actions = 1;
 
     void Start()
     {
@@ -39,9 +37,7 @@ public class TurnManager : MonoBehaviour
             UpdateEnemyTurn();
         }
 
-        /*if(!Active){
-            checkText();
-        }*/
+
     }
 
     void UpdatePlayerTurn()
@@ -55,17 +51,11 @@ public class TurnManager : MonoBehaviour
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(currentMovement.getTilesFat());
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
                 updateTurn(currentMovement);
-                turnOrder[currentTurnIndex].GetComponent<skills>().setChTurn2(false);
-                skillUpdate = false;
                 Active = false;
             }
             else if (checkFat(turnOrder[currentTurnIndex]))
             {
                 turnOrder[currentTurnIndex].GetComponent<Movement>().startTurn();
-                if(!skillUpdate){
-                    turnOrder[currentTurnIndex].GetComponent<skills>().setUpdate(true);
-                    skillUpdate = true;
-                }
                 Active = true;
                 currentPlay = turnOrder[currentTurnIndex];
             }
@@ -73,8 +63,6 @@ public class TurnManager : MonoBehaviour
             {
                 currentMovement.endTurn();
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
-                turnOrder[currentTurnIndex].GetComponent<skills>().setChTurn2(false);
-                skillUpdate = false;
                 Active = false;
             }
         }
@@ -92,17 +80,11 @@ public class TurnManager : MonoBehaviour
                 turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
                 currentMovement.setPath = false;
                 updateTurn(currentMovement);
-                turnOrder2[currentTurnIndex2].GetComponent<skills>().setChTurn2(false);
-                skillUpdate = false;
                 Active = false;
             }
             else if (checkFat(turnOrder2[currentTurnIndex2]))
             {
                 turnOrder2[currentTurnIndex2].GetComponent<Movement>().startTurn();
-                if(!skillUpdate){
-                    turnOrder2[currentTurnIndex2].GetComponent<skills>().setUpdate(true);
-                    skillUpdate = true;
-                }
                 currentPlay = turnOrder2[currentTurnIndex2];
                 Active = true;
             }
@@ -110,8 +92,6 @@ public class TurnManager : MonoBehaviour
             {
                 currentMovement.endTurn();
                 turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
-                turnOrder2[currentTurnIndex2].GetComponent<skills>().setChTurn2(false);
-                skillUpdate = false;
                 Active = false;
             }
         }
@@ -144,13 +124,13 @@ public class TurnManager : MonoBehaviour
     private void updateTurn(Movement currentMovement)
     {
         turnElasped++;
-                if(turnElasped >= currentPlay.GetComponent<StatUpdate>().getDictStats("attack_num")){
-                    updateIndex();
-                    turnElasped = 0;
-                }
-                else{
-                    currentMovement.resetTurn();    
-                }
+        if(turnElasped >= currentPlay.GetComponent<StatUpdate>().getDictStats("attack_num")){
+            updateIndex();
+            turnElasped = 0;
+        }
+        else{
+            currentMovement.resetTurn();    
+        }
     }
 
     private void updateIndex()
@@ -206,5 +186,11 @@ public class TurnManager : MonoBehaviour
 
     public int getTurnElasped(){
         return turnElasped;
+    }
+    public void setTurnElasped(int x){
+        turnElasped += x;
+    }
+    public GameObject getCurrenPlay(){
+        return currentPlay;
     }
 }

@@ -12,12 +12,12 @@ public class highlightsetTile : MonoBehaviour
     private List<Vector3Int> walkableTiles = new List<Vector3Int>();
     private List<Vector3Int> EnemyTiles = new List<Vector3Int>();
     private List<Vector3Int> unreachableTiles = new List<Vector3Int>();
-    GridGraph gridGraph;
+    TileManager tileM;
     public Vector3Int highlightorigin;
 
     void Start(){
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         maxTiles = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();
                         
     }
@@ -27,11 +27,7 @@ public class highlightsetTile : MonoBehaviour
     }
 
   public void HighlightReachable()
-    {   
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        if(gridGraph == null){
-            gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
-        }
+    { 
         highlightColor.a = 0.5f;
 
         reachableTiles.Clear();
@@ -43,7 +39,7 @@ public class highlightsetTile : MonoBehaviour
             {
                 Vector3Int tilePos = new Vector3Int(currentPos.x + x, currentPos.y + y, currentPos.z);
                 if (tilemap.HasTile(tilePos) ){
-                    if(  gridGraph.GetNodeFromWorld(tilePos)!= null && gridGraph.GetNodeFromWorld(tilePos).walkable)
+                    if(  tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).walkable)
                     {
                         int distance = Mathf.Abs(tilePos.x - currentPos.x) + Mathf.Abs(tilePos.y - currentPos.y);
                         if (distance <= maxTiles)
@@ -125,12 +121,8 @@ public class highlightsetTile : MonoBehaviour
     }
 
     public void hightSet(){
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        if(gridGraph == null){
-            gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
-        }
         highlightColor.a = 0.5f;
-        Vector3Int size = gridGraph.GridSize;
+        Vector3Int size = tileM.GridSize;
         walkableTiles.Clear();
         for (int x = 0; x <= size.x; x++)
         {
@@ -138,7 +130,7 @@ public class highlightsetTile : MonoBehaviour
             {
                 Vector3Int tilePos = new Vector3Int(x, y, 0);
                 if (tilemap.HasTile(tilePos) ){
-                    if(  gridGraph.GetNodeFromWorld(tilePos)!= null && gridGraph.GetNodeFromWorld(tilePos).walkable)
+                    if(  tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).walkable)
                     {
                             // Save the original tile
                             var temp = tilemap.GetTile(tilePos);

@@ -16,6 +16,7 @@ public class Movement : MonoBehaviour
     int maxTiles; // Add this to limit the number of tiles the object can travel
     public int tilescheck = 0;
     int attackrange; 
+    int attackArea;
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
     public int tilesTraveled_damage = 0;
     public int tilesfat = 0;
@@ -26,7 +27,7 @@ public class Movement : MonoBehaviour
     public bool attacking= false;
     public bool dead = false;
     public bool setPath = false;
-    GridGraph gridGraph;
+    TileManager tileM;
     //Vector3Int targetNode;
     Vector3Int originNode;
     GameObject targetEnemy;
@@ -37,12 +38,12 @@ public class Movement : MonoBehaviour
     maxTiles = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();
     attackrange = this.gameObject.GetComponent<StatUpdate>().getAttackRange();
     tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-    gridGraph = GameObject.Find("Tilemanager").GetComponent<GridGraph>();
+    tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     hightlightReachableTile = this.gameObject.GetComponent<HighlightReachableTiles>();
     pathfinder = new Pathfinder<Vector3Int>(GetDistance, GetNeighbourNodes);
     transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
     tilescheck = maxTiles;
-    Node locn = gridGraph.GetNodeFromWorld(tilemap.WorldToCell(transform.position));
+    Node locn = tileM.GetNodeFromWorld(tilemap.WorldToCell(transform.position));
     Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
     this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
 
@@ -62,7 +63,7 @@ public class Movement : MonoBehaviour
 
     public void notmoving(){
             origin = false;
-            gridGraph.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
+            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
             hightlightReachableTile.UnhighlightReachable();
             hightlightReachableTile.UnhighlightEnemy();
     }
@@ -75,17 +76,17 @@ public class Movement : MonoBehaviour
             Vector3Int startNode = tilemap.WorldToCell(transform.position);  
                      
             
-            if(!gridGraph.GetNodeFromWorld(targetNode).walkable && gridGraph.GetNodeFromWorld(targetNode).occupant == null){
+            if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
                 return;
             }
             
-            if(gridGraph.GetNodeFromWorld(targetNode).occupant != null){
-                GameObject go = gridGraph.GetNodeFromWorld(targetNode).occupant;
+            if(tileM.GetNodeFromWorld(targetNode).occupant != null){
+                GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
                 if(go.tag == "Player"){
                     if(inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
                         targetEnemy = go;
-                        targetEnemy.GetComponent<StatUpdate>().flag = true;
+                        flagEnemyArea(targetEnemy,"Player",attackArea);
                         AttackCheck("Player");
                         return;
                     }
@@ -97,7 +98,7 @@ public class Movement : MonoBehaviour
              if(!inArea(originNode,targetNode, tilescheck)){
                 return;
             }
-            gridGraph.setWalkable(this.gameObject,startNode,true);
+            tileM.setWalkable(this.gameObject,startNode,true);
             path = new List<Vector3Int>();
             /*Debug.Log("Start Node: " + startNode);
             Debug.Log("Closest Reachable Tile: " + targetNode);
@@ -136,7 +137,7 @@ public class Movement : MonoBehaviour
         Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
         if(inArea(originNode,shadowtargetNode, tilescheck)){
-            Node locn = gridGraph.GetNodeFromWorld(shadowtargetNode);
+            Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
             Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
             this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
         }
@@ -155,22 +156,22 @@ public class Movement : MonoBehaviour
             Vector3Int targetNode = tilemap.WorldToCell(target);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);           
 
-            if(!gridGraph.GetNodeFromWorld(targetNode).walkable && gridGraph.GetNodeFromWorld(targetNode).occupant == null){
+            if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
-                //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
+                //Debug.Log(tileM.GetNodeFromWorld(targetNode).occupant.name);
                 return;
             }
             
-            if(gridGraph.GetNodeFromWorld(targetNode).occupant != null){
-                GameObject go = gridGraph.GetNodeFromWorld(targetNode).occupant;
+            if(tileM.GetNodeFromWorld(targetNode).occupant != null){
+                GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
                 if(go.tag == "Enemy"){
                     if(attacking && inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
                         targetEnemy = go;
-                        targetEnemy.GetComponent<StatUpdate>().flag = true;
+                        flagEnemyArea(targetEnemy,"Enemy",attackArea);
                         AttackCheck("Enemy");
                         return;
                     }
-                    //Debug.Log(gridGraph.GetNodeFromWorld(targetNode).occupant.name);
+                    //Debug.Log(tileM.GetNodeFromWorld(targetNode).occupant.name);
                     targetNode = tilemap.WorldToCell(getClosestTiletoObject(go));
                     /*if(this.gameObject.GetComponent<StatUpdate>().getbuff(10)){
                         flagAdjacent();
@@ -181,7 +182,7 @@ public class Movement : MonoBehaviour
              if(!inArea(originNode,targetNode, tilescheck)){
                 return;
             }
-            gridGraph.setWalkable(this.gameObject,startNode,true);
+            tileM.setWalkable(this.gameObject,startNode,true);
             path = new List<Vector3Int>();
             //Debug.Log("Start Node: " + startNode);
             //Debug.Log("Closest Reachable Tile: " + targetNode);
@@ -225,7 +226,7 @@ public class Movement : MonoBehaviour
 
                 if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
                 {
-                    Node node =gridGraph.GetNodeFromWorld(tilemap.WorldToCell(targetPosition));
+                    Node node =tileM.GetNodeFromWorld(tilemap.WorldToCell(targetPosition));
                     if(this.gameObject.tag == "Player"){
                         Color c = Color.red;
                         c.a = 0.5f;
@@ -315,7 +316,7 @@ public class Movement : MonoBehaviour
                 if (i == 0 && j == 0) continue;{
                     if (Mathf.Abs(i) == Mathf.Abs(j)) continue;{
                         Vector3Int neighbourPos = new Vector3Int(pos.x + i, pos.y + j, pos.z);
-                        if (inArea(originNode,neighbourPos,tilescheck) && gridGraph.GetNodeFromWorld(neighbourPos)!=null && gridGraph.GetNodeFromWorld(neighbourPos).walkable)
+                        if (inArea(originNode,neighbourPos,tilescheck) && tileM.GetNodeFromWorld(neighbourPos)!=null && tileM.GetNodeFromWorld(neighbourPos).walkable)
                         {
                             neighbours.Add(neighbourPos, 1);
                         }
@@ -328,7 +329,7 @@ public class Movement : MonoBehaviour
 
     public List<GameObject> getTaginArea(Vector3Int start, float range, string tag){
         List<GameObject> tags = new List<GameObject>(); 
-        foreach(Node n in gridGraph.GetTilesInArea(start,range)){
+        foreach(Node n in tileM.GetTilesInArea(start,range)){
             if(n.occupant != null && n.occupant.tag == tag){
                 tags.Add(n.occupant);
             }
@@ -337,7 +338,7 @@ public class Movement : MonoBehaviour
     }
 
     public bool inArea(Vector3Int start,Vector3Int target, float range){
-        foreach(Node n in gridGraph.GetTilesInArea(start,range)){
+        foreach(Node n in tileM.GetTilesInArea(start,range)){
             if(n.gridX == target.x  && n.gridY == target.y){
                 return true;
             }
@@ -346,7 +347,7 @@ public class Movement : MonoBehaviour
     }
 
     public Vector3Int inAreaTile(Vector3Int start,Vector3Int target, float range){
-        foreach(Node n in gridGraph.GetTilesInArea(start,range)){
+        foreach(Node n in tileM.GetTilesInArea(start,range)){
             if(n.gridX == target.x  && n.gridY == target.y){
                 return new Vector3Int((int)n.worldPosition.x, (int) n.worldPosition.y, 0);
             }
@@ -377,7 +378,7 @@ public class Movement : MonoBehaviour
         Node ans = null;
         int mindis = int.MaxValue;    
         Vector3Int cellpos = tilemap.WorldToCell(player.transform.position);
-        foreach(Node n in gridGraph.GetTilesInArea(originNode,tilescheck)){
+        foreach(Node n in tileM.GetTilesInArea(originNode,tilescheck)){
             Vector3Int target = tilemap.WorldToCell(new Vector3Int((int)n.worldPosition.x,(int)n.worldPosition.y,0));
             int distance = Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y)));
                 if(n.walkable && distance < mindis && distance >= (int)attackrange){
@@ -387,6 +388,15 @@ public class Movement : MonoBehaviour
         }
         
         return new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0);
+    }
+
+    public void flagEnemyArea(GameObject enemy, string tag,int range){
+        enemy.GetComponent<StatUpdate>().Flagging();
+        foreach(Node n in tileM.GetTilesInArea(tilemap.WorldToCell(enemy.transform.position),range)){
+                if(n.occupant != null&& n.occupant.tag == tag){
+                    n.occupant.GetComponent<StatUpdate>().Flagging();
+                }
+        }
     }
 
     public void Attack(){
@@ -410,6 +420,10 @@ public class Movement : MonoBehaviour
         turn = false;
         moved = true;
         
+    }
+
+    public bool getisMoving(){
+        return isMoving;
     }
 
     public GameObject getTargetEnemy(){
@@ -436,7 +450,9 @@ public class Movement : MonoBehaviour
             moved = false;
         }
     }
-
+    public void setAttackArea(int i){
+        attackArea = i;
+    }
     public void resetTurn(){
         tilesfat = 0;
         turn = false;

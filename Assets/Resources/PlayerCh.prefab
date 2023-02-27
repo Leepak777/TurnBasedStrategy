@@ -203,8 +203,8 @@ GameObject:
   - component: {fileID: 5340198930151324993}
   - component: {fileID: 5340198930151324998}
   - component: {fileID: 5340198930151324992}
-  - component: {fileID: 5340198930151324995}
   - component: {fileID: 4623373925719051760}
+  - component: {fileID: 5544678197578395680}
   m_Layer: 6
   m_Name: PlayerCh
   m_TagString: Player
@@ -294,6 +294,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9672ac2063fb984eb802eb9d008d34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats:
+    keys: []
+    values: []
   maxHealth: 100
   Damage: 50
   healthBar: {fileID: 8906131547528253649}
@@ -339,7 +342,19 @@ MonoBehaviour:
   highlightColor: {r: 0.10852615, g: 0.7249354, b: 0.8584906, a: 0}
   highlightColor2: {r: 0.7924528, g: 0.22726944, b: 0.22726944, a: 0}
   highlightorigin: {x: 0, y: 0, z: 0}
---- !u!114 &5340198930151324995
+--- !u!114 &4623373925719051760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321727165239358837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25c2eddfa86730046bbc98093bd225e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5544678197578395680
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -371,18 +386,8 @@ MonoBehaviour:
   agileForm: 0
   defensiveMatrix: 0
   bl_turn: 0
---- !u!114 &4623373925719051760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8321727165239358837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25c2eddfa86730046bbc98093bd225e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  as_turn: 0
+  charge_bonus: 0
 --- !u!1001 &2331907350683025971
 PrefabInstance:
   m_ObjectHideFlags: 0
