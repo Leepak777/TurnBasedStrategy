@@ -116,8 +116,6 @@ public class TileManager : MonoBehaviour
         return reachableTiles;
     }
 
-
-
     public List<Node> GetTilesInArea(Vector3Int center, float range){
         List<Node> Area = new List<Node>();
         for(int x = (int)-range; x <= (int)range; x++){
@@ -133,6 +131,86 @@ public class TileManager : MonoBehaviour
         return Area;
     }
 
-  
+      public List<GameObject> getTaginArea(Vector3Int start, float range, string tag){
+        List<GameObject> tags = new List<GameObject>(); 
+        foreach(Node n in GetTilesInArea(start,range)){
+            if(n.occupant != null && n.occupant.tag == tag){
+                tags.Add(n.occupant);
+            }
+        }
+        return tags;
+    }
 
+    public bool inArea(Vector3Int start,Vector3Int target, float range){
+        foreach(Node n in GetTilesInArea(start,range)){
+            if(n.gridX == target.x  && n.gridY == target.y){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Vector3Int inAreaTile(Vector3Int start,Vector3Int target, float range){
+        foreach(Node n in GetTilesInArea(start,range)){
+            if(n.gridX == target.x  && n.gridY == target.y){
+                return new Vector3Int((int)n.worldPosition.x, (int) n.worldPosition.y, 0);
+            }
+        }
+        return start;
+    }
+
+    public GameObject getClosestPlayer(string tag, Vector3 currentpos){
+        int mindis = int.MaxValue;   
+        GameObject close = null; 
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);            
+        Vector3Int curpos = tilemap.WorldToCell(currentpos);
+        foreach(GameObject n in objectsWithTag){
+            //Debug.Log(n.occupant.name);
+            //Debug.Log(Mathf.Abs((int)(n.worldPosition.x - transform.position.x)) + Mathf.Abs((int)(n.worldPosition.y - transform.position.y)));
+            Vector3Int cellpos = tilemap.WorldToCell(n.transform.position);
+            int distance = Mathf.Abs((int)(((curpos.x - cellpos.x) ))) + Mathf.Abs((int)((curpos.y - cellpos.y)));
+            if(distance< mindis){
+                mindis = distance;
+                close = n;
+            }  
+        }
+        return close;
+    }
+
+    public Vector3Int getClosestTiletoObject(GameObject go, Vector3Int originNode, float attackrange, int movrange){
+        GameObject player = go;
+        Node ans = null;
+        int mindis = int.MaxValue;    
+        Vector3Int cellpos = tilemap.WorldToCell(player.transform.position);
+        foreach(Node n in GetTilesInArea(originNode,movrange)){
+            Vector3Int target = tilemap.WorldToCell(new Vector3Int((int)n.worldPosition.x,(int)n.worldPosition.y,0));
+            int distance = Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y)));
+                if(n.walkable && distance < mindis && distance >= (int)attackrange){
+                    mindis = distance;
+                    ans = n;
+                }
+        }
+        
+        return new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0);
+    }
+
+    public void flagEnemyArea(GameObject enemy, string tag,int range){
+        enemy.GetComponent<StatUpdate>().Flagging();
+        foreach(Node n in GetTilesInArea(tilemap.WorldToCell(enemy.transform.position),range)){
+                if(n.occupant != null&& n.occupant.tag == tag){
+                    n.occupant.GetComponent<StatUpdate>().Flagging();
+                }
+        }
+    }
+    public bool EnemyInRange(string tag){
+        Vector3Int currentPos = tilemap.WorldToCell(transform.position);
+        foreach(Node node in GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getAttackRange())){
+            if(node.occupant!=null){
+                if(node.occupant.tag == tag){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

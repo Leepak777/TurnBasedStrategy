@@ -39,11 +39,6 @@ public class Skills : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Load the method.ini file
-
-        /*var interpreter = new Interpreter();
-        interpreter.Interpret(Application.dataPath+ "/Resources/Skills.ini");*/
-
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -53,53 +48,43 @@ public class Skills : MonoBehaviour
 
     void checkChStartTurnSkills(){
         if(splash){
-            //methods["checkSplash"].DynamicInvoke(1);
             checkSplash(1);
         }
         if(actionSurge){
-            //methods["checkActionsSurge"].DynamicInvoke(true);
             checkActionSurge(1);
         }
         if(bloodlust){
-            //methods["checkBloodLust"].DynamicInvoke(1);
             checkBloodLust(1);
         }
 
     }
     void checkChEndTurnSkills(){
         if(actionSurge){
-            //methods["checkActionsSurge"].DynamicInvoke(false);
             checkActionSurge(2);
         }
         if(bloodlust){
-            //methods["checkBloodLust"].DynamicInvoke(2);
             checkBloodLust(2);
         }
         if(splash){
-            //methods["checkSplash"].DynamicInvoke(2);
             checkSplash(2);
         }
     }
     void checkGameStartTurnSkills(){
         if(leadershipAura){
-            //methods["checkLeaderShipAura"].DynamicInvoke();
             checkLeaderShipAura();
         }
     }
 
     void checkGameEndTurnSkills(){
         if(intercept){
-            //methods["checkIntercept"].DynamicInvoke();
             checkIntercept();
         }
     }
     void checkDuringTurnSkills(){
         if(bloodlust){
-            //methods["checkBloodLust"].DynamicInvoke(0);
             checkBloodLust(0);
         }
         if(charge){
-            //methods["checkCharge"].DynamicInvoke(0);
             checkCharge(0);
         }
     }
@@ -110,7 +95,7 @@ public class Skills : MonoBehaviour
         {
             tag = "Player";
         }
-        foreach(GameObject go in movement.getTaginArea(movement.getOrigin(),statupdate.getDictStats("mov"),tag)){
+        foreach(GameObject go in tileM.getTaginArea(movement.getOrigin(),statupdate.getDictStats("mov"),tag)){
             StatUpdate checker = go.GetComponent<StatUpdate>();
             checker.Flagging();
             movement.AttackCheck(tag);
@@ -186,7 +171,7 @@ public class Skills : MonoBehaviour
         }
         foreach(GameObject go in GameObject.FindGameObjectsWithTag(tag)){
                 StatUpdate checker = go.GetComponent<StatUpdate>();
-                if(movement.inArea(movement.getOrigin(), tilemap.WorldToCell(go.transform.position),3)){
+                if(tileM.inArea(movement.getOrigin(), tilemap.WorldToCell(go.transform.position),3)){
                     if(!checker.getbuff(0)){
                         checker.setbuff(0,true);
                         checker.setBonus(1);

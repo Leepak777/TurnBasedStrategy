@@ -23,20 +23,15 @@ public class HighlightReachableTiles : MonoBehaviour
 
   public void HighlightReachable()
     {   
-        //maxTiles = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();
         highlightColor.a = 0.5f;
 
         reachableTiles.Clear();
-        // maxTiles = this.gameObject.GetComponent<Movement>().tilescheck;
         Vector3Int currentPos = highlightorigin;//tilemap.WorldToCell(transform.position);
         foreach(Node node in tileM.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getMaxTiles())){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
                 if (tilemap.HasTile(tilePos) ){
                     if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null)
                     {
-                        /*int distance = Mathf.Abs(tilePos.x - currentPos.x) + Mathf.Abs(tilePos.y - currentPos.y);
-                        if (distance <= maxTiles)
-                        {*/
                             // Save the original tile
                             var temp = tilemap.GetTile(tilePos);
                             // Highlight the tile
@@ -85,17 +80,7 @@ public class HighlightReachableTiles : MonoBehaviour
         }
     }
 
-    public bool EnemyInRange(){
-        Vector3Int currentPos = tilemap.WorldToCell(transform.position);
-        foreach(Node node in tileM.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getAttackRange())){
-            if(node.occupant!=null){
-                if(node.occupant.tag == "Enemy"){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    
     public void UnhighlightEnemy(){
          for (int i = 0; i < EnemyTiles.Count; i++)
         {
