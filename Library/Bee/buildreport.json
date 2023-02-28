@@ -1,0 +1,22 @@
+{
+"instructions_readme": "1) Open Chrome, 2) go to chrome://tracing, 3) click Load, 4) navigate to this file.",
+
+"traceEvents":[
+{ "pid": "Unity", "ph":"M", "name": "process_name", "args": {"name": "Unity"} },
+{ "pid": "Unity", "ph":"M", "name": "process_sort_index", "args": {"sort_index": -100} },
+{ "pid": "Unity", "tid": 1, "ph":"M", "name": "thread_name", "args": {"name": ""} },
+{ "pid": "Unity", "tid": 1,"ts": 1.67754386646922E+15,"dur": 5992768, "ph":"X", "name": "Build player"},
+{ "pid": "Unity", "tid": 1,"ts": 1.67754386649611E+15,"dur": 4032491, "ph":"X", "name": "Preprocess Player"},
+{ "pid": "Unity", "tid": 1,"ts": 1.67754387055306E+15,"dur": 9514, "ph":"X", "name": "Prepare For Build"},
+{ "pid": "Unity", "tid": 1,"ts": 1.67754387056259E+15,"dur": 1205691, "ph":"X", "name": "ProducePlayerScriptAssemblies"},
+{ "pid": "Unity", "tid": 1,"ts": 1.67754387176157E+15,"dur": 6468, "ph":"X", "name": "Prebuild Cleanup and Recompile"},
+{}
+
+],
+"meta_datetime": "02/27/2023 16:24:32",
+"meta_command_line": "\"C:\\Program Files\\Unity\\Hub\\Editor\\2021.3.19f1\\Editor\\Unity.exe\" -projectpath C:\\Users\\lpsa7\\TurnBasedStrategy -useHub -hubIPC -cloudEnvironment production -licensingIpc LicenseClient-lpsa7 -hubSessionId 7977a590-b6ba-11ed-a256-e1ecdf3f16ac -accessToken eG0mo9SdFwGBKN-qDSLjkTQJcth7ejATxMYHlk9eoP8003f",
+"meta_command_line_args": "C:\\Program Files\\Unity\\Hub\\Editor\\2021.3.19f1\\Editor\\Unity.exe -projectpath C:\\Users\\lpsa7\\TurnBasedStrategy -useHub -hubIPC -cloudEnvironment production -licensingIpc LicenseClient-lpsa7 -hubSessionId 7977a590-b6ba-11ed-a256-e1ecdf3f16ac -accessToken eG0mo9SdFwGBKN-qDSLjkTQJcth7ejATxMYHlk9eoP8003f",
+"meta_user_name": "lpsa7",
+"meta_os_version": "Microsoft Windows NT 10.0.19044.0",
+"meta_cpu_count": "4"
+}
