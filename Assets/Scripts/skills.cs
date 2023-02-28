@@ -34,11 +34,15 @@ public class Skills : MonoBehaviour
     Movement movement;
     StatUpdate statupdate;
     TurnManager TM;
+    ActionCenter ac;
+    Attack atk;
     bool gameTurn = true;
     bool characterTurn = false;
     // Start is called before the first frame update
     void Start()
     {
+        ac = this.gameObject.GetComponent<ActionCenter>();
+        atk = this.gameObject.GetComponent<Attack>();
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -98,7 +102,7 @@ public class Skills : MonoBehaviour
         foreach(GameObject go in tileM.getTaginArea(movement.getOrigin(),statupdate.getDictStats("mov"),tag)){
             StatUpdate checker = go.GetComponent<StatUpdate>();
             checker.Flagging();
-            movement.AttackCheck(tag);
+            atk.AttackCheck(tag);
         }
     }
 
@@ -106,7 +110,7 @@ public class Skills : MonoBehaviour
         StatUpdate checker = this.gameObject.GetComponent<StatUpdate>();
         if(x == 0){
             //during turn
-            if(movement.getTargetEnemy() == null){
+            if(ac.getTargetEnemy() == null){
                 statupdate.setbuff(14,true);
                 checker.modifyStat(new Dictionary<string,float>(){{"attack_num",1}}, true);
             }
@@ -130,10 +134,10 @@ public class Skills : MonoBehaviour
     void checkSplash(int x){
         if(x == 1){
             //during turn
-            movement.setAttackArea(1);
+            atk.setAttackArea(1);
         }
         if(x == 2){
-           movement.setAttackArea(0);
+           atk.setAttackArea(0);
         }
     }
 
@@ -143,14 +147,14 @@ public class Skills : MonoBehaviour
     void checkCharge(int x){
         if(x == 0){
             //during turn
-            if(!movement.getisMoving() && movement.getTilesFat() > 0 && !statupdate.getbuff(7)){
+            if(!movement.getisMoving() && ac.getTilesFat() > 0 && !statupdate.getbuff(7)){
                 statupdate.setbuff(7,true);
-                statupdate.setBonus(movement.getTilesFat());
-                charge_bonus = movement.getTilesFat();
+                statupdate.setBonus(ac.getTilesFat());
+                charge_bonus = ac.getTilesFat();
             }
-            if(movement.getisMoving() && movement.getTilesFat() > 0 && statupdate.getbuff(7)){
+            if(movement.getisMoving() && ac.getTilesFat() > 0 && statupdate.getbuff(7)){
                 statupdate.setbuff(7,false);
-                statupdate.setBonus(-movement.getTilesFat());
+                statupdate.setBonus(-ac.getTilesFat());
                 charge_bonus = 0;
             }
         }

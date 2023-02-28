@@ -27,18 +27,14 @@ public class AttackPrompt : MonoBehaviour
     void Attack1()
     {
         ButtonPressed = true;
-        turnManager.currentPlay.GetComponent<Movement>().turn = false;
-        turnManager.currentPlay.GetComponent<Movement>().moved = true;
+        turnManager.currentPlay.GetComponent<ActionCenter>().endTurn();
         turnManager.currentPlay.GetComponent<Movement>().origin = false;
-        //turnManager.currentPlay.GetComponent<Movement>().isMoving = false;
-        //turnManager.currentPlay.GetComponent<Movement>().tilesTraveled = 0;
-        //Debug.Log("Attack 1");
     }
 
     void Attack2()
     {
         ButtonPressed = true;
-        turnManager.currentPlay.GetComponent<Movement>().Attack();
+        turnManager.currentPlay.GetComponent<Attack>().Attacking("Enemy");
         //Debug.Log("Attack 2");
     }
 

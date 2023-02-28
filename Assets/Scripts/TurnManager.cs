@@ -44,24 +44,24 @@ public class TurnManager : MonoBehaviour
     {
         if (turnOrder[currentTurnIndex] != null)
         {
-            var currentMovement = turnOrder[currentTurnIndex].GetComponent<Movement>();
+            var ac = turnOrder[currentTurnIndex].GetComponent<ActionCenter>();
 
-            if (currentMovement.moved && !currentMovement.turn)
+            if (ac.moved && !ac.turn)
             {
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(currentMovement.getTilesFat());
+                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(ac.getTilesFat());
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
-                updateTurn(currentMovement);
+                updateTurn(ac);
                 Active = false;
             }
             else if (checkFat(turnOrder[currentTurnIndex]))
             {
-                turnOrder[currentTurnIndex].GetComponent<Movement>().startTurn();
+                turnOrder[currentTurnIndex].GetComponent<ActionCenter>().startTurn();
                 Active = true;
                 currentPlay = turnOrder[currentTurnIndex];
             }
             else if (checkFat(turnOrder[currentTurnIndex]))
             {
-                currentMovement.endTurn();
+                ac.endTurn();
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
                 Active = false;
             }
@@ -72,25 +72,25 @@ public class TurnManager : MonoBehaviour
     {
         if (turnOrder2[currentTurnIndex2] != null)
         {
-            var currentMovement = turnOrder2[currentTurnIndex2].GetComponent<Movement>();
+            var ac = turnOrder2[currentTurnIndex2].GetComponent<ActionCenter>();
 
-            if (currentMovement.moved && !currentMovement.turn)
+            if (ac.moved && !ac.turn)
             {
-                turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().checkFatigue(currentMovement.getTilesFat());
+                turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().checkFatigue(ac.getTilesFat());
                 turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
-                currentMovement.setPath = false;
-                updateTurn(currentMovement);
+                turnOrder2[currentTurnIndex2].GetComponent<Movement>().setPath = false;
+                updateTurn(ac);
                 Active = false;
             }
             else if (checkFat(turnOrder2[currentTurnIndex2]))
             {
-                turnOrder2[currentTurnIndex2].GetComponent<Movement>().startTurn();
+                turnOrder2[currentTurnIndex2].GetComponent<ActionCenter>().startTurn();
                 currentPlay = turnOrder2[currentTurnIndex2];
                 Active = true;
             }
             else if (checkFat(turnOrder2[currentTurnIndex2]))
             {
-                currentMovement.endTurn();
+                ac.endTurn();
                 turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
                 Active = false;
             }
@@ -121,7 +121,7 @@ public class TurnManager : MonoBehaviour
         }}
     }
 
-    private void updateTurn(Movement currentMovement)
+    private void updateTurn(ActionCenter ac)
     {
         turnElasped++;
         if(turnElasped >= currentPlay.GetComponent<StatUpdate>().getDictStats("attack_num")){
@@ -129,7 +129,7 @@ public class TurnManager : MonoBehaviour
             turnElasped = 0;
         }
         else{
-            currentMovement.resetTurn();    
+            ac.resetTurn();    
         }
     }
 
@@ -164,7 +164,7 @@ public class TurnManager : MonoBehaviour
         {
             if (go != null)
             {
-                go.GetComponent<Movement>().resetTurn();
+                go.GetComponent<ActionCenter>().resetTurn();
             }
         }
     }
@@ -175,7 +175,7 @@ public class TurnManager : MonoBehaviour
         {
             if (go != null)
             {
-                go.GetComponent<Movement>().resetTurn();
+                go.GetComponent<ActionCenter>().resetTurn();
             }
         }
     }

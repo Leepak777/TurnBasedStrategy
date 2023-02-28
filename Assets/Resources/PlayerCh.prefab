@@ -205,6 +205,8 @@ GameObject:
   - component: {fileID: 5340198930151324992}
   - component: {fileID: 4623373925719051760}
   - component: {fileID: 5544678197578395680}
+  - component: {fileID: 5925291172722692194}
+  - component: {fileID: 492597581560471947}
   m_Layer: 6
   m_Name: PlayerCh
   m_TagString: Player
@@ -318,14 +320,9 @@ MonoBehaviour:
   movementSpeed: 100
   tilescheck: 0
   tilesTraveled: 0
-  tilesTraveled_damage: 0
-  tilesfat: 0
   isMoving: 0
-  turn: 0
-  moved: 0
   origin: 0
   attacking: 0
-  dead: 0
   setPath: 0
 --- !u!114 &5340198930151324992
 MonoBehaviour:
@@ -388,6 +385,36 @@ MonoBehaviour:
   bl_turn: 0
   as_turn: 0
   charge_bonus: 0
+--- !u!114 &5925291172722692194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321727165239358837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983e2691afc70d840bc2f9348f578ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turn: 0
+  moved: 0
+  dead: 0
+  tilesfat: 0
+--- !u!114 &492597581560471947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321727165239358837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fac49b8728c99440999d4b5a55f902c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attacking: 0
+  attackrange: 0
 --- !u!1001 &2331907350683025971
 PrefabInstance:
   m_ObjectHideFlags: 0

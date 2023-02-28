@@ -9,29 +9,21 @@ using UnityEngine.EventSystems;
 public class Movement : MonoBehaviour
 {
     Pathfinder<Vector3Int> pathfinder;
-    HighlightReachableTiles hightlightReachableTile;
     List<Vector3Int> path = new List<Vector3Int>();
     Tilemap tilemap;
     [SerializeField] float movementSpeed = 100f;  // Add this to control the movement speed
     int maxTiles; // Add this to limit the number of tiles the object can travel
     public int tilescheck = 0;
     int attackrange; 
-    int attackArea;
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
-    public int tilesTraveled_damage = 0;
-    public int tilesfat = 0;
     public bool isMoving = false;
-    public bool turn = false;
-    public bool moved = false;
     public bool origin = false;
     public bool attacking= false;
-    public bool dead = false;
     public bool setPath = false;
     TileManager tileM;
-    //Vector3Int targetNode;
     Vector3Int originNode;
-    GameObject targetEnemy;
-
+    Vector3Int targetNode;
+    ActionCenter ac;
     private void Start()
     {
     // Get the Tilemap component from the scene
@@ -39,40 +31,21 @@ public class Movement : MonoBehaviour
     attackrange = this.gameObject.GetComponent<StatUpdate>().getAttackRange();
     tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
     tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-    hightlightReachableTile = this.gameObject.GetComponent<HighlightReachableTiles>();
+    ac = this.gameObject.GetComponent<ActionCenter>();
     pathfinder = new Pathfinder<Vector3Int>(GetDistance, GetNeighbourNodes);
     transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
     tilescheck = maxTiles;
-    Node locn = tileM.GetNodeFromWorld(tilemap.WorldToCell(transform.position));
-    Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
-    this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
 
     }
 
     private void Update()
     {
-        targetEnemy = null;
-        if(turn && !moved)
-         {
-            moving();
-        }
-        else{
-           notmoving();
-        }
     }
-
-    public void notmoving(){
-            origin = false;
-            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
-            hightlightReachableTile.UnhighlightReachable();
-            hightlightReachableTile.UnhighlightEnemy();
-    }
-
     public void setPathAI(){
         if(!setPath){
             
             GameObject targetPlayer = tileM.getClosestPlayer("Player", transform.position);
-            Vector3Int targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
+            targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);  
                      
             
@@ -83,16 +56,8 @@ public class Movement : MonoBehaviour
             
             if(tileM.GetNodeFromWorld(targetNode).occupant != null){
                 GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-                if(go.tag == "Player"){
-                    if(tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
-                        targetEnemy = go;
-                        tileM.flagEnemyArea(targetEnemy,"Player",attackArea);
-                        AttackCheck("Player");
-                        return;
-                    }
-                    targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck));
+                targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck));
 
-                }
                 
             }
              if(!tileM.inArea(originNode,targetNode, tilescheck)){
@@ -114,7 +79,7 @@ public class Movement : MonoBehaviour
                 }
                  setPath = true;
             }
-            }
+        }
     }
 
     public bool GetMouseButtonDown(int button)
@@ -145,7 +110,7 @@ public class Movement : MonoBehaviour
             }
             this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
             Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int targetNode = tilemap.WorldToCell(target);
+            targetNode = tilemap.WorldToCell(target);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);           
 
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
@@ -155,15 +120,7 @@ public class Movement : MonoBehaviour
             
             if(tileM.GetNodeFromWorld(targetNode).occupant != null){
                 GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-                if(go.tag == "Enemy"){
-                    if(attacking && tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
-                        targetEnemy = go;
-                        tileM.flagEnemyArea(targetEnemy,"Enemy",attackArea);
-                        AttackCheck("Enemy");
-                        return;
-                    }
-                    targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck));
-                }
+                targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck));
                 
             }
              if(!tileM.inArea(originNode,targetNode, tilescheck)){
@@ -188,10 +145,6 @@ public class Movement : MonoBehaviour
     }
 
     public void moveTo(){
-            /*if(isMoving && tilesTraveled_damage>0){
-                    this.gameObject.GetComponent<StatUpdate>().Damage -= tilesTraveled_damage;
-                    tilesTraveled_damage = 0;
-            }*/
 
             if (path != null && path.Count > 0)
             {
@@ -225,9 +178,6 @@ public class Movement : MonoBehaviour
     }
 
     public void moving(){
-            setRange();
-            //Debug.Log(targetEnemy);
-            setOrigin();
             if(gameObject.tag == "Player"){
                 setPathPlayer();
             }
@@ -239,40 +189,25 @@ public class Movement : MonoBehaviour
             if ((path == null || path.Count == 0))
             {
                 if(isMoving || tilesTraveled >= tilescheck){
-                    tilesfat = tilesTraveled;
+                    ac.setTilesFat(tilesTraveled);
                     isMoving = false;
                     if(this.gameObject.tag == "Enemy"){
-                        turn = false;
-                        moved = true;   
+                        ac.endTurn();   
                     }
                     tilesTraveled = 0;
                 }
             }
-            highlight();
-
     }
-    void setRange(){
+    public void setRange(){
         tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();
     }
 
-    void setOrigin(){
-        if(!origin){
-            hightlightReachableTile.highlightorigin = tilemap.WorldToCell(transform.position);
+    public void setOrigin(){
+            this.gameObject.GetComponent<HighlightReachableTiles>().highlightorigin = tilemap.WorldToCell(transform.position);
             originNode = tilemap.WorldToCell(transform.position);
             origin = true;
-        }
     }
-    void highlight(){
-         if (isMoving)
-            {
-                hightlightReachableTile.UnhighlightReachable();
-            }
-            else
-            {        
-                hightlightReachableTile.UnhighlightReachable();
-                hightlightReachableTile.HighlightReachable();
-            }
-    }
+    
    public bool IsAdjacent(Vector3Int node1, Vector3Int node2)
     {
         int xDiff = Mathf.Abs(node1.x - node2.x);
@@ -310,38 +245,11 @@ public class Movement : MonoBehaviour
         return neighbours;
     }
 
-
-
-    public void Attack(){
-        if(!attacking && tileM.EnemyInRange("Enemy")){
-            hightlightReachableTile.HighlightEnemy();
-            attacking = true;
-        }
-        else{
-            attacking = false;
-            hightlightReachableTile.UnhighlightEnemy();
-        }
-    }
-    public void AttackCheck(string tag){
-        foreach(GameObject en in GameObject.FindGameObjectsWithTag(tag)){
-            if(en.GetComponent<StatUpdate>().flag){
-                this.gameObject.GetComponent<StatUpdate>().attackEn(en);
-            }
-        }
-        attacking = false;
-            
-        turn = false;
-        moved = true;
-        
-    }
-
     public bool getisMoving(){
         return isMoving;
     }
 
-    public GameObject getTargetEnemy(){
-        return targetEnemy;
-    }
+    
 
     public void switchCheckTiles(bool change, int x){
         if(change){
@@ -351,40 +259,12 @@ public class Movement : MonoBehaviour
             tilescheck = maxTiles;
         }
     }
-
-    public bool getTurn(){
-        return turn;
-    }
-
-    public void startTurn(){
-        if(!turn){
-            tilesfat = 0;
-            turn = true;
-            moved = false;
-        }
-    }
-    public void setAttackArea(int i){
-        attackArea = i;
-    }
-    public void resetTurn(){
-        tilesfat = 0;
-        turn = false;
-        moved = false;
-    }
-
-    public void endTurn(){
-        tilesfat = 0;
-        turn = false;
-        moved = true;
-    }
-
-    public int getTilesFat(){
-        return tilesfat;
-    }
-
     public Vector3Int getOrigin(){
         return originNode;
     }
 
+    public Vector3Int getTargetNode(){
+        return targetNode;
+    }
     
 }

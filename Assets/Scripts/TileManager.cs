@@ -202,9 +202,9 @@ public class TileManager : MonoBehaviour
                 }
         }
     }
-    public bool EnemyInRange(string tag){
-        Vector3Int currentPos = tilemap.WorldToCell(transform.position);
-        foreach(Node node in GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getAttackRange())){
+    public bool EnemyInRange(string tag, int attackrange, GameObject go){
+        Vector3Int currentPos = tilemap.WorldToCell(go.transform.position);
+        foreach(Node node in GetTilesInArea(currentPos,attackrange)){
             if(node.occupant!=null){
                 if(node.occupant.tag == tag){
                     return true;

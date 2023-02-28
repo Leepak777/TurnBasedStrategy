@@ -6,6 +6,7 @@ public class HighlightReachableTiles : MonoBehaviour
 {
     Tilemap tilemap;
     //int maxTiles;
+
     public Color highlightColor;
     public Color highlightColor2;
     private List<Vector3Int> reachableTiles = new List<Vector3Int>();
@@ -44,7 +45,7 @@ public class HighlightReachableTiles : MonoBehaviour
                         //}
                     }
                 }
-            }
+        }
     }
 
     float GetDistance(Vector3Int A, Vector3Int B)
@@ -82,13 +83,14 @@ public class HighlightReachableTiles : MonoBehaviour
 
     
     public void UnhighlightEnemy(){
-         for (int i = 0; i < EnemyTiles.Count; i++)
-        {
-            Vector3Int tilePos = EnemyTiles[i];
-            tilemap.SetTileFlags(tilePos, TileFlags.None);
-            tilemap.SetColor(tilePos, Color.white);
-        }
-        EnemyTiles.Clear();
+            for (int i = 0; i < EnemyTiles.Count; i++)
+            {
+                Vector3Int tilePos = EnemyTiles[i];
+                tilemap.SetTileFlags(tilePos, TileFlags.None);
+                tilemap.SetColor(tilePos, Color.white);
+            }
+            EnemyTiles.Clear();
+        
     }
 
     public void UnhighlightReachable()
@@ -102,5 +104,8 @@ public class HighlightReachableTiles : MonoBehaviour
                 tilemap.SetColor(tilePos, Color.white);
         }
         reachableTiles.Clear();
+        
     }
+
+
 }

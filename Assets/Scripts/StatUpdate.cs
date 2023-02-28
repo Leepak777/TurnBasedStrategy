@@ -191,6 +191,7 @@ public class StatUpdate : MonoBehaviour
     Tilemap tilemap;
     TileManager tileM;
     Movement movement;
+    ActionCenter ac;
     DRN drn;
     int attackrange = 1;
     Text text;
@@ -218,6 +219,7 @@ public class StatUpdate : MonoBehaviour
 
     void Start()
     {   
+        ac = this.gameObject.GetComponent<ActionCenter>();
         drn = this.gameObject.GetComponent<DRN>();
         movement = this.gameObject.GetComponent<Movement>(); 
         text = this.gameObject.GetComponentInChildren<Text>();
