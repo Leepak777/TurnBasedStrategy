@@ -39,7 +39,7 @@ public class highlightsetTile : MonoBehaviour
             {
                 Vector3Int tilePos = new Vector3Int(currentPos.x + x, currentPos.y + y, currentPos.z);
                 if (tilemap.HasTile(tilePos) ){
-                    if(  tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).walkable)
+                    if(  tileM.GetTileNFromWorld(tilePos)!= null && tileM.GetTileNFromWorld(tilePos).walkable)
                     {
                         int distance = Mathf.Abs(tilePos.x - currentPos.x) + Mathf.Abs(tilePos.y - currentPos.y);
                         if (distance <= maxTiles)
@@ -130,7 +130,7 @@ public class highlightsetTile : MonoBehaviour
             {
                 Vector3Int tilePos = new Vector3Int(x, y, 0);
                 if (tilemap.HasTile(tilePos) ){
-                    if(  tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).walkable)
+                    if(  tileM.GetTileNFromWorld(tilePos)!= null && tileM.GetTileNFromWorld(tilePos).walkable)
                     {
                             // Save the original tile
                             var temp = tilemap.GetTile(tilePos);

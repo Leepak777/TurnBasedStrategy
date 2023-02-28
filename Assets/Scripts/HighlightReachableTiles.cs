@@ -29,10 +29,10 @@ public class HighlightReachableTiles : MonoBehaviour
         reachableTiles.Clear();
         // maxTiles = this.gameObject.GetComponent<Movement>().tilescheck;
         Vector3Int currentPos = highlightorigin;//tilemap.WorldToCell(transform.position);
-        foreach(Node node in tileM.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getMaxTiles())){
-                Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
+        foreach(TileN TileN in tileM.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getMaxTiles())){
+                Vector3Int tilePos = new Vector3Int((int)TileN.gridX , (int)TileN.gridY , 0);
                 if (tilemap.HasTile(tilePos) ){
-                    if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null)
+                    if(tileM.GetTileNFromWorld(tilePos)!= null && tileM.GetTileNFromWorld(tilePos).occupant == null)
                     {
                         /*int distance = Mathf.Abs(tilePos.x - currentPos.x) + Mathf.Abs(tilePos.y - currentPos.y);
                         if (distance <= maxTiles)
@@ -63,11 +63,11 @@ public class HighlightReachableTiles : MonoBehaviour
         //Debug.Log(this.gameObject.GetComponent<StatUpdate>().getAttackRange());
         EnemyTiles.Clear();
         Vector3Int currentPos = tilemap.WorldToCell(transform.position);
-        foreach(Node node in tileM.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getAttackRange())){
+        foreach(TileN TileN in tileM.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getAttackRange())){
             GameObject go = null;
-            if(node.occupant!=null){
-                if(node.occupant.tag == "Enemy"){
-                    go = node.occupant;
+            if(TileN.occupant!=null){
+                if(TileN.occupant.tag == "Enemy"){
+                    go = TileN.occupant;
                 }
             }
             if(go!=null){
@@ -87,9 +87,9 @@ public class HighlightReachableTiles : MonoBehaviour
 
     public bool EnemyInRange(){
         Vector3Int currentPos = tilemap.WorldToCell(transform.position);
-        foreach(Node node in tileM.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getAttackRange())){
-            if(node.occupant!=null){
-                if(node.occupant.tag == "Enemy"){
+        foreach(TileN TileN in tileM.GetTilesInArea(currentPos,this.gameObject.GetComponent<StatUpdate>().getAttackRange())){
+            if(TileN.occupant!=null){
+                if(TileN.occupant.tag == "Enemy"){
                     return true;
                 }
             }
