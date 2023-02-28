@@ -17,6 +17,8 @@ public class txtReader : MonoBehaviour
     float[] mst;
     public Tilemap tilemap;
     Dictionary<string,Sprite> Daemons = new Dictionary<string,Sprite>();
+    public Equipments equipments;
+    public Types types;
     // Start is called before the first frame update
     void Start()
     { 
@@ -43,12 +45,12 @@ public class txtReader : MonoBehaviour
 
     void setStats(GameObject character, string type, string weapon, string shield, string armor, string buckler, string mount){
         
-        tst = this.gameObject.GetComponent<Types>().getTypeStat(type);
-        wst = this.gameObject.GetComponent<Equipments>().getWeaponStat(weapon);
-        sst = this.gameObject.GetComponent<Equipments>().getShieldStat(shield);
-        ast = this.gameObject.GetComponent<Equipments>().getArmorStat(armor);
-        bst = this.gameObject.GetComponent<Equipments>().getBucklerStat(buckler);
-        mst = this.gameObject.GetComponent<Equipments>().getMountStat(mount);
+        tst = types.getTypeStat(type);
+        wst = equipments.getWeaponStat(weapon);
+        sst = equipments.getShieldStat(shield);
+        ast = equipments.getArmorStat(armor);
+        bst = equipments.getBucklerStat(buckler);
+        mst = equipments.getMountStat(mount);
         if(tst!=null){
             character.GetComponent<StatUpdate>().setStat(tst[0],tst[1],tst[2],tst[3],tst[4],tst[10],tst[11],tst[12],tst[13],tst[14],tst[15]);
             character.GetComponent<StatUpdate>().setBaseStat(tst[5],tst[6],tst[7],tst[8],tst[9]);

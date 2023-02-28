@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipments : MonoBehaviour
+[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Equipments", order = 1)]
+public class Equipments : ScriptableObject
 {
     //Hands
     /*

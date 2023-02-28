@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Types:MonoBehaviour
+[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Types", order = 2)]
+public class Types:ScriptableObject
 {
     /*
     0. pow

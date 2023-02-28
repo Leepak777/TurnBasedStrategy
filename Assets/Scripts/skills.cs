@@ -58,7 +58,7 @@ public class Skills : MonoBehaviour
         }
         if(actionSurge){
             //methods["checkActionsSurge"].DynamicInvoke(true);
-            checkActionSurge(true);
+            checkActionSurge(1);
         }
         if(bloodlust){
             //methods["checkBloodLust"].DynamicInvoke(1);
@@ -69,7 +69,7 @@ public class Skills : MonoBehaviour
     void checkChEndTurnSkills(){
         if(actionSurge){
             //methods["checkActionsSurge"].DynamicInvoke(false);
-            checkActionSurge(false);
+            checkActionSurge(2);
         }
         if(bloodlust){
             //methods["checkBloodLust"].DynamicInvoke(2);
@@ -200,17 +200,16 @@ public class Skills : MonoBehaviour
                 }
         }
     }
-    void checkActionSurge(bool startEnd){
+    void checkActionSurge(int startEnd){
         StatUpdate checker = this.gameObject.GetComponent<StatUpdate>();
-        if (startEnd){
-            
+        if (startEnd == 1){
             if(as_turn == 0){
                 checker.setbuff(1,true);
                 checker.multiplyStat(new Dictionary<string,float>(){{"attack_num",2}}, true);
                 
             }
         }
-        else{
+        else if (startEnd == 2){
             if(checker.getbuff(1) && TM.getTurnElasped() == 0){            
                 checker.multiplyStat(new Dictionary<string,float>(){{"attack_num",2}}, false);
                 checker.setbuff(1,false);
