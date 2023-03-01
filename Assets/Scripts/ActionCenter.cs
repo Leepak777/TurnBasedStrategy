@@ -47,7 +47,10 @@ public class ActionCenter : MonoBehaviour
             if(TM.getCurrenPlay() == this.gameObject){
                 movement.setOrigin();
                 movement.setRange();
-            }    
+            }  
+            if(TM.getCurrenPlay().tag == "Player"){
+                GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(TM.getCurrenPlay());
+            }  
             //overall startturn check
             gameTurn = false;
         }else if(!TM.getActive()){

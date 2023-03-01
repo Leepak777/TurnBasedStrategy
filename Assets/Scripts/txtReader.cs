@@ -109,9 +109,7 @@ public class txtReader : MonoBehaviour
             }
         }
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Player");
-        Vector3Int loc = tilemap.WorldToCell(objectsWithTag[0].transform.position);
-        Vector3 newpos = tilemap.GetCellCenterWorld(loc);
-        GameObject.Find("Main Camera").transform.position = new Vector3(newpos.x, newpos.y, -1);
+        GameObject.Find("Main Camera").GetComponent<CameraController>().initLoc(objectsWithTag[0]);
 
     }
 
