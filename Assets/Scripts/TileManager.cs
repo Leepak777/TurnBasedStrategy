@@ -184,7 +184,7 @@ public class TileManager : MonoBehaviour
         Vector3Int cellpos = tilemap.WorldToCell(player.transform.position);
         foreach(Node n in GetTilesInArea(originNode,movrange)){
             Vector3Int target = tilemap.WorldToCell(new Vector3Int((int)n.worldPosition.x,(int)n.worldPosition.y,0));
-            int distance = Mathf.Abs((int)(n.gridX - (cellpos.x))) + Mathf.Abs((int)(n.gridY - (cellpos.y)));
+            int distance = (int)GetDistance(cellpos,target);
                 if(n.walkable && distance < mindis && distance >= (int)attackrange){
                     mindis = distance;
                     ans = n;
@@ -214,5 +214,10 @@ public class TileManager : MonoBehaviour
             }
         }
         return false;
+    }
+    public float GetDistance(Vector3Int A, Vector3Int B)
+    {
+        // Use Manhattan distance for tilemap
+        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);
     }
 }

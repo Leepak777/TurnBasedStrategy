@@ -42,7 +42,7 @@ public class TurnManager : MonoBehaviour
 
     void UpdatePlayerTurn()
     {
-        if (turnOrder[currentTurnIndex] != null)
+        if (currentTurnIndex < turnOrder.Count && turnOrder[currentTurnIndex] != null)
         {
             var ac = turnOrder[currentTurnIndex].GetComponent<ActionCenter>();
 
@@ -59,7 +59,7 @@ public class TurnManager : MonoBehaviour
                 Active = true;
                 currentPlay = turnOrder[currentTurnIndex];
             }
-            else if (checkFat(turnOrder[currentTurnIndex]))
+            else if (checkFat(turnOrder[currentTurnIndex])&& !ac.turn)
             {
                 ac.endTurn();
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
@@ -68,9 +68,12 @@ public class TurnManager : MonoBehaviour
             }
         }
         else if(turnOrder.Count > 0){
+            if(currentTurnIndex >= turnOrder.Count){
+                    currentTurnIndex = 0;
+            }
             while(turnOrder[currentTurnIndex] == null){
                 currentTurnIndex++;
-                if(currentTurnIndex > turnOrder.Count){
+                if(currentTurnIndex >= turnOrder.Count){
                     currentTurnIndex = 0;
                 }
             }
@@ -79,7 +82,7 @@ public class TurnManager : MonoBehaviour
 
     void UpdateEnemyTurn()
     {
-        if (turnOrder2[currentTurnIndex2] != null)
+        if (currentTurnIndex2 < turnOrder2.Count && turnOrder2[currentTurnIndex2] != null)
         {
             var ac = turnOrder2[currentTurnIndex2].GetComponent<ActionCenter>();
 
@@ -91,7 +94,7 @@ public class TurnManager : MonoBehaviour
                 updateTurn(ac);
                 Active = false;
             }
-            else if (checkFat(turnOrder2[currentTurnIndex2]))
+            else if (checkFat(turnOrder2[currentTurnIndex2]) && !ac.turn)
             {
                 turnOrder2[currentTurnIndex2].GetComponent<ActionCenter>().startTurn();
                 currentPlay = turnOrder2[currentTurnIndex2];
@@ -106,9 +109,12 @@ public class TurnManager : MonoBehaviour
             }
         }
         else if(turnOrder2.Count > 0){
+            if(currentTurnIndex2 >= turnOrder2.Count){
+                    currentTurnIndex2 = 0;
+            }
             while(turnOrder2[currentTurnIndex2] == null){
                 currentTurnIndex2++;
-                if(currentTurnIndex2 > turnOrder2.Count){
+                if(currentTurnIndex2 >= turnOrder2.Count){
                     currentTurnIndex2 = 0;
                 }
             }

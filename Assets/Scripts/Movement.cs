@@ -52,14 +52,20 @@ public class Movement : MonoBehaviour
 
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
+                setPath = true;
+                path = null;
                 return;
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant.tag == "Enemy"){
                 Debug.Log("Target occupied.");
+                setPath = true;
+                path = null;
                 return;
             }
             
             if(!tileM.inArea(originNode,targetNode, tilescheck)){
+                setPath = true;
+                path = null;
                 return;
             }
             tileM.setWalkable(this.gameObject,startNode,true);
@@ -67,7 +73,7 @@ public class Movement : MonoBehaviour
             
             if (pathfinder.GenerateAstarPath(startNode, targetNode, out path))
             {
-                Debug.Log("pog");
+                //Debug.Log("pog");
                 if(path.Count > tilescheck && !tileM.inArea(originNode,targetNode,tilescheck)){
                     Debug.Log("Target is too far away.");
                     isMoving = false;
@@ -75,14 +81,15 @@ public class Movement : MonoBehaviour
                 }
                 else{
                     tilesTraveled = 0;
-                    isMoving = true;
+                    
                 }
-                 setPath = true;
+            }else{
+                path = null;
             }
-            if(targetNode == originNode){
-                setPath = true;
-            }
-            
+            setPath = true;
+            isMoving = true;
+            /*Debug.Log("start "+startNode+"target "+targetNode);
+            Debug.Log("path "+path);*/
         }
     }
 
@@ -148,6 +155,7 @@ public class Movement : MonoBehaviour
                     isMoving = true;
                 }
             }
+            
         }
     }
 

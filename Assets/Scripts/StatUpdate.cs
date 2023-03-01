@@ -1,4 +1,3 @@
-
 using System;
 using System.IO;
 using System.Linq;
@@ -98,8 +97,8 @@ public class StatUpdate : MonoBehaviour
         float player_roll = drn.getDRN() + stats["ma"]+ stats["acc"] + stats["pow"]/2 + stats["dex"] + stats["acu"]/2;
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
         float enemy_roll = drn.getDRN() + en_stat.getDictStats("md") + en_stat.getDictStats("mdb") + en_stat.getDictStats("tou")/2 + en_stat.getDictStats("dex")/2 + en_stat.getDictStats("acu")/2;
-        Debug.Log("Player: "+player_roll);
-        Debug.Log("Enemy: " +enemy_roll);
+        //Debug.Log("Player: "+player_roll);
+        //Debug.Log("Enemy: " +enemy_roll);
         if(player_roll > enemy_roll){
             return true;
         }
@@ -201,7 +200,7 @@ public class StatUpdate : MonoBehaviour
         }
         text.text = ""+damage;
         showText();
-        Debug.Log("hit!" + damage);
+        //Debug.Log("hit!" + damage);
         currentHealth -= damage;
         if(currentHealth < 0){
             currentHealth = 0;
