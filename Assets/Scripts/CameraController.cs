@@ -8,8 +8,10 @@ public class CameraController : MonoBehaviour
 
     void Start(){
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        Vector3 newpos = tilemap.GetCellCenterWorld(new Vector3Int(20,12,-1));
-        this.gameObject.transform.position = new Vector3(newpos.x, newpos.y, -1);
+        /*GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Player");
+        Vector3Int loc = tilemap.WorldToCell(objectsWithTag[0].transform.position);
+        Vector3 newpos = tilemap.GetCellCenterWorld(loc);
+        this.gameObject.transform.position = new Vector3(newpos.x, newpos.y, -1);*/
 
 
     }

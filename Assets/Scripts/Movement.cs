@@ -103,17 +103,7 @@ public class Movement : MonoBehaviour
 
 
     public void setPathPlayer(){
-        this.gameObject.GetComponentInChildren<Ghost>().setOnOff(true);
-        Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
-        if(tileM.inArea(originNode,shadowtargetNode, tilescheck)){
-            Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
-            Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
-            this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
-        }
-        else{
-            this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
-        }
+        
         if (GetMouseButtonDown(0)) //check for a new target
             {
             if(tilemap.WorldToCell(transform.position) != originNode && !attacking){
@@ -279,6 +269,10 @@ public class Movement : MonoBehaviour
 
     public Vector3Int getTargetNode(){
         return targetNode;
+    }
+
+    public int getTilesCheck(){
+        return tilescheck;
     }
 
     void AIreturn(){

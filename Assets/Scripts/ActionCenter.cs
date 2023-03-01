@@ -22,6 +22,7 @@ public class ActionCenter : MonoBehaviour
     TileManager tileM;
     TurnManager TM;
     Attack atk;
+    Ghost ghost;
     void Start()
     {
         TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -30,6 +31,7 @@ public class ActionCenter : MonoBehaviour
         statupdate = this.gameObject.GetComponent<StatUpdate>();
         movement = this.gameObject.GetComponent<Movement>();
         atk = this.gameObject.GetComponent<Attack>();
+        ghost = this.gameObject.GetComponentInChildren<Ghost>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         Node locn = tileM.GetNodeFromWorld(tilemap.WorldToCell(transform.position));
         Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
@@ -66,6 +68,7 @@ public class ActionCenter : MonoBehaviour
         Debug.Log("!atk.isAttacking()"+!atk.isAttacking() );*/
         if(turn && !moved && !atk.isAttacking())
         {
+            ghost.setGhost();
             movement.moving();
             highlight();
         }

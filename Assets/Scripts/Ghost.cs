@@ -1,14 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Ghost : MonoBehaviour
 {
     SpriteRenderer Ghost_render;
+    Tilemap tilemap;
+    TileManager tileM;
+    Movement movement;
     // Start is called before the first frame update
     void Start()
     {
-        
+        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        movement = this.gameObject.GetComponentInParent<Movement>();
        
     }
 
@@ -16,6 +22,25 @@ public class Ghost : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void setGhost(){
+        if(!movement.getisMoving()){
+            setOnOff(true);
+            Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
+            if(tileM.inArea(movement.getOrigin(),shadowtargetNode, movement.getTilesCheck())){
+                Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
+                Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
+                setLocation(loc);
+            }
+            else{
+                setOnOff(false);
+            }
+        }
+        else if(this.enabled){
+            setOnOff(false);
+        }
     }
 
     public void setSprite(Sprite s){

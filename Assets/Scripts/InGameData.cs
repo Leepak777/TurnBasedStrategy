@@ -21,6 +21,6 @@ using Object = UnityEngine.Object;
 public class InGameData : ScriptableObject
 {
     public UDictionary<string, UDictionary<string,string>> characterlst = new UDictionary<string, UDictionary<string,string>>();
-
     public string map;
+    
 }

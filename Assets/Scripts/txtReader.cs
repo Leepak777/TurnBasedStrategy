@@ -80,7 +80,7 @@ public class txtReader : MonoBehaviour
                 player.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_9"];
                 player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
                 Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-                while(!tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).walkable){
+                while(tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).occupant != null){
                     allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
                 }
                 player.transform.position = tilemap.GetCellCenterWorld(allocate);
@@ -97,7 +97,7 @@ public class txtReader : MonoBehaviour
                 enemy.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_5"];
                 enemy.transform.SetParent(transform);
                 Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-                while(!tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).walkable){
+                while(tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).occupant != null){
                     allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
                 }
                 enemy.transform.position = tilemap.GetCellCenterWorld(allocate);
@@ -108,6 +108,10 @@ public class txtReader : MonoBehaviour
                 enemy.GetComponent<StatUpdate>().setCalStat();
             }
         }
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Player");
+        Vector3Int loc = tilemap.WorldToCell(objectsWithTag[0].transform.position);
+        Vector3 newpos = tilemap.GetCellCenterWorld(loc);
+        GameObject.Find("Main Camera").transform.position = new Vector3(newpos.x, newpos.y, -1);
 
     }
 
