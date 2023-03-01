@@ -47,19 +47,16 @@ public class Movement : MonoBehaviour
             GameObject targetPlayer = tileM.getClosestPlayer("Player", transform.position);
             targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);  
-                     
-            
+              
+            targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(targetPlayer, originNode, attackrange, tilescheck));   
+
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
                 return;
             }
             
-            if(tileM.GetNodeFromWorld(targetNode).occupant != null){
-                GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-                targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck));
-
-                
-            }
+            
+            
              if(!tileM.inArea(originNode,targetNode, tilescheck)){
                 return;
             }
@@ -205,7 +202,6 @@ public class Movement : MonoBehaviour
     public void setOrigin(){
             this.gameObject.GetComponent<HighlightReachableTiles>().highlightorigin = tilemap.WorldToCell(transform.position);
             originNode = tilemap.WorldToCell(transform.position);
-            origin = true;
     }
     
    public bool IsAdjacent(Vector3Int node1, Vector3Int node2)

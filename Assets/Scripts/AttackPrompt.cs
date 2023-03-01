@@ -26,21 +26,18 @@ public class AttackPrompt : MonoBehaviour
 
     void Attack1()
     {
-        ButtonPressed = true;
         turnManager.currentPlay.GetComponent<ActionCenter>().endTurn();
         turnManager.currentPlay.GetComponent<Movement>().origin = false;
     }
 
     void Attack2()
     {
-        ButtonPressed = true;
         turnManager.currentPlay.GetComponent<Attack>().Attacking("Enemy");
         //Debug.Log("Attack 2");
     }
 
     void Attack3()
     {
-        ButtonPressed = true;
         //Debug.Log("Attack 3");
     }
 

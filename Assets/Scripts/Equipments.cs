@@ -20,15 +20,47 @@ public class Equipments : ScriptableObject
     10. #of attacks
     */
     //weapon
-    float[] Light_Glaive = {6,1.3f,0.5f,10,90,2,1,-2,-1,3,1};
-    float[] Gladius = {5,1,0.5f,25,100,1,3,0,0,2,2};
-    float[] Power_Sword = {8,1,1,0,100,1.5f,2,1,0,3,1};
-    float[] Great_Sword = {9,1.3f,1,0,100,1.5f,2,1,0,3,1};
-    float[] Pike = {7,1.5f,0.2f,25,100,2.3f,1,-1,-1,3,1};
-    float[] Mace = {10,2,0,50,50,1.5f,2,-2,-1,4,1};
-    float[] Pistol = {12,0,1,50,0,8,2,0,0,4,1};
-    float[] Rifle = {16,0,1,50,0,8,2,0,0,4,1};
-    public float[] getWeaponStat(string weapon){
+    Dictionary<string,float> Light_Glaive = new Dictionary<string, float>(){
+        {"wd",6},{"pscal",1.3f},{"dscal",0.5f},{"ap",10},{"sp",90},
+        {"rng",2},{"acc",1},{"mdb",-2},{"rdb",-1},{"w_enc",3},
+        {"attack_num",1}
+    };
+    Dictionary<string,float> Gladius = new Dictionary<string, float>(){
+        {"wd",5},{"pscal",1},{"dscal",0.5f},{"ap",25},{"sp",100},
+        {"rng",1},{"acc",3},{"mdb",0},{"rdb",0},{"w_enc",2},
+        {"attack_num",2}
+    };
+    Dictionary<string,float> Power_Sword = new Dictionary<string, float>(){
+        {"wd",8},{"pscal",1},{"dscal",1},{"ap",0},{"sp",100},
+        {"rng",1.5f},{"acc",2},{"mdb",1},{"rdb",0},{"w_enc",3},
+        {"attack_num",1}
+    };
+    Dictionary<string,float> Great_Sword = new Dictionary<string, float>(){
+        {"wd",9},{"pscal",1.3f},{"dscal",1},{"ap",0},{"sp",100},
+        {"rng",1.5f},{"acc",2},{"mdb",1},{"rdb",0},{"w_enc",3},
+        {"attack_num",1}
+    };
+    Dictionary<string,float> Pike = new Dictionary<string, float>(){
+        {"wd",7},{"pscal",1.5f},{"dscal",0.2f},{"ap",25},{"sp",100},
+        {"rng",2.3f},{"acc",1},{"mdb",-1},{"rdb",-1},{"w_enc",3},
+        {"attack_num",1}
+    };
+    Dictionary<string,float> Mace = new Dictionary<string, float>(){
+        {"wd",10},{"pscal",2},{"dscal",0},{"ap",50},{"sp",50},
+        {"rng",1.5f},{"acc",2},{"mdb",-2},{"rdb",-1},{"w_enc",4},
+        {"attack_num",1}
+    };
+    Dictionary<string,float> Pistol = new Dictionary<string, float>(){
+        {"wd",12},{"pscal",0},{"dscal",1},{"ap",50},{"sp",0},
+        {"rng",8},{"acc",2},{"mdb",0},{"rdb",0},{"w_enc",4},
+        {"attack_num",1}
+    };
+    Dictionary<string,float> Rifle = new Dictionary<string, float>(){
+        {"wd",16},{"pscal",0},{"dscal",1},{"ap",50},{"sp",0},
+        {"rng",8},{"acc",2},{"mdb",0},{"rdb",0},{"w_enc",4},
+        {"attack_num",1}
+    };
+    public Dictionary<string,float> getWeaponStat(string weapon){
         switch(weapon){
             case "Light Glaive":
                 return Light_Glaive;
@@ -58,9 +90,13 @@ public class Equipments : ScriptableObject
     4. init
     5. enc
     */
-    float[] Kite_Shield = {4,15,-2,-2,-2,2};
-    float[] Tower_Shield = {6,16,-2,-2,-1,-3,3};
-    public float[] getShieldStat(string shield){
+    Dictionary<string,float> Kite_Shield = new Dictionary<string, float>(){
+        {"pr",4},{"pv",15},{"mdb",-2},{"rdb",-2},{"eq_init",-2},{"eq_enc",2}
+    };
+    Dictionary<string,float> Tower_Shield = new Dictionary<string, float>(){
+       {"pr",6},{"pv",16},{"mdb",-2},{"rdb",-2},{"eq_init",-1},{"eq_enc",-3}
+    };
+    public Dictionary<string,float> getShieldStat(string shield){
         switch(shield){
             case "Kite Shield":
                 return Kite_Shield;
@@ -79,9 +115,13 @@ public class Equipments : ScriptableObject
     4. rdb
     5. enc
     */
-    float[] Buckler = {2,19,0,0,0,1};
-    float[] Buckler2 = {2,19,-1,-2,0,2};
-    public float[] getBucklerStat(string buckler){    
+    Dictionary<string,float> Buckler = new Dictionary<string, float>(){
+        {"pr",2},{"pv",19},{"mdb",0},{"rdb",0},{"acc",0},{"eq_enc",1}
+    };
+    Dictionary<string,float> Buckler2 = new Dictionary<string, float>(){
+       {"pr",2},{"pv",19},{"mdb",-1},{"rdb",-2},{"acc",0},{"eq_enc",2}
+    };
+    public Dictionary<string,float> getBucklerStat(string buckler){    
         switch(buckler){
             case "Buckler":
                 return Buckler;
@@ -102,17 +142,47 @@ public class Equipments : ScriptableObject
     5. init
     6. enc
     */
-    float[] Plate = {16,0,-2,-2,-1,-3,6};
-    float[] Half_Plate = {14,0,-1,-1,-1,-1,4};
-    float[] Synthe_Armor = {13,0,0,0,0,0,2};
-    float[] Legionary_Armor = {15,0,-1,-2,0,-1,4};
-    float[] Praetorian_Armor = {18,0,1,-3,-1,-3,7};
-    float[] Flak_Suit = {13,0,-1,0,0,0,2};
-    float[] Assault_Vest = {16,0,0,-1,-1,-2,4};
-    float[] Personal_Shield_MK_I = {0,15,0,0,0,0,1};
-    float[] Personal_Shield_MK_II = {0,17,0,0,0,0,1};
-    float[] Personal_Shield_MK_III = {0,19,-1,-1,0,-1,2};
-    public float[] getArmorStat(string armor){
+    Dictionary<string,float> Plate = new Dictionary<string, float>(){
+        {"av",16},{"sv",0},{"mdb",-2},{"rdb",-2},{"eq_mov",-1},
+        {"eq_init",-3},{"eq_enc",6}
+    };
+    Dictionary<string,float> Half_Plate = new Dictionary<string, float>(){
+        {"av",14},{"sv",0},{"mdb",-1},{"rdb",-1},{"eq_mov",-1},
+        {"eq_init",-1},{"eq_enc",4}
+    };
+    Dictionary<string,float> Synthe_Armor = new Dictionary<string, float>(){
+        {"av",13},{"sv",0},{"mdb",0},{"rdb",0},{"eq_mov",0},
+        {"eq_init",0},{"eq_enc",2}
+    };
+    Dictionary<string,float> Legionary_Armor = new Dictionary<string, float>(){
+        {"av",15},{"sv",0},{"mdb",-1},{"rdb",-2},{"eq_mov",0},
+        {"eq_init",-1},{"eq_enc",4}
+    };
+    Dictionary<string,float> Praetorian_Armor = new Dictionary<string, float>(){
+        {"av",18},{"sv",0},{"mdb",1},{"rdb",-3},{"eq_mov",-1},
+        {"eq_init",-3},{"eq_enc",7}
+    };
+    Dictionary<string,float> Flak_Suit = new Dictionary<string, float>(){
+        {"av",13},{"sv",0},{"mdb",-1},{"rdb",0},{"eq_mov",0},
+        {"eq_init",0},{"eq_enc",2}
+    };
+    Dictionary<string,float> Assault_Vest = new Dictionary<string, float>(){
+        {"av",16},{"sv",0},{"mdb",0},{"rdb",-1},{"eq_mov",-1},
+        {"eq_init",-2},{"eq_enc",4}
+    };
+    Dictionary<string,float> Personal_Shield_MK_I = new Dictionary<string, float>(){
+        {"av",0},{"sv",15},{"mdb",0},{"rdb",0},{"eq_mov",0},
+        {"eq_init",0},{"eq_enc",1}
+    };
+    Dictionary<string,float> Personal_Shield_MK_II = new Dictionary<string, float>(){
+        {"av",0},{"sv",17},{"mdb",0},{"rdb",0},{"eq_mov",0},
+        {"eq_init",0},{"eq_enc",1}
+    };
+    Dictionary<string,float> Personal_Shield_MK_III = new Dictionary<string, float>(){
+        {"av",0},{"sv",19},{"mdb",-1},{"rdb",-1},{"eq_mov",0},
+        {"eq_init",-1},{"eq_enc",2}
+    };
+    public Dictionary<string,float> getArmorStat(string armor){
         switch(armor){
             case "Plate":
                 return Plate;
@@ -147,9 +217,13 @@ public class Equipments : ScriptableObject
     3. init 
     4. enc
     */
-    float[] Pack_Horse = {30,3,8,+5,-6};
-    float[] War_Horse = {35,4,9,+6,-4};
-    public float[] getMountStat(string mount){    
+    Dictionary<string,float> Pack_Horse = new Dictionary<string, float>(){
+        {"base_hp",30},{"mdb",3},{"eq_mov",8},{"eq_init",+5},{"eq_enc",-6}
+    };
+    Dictionary<string,float> War_Horse = new Dictionary<string, float>(){
+        {"base_hp",35},{"mdb",4},{"eq_mov",9},{"eq_init",+6},{"eq_enc",-4}
+    };
+    public Dictionary<string,float> getMountStat(string mount){    
         switch(mount){
             case "Pack Horse":
                 return Pack_Horse;

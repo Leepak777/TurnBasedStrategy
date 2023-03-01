@@ -63,6 +63,7 @@ public class TurnManager : MonoBehaviour
             {
                 ac.endTurn();
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
+                updateTurn(ac);
                 Active = false;
             }
         }
@@ -88,10 +89,11 @@ public class TurnManager : MonoBehaviour
                 currentPlay = turnOrder2[currentTurnIndex2];
                 Active = true;
             }
-            else if (checkFat(turnOrder2[currentTurnIndex2]))
+            else if (!checkFat(turnOrder2[currentTurnIndex2]))
             {
                 ac.endTurn();
                 turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
+                updateTurn(ac);
                 Active = false;
             }
         }

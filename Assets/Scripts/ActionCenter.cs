@@ -61,6 +61,9 @@ public class ActionCenter : MonoBehaviour
             
         }
         //targetEnemy = null;
+        /*Debug.Log("turn"+turn );
+        Debug.Log("!moved"+!moved );
+        Debug.Log("!atk.isAttacking()"+!atk.isAttacking() );*/
         if(turn && !moved && !atk.isAttacking())
         {
             movement.moving();

@@ -73,74 +73,14 @@ public class StatUpdate : MonoBehaviour
         stats.Add("enc",0);//encumbrance
         stats.Add("size",0);//size
     } 
-
-    public void setStat(float pow,float dex,float tou,float acu,float mid, float ma, float ra, float sa, float md, float rd, float mr){
-        stats["pow"] += pow;
-        stats["dex"] += dex;
-        stats["tou"] += tou;
-        stats["acu"] += acu;
-        stats["mid"] += mid;
-        stats["ma"] += ma;
-        stats["ra"] += ra;
-        stats["md"] += md;
-        stats["rd"] += rd;
-        stats["sa"] += sa;
-        stats["mr"] += mr;
-    }
-    public void setBaseStat(float base_hp, float base_ene, float base_mov, float base_init, float base_enc){
-        stats["base_hp"] += base_hp;
-        stats["base_ene"] += base_ene;
-        stats["base_mov"] += base_mov;
-        stats["base_init"] += base_init;
-        stats["base_enc"] += base_enc;    
+    public void setStats(Dictionary<string,float> input){
+        foreach(KeyValuePair<string,float> s in input){
+            if(stats.ContainsKey(s.Key)){
+                stats[s.Key] += input[s.Key];
+            }
+        }
     }
 
-    public void setWeaponStat(float wd,float pscal,float dscal,float ap,float sp,float rng,float acc, float mdb, float rdb, float w_enc, float attack_num){
-        stats["wd"] += wd;
-        stats["rng"] += rng;
-        stats["pscal"] += pscal;
-        stats["dscal"] += dscal;
-        stats["sp"] += sp;
-        stats["ap"] += ap;
-        stats["acc"] += acc;
-        stats["mdb"] += mdb;
-        stats["rdb"] += rdb;
-        stats["attack_num"] += attack_num;
-        stats["w_enc"] += w_enc;
-    }
-    public void setShieldStat(float pr, float pv, float mdb, float rdb, float init, float enc){
-        stats["pr"] += pr;
-        stats["pv"] += pv;
-        stats["mdb"] += mdb;
-        stats["rdb"] += rdb;
-        stats["eq_init"] += init;
-        stats["eq_enc"] += enc;
-    }
-    public void setBucklerStat(float pr, float pv, float acc, float mdb, float rdb, float enc){
-        stats["pr"] += pr;
-        stats["pv"] += pv;
-        stats["mdb"] += mdb;
-        stats["rdb"] += rdb;
-        stats["acc"] += acc;
-        stats["eq_enc"] += enc;
-    }
-    public void setMounStat(float base_hp, float mdb, float mov, float init, float enc){
-        stats["base_hp"] += base_hp;
-        stats["mdb"] += mdb;
-        stats["eq_mov"] += mov;
-        stats["eq_init"] += init;
-        stats["eq_enc"] += enc;
-
-    }
-    public void setArmorStat(float av, float sv, float mdb, float rdb, float eq_mov, float eq_init, float eq_enc){
-        stats["av"] += av;
-        stats["sv"] += sv;
-        stats["mdb"] += mdb;
-        stats["rdb"] += rdb;
-        stats["eq_mov"] += eq_mov;
-        stats["eq_init"] += eq_init;
-        stats["eq_enc"] += eq_enc;
-    }
     public void setCalStat(){
         stats["hp"] = stats["tou"]*5 + stats["pow"] + stats["base_hp"];
         stats["maxHealth"] = stats["hp"];
@@ -251,7 +191,6 @@ public class StatUpdate : MonoBehaviour
     void disableText(){
         text.enabled = false;
     }
-
     public void TakeDamage(float damage)
     {
         

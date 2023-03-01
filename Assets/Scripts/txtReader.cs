@@ -9,12 +9,12 @@ using UnityEngine.Tilemaps;
 
 public class txtReader : MonoBehaviour
 { 
-    float[] tst;
-    float[] wst;
-    float[] sst;
-    float[] ast;
-    float[] bst;
-    float[] mst;
+    Dictionary<string,float> tst;
+    Dictionary<string,float> wst;
+    Dictionary<string,float> sst;
+    Dictionary<string,float> ast;
+    Dictionary<string,float> bst;
+    Dictionary<string,float> mst;
     public Tilemap tilemap;
     Dictionary<string,Sprite> Daemons = new Dictionary<string,Sprite>();
     public Equipments equipments;
@@ -52,23 +52,22 @@ public class txtReader : MonoBehaviour
         bst = equipments.getBucklerStat(buckler);
         mst = equipments.getMountStat(mount);
         if(tst!=null){
-            character.GetComponent<StatUpdate>().setStat(tst[0],tst[1],tst[2],tst[3],tst[4],tst[10],tst[11],tst[12],tst[13],tst[14],tst[15]);
-            character.GetComponent<StatUpdate>().setBaseStat(tst[5],tst[6],tst[7],tst[8],tst[9]);
+            character.GetComponent<StatUpdate>().setStats(tst);
         }
         if(wst!=null){
-            character.GetComponent<StatUpdate>().setWeaponStat(wst[0],wst[1],wst[2],wst[3],wst[4],wst[5],wst[6],wst[7],wst[8],wst[9],wst[10]);
+            character.GetComponent<StatUpdate>().setStats(wst);
         }
         if(sst!=null){
-            character.GetComponent<StatUpdate>().setShieldStat(sst[0],sst[1],sst[2],sst[3],sst[4],sst[5]);
+            character.GetComponent<StatUpdate>().setStats(sst);
         }
         if(bst!= null){
-            character.GetComponent<StatUpdate>().setBucklerStat(bst[0],bst[1],bst[2],bst[3],bst[4],bst[5]);
+            character.GetComponent<StatUpdate>().setStats(bst);
         }
         if(ast!=null){
-            character.GetComponent<StatUpdate>().setArmorStat(ast[0],ast[1],ast[2],ast[3],ast[4],ast[5],ast[6]);
+            character.GetComponent<StatUpdate>().setStats(ast);
         }
         if(mst!=null){
-            character.GetComponent<StatUpdate>().setMounStat(mst[0],mst[1],mst[2],mst[3],mst[4]);
+            character.GetComponent<StatUpdate>().setStats(mst);
         }
     }
 
