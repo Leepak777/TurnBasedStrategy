@@ -30,19 +30,20 @@ public class ScreenManager : MonoBehaviour
     }
 
     public static void CreateCharacterFile() {
-        string filePath = Application.dataPath + "/Character.txt";
-        if (File.Exists(filePath)) {
-            File.Delete(filePath);
+        InGameData Data = ScriptableObject.CreateInstance<InGameData>();
+        Data.characterlst.Clear();
+        Dictionary<string,string> PlData = new Dictionary<string, string>(){
+            {"Type","Praetorian Guard"},{"Weapon","Light Glaive"},{"Shield","Kite Shield"},{"Armor","Praetorian Armor"},{"Buckler","kekw"},{"Mount","kekw"}
+        };
+        Dictionary<string,string> EnData = new Dictionary<string, string>(){
+            {"Type","Imperial Conscript"},{"Weapon","Great Sword"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}
+        };
+        for(int i = 0; i < 4; i++){
+            Data.characterlst.Add("Player"+i,PlData);
+            Data.characterlst.Add("Enemy"+i,EnData);
         }
-        string input = "Poggers,Praetorian Guard,Light Glaive,Kite Shield,Praetorian Armor,Buckler,War Horse";
-        string input2 = "早上好中國,Imperial Conscript,Great Sword,Tower Shield,Assault Vest,kekw,kekw";
-        using StreamWriter file = new(filePath, append: true);
-        file.WriteLineAsync(input);
-        file.WriteLineAsync(input);
-        file.WriteLineAsync(input2);
-        file.WriteLineAsync(input2);
+        AssetDatabase.CreateAsset(Data, "Assets/Scripts/InGameData.asset");
 
-        Debug.Log("pog");
     }
 
     public static void CreateMapFile() {

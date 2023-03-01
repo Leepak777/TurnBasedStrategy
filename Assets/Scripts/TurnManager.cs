@@ -67,6 +67,14 @@ public class TurnManager : MonoBehaviour
                 Active = false;
             }
         }
+        else if(turnOrder.Count > 0){
+            while(turnOrder[currentTurnIndex] == null){
+                currentTurnIndex++;
+                if(currentTurnIndex > turnOrder.Count){
+                    currentTurnIndex = 0;
+                }
+            }
+        }
     }
 
     void UpdateEnemyTurn()
@@ -95,6 +103,14 @@ public class TurnManager : MonoBehaviour
                 turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
                 updateTurn(ac);
                 Active = false;
+            }
+        }
+        else if(turnOrder2.Count > 0){
+            while(turnOrder2[currentTurnIndex2] == null){
+                currentTurnIndex2++;
+                if(currentTurnIndex2 > turnOrder2.Count){
+                    currentTurnIndex2 = 0;
+                }
             }
         }
     }
@@ -181,7 +197,14 @@ public class TurnManager : MonoBehaviour
             }
         }
     }
-
+    public void removefromLst(GameObject go){
+        if(go.tag == "Player"){
+            turnOrder.Remove(go);
+        }
+        if(go.tag == "Enemy"){
+            turnOrder2.Remove(go);
+        }
+    }
     public bool getActive(){
         return Active;
     }

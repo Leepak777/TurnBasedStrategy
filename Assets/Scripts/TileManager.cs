@@ -190,7 +190,9 @@ public class TileManager : MonoBehaviour
                     ans = n;
                 }
         }
-        
+        if(ans == null){
+            return originNode;
+        }
         return new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0);
     }
 

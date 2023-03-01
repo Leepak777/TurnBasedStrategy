@@ -174,11 +174,7 @@ public class StatUpdate : MonoBehaviour
         
     }
     void Update(){
-        if(currentHealth <= 0){
-            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
-            tm.turnOrder2.Remove(this.gameObject);
-            Destroy(this.gameObject);
-        }
+        
 
         
         
@@ -212,6 +208,11 @@ public class StatUpdate : MonoBehaviour
         }
         healthBar.UpdateHealth(currentHealth);
         flag = false;
+        if(currentHealth <= 0){
+            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
+            tm.removefromLst(this.gameObject);
+            Destroy(this.gameObject);
+        }
     }
 
     public void modifyStat(Dictionary<string,float> lst, bool buff){

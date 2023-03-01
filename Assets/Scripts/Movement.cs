@@ -54,10 +54,12 @@ public class Movement : MonoBehaviour
                 Debug.Log("Target occupied.");
                 return;
             }
+            if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant.tag == "Enemy"){
+                Debug.Log("Target occupied.");
+                return;
+            }
             
-            
-            
-             if(!tileM.inArea(originNode,targetNode, tilescheck)){
+            if(!tileM.inArea(originNode,targetNode, tilescheck)){
                 return;
             }
             tileM.setWalkable(this.gameObject,startNode,true);
@@ -65,6 +67,7 @@ public class Movement : MonoBehaviour
             
             if (pathfinder.GenerateAstarPath(startNode, targetNode, out path))
             {
+                Debug.Log("pog");
                 if(path.Count > tilescheck && !tileM.inArea(originNode,targetNode,tilescheck)){
                     Debug.Log("Target is too far away.");
                     isMoving = false;
@@ -76,6 +79,10 @@ public class Movement : MonoBehaviour
                 }
                  setPath = true;
             }
+            if(targetNode == originNode){
+                setPath = true;
+            }
+            
         }
     }
 
@@ -114,7 +121,10 @@ public class Movement : MonoBehaviour
                 Debug.Log("Target occupied.");
                 return;
             }
-            
+            if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant.tag == "Player"){
+                Debug.Log("Target occupied.");
+                return;
+            }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null){
                 GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
                 targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck));

@@ -4,8 +4,8 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using UnityEngine.Tilemaps;
-
-
+using Random = System.Random;
+using UnityEditor;
 
 public class txtReader : MonoBehaviour
 { 
@@ -19,6 +19,9 @@ public class txtReader : MonoBehaviour
     Dictionary<string,Sprite> Daemons = new Dictionary<string,Sprite>();
     public Equipments equipments;
     public Types types;
+    public InGameData data;
+    Random rnd = new Random();
+    TileManager tileM;
     // Start is called before the first frame update
     void Start()
     { 
@@ -27,6 +30,7 @@ public class txtReader : MonoBehaviour
             //Debug.Log(s.name);
             Daemons.Add(s.name,s);
         }
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         setStage();
         
@@ -42,61 +46,65 @@ public class txtReader : MonoBehaviour
     5. buckler
     6. mount
     */
-
-    void setStats(GameObject character, string type, string weapon, string shield, string armor, string buckler, string mount){
+    Dictionary<string,float> getAttributeStats(KeyValuePair<string,string> attribute){
+        switch(attribute.Key){
+            case "Type":    return types.getTypeStat(attribute.Value);
+            case "Weapon":  return equipments.getWeaponStat(attribute.Value);
+            case "Shield":  return equipments.getShieldStat(attribute.Value);
+            case "Armor":   return equipments.getArmorStat(attribute.Value);
+            case "Buckler": return equipments.getBucklerStat(attribute.Value);
+            case "Mount":   return equipments.getMountStat(attribute.Value);
+        }
+        return null;
+    }
+    void setStats(GameObject character, Dictionary<string,string> attributes){
         
-        tst = types.getTypeStat(type);
-        wst = equipments.getWeaponStat(weapon);
-        sst = equipments.getShieldStat(shield);
-        ast = equipments.getArmorStat(armor);
-        bst = equipments.getBucklerStat(buckler);
-        mst = equipments.getMountStat(mount);
-        if(tst!=null){
-            character.GetComponent<StatUpdate>().setStats(tst);
+        foreach(KeyValuePair<string,string> attribute in attributes){
+            if(getAttributeStats(attribute)!=null){
+                character.GetComponent<StatUpdate>().setStats(getAttributeStats(attribute));
+            }
         }
-        if(wst!=null){
-            character.GetComponent<StatUpdate>().setStats(wst);
-        }
-        if(sst!=null){
-            character.GetComponent<StatUpdate>().setStats(sst);
-        }
-        if(bst!= null){
-            character.GetComponent<StatUpdate>().setStats(bst);
-        }
-        if(ast!=null){
-            character.GetComponent<StatUpdate>().setStats(ast);
-        }
-        if(mst!=null){
-            character.GetComponent<StatUpdate>().setStats(mst);
-        }
+       
     }
 
     public void setStage(){
-        List<string> lst = ReadInputFileAsList();
-        for(int i = 0; i < lst.Count; i++){
-            string[] words = lst[i].Split(',');
-            if(words[0] == "Poggers"){
+        //List<string> lst = ReadInputFileAsList();
+        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/InGameData.asset");
+        Dictionary<string, Dictionary<string,string>> chlst = data.characterlst;
+        foreach(KeyValuePair<string, Dictionary<string,string>> ch in chlst){
+            //string[] words = lst[i].Split(',');
+            if(ch.Key[0] == 'P'){
                 GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
                 GameObject player = Instantiate(prefab) as GameObject;
                 player.transform.SetParent(transform);
                 player.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_9"];
                 player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
-                player.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(20+i,12,0));
+                Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
+                while(!tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).walkable){
+                    allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
+                }
+                player.transform.position = tilemap.GetCellCenterWorld(allocate);
+                tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
                 //Praetorian Guard, plate, light glaive
                 player.GetComponent<StatUpdate>().setUp();
-                setStats(player,words[1],words[2],words[3],words[4],words[5],words[6]);
+                setStats(player,ch.Value);
                 player.GetComponent<StatUpdate>().setCalStat();
             }
-            else if(words[0] == "早上好中國"){
+            else if(ch.Key[0] == 'E'){
                 GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
                 GameObject enemy = Instantiate(prefab) as GameObject;
                 enemy.tag = "Enemy";
                 enemy.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_5"];
                 enemy.transform.SetParent(transform);
-                enemy.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(24,12+i,0));
+                Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
+                while(!tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).walkable){
+                    allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
+                }
+                enemy.transform.position = tilemap.GetCellCenterWorld(allocate);
+                tileM.setWalkable(enemy,tilemap.WorldToCell(enemy.transform.position),false);
                 //imperial legionary, synthe armor, pike
                 enemy.GetComponent<StatUpdate>().setUp();
-                setStats(enemy,words[1],words[2],words[3],words[4],words[5],words[6]);
+                setStats(enemy,ch.Value);
                 enemy.GetComponent<StatUpdate>().setCalStat();
             }
         }

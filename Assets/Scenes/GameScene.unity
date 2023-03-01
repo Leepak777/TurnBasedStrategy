@@ -1279,8 +1279,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1086307661}
   - component: {fileID: 1086307662}
-  - component: {fileID: 1086307664}
-  - component: {fileID: 1086307663}
   m_Layer: 6
   m_Name: Characters
   m_TagString: Untagged
@@ -1316,30 +1314,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 0}
---- !u!114 &1086307663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086307660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0242059403c40fd4f8bb56f91d004718, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1086307664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086307660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 537666eb9b9ea344fa7d9190414f5e1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  equipments: {fileID: 11400000, guid: fb17da8d5da0fe848a7d3b69fe58a79f, type: 2}
+  types: {fileID: 11400000, guid: a0419dca955bab445a63118ec68c555a, type: 2}
+  data: {fileID: 11400000, guid: 1ba9eabb0301f9a438edbad858934ceb, type: 2}
 --- !u!1 &1091174585
 GameObject:
   m_ObjectHideFlags: 0
