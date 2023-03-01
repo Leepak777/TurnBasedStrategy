@@ -72,7 +72,7 @@ public class StatUpdate : MonoBehaviour
         stats.Add("enc",0);//encumbrance
         stats.Add("size",0);//size
     } 
-    public void setStats(Dictionary<string,float> input){
+    public void setStats(UDictionary<string,float> input){
         foreach(KeyValuePair<string,float> s in input){
             if(stats.ContainsKey(s.Key)){
                 stats[s.Key] += input[s.Key];

@@ -20,47 +20,47 @@ public class Equipments : ScriptableObject
     10. #of attacks
     */
     //weapon
-    Dictionary<string,float> Light_Glaive = new Dictionary<string, float>(){
+    UDictionary<string,float> Light_Glaive = new UDictionary<string, float>(){
         {"wd",6},{"pscal",1.3f},{"dscal",0.5f},{"ap",10},{"sp",90},
         {"rng",2},{"acc",1},{"mdb",-2},{"rdb",-1},{"w_enc",3},
         {"attack_num",1}
     };
-    Dictionary<string,float> Gladius = new Dictionary<string, float>(){
+    UDictionary<string,float> Gladius = new UDictionary<string, float>(){
         {"wd",5},{"pscal",1},{"dscal",0.5f},{"ap",25},{"sp",100},
         {"rng",1},{"acc",3},{"mdb",0},{"rdb",0},{"w_enc",2},
         {"attack_num",2}
     };
-    Dictionary<string,float> Power_Sword = new Dictionary<string, float>(){
+    UDictionary<string,float> Power_Sword = new UDictionary<string, float>(){
         {"wd",8},{"pscal",1},{"dscal",1},{"ap",0},{"sp",100},
         {"rng",1.5f},{"acc",2},{"mdb",1},{"rdb",0},{"w_enc",3},
         {"attack_num",1}
     };
-    Dictionary<string,float> Great_Sword = new Dictionary<string, float>(){
+    UDictionary<string,float> Great_Sword = new UDictionary<string, float>(){
         {"wd",9},{"pscal",1.3f},{"dscal",1},{"ap",0},{"sp",100},
         {"rng",1.5f},{"acc",2},{"mdb",1},{"rdb",0},{"w_enc",3},
         {"attack_num",1}
     };
-    Dictionary<string,float> Pike = new Dictionary<string, float>(){
+    UDictionary<string,float> Pike = new UDictionary<string, float>(){
         {"wd",7},{"pscal",1.5f},{"dscal",0.2f},{"ap",25},{"sp",100},
         {"rng",2.3f},{"acc",1},{"mdb",-1},{"rdb",-1},{"w_enc",3},
         {"attack_num",1}
     };
-    Dictionary<string,float> Mace = new Dictionary<string, float>(){
+    UDictionary<string,float> Mace = new UDictionary<string, float>(){
         {"wd",10},{"pscal",2},{"dscal",0},{"ap",50},{"sp",50},
         {"rng",1.5f},{"acc",2},{"mdb",-2},{"rdb",-1},{"w_enc",4},
         {"attack_num",1}
     };
-    Dictionary<string,float> Pistol = new Dictionary<string, float>(){
+    UDictionary<string,float> Pistol = new UDictionary<string, float>(){
         {"wd",12},{"pscal",0},{"dscal",1},{"ap",50},{"sp",0},
         {"rng",8},{"acc",2},{"mdb",0},{"rdb",0},{"w_enc",4},
         {"attack_num",1}
     };
-    Dictionary<string,float> Rifle = new Dictionary<string, float>(){
+    UDictionary<string,float> Rifle = new UDictionary<string, float>(){
         {"wd",16},{"pscal",0},{"dscal",1},{"ap",50},{"sp",0},
         {"rng",8},{"acc",2},{"mdb",0},{"rdb",0},{"w_enc",4},
         {"attack_num",1}
     };
-    public Dictionary<string,float> getWeaponStat(string weapon){
+    public UDictionary<string,float> getWeaponStat(string weapon){
         switch(weapon){
             case "Light Glaive":
                 return Light_Glaive;
@@ -90,13 +90,13 @@ public class Equipments : ScriptableObject
     4. init
     5. enc
     */
-    Dictionary<string,float> Kite_Shield = new Dictionary<string, float>(){
+    UDictionary<string,float> Kite_Shield = new UDictionary<string, float>(){
         {"pr",4},{"pv",15},{"mdb",-2},{"rdb",-2},{"eq_init",-2},{"eq_enc",2}
     };
-    Dictionary<string,float> Tower_Shield = new Dictionary<string, float>(){
+    UDictionary<string,float> Tower_Shield = new UDictionary<string, float>(){
        {"pr",6},{"pv",16},{"mdb",-2},{"rdb",-2},{"eq_init",-1},{"eq_enc",-3}
     };
-    public Dictionary<string,float> getShieldStat(string shield){
+    public UDictionary<string,float> getShieldStat(string shield){
         switch(shield){
             case "Kite Shield":
                 return Kite_Shield;
@@ -115,13 +115,13 @@ public class Equipments : ScriptableObject
     4. rdb
     5. enc
     */
-    Dictionary<string,float> Buckler = new Dictionary<string, float>(){
+    UDictionary<string,float> Buckler = new UDictionary<string, float>(){
         {"pr",2},{"pv",19},{"mdb",0},{"rdb",0},{"acc",0},{"eq_enc",1}
     };
-    Dictionary<string,float> Buckler2 = new Dictionary<string, float>(){
+    UDictionary<string,float> Buckler2 = new UDictionary<string, float>(){
        {"pr",2},{"pv",19},{"mdb",-1},{"rdb",-2},{"acc",0},{"eq_enc",2}
     };
-    public Dictionary<string,float> getBucklerStat(string buckler){    
+    public UDictionary<string,float> getBucklerStat(string buckler){    
         switch(buckler){
             case "Buckler":
                 return Buckler;
@@ -142,47 +142,47 @@ public class Equipments : ScriptableObject
     5. init
     6. enc
     */
-    Dictionary<string,float> Plate = new Dictionary<string, float>(){
+    UDictionary<string,float> Plate = new UDictionary<string, float>(){
         {"av",16},{"sv",0},{"mdb",-2},{"rdb",-2},{"eq_mov",-1},
         {"eq_init",-3},{"eq_enc",6}
     };
-    Dictionary<string,float> Half_Plate = new Dictionary<string, float>(){
+    UDictionary<string,float> Half_Plate = new UDictionary<string, float>(){
         {"av",14},{"sv",0},{"mdb",-1},{"rdb",-1},{"eq_mov",-1},
         {"eq_init",-1},{"eq_enc",4}
     };
-    Dictionary<string,float> Synthe_Armor = new Dictionary<string, float>(){
+    UDictionary<string,float> Synthe_Armor = new UDictionary<string, float>(){
         {"av",13},{"sv",0},{"mdb",0},{"rdb",0},{"eq_mov",0},
         {"eq_init",0},{"eq_enc",2}
     };
-    Dictionary<string,float> Legionary_Armor = new Dictionary<string, float>(){
+    UDictionary<string,float> Legionary_Armor = new UDictionary<string, float>(){
         {"av",15},{"sv",0},{"mdb",-1},{"rdb",-2},{"eq_mov",0},
         {"eq_init",-1},{"eq_enc",4}
     };
-    Dictionary<string,float> Praetorian_Armor = new Dictionary<string, float>(){
+    UDictionary<string,float> Praetorian_Armor = new UDictionary<string, float>(){
         {"av",18},{"sv",0},{"mdb",1},{"rdb",-3},{"eq_mov",-1},
         {"eq_init",-3},{"eq_enc",7}
     };
-    Dictionary<string,float> Flak_Suit = new Dictionary<string, float>(){
+    UDictionary<string,float> Flak_Suit = new UDictionary<string, float>(){
         {"av",13},{"sv",0},{"mdb",-1},{"rdb",0},{"eq_mov",0},
         {"eq_init",0},{"eq_enc",2}
     };
-    Dictionary<string,float> Assault_Vest = new Dictionary<string, float>(){
+    UDictionary<string,float> Assault_Vest = new UDictionary<string, float>(){
         {"av",16},{"sv",0},{"mdb",0},{"rdb",-1},{"eq_mov",-1},
         {"eq_init",-2},{"eq_enc",4}
     };
-    Dictionary<string,float> Personal_Shield_MK_I = new Dictionary<string, float>(){
+    UDictionary<string,float> Personal_Shield_MK_I = new UDictionary<string, float>(){
         {"av",0},{"sv",15},{"mdb",0},{"rdb",0},{"eq_mov",0},
         {"eq_init",0},{"eq_enc",1}
     };
-    Dictionary<string,float> Personal_Shield_MK_II = new Dictionary<string, float>(){
+    UDictionary<string,float> Personal_Shield_MK_II = new UDictionary<string, float>(){
         {"av",0},{"sv",17},{"mdb",0},{"rdb",0},{"eq_mov",0},
         {"eq_init",0},{"eq_enc",1}
     };
-    Dictionary<string,float> Personal_Shield_MK_III = new Dictionary<string, float>(){
+    UDictionary<string,float> Personal_Shield_MK_III = new UDictionary<string, float>(){
         {"av",0},{"sv",19},{"mdb",-1},{"rdb",-1},{"eq_mov",0},
         {"eq_init",-1},{"eq_enc",2}
     };
-    public Dictionary<string,float> getArmorStat(string armor){
+    public UDictionary<string,float> getArmorStat(string armor){
         switch(armor){
             case "Plate":
                 return Plate;
@@ -217,13 +217,13 @@ public class Equipments : ScriptableObject
     3. init 
     4. enc
     */
-    Dictionary<string,float> Pack_Horse = new Dictionary<string, float>(){
+    UDictionary<string,float> Pack_Horse = new UDictionary<string, float>(){
         {"base_hp",30},{"mdb",3},{"eq_mov",8},{"eq_init",+5},{"eq_enc",-6}
     };
-    Dictionary<string,float> War_Horse = new Dictionary<string, float>(){
+    UDictionary<string,float> War_Horse = new UDictionary<string, float>(){
         {"base_hp",35},{"mdb",4},{"eq_mov",9},{"eq_init",+6},{"eq_enc",-4}
     };
-    public Dictionary<string,float> getMountStat(string mount){    
+    public UDictionary<string,float> getMountStat(string mount){    
         switch(mount){
             case "Pack Horse":
                 return Pack_Horse;

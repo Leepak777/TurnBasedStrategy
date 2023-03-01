@@ -13,19 +13,27 @@ public class SetMap : MonoBehaviour
     public Tilemap tilemap;
     public Tile tile;
     public List<string> mapData;
-    public Sprite sprite;
+    public Sprite[] allsprites;
+    public InGameData data;
+
+    Dictionary<string,Sprite> tileSprite = new Dictionary<string,Sprite>();
+
     
     void Awake()
     {
         // Load sprite from resources
-        sprite = Resources.Load<Sprite>("TerrainAssets");
+        allsprites = Resources.LoadAll<Sprite>("TerrainAssets");
 
         // Load text file and store its contents
-        mapData = ReadInputFileAsList();
+        //mapData = ReadInputFileAsList();
 
         // Create tile asset
         tile = ScriptableObject.CreateInstance<Tile>();
-        tile.sprite = sprite;
+        foreach(Sprite s in allsprites){
+            //Debug.Log(s.name);
+            tileSprite.Add(s.name,s);
+        }
+        tile.sprite = tileSprite["TerrainAssets_9"];
         setStage();
         
     }
@@ -81,14 +89,12 @@ public class SetMap : MonoBehaviour
 
     public void setStage()
     {
-        foreach (string line in mapData)
+        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/InGameData.asset");
+        if (data.map == "Never Gonna Give You Up")
         {
-            string[] words = line.Split(',');
-            if (words[0] == "Never Gonna Give You Up")
-            {
-                createTilemap();
-            }
+            createTilemap();
         }
+        
     }
 
      public static List<string> ReadInputFileAsList()

@@ -12,3 +12,127 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99ef3877cc89054da33c3549d3b77f2, type: 3}
   m_Name: InGameData
   m_EditorClassIdentifier: 
+  characterlst:
+    keys:
+    - Player0
+    - Enemy0
+    - Player1
+    - Enemy1
+    - Player2
+    - Enemy2
+    - Player3
+    - Enemy3
+    values:
+    - keys:
+      - Type
+      - Weapon
+      - Shield
+      - Armor
+      - Buckler
+      - Mount
+      values:
+      - Praetorian Guard
+      - Light Glaive
+      - Kite Shield
+      - Praetorian Armor
+      - kekw
+      - kekw
+    - keys:
+      - Type
+      - Weapon
+      - Shield
+      - Armor
+      - Buckler
+      - Mount
+      values:
+      - Imperial Conscript
+      - Great Sword
+      - Tower Shield
+      - Assault Vest
+      - Buckler
+      - War Horse
+    - keys:
+      - Type
+      - Weapon
+      - Shield
+      - Armor
+      - Buckler
+      - Mount
+      values:
+      - Praetorian Guard
+      - Light Glaive
+      - Kite Shield
+      - Praetorian Armor
+      - kekw
+      - kekw
+    - keys:
+      - Type
+      - Weapon
+      - Shield
+      - Armor
+      - Buckler
+      - Mount
+      values:
+      - Imperial Conscript
+      - Great Sword
+      - Tower Shield
+      - Assault Vest
+      - Buckler
+      - War Horse
+    - keys:
+      - Type
+      - Weapon
+      - Shield
+      - Armor
+      - Buckler
+      - Mount
+      values:
+      - Praetorian Guard
+      - Light Glaive
+      - Kite Shield
+      - Praetorian Armor
+      - kekw
+      - kekw
+    - keys:
+      - Type
+      - Weapon
+      - Shield
+      - Armor
+      - Buckler
+      - Mount
+      values:
+      - Imperial Conscript
+      - Great Sword
+      - Tower Shield
+      - Assault Vest
+      - Buckler
+      - War Horse
+    - keys:
+      - Type
+      - Weapon
+      - Shield
+      - Armor
+      - Buckler
+      - Mount
+      values:
+      - Praetorian Guard
+      - Light Glaive
+      - Kite Shield
+      - Praetorian Armor
+      - kekw
+      - kekw
+    - keys:
+      - Type
+      - Weapon
+      - Shield
+      - Armor
+      - Buckler
+      - Mount
+      values:
+      - Imperial Conscript
+      - Great Sword
+      - Tower Shield
+      - Assault Vest
+      - Buckler
+      - War Horse
+  map: Never Gonna Give You Up

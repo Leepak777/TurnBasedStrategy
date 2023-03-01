@@ -1,9 +1,26 @@
+using System;
+using System.IO;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.AI;
+using UnityEngine.Tilemaps;
+using UnityEngine.UI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditorInternal;
+#endif
+
+using Object = UnityEngine.Object;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/InGameData", order = 3)]
 public class InGameData : ScriptableObject
 {
-    public Dictionary<string, Dictionary<string,string>> characterlst = new Dictionary<string, Dictionary<string,string>>();
+    public UDictionary<string, UDictionary<string,string>> characterlst = new UDictionary<string, UDictionary<string,string>>();
+
+    public string map;
 }

@@ -41,31 +41,31 @@ public class Movement : MonoBehaviour
     private void Update()
     {
     }
+    //TO-DO foreach player, if targetnode closer, user that character
     public void setPathAI(){
         if(!setPath){
             
-            GameObject targetPlayer = tileM.getClosestPlayer("Player", transform.position);
-            targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
+            //GameObject targetPlayer = tileM.getClosestReachablePlayer("Player", transform.position, attackrange,tilescheck);
+            targetNode = tileM.getClosestReachablePlayer("Player", originNode, attackrange,tilescheck).Value;
             Vector3Int startNode = tilemap.WorldToCell(transform.position);  
               
-            targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(targetPlayer, originNode, attackrange, tilescheck));   
-
+            //targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(targetPlayer, originNode, attackrange, tilescheck));   
+            if(tileM.EnemyInRange("Player", attackrange, this.gameObject)){
+                AIreturn();
+                return;
+            }
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
-                setPath = true;
-                path = null;
-                return;
+                AIreturn();
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant.tag == "Enemy"){
                 Debug.Log("Target occupied.");
-                setPath = true;
-                path = null;
+                AIreturn();
                 return;
             }
             
             if(!tileM.inArea(originNode,targetNode, tilescheck)){
-                setPath = true;
-                path = null;
+                AIreturn();
                 return;
             }
             tileM.setWalkable(this.gameObject,startNode,true);
@@ -134,7 +134,7 @@ public class Movement : MonoBehaviour
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null){
                 GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-                targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck));
+                targetNode = tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck);
                 
             }
              if(!tileM.inArea(originNode,targetNode, tilescheck)){
@@ -279,6 +279,13 @@ public class Movement : MonoBehaviour
 
     public Vector3Int getTargetNode(){
         return targetNode;
+    }
+
+    void AIreturn(){
+        setPath = true;
+        path = null;
+        isMoving = true;
+        return;
     }
     
 }

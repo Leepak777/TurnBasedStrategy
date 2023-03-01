@@ -168,13 +168,34 @@ public class TileManager : MonoBehaviour
             //Debug.Log(n.occupant.name);
             //Debug.Log(Mathf.Abs((int)(n.worldPosition.x - transform.position.x)) + Mathf.Abs((int)(n.worldPosition.y - transform.position.y)));
             Vector3Int cellpos = tilemap.WorldToCell(n.transform.position);
-            int distance = Mathf.Abs((int)(((curpos.x - cellpos.x) ))) + Mathf.Abs((int)((curpos.y - cellpos.y)));
+            int distance = (int)GetDistance(curpos,cellpos);
             if(distance< mindis){
                 mindis = distance;
                 close = n;
             }  
         }
         return close;
+    }
+
+     public KeyValuePair<GameObject,Vector3Int> getClosestReachablePlayer(string tag, Vector3Int currentpos, float attackrange, int movrange){
+        int mindis = int.MaxValue;   
+        GameObject close = null; 
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);            
+        //Vector3Int curpos = tilemap.WorldToCell(currentpos);
+        Vector3Int targetNode = currentpos;
+        foreach(GameObject n in objectsWithTag){
+            //Debug.Log(n.occupant.name);
+            //Debug.Log(Mathf.Abs((int)(n.worldPosition.x - transform.position.x)) + Mathf.Abs((int)(n.worldPosition.y - transform.position.y)));
+            Vector3Int cellpos = tilemap.WorldToCell(n.transform.position);
+            Vector3Int destination = getClosestTiletoObject(n,  currentpos, attackrange, movrange);
+            int distance = (int)GetDistance(cellpos,destination);
+            if(distance< mindis){
+                mindis = distance;
+                close = n;
+                targetNode = destination;
+            }  
+        }
+        return new KeyValuePair<GameObject, Vector3Int>(close,targetNode);
     }
 
     public Vector3Int getClosestTiletoObject(GameObject go, Vector3Int originNode, float attackrange, int movrange){
@@ -193,7 +214,7 @@ public class TileManager : MonoBehaviour
         if(ans == null){
             return originNode;
         }
-        return new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0);
+        return tilemap.WorldToCell(new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0));
     }
 
     public void flagEnemyArea(GameObject enemy, string tag,int range){

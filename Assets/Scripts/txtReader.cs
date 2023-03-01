@@ -46,7 +46,7 @@ public class txtReader : MonoBehaviour
     5. buckler
     6. mount
     */
-    Dictionary<string,float> getAttributeStats(KeyValuePair<string,string> attribute){
+    UDictionary<string,float> getAttributeStats(KeyValuePair<string,string> attribute){
         switch(attribute.Key){
             case "Type":    return types.getTypeStat(attribute.Value);
             case "Weapon":  return equipments.getWeaponStat(attribute.Value);
@@ -57,7 +57,7 @@ public class txtReader : MonoBehaviour
         }
         return null;
     }
-    void setStats(GameObject character, Dictionary<string,string> attributes){
+    void setStats(GameObject character, UDictionary<string,string> attributes){
         
         foreach(KeyValuePair<string,string> attribute in attributes){
             if(getAttributeStats(attribute)!=null){
@@ -70,8 +70,8 @@ public class txtReader : MonoBehaviour
     public void setStage(){
         //List<string> lst = ReadInputFileAsList();
         data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/InGameData.asset");
-        Dictionary<string, Dictionary<string,string>> chlst = data.characterlst;
-        foreach(KeyValuePair<string, Dictionary<string,string>> ch in chlst){
+        UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
+        foreach(KeyValuePair<string, UDictionary<string,string>> ch in chlst){
             //string[] words = lst[i].Split(',');
             if(ch.Key[0] == 'P'){
                 GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
