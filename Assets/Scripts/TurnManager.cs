@@ -78,6 +78,15 @@ public class TurnManager : MonoBehaviour
                 }
             }
         }
+        if(turnOrder.Count == 0 || turnOrder2.Count == 0){
+           #if UNITY_EDITOR
+           UnityEditor.EditorApplication.isPlaying = false;
+           #elif UNITY_WEBPLAYER
+           Application.OpenURL(webplayerQuitURL);
+           #else
+           Application.Quit();
+           #endif
+        }
     }
 
     void UpdateEnemyTurn()
@@ -118,6 +127,15 @@ public class TurnManager : MonoBehaviour
                     currentTurnIndex2 = 0;
                 }
             }
+        }
+        if(turnOrder.Count == 0 || turnOrder2.Count == 0){
+           #if UNITY_EDITOR
+           UnityEditor.EditorApplication.isPlaying = false;
+           #elif UNITY_WEBPLAYER
+           Application.OpenURL(webplayerQuitURL);
+           #else
+           Application.Quit();
+           #endif
         }
     }
 

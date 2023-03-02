@@ -103,7 +103,7 @@ public class ScreenManager : MonoBehaviour
              }
         //InGameData Data = ScriptableObject.CreateInstance<InGameData>();
         Data.map = "Never Gonna Give You Up";
-        EditorUtility.SetDirty(Data);
+        //EditorUtility.SetDirty(Data);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

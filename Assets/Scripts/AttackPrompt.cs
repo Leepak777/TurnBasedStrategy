@@ -38,9 +38,20 @@ public class AttackPrompt : MonoBehaviour
 
     void Attack3()
     {
+        Quit();
         //Debug.Log("Attack 3");
     }
 
+    public static void Quit()
+     {
+         #if UNITY_EDITOR
+         UnityEditor.EditorApplication.isPlaying = false;
+         #elif UNITY_WEBPLAYER
+         Application.OpenURL(webplayerQuitURL);
+         #else
+         Application.Quit();
+         #endif
+     }
     public List<Button> getButtons(){
         return buttons;
     }
