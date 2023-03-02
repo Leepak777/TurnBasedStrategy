@@ -161,7 +161,7 @@ public class StatUpdate : MonoBehaviour
         ac = this.gameObject.GetComponent<ActionCenter>();
         drn = this.gameObject.GetComponent<DRN>();
         movement = this.gameObject.GetComponent<Movement>(); 
-        text = this.gameObject.GetComponentInChildren<Text>();
+        text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
         currentHealth = maxHealth;
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();

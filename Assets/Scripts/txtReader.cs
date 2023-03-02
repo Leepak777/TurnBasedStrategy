@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.Tilemaps;
 using Random = System.Random;
 using UnityEditor;
+using UnityEngine.UI;
 
 public class txtReader : MonoBehaviour
 { 
@@ -75,9 +76,11 @@ public class txtReader : MonoBehaviour
             //string[] words = lst[i].Split(',');
             if(ch.Key[0] == 'P'){
                 GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
+                prefab.name = ch.Key;
                 GameObject player = Instantiate(prefab) as GameObject;
+                player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
                 player.transform.SetParent(transform);
-                player.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_9"];
+                player.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
                 player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
                 Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
                 while(tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).occupant != null){
@@ -92,9 +95,11 @@ public class txtReader : MonoBehaviour
             }
             else if(ch.Key[0] == 'E'){
                 GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
+                prefab.name = ch.Key;
                 GameObject enemy = Instantiate(prefab) as GameObject;
+                enemy.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
                 enemy.tag = "Enemy";
-                enemy.GetComponent<SpriteRenderer>().sprite = Daemons["Daemons_5"];
+                enemy.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
                 enemy.transform.SetParent(transform);
                 Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
                 while(tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).occupant != null){
