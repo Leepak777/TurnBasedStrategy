@@ -10,6 +10,7 @@ public class TurnManager : MonoBehaviour
     private int currentTurnIndex2;
     public bool player = true;
     bool Active = false;
+    int gamestate = 0;
     public GameObject currentPlay;
     private int turnElasped;
 
@@ -23,24 +24,43 @@ public class TurnManager : MonoBehaviour
             turnOrder2.Add(g);
         currentTurnIndex = 0;
         currentTurnIndex2 = 0;
+        currentPlay = turnOrder[currentTurnIndex];
         //reset2();
     }
 
     void Update()
     {
-        if (player)
+        /*if (player)
         {
             UpdatePlayerTurn();
         }
         else
         {
             UpdateEnemyTurn();
+        }*/
+        ActionCenter ac = currentPlay.GetComponent<ActionCenter>();
+        switch(gamestate){
+            case 0://start
+                ac.inovkeEvent(0);
+                gamestate = 2;
+                break;
+            case 1://end
+                ac.inovkeEvent(1);
+                currentPlay.GetComponent<StatUpdate>().checkFatigue(ac.getTilesFat());
+                currentPlay.GetComponent<StatUpdate>().setDamage(0);
+                updateTurn(ac);
+                Active = false;
+                gamestate = 0;
+                break;
+            case 2://during
+                ac.inovkeEvent(2);
+                break;
         }
-
+        
 
     }
 
-    void UpdatePlayerTurn()
+    /*void UpdatePlayerTurn()
     {
         if (currentTurnIndex < turnOrder.Count && turnOrder[currentTurnIndex] != null)
         {
@@ -52,16 +72,17 @@ public class TurnManager : MonoBehaviour
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
                 updateTurn(ac);
                 Active = false;
+                turn = true;
+            }
+            else if (checkFat(turnOrder[currentTurnIndex]) && currentPlay != turnOrder[currentTurnIndex])
+            {
+                Active = true;
+                currentPlay = turnOrder[currentTurnIndex];
+                currentPlay.GetComponent<ActionCenter>().inovkeEvent(0);
+
             }
             else if (checkFat(turnOrder[currentTurnIndex]))
             {
-                turnOrder[currentTurnIndex].GetComponent<ActionCenter>().startTurn();
-                Active = true;
-                currentPlay = turnOrder[currentTurnIndex];
-            }
-            else if (checkFat(turnOrder[currentTurnIndex])&& !ac.turn)
-            {
-                ac.endTurn();
                 turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
                 updateTurn(ac);
                 Active = false;
@@ -102,16 +123,16 @@ public class TurnManager : MonoBehaviour
                 turnOrder2[currentTurnIndex2].GetComponent<Movement>().setPath = false;
                 updateTurn(ac);
                 Active = false;
+                turn = true;
             }
-            else if (checkFat(turnOrder2[currentTurnIndex2]) && !ac.turn)
+            else if (checkFat(turnOrder2[currentTurnIndex2]) && currentPlay != turnOrder2[currentTurnIndex2])
             {
-                turnOrder2[currentTurnIndex2].GetComponent<ActionCenter>().startTurn();
                 currentPlay = turnOrder2[currentTurnIndex2];
+                currentPlay.GetComponent<ActionCenter>().inovkeEvent(0);
                 Active = true;
             }
             else if (!checkFat(turnOrder2[currentTurnIndex2]))
             {
-                ac.endTurn();
                 turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
                 updateTurn(ac);
                 Active = false;
@@ -137,31 +158,12 @@ public class TurnManager : MonoBehaviour
            Application.Quit();
            #endif
         }
-    }
+    }*/
 
     bool checkFat(GameObject go){
         return go.GetComponent<StatUpdate>().getDictStats("fat") < 100;
     }
 
-
-    void checkText()
-    {
-        if(player){
-        foreach(GameObject go in turnOrder){
-            if (go.GetComponent<StatUpdate>().getTextEnabled())
-            {
-                go.GetComponent<StatUpdate>().setTextActive(false);
-            }
-        }
-        }
-        else{
-        foreach(GameObject go in turnOrder2){
-            if (go.GetComponent<StatUpdate>().getTextEnabled())
-            {
-                go.GetComponent<StatUpdate>().setTextActive(false);
-            }
-        }}
-    }
 
     private void updateTurn(ActionCenter ac)
     {
@@ -171,7 +173,7 @@ public class TurnManager : MonoBehaviour
             turnElasped = 0;
         }
         else{
-            ac.resetTurn();    
+            gamestate = 0;    
         }
     }
 
@@ -182,51 +184,41 @@ public class TurnManager : MonoBehaviour
             currentTurnIndex++;
             if (currentTurnIndex >= turnOrder.Count)
             {
-                reset1();
                 currentTurnIndex = 0;
                  
-            }this.player = false;// switch to enemy's turn
+            }
+            
+            this.player = false;
+            currentPlay = turnOrder2[currentTurnIndex2];// switch to enemy's turn
         }
         else
         {
             currentTurnIndex2++;
             if (currentTurnIndex2 >= turnOrder2.Count)
             {
-                reset2();
                 currentTurnIndex2 = 0;
                 
-            }this.player = true; // switch to player's turn
-        }
-    }
-
-
-    private void reset1()
-    {
-        foreach (GameObject go in turnOrder)
-        {
-            if (go != null)
-            {
-                go.GetComponent<ActionCenter>().resetTurn();
             }
+            this.player = true; 
+            currentPlay = turnOrder[currentTurnIndex];// switch to player's turn
         }
     }
 
-    private void reset2()
-    {
-        foreach (GameObject go in turnOrder2)
-        {
-            if (go != null)
-            {
-                go.GetComponent<ActionCenter>().resetTurn();
-            }
-        }
-    }
     public void removefromLst(GameObject go){
         if(go.tag == "Player"){
             turnOrder.Remove(go);
         }
         if(go.tag == "Enemy"){
             turnOrder2.Remove(go);
+        }
+        if(turnOrder.Count == 0 || turnOrder2.Count == 0){
+           #if UNITY_EDITOR
+           UnityEditor.EditorApplication.isPlaying = false;
+           #elif UNITY_WEBPLAYER
+           Application.OpenURL(webplayerQuitURL);
+           #else
+           Application.Quit();
+           #endif
         }
     }
     public bool getActive(){
@@ -241,5 +233,8 @@ public class TurnManager : MonoBehaviour
     }
     public GameObject getCurrenPlay(){
         return currentPlay;
+    }
+    public void setGameState(int gamestate){
+        this.gamestate = gamestate;
     }
 }

@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using Random = System.Random;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,7 +23,9 @@ public class ScreenManager : MonoBehaviour
 {
     Image SceneManagerImage;
     SceneLoader sceneLoader;
+    public static Random rnd = new Random();
     public List<Button> buttons = new List<Button>();
+    public static List<string> types;
     // Start is called before the first frame update
 
     public Tilemap tilemap;
@@ -29,6 +33,7 @@ public class ScreenManager : MonoBehaviour
 
     private void Start()
     {
+        types = new List<string>(){"Praetorian Guard", "Imperial Legionary", "Imperial Conscript", "Mecenary", "Brigand"};
         SceneManagerImage = this.gameObject.GetComponent<Image>();
 
         sceneLoader = GetComponent<SceneLoader>();
@@ -58,16 +63,16 @@ public class ScreenManager : MonoBehaviour
         else
         {
             string path = AssetDatabase.GUIDToAssetPath(result[0]);
-            Data= (InGameData )AssetDatabase.LoadAssetAtPath(path, typeof(InGameData ));
+            Data= (InGameData )AssetDatabase.LoadAssetAtPath(path, typeof(InGameData));
             Debug.Log("Found Asset File !!!");
         }
         //InGameData Data = ScriptableObject.CreateInstance<InGameData>();
         Data.characterlst.Clear();
         UDictionary<string,string> PlData = new UDictionary<string, string>(){
-            {"Type","Praetorian Guard"},{"Weapon","Light Glaive"},{"Shield","Kite Shield"},{"Armor","Praetorian Armor"},{"Buckler","kekw"},{"Mount","kekw"}
+            {"Type",types[rnd.Next(0,5)]},{"Weapon","Light Glaive"},{"Shield","Kite Shield"},{"Armor","Praetorian Armor"},{"Buckler","kekw"},{"Mount","kekw"}
         };
         UDictionary<string,string> EnData = new UDictionary<string, string>(){
-            {"Type","Imperial Conscript"},{"Weapon","Great Sword"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}
+            {"Type",types[rnd.Next(0,5)]},{"Weapon","Great Sword"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}
         };
         for(int i = 0; i < 4; i++){
             Data.characterlst.Add("Player"+i,PlData);

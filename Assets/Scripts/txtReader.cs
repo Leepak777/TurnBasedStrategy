@@ -75,42 +75,10 @@ public class txtReader : MonoBehaviour
         foreach(KeyValuePair<string, UDictionary<string,string>> ch in chlst){
             //string[] words = lst[i].Split(',');
             if(ch.Key[0] == 'P'){
-                GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
-                prefab.name = ch.Key;
-                GameObject player = Instantiate(prefab) as GameObject;
-                player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
-                player.transform.SetParent(transform);
-                player.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
-                player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
-                Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-                while(tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).occupant != null){
-                    allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-                }
-                player.transform.position = tilemap.GetCellCenterWorld(allocate);
-                tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
-                //Praetorian Guard, plate, light glaive
-                player.GetComponent<StatUpdate>().setUp();
-                setStats(player,ch.Value);
-                player.GetComponent<StatUpdate>().setCalStat();
+                createCharacter("Player",ch);   
             }
             else if(ch.Key[0] == 'E'){
-                GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
-                prefab.name = ch.Key;
-                GameObject enemy = Instantiate(prefab) as GameObject;
-                enemy.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
-                enemy.tag = "Enemy";
-                enemy.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
-                enemy.transform.SetParent(transform);
-                Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-                while(tileM.GetNodeFromWorld(tilemap.WorldToCell(allocate)).occupant != null){
-                    allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-                }
-                enemy.transform.position = tilemap.GetCellCenterWorld(allocate);
-                tileM.setWalkable(enemy,tilemap.WorldToCell(enemy.transform.position),false);
-                //imperial legionary, synthe armor, pike
-                enemy.GetComponent<StatUpdate>().setUp();
-                setStats(enemy,ch.Value);
-                enemy.GetComponent<StatUpdate>().setCalStat();
+                createCharacter("Enemy",ch);
             }
         }
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Player");
@@ -118,6 +86,25 @@ public class txtReader : MonoBehaviour
 
     }
 
+    void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch){
+        GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
+        prefab.name = ch.Key;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.tag = tag;
+        player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
+        player.transform.SetParent(transform);
+        player.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
+        player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
+        Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
+        while(tileM.GetNodeFromWorld(allocate).occupant != null){
+            allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
+        }
+        player.transform.position = tilemap.GetCellCenterWorld(allocate);
+        tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
+        player.GetComponent<StatUpdate>().setUp();
+        setStats(player,ch.Value);
+        player.GetComponent<StatUpdate>().setCalStat();
+    }
    
 
     public static List<string> ReadInputFileAsList() {
