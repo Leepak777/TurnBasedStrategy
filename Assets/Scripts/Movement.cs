@@ -17,8 +17,6 @@ public class Movement : MonoBehaviour
     int attackrange; 
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
     public bool isMoving = false;
-    public bool origin = false;
-    public bool attacking= false;
     public bool setPath = false;
     TileManager tileM;
     Vector3Int originNode;
@@ -52,7 +50,6 @@ public class Movement : MonoBehaviour
             //targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(targetPlayer, originNode, attackrange, tilescheck));   
             if(tileM.EnemyInRange("Player", attackrange, this.gameObject)){
                 AIreturn();
-                return;
             }
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
@@ -61,12 +58,10 @@ public class Movement : MonoBehaviour
             if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant.tag == "Enemy"){
                 Debug.Log("Target occupied.");
                 AIreturn();
-                return;
             }
             
             if(!tileM.inArea(originNode,targetNode, tilescheck)){
                 AIreturn();
-                return;
             }
             tileM.setWalkable(this.gameObject,startNode,true);
             path = new List<Vector3Int>();
@@ -106,7 +101,7 @@ public class Movement : MonoBehaviour
         
         if (GetMouseButtonDown(0)) //check for a new target
             {
-            if(tilemap.WorldToCell(transform.position) != originNode && !attacking){
+            if(tilemap.WorldToCell(transform.position) != originNode){
                 transform.position = tilemap.GetCellCenterWorld(originNode);    
             }
             this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
@@ -116,19 +111,19 @@ public class Movement : MonoBehaviour
 
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 Debug.Log("Target occupied.");
-                return;
+                AIreturn();
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant.tag == "Player"){
                 Debug.Log("Target occupied.");
-                return;
+                AIreturn();
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null){
                 GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
                 targetNode = tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck);
                 
             }
-             if(!tileM.inArea(originNode,targetNode, tilescheck)){
-                return;
+            if(!tileM.inArea(originNode,targetNode, tilescheck)){
+                AIreturn();
             }
             tileM.setWalkable(this.gameObject,startNode,true);
             path = new List<Vector3Int>();
@@ -145,7 +140,7 @@ public class Movement : MonoBehaviour
                     isMoving = true;
                 }
             }
-            
+            ac.onMove();
         }
     }
 
@@ -168,12 +163,11 @@ public class Movement : MonoBehaviour
                 if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
                 {
                     Node node =tileM.GetNodeFromWorld(tilemap.WorldToCell(targetPosition));
-                    if(this.gameObject.tag == "Player"){
-                        Color c = Color.red;
-                        c.a = 0.5f;
-                        Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
-                        tilemap.SetColor(tilePos, c);
-                    }
+                    Color c = Color.red;
+                    c.a = 0.5f;
+                    Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
+                    tilemap.SetColor(tilePos, c);
+                    ac.addTrail(tilePos);
                     path.RemoveAt(0);
                     tilesTraveled++; // Increment the tiles traveled
                     
@@ -201,6 +195,7 @@ public class Movement : MonoBehaviour
                     }
                     tilesTraveled = 0;
                 }
+                ac.onStop();
             }
     }
     public void setRange(){
@@ -208,8 +203,7 @@ public class Movement : MonoBehaviour
     }
 
     public void setOrigin(){
-            this.gameObject.GetComponent<HighlightReachableTiles>().highlightorigin = tilemap.WorldToCell(transform.position);
-            originNode = tilemap.WorldToCell(transform.position);
+        originNode = tilemap.WorldToCell(transform.position);
     }
     
    public bool IsAdjacent(Vector3Int node1, Vector3Int node2)
@@ -252,24 +246,11 @@ public class Movement : MonoBehaviour
     public bool getisMoving(){
         return isMoving;
     }
-
-    
-
-    public void switchCheckTiles(bool change, int x){
-        if(change){
-            tilescheck /= x;
-        }
-        else{
-            tilescheck = maxTiles;
-        }
-    }
     public Vector3Int getOrigin(){
         return originNode;
     }
 
-    public Vector3Int getTargetNode(){
-        return targetNode;
-    }
+
 
     public int getTilesCheck(){
         return tilescheck;

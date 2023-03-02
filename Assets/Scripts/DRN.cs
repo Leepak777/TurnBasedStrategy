@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
-public class DRN : MonoBehaviour
+public class DRN
 {
     // Start is called before the first frame update
     
     int dice_1 = 0;
     int dice_2 = 0;
     int drn = 0;
-    StatUpdate stat;
-    void Start()
-    {
-        stat = this.gameObject.GetComponent<StatUpdate>();
-    }
+
 
     public int getDRN(){
         drn = 0;

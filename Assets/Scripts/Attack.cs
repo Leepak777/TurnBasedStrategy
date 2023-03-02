@@ -15,9 +15,10 @@ public class Attack : MonoBehaviour
     public int attackrange;
     void Start()
     {
-        hightlightReachableTile = this.gameObject.GetComponent<HighlightReachableTiles>();
+        
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         ac = this.gameObject.GetComponent<ActionCenter>();
+        hightlightReachableTile = ac.getHighLight();
         movement = this.gameObject.GetComponent<Movement>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         attackrange = this.gameObject.GetComponent<StatUpdate>().getAttackRange();
@@ -67,7 +68,7 @@ public class Attack : MonoBehaviour
     }
     public void Attacking(string tag){
         if(!attacking && tileM.EnemyInRange(tag, attackrange, this.gameObject)){
-            hightlightReachableTile.HighlightEnemy();
+            hightlightReachableTile.HighlightEnemy(gameObject);
             attacking = true;
             EnemyAttack();
         }

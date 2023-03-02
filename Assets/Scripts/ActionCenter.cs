@@ -37,11 +37,13 @@ public class ActionCenter : MonoBehaviour
     startTurnEvent start;
     endTurnEvent end;
     duringTurnEvent during;
+    private List<Vector3Int> Trail = new List<Vector3Int>();
     void Start()
     {
+        
         TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        hightlightReachableTile = this.gameObject.GetComponent<HighlightReachableTiles>();
+        hightlightReachableTile = new HighlightReachableTiles();
         statupdate = this.gameObject.GetComponent<StatUpdate>();
         movement = this.gameObject.GetComponent<Movement>();
         atk = this.gameObject.GetComponent<Attack>();
@@ -54,7 +56,7 @@ public class ActionCenter : MonoBehaviour
         end = new endTurnEvent();
         during = new duringTurnEvent();
         if(start != null){
-            start.AddListener(startTurn);
+            start.AddListener(beginningTurn);
         }
         if(end != null){
             end.AddListener(endingTurn);
@@ -62,6 +64,7 @@ public class ActionCenter : MonoBehaviour
         if(during != null){
             during.AddListener(duringTurn);
         }
+        transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
     }
 
     // Update is called once per frame
@@ -74,8 +77,12 @@ public class ActionCenter : MonoBehaviour
         movement.setOrigin();
         movement.setRange();
         hightlightReachableTile.UnhighlightReachable();
+        hightlightReachableTile.HighlightReachable(gameObject);
         if(this.gameObject.tag == "Player"){
                 GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(TM.getCurrenPlay());
+        }
+        if(statupdate.getDictStats("fat") > 100){
+            endingTurn();
         }
     }
 
@@ -84,46 +91,47 @@ public class ActionCenter : MonoBehaviour
             atk.Attacking("Player");
         }
         notmoving();
+        statupdate.checkFatigue(tilesfat);
+        statupdate.setDamage(0);
+        tilesfat = 0;
     }
 
     public void duringTurn(){
-        ghost.setGhost();
-        movement.moving();
-        highlight();
+        if(!atk.isAttacking()){
+            ghost.setGhost();
+            movement.moving();
+            //highlight();
+        }
     }
 
     public void notmoving(){
-            //origin = false;
             tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
             hightlightReachableTile.UnhighlightReachable();
             hightlightReachableTile.UnhighlightEnemy();
+            clearTrail();
     }
-    public void highlight(){
-         if (movement.getisMoving())
-        {
-            hightlightReachableTile.UnhighlightReachable();
-        }
-        else
-        {        
-            hightlightReachableTile.UnhighlightReachable();
-            hightlightReachableTile.HighlightReachable();
+    public void onMove(){
+        hightlightReachableTile.UnhighlightReachable();
+        if(Trail.Count > 0){
+            clearTrail();
         }
     }
-
-
-    public void startTurn(){
-        tilesfat = 0;
-        beginningTurn();
+    public void onStop(){
+        hightlightReachableTile.UnhighlightReachable();
+        hightlightReachableTile.HighlightReachable(gameObject);
     }
-    public void resetTurn(){
-        tilesfat = 0;
+    public void addTrail(Vector3Int tile){
+        Trail.Add(tile);
     }
-
+    public List<Vector3Int> getTrail(){
+        return Trail;
+    }
     public void endTurn(){
-        tilesfat = 0;
         TM.setGameState(1);
     }
-
+    public HighlightReachableTiles getHighLight(){
+        return hightlightReachableTile;
+    }
     public void setTilesFat(int tilesfat){
         this.tilesfat = tilesfat;
     }
@@ -136,7 +144,10 @@ public class ActionCenter : MonoBehaviour
     public void setTargetEnemy(GameObject go){
         this.targetEnemy = go;
     }
-
+    void clearTrail(){
+        hightlightReachableTile.UnhighlightTrail(Trail);
+        Trail.Clear();
+    }
     public void inovkeEvent(int i){
         switch(i){
             case 0:

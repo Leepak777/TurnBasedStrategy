@@ -30,26 +30,17 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
-        /*if (player)
-        {
-            UpdatePlayerTurn();
-        }
-        else
-        {
-            UpdateEnemyTurn();
-        }*/
         ActionCenter ac = currentPlay.GetComponent<ActionCenter>();
         switch(gamestate){
             case 0://start
                 ac.inovkeEvent(0);
                 gamestate = 2;
+                //Active = true;
                 break;
             case 1://end
                 ac.inovkeEvent(1);
-                currentPlay.GetComponent<StatUpdate>().checkFatigue(ac.getTilesFat());
-                currentPlay.GetComponent<StatUpdate>().setDamage(0);
                 updateTurn(ac);
-                Active = false;
+                //Active = false;
                 gamestate = 0;
                 break;
             case 2://during
@@ -58,110 +49,6 @@ public class TurnManager : MonoBehaviour
         }
         
 
-    }
-
-    /*void UpdatePlayerTurn()
-    {
-        if (currentTurnIndex < turnOrder.Count && turnOrder[currentTurnIndex] != null)
-        {
-            var ac = turnOrder[currentTurnIndex].GetComponent<ActionCenter>();
-
-            if (ac.moved && !ac.turn)
-            {
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().checkFatigue(ac.getTilesFat());
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
-                updateTurn(ac);
-                Active = false;
-                turn = true;
-            }
-            else if (checkFat(turnOrder[currentTurnIndex]) && currentPlay != turnOrder[currentTurnIndex])
-            {
-                Active = true;
-                currentPlay = turnOrder[currentTurnIndex];
-                currentPlay.GetComponent<ActionCenter>().inovkeEvent(0);
-
-            }
-            else if (checkFat(turnOrder[currentTurnIndex]))
-            {
-                turnOrder[currentTurnIndex].GetComponent<StatUpdate>().setDamage(0);
-                updateTurn(ac);
-                Active = false;
-            }
-        }
-        else if(turnOrder.Count > 0){
-            if(currentTurnIndex >= turnOrder.Count){
-                    currentTurnIndex = 0;
-            }
-            while(turnOrder[currentTurnIndex] == null){
-                currentTurnIndex++;
-                if(currentTurnIndex >= turnOrder.Count){
-                    currentTurnIndex = 0;
-                }
-            }
-        }
-        if(turnOrder.Count == 0 || turnOrder2.Count == 0){
-           #if UNITY_EDITOR
-           UnityEditor.EditorApplication.isPlaying = false;
-           #elif UNITY_WEBPLAYER
-           Application.OpenURL(webplayerQuitURL);
-           #else
-           Application.Quit();
-           #endif
-        }
-    }
-
-    void UpdateEnemyTurn()
-    {
-        if (currentTurnIndex2 < turnOrder2.Count && turnOrder2[currentTurnIndex2] != null)
-        {
-            var ac = turnOrder2[currentTurnIndex2].GetComponent<ActionCenter>();
-
-            if (ac.moved && !ac.turn)
-            {
-                turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().checkFatigue(ac.getTilesFat());
-                turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
-                turnOrder2[currentTurnIndex2].GetComponent<Movement>().setPath = false;
-                updateTurn(ac);
-                Active = false;
-                turn = true;
-            }
-            else if (checkFat(turnOrder2[currentTurnIndex2]) && currentPlay != turnOrder2[currentTurnIndex2])
-            {
-                currentPlay = turnOrder2[currentTurnIndex2];
-                currentPlay.GetComponent<ActionCenter>().inovkeEvent(0);
-                Active = true;
-            }
-            else if (!checkFat(turnOrder2[currentTurnIndex2]))
-            {
-                turnOrder2[currentTurnIndex2].GetComponent<StatUpdate>().setDamage(0);
-                updateTurn(ac);
-                Active = false;
-            }
-        }
-        else if(turnOrder2.Count > 0){
-            if(currentTurnIndex2 >= turnOrder2.Count){
-                    currentTurnIndex2 = 0;
-            }
-            while(turnOrder2[currentTurnIndex2] == null){
-                currentTurnIndex2++;
-                if(currentTurnIndex2 >= turnOrder2.Count){
-                    currentTurnIndex2 = 0;
-                }
-            }
-        }
-        if(turnOrder.Count == 0 || turnOrder2.Count == 0){
-           #if UNITY_EDITOR
-           UnityEditor.EditorApplication.isPlaying = false;
-           #elif UNITY_WEBPLAYER
-           Application.OpenURL(webplayerQuitURL);
-           #else
-           Application.Quit();
-           #endif
-        }
-    }*/
-
-    bool checkFat(GameObject go){
-        return go.GetComponent<StatUpdate>().getDictStats("fat") < 100;
     }
 
 

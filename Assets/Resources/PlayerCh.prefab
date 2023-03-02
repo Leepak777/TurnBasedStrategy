@@ -268,12 +268,10 @@ GameObject:
   - component: {fileID: 5864831471913970980}
   - component: {fileID: 5340198930151324999}
   - component: {fileID: 5340198930151324993}
-  - component: {fileID: 5340198930151324998}
-  - component: {fileID: 5340198930151324992}
-  - component: {fileID: 4623373925719051760}
   - component: {fileID: 5544678197578395680}
   - component: {fileID: 5925291172722692194}
   - component: {fileID: 492597581560471947}
+  - component: {fileID: 1340744478867490675}
   m_Layer: 6
   m_Name: PlayerCh
   m_TagString: Player
@@ -373,52 +371,6 @@ MonoBehaviour:
   buff: 
   flag: 0
   bonus: 0
---- !u!114 &5340198930151324998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8321727165239358837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05a18ad274419294f9bde15054ad340d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 100
-  tilescheck: 0
-  tilesTraveled: 0
-  isMoving: 0
-  origin: 0
-  attacking: 0
-  setPath: 0
---- !u!114 &5340198930151324992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8321727165239358837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bea5fa7cbaa6564418c62aab6934892a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlightColor: {r: 0.10852615, g: 0.7249354, b: 0.8584906, a: 0}
-  highlightColor2: {r: 0.7924528, g: 0.22726944, b: 0.22726944, a: 0}
-  highlightorigin: {x: 0, y: 0, z: 0}
---- !u!114 &4623373925719051760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8321727165239358837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25c2eddfa86730046bbc98093bd225e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5544678197578395680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,8 +417,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983e2691afc70d840bc2f9348f578ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turn: 0
-  moved: 0
   dead: 0
   tilesfat: 0
 --- !u!114 &492597581560471947
@@ -483,6 +433,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attacking: 0
   attackrange: 0
+--- !u!114 &1340744478867490675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321727165239358837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a18ad274419294f9bde15054ad340d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 100
+  tilescheck: 0
+  tilesTraveled: 0
+  isMoving: 0
+  setPath: 0
 --- !u!1001 &2331907350683025971
 PrefabInstance:
   m_ObjectHideFlags: 0

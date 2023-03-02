@@ -27,7 +27,6 @@ public class AttackPrompt : MonoBehaviour
     void Attack1()
     {
         turnManager.currentPlay.GetComponent<ActionCenter>().endTurn();
-        turnManager.currentPlay.GetComponent<Movement>().origin = false;
     }
 
     void Attack2()
@@ -57,14 +56,7 @@ public class AttackPrompt : MonoBehaviour
     }
     private void Update()
     {
-        /*if (turnManager.player == true)
-        {
-            attackPromptImage.enabled = true;
-        }
-        else
-        {
-            attackPromptImage.enabled = false;
-        }*/
+
     }
 
     public bool checkOnButton(){

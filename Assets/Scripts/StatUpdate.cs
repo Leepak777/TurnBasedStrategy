@@ -159,7 +159,7 @@ public class StatUpdate : MonoBehaviour
     void Start()
     {   
         ac = this.gameObject.GetComponent<ActionCenter>();
-        drn = this.gameObject.GetComponent<DRN>();
+        drn = new DRN();
         movement = this.gameObject.GetComponent<Movement>(); 
         text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
         currentHealth = maxHealth;
@@ -318,7 +318,7 @@ public class StatUpdate : MonoBehaviour
         stats["fat"] -= stats["tou"];
         //Debug.Log("Fatigue: "+fat);
         //Debug.Log("Toughness: "+tou);
-    if(stats["fat"] <= 0){
+        if(stats["fat"] <= 0){
             stats["fat"] = 0;
         }
     }
