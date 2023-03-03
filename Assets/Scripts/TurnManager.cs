@@ -35,7 +35,10 @@ public class TurnManager : MonoBehaviour
         switch(gamestate){
             case 0://start
                 if(currentPlay.tag == "Player"){
-                    startTurnSave();
+                    startTurnSavePlayer();
+                }
+                else{
+                    startTurnSaveEnemy();
                 }
                 Debug.Log(gameTurn);
                 ac.inovkeEvent(0,0);
@@ -100,27 +103,32 @@ public class TurnManager : MonoBehaviour
     }
     public void undoTurn(){
         if(gameTurn > 1){
+              
             gameTurn--;
             gamestate = 0;
             currentPlay.GetComponent<ActionCenter>().inovkeEvent(1,1);
             currentTurnIndex2--;
             currentTurnIndex--;
+            if(currentTurnIndex<0){currentTurnIndex = turnOrder.Count-1;}
+            if(currentTurnIndex2<0){currentTurnIndex2 = turnOrder2.Count-1;}
             currentPlay = turnOrder[currentTurnIndex];
             foreach(GameObject go in turnOrder){
                     go.GetComponent<ActionCenter>().inovkeEvent(3,gameTurn);
             }
             foreach(GameObject go in turnOrder2){
                 go.GetComponent<ActionCenter>().inovkeEvent(3,gameTurn);
-            }        
+            }     
         }
     }
-    public void startTurnSave(){
+    public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
                 go.GetComponent<ActionCenter>().saveTurnStatData();
             }
-            foreach(GameObject go in turnOrder2){
+    }
+    public void startTurnSaveEnemy(){
+        foreach(GameObject go in turnOrder2){
                 go.GetComponent<ActionCenter>().saveTurnStatData();
-            }  
+        }  
     }
     public void removefromLst(GameObject go){
         if(go.tag == "Player"){

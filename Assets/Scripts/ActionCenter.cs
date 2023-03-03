@@ -98,10 +98,10 @@ public class ActionCenter : MonoBehaviour
     public void saveTurnStatData(){
         statupdate.startSaveStat();
         if(pastOrigin.ContainsKey(TM.getGameTurn())){
-            pastOrigin[TM.getGameTurn()] =  movement.getOrigin();    
+            pastOrigin[TM.getGameTurn()] =  tilemap.WorldToCell(transform.position);    
         }
         else{
-            pastOrigin.Add(TM.getGameTurn(), movement.getOrigin());
+            pastOrigin.Add(TM.getGameTurn(), tilemap.WorldToCell(transform.position));
         }
     }
     public void endingTurn(int i){
@@ -128,8 +128,11 @@ public class ActionCenter : MonoBehaviour
 
     public void undoTurn(int i){
         if(pastOrigin.ContainsKey(i)){
-            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), true);
-            transform.position = tilemap.GetCellCenterWorld( pastOrigin[i]);
+            if(transform.position != tilemap.GetCellCenterWorld(movement.getOrigin())){
+                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), true);
+                transform.position = tilemap.GetCellCenterWorld( pastOrigin[i]);
+            }
+            
             pastOrigin.Remove(i);
             statupdate.revertStat(i);
         }

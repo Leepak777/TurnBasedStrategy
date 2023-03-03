@@ -168,7 +168,7 @@ public class StatUpdate : MonoBehaviour
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
-        //healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
+        healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
         for(int i = 0; i < 18; i++){
             buff.Add(false);
         }
