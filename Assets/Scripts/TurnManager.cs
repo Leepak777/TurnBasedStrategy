@@ -13,6 +13,7 @@ public class TurnManager : MonoBehaviour
     int gamestate = 0;
     public GameObject currentPlay;
     private int turnElasped;
+    private int gameTurn = 1;
 
     void Start()
     {
@@ -33,18 +34,25 @@ public class TurnManager : MonoBehaviour
         ActionCenter ac = currentPlay.GetComponent<ActionCenter>();
         switch(gamestate){
             case 0://start
-                ac.inovkeEvent(0);
+                if(currentPlay.tag == "Player"){
+                    startTurnSave();
+                }
+                Debug.Log(gameTurn);
+                ac.inovkeEvent(0,0);
                 gamestate = 2;
                 //Active = true;
                 break;
             case 1://end
-                ac.inovkeEvent(1);
+                ac.inovkeEvent(1,0);
                 updateTurn(ac);
                 //Active = false;
                 gamestate = 0;
+                if(currentPlay.tag == "Player"){
+                    gameTurn++;
+                }
                 break;
             case 2://during
-                ac.inovkeEvent(2);
+                ac.inovkeEvent(2,0);
                 break;
         }
         
@@ -90,7 +98,30 @@ public class TurnManager : MonoBehaviour
             currentPlay = turnOrder[currentTurnIndex];// switch to player's turn
         }
     }
-
+    public void undoTurn(){
+        if(gameTurn > 1){
+            gameTurn--;
+            gamestate = 0;
+            currentPlay.GetComponent<ActionCenter>().inovkeEvent(1,1);
+            currentTurnIndex2--;
+            currentTurnIndex--;
+            currentPlay = turnOrder[currentTurnIndex];
+            foreach(GameObject go in turnOrder){
+                    go.GetComponent<ActionCenter>().inovkeEvent(3,gameTurn);
+            }
+            foreach(GameObject go in turnOrder2){
+                go.GetComponent<ActionCenter>().inovkeEvent(3,gameTurn);
+            }        
+        }
+    }
+    public void startTurnSave(){
+        foreach(GameObject go in turnOrder){
+                go.GetComponent<ActionCenter>().saveTurnStatData();
+            }
+            foreach(GameObject go in turnOrder2){
+                go.GetComponent<ActionCenter>().saveTurnStatData();
+            }  
+    }
     public void removefromLst(GameObject go){
         if(go.tag == "Player"){
             turnOrder.Remove(go);
@@ -123,5 +154,8 @@ public class TurnManager : MonoBehaviour
     }
     public void setGameState(int gamestate){
         this.gamestate = gamestate;
+    }
+    public int getGameTurn(){
+        return gameTurn;
     }
 }

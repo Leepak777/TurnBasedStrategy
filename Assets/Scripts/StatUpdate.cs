@@ -119,7 +119,7 @@ public class StatUpdate : MonoBehaviour
         return false;
     }
 
-    float currentHealth;
+    public float currentHealth;
     public float maxHealth = 100f;
     public float Damage = 0;
     public HealthBar healthBar;
@@ -134,6 +134,8 @@ public class StatUpdate : MonoBehaviour
     DRN drn;
     int attackrange = 1;
     Text text;
+    Dictionary<int,float> pastHP = new Dictionary<int, float>();
+    Dictionary<int,float> pastFat = new Dictionary<int, float>();
 
     public void attackEn(GameObject targetEnemy){
         Vector3Int enpos = tilemap.WorldToCell(targetEnemy.transform.position);
@@ -178,7 +180,25 @@ public class StatUpdate : MonoBehaviour
         
         
     }
-
+    public void startSaveStat(){
+        if(pastFat.ContainsKey(tm.getGameTurn()) && pastHP.ContainsKey(tm.getGameTurn())){
+            pastFat[tm.getGameTurn()] = stats["fat"];
+            pastHP[tm.getGameTurn()] = currentHealth;
+        }
+        else{
+            pastFat.Add(tm.getGameTurn(), stats["fat"]);
+            pastHP.Add(tm.getGameTurn(), currentHealth);
+        }
+    }
+    public void revertStat(int i){
+        if(pastHP.Count > 0){
+            currentHealth = pastHP[i];
+            pastHP.Remove(i);
+            healthBar.UpdateHealth(currentHealth);
+        }
+        stats["fat"] = pastFat[i];
+        pastFat.Remove(i);
+    }
     void showText(){
         text.enabled = true;
         Invoke("disableText",2f);
@@ -188,7 +208,6 @@ public class StatUpdate : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        
         float protection = drn.getDRN() + stats["sv"] * (100-stats["sp"])/100 + stats["av"]*(100 -stats["ap"])/100 + stats["tou"]/4;
         //Debug.Log("Damage: "+damage);
         //Debug.Log("Protection: " +protection);

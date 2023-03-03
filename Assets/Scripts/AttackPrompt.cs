@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-
+using System.Collections;
+using UnityEngine.EventSystems;
 public class AttackPrompt : MonoBehaviour
 {
     Image attackPromptImage;
     TurnManager turnManager;
-    bool ButtonPressed = false;
+    bool inButton = false;
     //public Button attackButton1;
     //public Button attackButton2;
     //public Button attackButton3;
@@ -15,13 +16,14 @@ public class AttackPrompt : MonoBehaviour
     {
         attackPromptImage = this.gameObject.GetComponent<Image>();
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
-        foreach(GameObject b in GameObject.FindGameObjectsWithTag("button")){
-            buttons.Add(b.GetComponent<Button>());
-        }
 
+        buttons.Add(GameObject.Find("Attack1").GetComponent<Button>()); 
+        buttons.Add(GameObject.Find("Attack2").GetComponent<Button>()); 
+        buttons.Add(GameObject.Find("Attack3").GetComponent<Button>());
         buttons[0].onClick.AddListener(Attack1);
         buttons[1].onClick.AddListener(Attack2);
-        buttons[2].onClick.AddListener(Attack3);        
+        buttons[2].onClick.AddListener(Attack3);
+         
     }
 
     void Attack1()
@@ -37,7 +39,8 @@ public class AttackPrompt : MonoBehaviour
 
     void Attack3()
     {
-        Quit();
+        turnManager.undoTurn();
+        //Quit();
         //Debug.Log("Attack 3");
     }
 
@@ -56,35 +59,12 @@ public class AttackPrompt : MonoBehaviour
     }
     private void Update()
     {
-
     }
-
+    public void setInButton(bool inB){
+        this.inButton = inB;
+    }
     public bool checkOnButton(){
-        foreach(Button b in buttons){
-            if(checkMouseInButton(b)){
-                return true;
-            }
-        }
-        return false;
+        return inButton;
     }
 
-    public bool checkMouseInButton(Button b){
-        Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 buttonPos = b.transform.position;
-        RectTransform bSize = b.GetComponentInChildren<RectTransform>();
-        if(mouse.x > buttonPos.x - bSize.sizeDelta.x/2&& mouse.x < buttonPos.x + bSize.sizeDelta.x/2){
-            if(mouse.y > buttonPos.y - bSize.sizeDelta.y/2 && mouse.y < buttonPos.y + bSize.sizeDelta.y/2){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public bool getPressed(){
-        return ButtonPressed;
-    }
-
-    public void resetPressed(){
-        ButtonPressed = false;
-    }
 }

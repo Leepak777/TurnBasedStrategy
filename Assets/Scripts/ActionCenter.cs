@@ -11,12 +11,15 @@ public class startTurnEvent : UnityEvent{
 
 }
 
-public class endTurnEvent : UnityEvent{
+public class endTurnEvent : UnityEvent<int>{
     
 }
 
 public class duringTurnEvent : UnityEvent{
     
+}
+public class undoEvent :UnityEvent<int>{
+
 }
 
 public class ActionCenter : MonoBehaviour
@@ -37,7 +40,9 @@ public class ActionCenter : MonoBehaviour
     startTurnEvent start;
     endTurnEvent end;
     duringTurnEvent during;
+    undoEvent undo;
     private List<Vector3Int> Trail = new List<Vector3Int>();
+    private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
     void Start()
     {
         
@@ -55,6 +60,7 @@ public class ActionCenter : MonoBehaviour
         start = new startTurnEvent();
         end = new endTurnEvent();
         during = new duringTurnEvent();
+        undo = new undoEvent();
         if(start != null){
             start.AddListener(beginningTurn);
         }
@@ -63,6 +69,9 @@ public class ActionCenter : MonoBehaviour
         }
         if(during != null){
             during.AddListener(duringTurn);
+        }
+        if(undo != null){
+            undo.AddListener(undoTurn);
         }
         transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
     }
@@ -82,19 +91,32 @@ public class ActionCenter : MonoBehaviour
                 GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(TM.getCurrenPlay());
         }
         if(statupdate.getDictStats("fat") > 100){
-            endingTurn();
+            endingTurn(0);
+        }
+        
+    }
+    public void saveTurnStatData(){
+        statupdate.startSaveStat();
+        if(pastOrigin.ContainsKey(TM.getGameTurn())){
+            pastOrigin[TM.getGameTurn()] =  movement.getOrigin();    
+        }
+        else{
+            pastOrigin.Add(TM.getGameTurn(), movement.getOrigin());
         }
     }
-
-    public void endingTurn(){
-        if(this.gameObject.tag == "Enemy"){
-            atk.Attacking("Player");
+    public void endingTurn(int i){
+        if(i == 0){
+            movement.setPath = false;
+            if(this.gameObject.tag == "Enemy"){
+                atk.Attacking("Player");
+            }
+            statupdate.checkFatigue(tilesfat);
+            statupdate.setDamage(0);
+            tilesfat = 0;
         }
         notmoving();
-        statupdate.checkFatigue(tilesfat);
-        statupdate.setDamage(0);
-        tilesfat = 0;
     }
+
 
     public void duringTurn(){
         if(!atk.isAttacking()){
@@ -102,6 +124,16 @@ public class ActionCenter : MonoBehaviour
             movement.moving();
             //highlight();
         }
+    }
+
+    public void undoTurn(int i){
+        if(pastOrigin.ContainsKey(i)){
+            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), true);
+            transform.position = tilemap.GetCellCenterWorld( pastOrigin[i]);
+            pastOrigin.Remove(i);
+            statupdate.revertStat(i);
+        }
+
     }
 
     public void notmoving(){
@@ -148,16 +180,22 @@ public class ActionCenter : MonoBehaviour
         hightlightReachableTile.UnhighlightTrail(Trail);
         Trail.Clear();
     }
-    public void inovkeEvent(int i){
+    public void addOrigin(Vector3Int origin){
+        pastOrigin.Add(TM.getGameTurn(),origin);
+    }
+    public void inovkeEvent(int i, int x){
         switch(i){
             case 0:
                 start.Invoke();
                 break;
             case 1:
-                end.Invoke();
+                end.Invoke(x);
                 break;
             case 2:
                 during.Invoke();
+                break;
+            case 3:
+                undo.Invoke(x);
                 break;
         }
     }

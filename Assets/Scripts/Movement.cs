@@ -33,7 +33,7 @@ public class Movement : MonoBehaviour
     pathfinder = new Pathfinder<Vector3Int>(GetDistance, GetNeighbourNodes);
     transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
     tilescheck = maxTiles;
-
+    originNode = tilemap.WorldToCell(transform.position);
     }
 
     private void Update()
@@ -204,6 +204,7 @@ public class Movement : MonoBehaviour
 
     public void setOrigin(){
         originNode = tilemap.WorldToCell(transform.position);
+
     }
     
    public bool IsAdjacent(Vector3Int node1, Vector3Int node2)

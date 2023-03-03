@@ -48,6 +48,7 @@ public class Attack : MonoBehaviour
             AttackCheck("Player");
             return;
         }
+
     }
     void PlayerAttack(){
         if(this.gameObject.tag == "Player"){
