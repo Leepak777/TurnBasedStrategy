@@ -80,9 +80,11 @@ public class HighlightReachableTiles
     public void UnhighlightEnemy(){
             for (int i = 0; i < EnemyTiles.Count; i++)
             {
+                Color c = Color.white; 
+                c.a = 0.1f;
                 Vector3Int tilePos = EnemyTiles[i];
                 tilemap.SetTileFlags(tilePos, TileFlags.None);
-                tilemap.SetColor(tilePos, Color.white);
+                tilemap.SetColor(tilePos, c);
             }
             EnemyTiles.Clear();
         
@@ -92,10 +94,11 @@ public class HighlightReachableTiles
     {
         for (int i = 0; i < reachableTiles.Count; i++)
         {
-            
+            Color c = Color.white; 
+            c.a = 0.1f;
             Vector3Int tilePos = reachableTiles[i];
             tilemap.SetTileFlags(tilePos, TileFlags.None);
-            tilemap.SetColor(tilePos, Color.white);
+            tilemap.SetColor(tilePos, c);
             
         }
         reachableTiles.Clear();
@@ -105,10 +108,11 @@ public class HighlightReachableTiles
     {
         for (int i = 0; i < trail.Count; i++)
         {
-            
+            Color c = Color.white; 
+            c.a = 0.1f;
             Vector3Int tilePos = trail[i];
             tilemap.SetTileFlags(tilePos, TileFlags.None);
-            tilemap.SetColor(tilePos, Color.white);
+            tilemap.SetColor(tilePos, c);
             
         }        
     }

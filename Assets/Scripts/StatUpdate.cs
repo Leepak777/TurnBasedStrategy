@@ -121,7 +121,7 @@ public class StatUpdate : MonoBehaviour
 
     public float currentHealth;
     public float maxHealth = 100f;
-    public float Damage = 0;
+    public int Damage = 0;
     public HealthBar healthBar;
     TurnManager tm;
     public List<bool> buff =new List<bool>();
@@ -148,7 +148,7 @@ public class StatUpdate : MonoBehaviour
             drn_check = rangeRoll(targetEnemy);
         }
         if(drn_check){
-            Damage = drn.getDRN() + stats["wd"] + stats["pscal"] * stats["pow"] + stats["dscal"]*stats["dex"] + bonus;
+            Damage = (int)(drn.getDRN() + stats["wd"] + stats["pscal"] * stats["pow"] + stats["dscal"]*stats["dex"] + bonus);
             attackingFatigue();
             targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
             targetEnemy.GetComponent<StatUpdate>().attackedFatigue();
@@ -206,9 +206,9 @@ public class StatUpdate : MonoBehaviour
     void disableText(){
         text.enabled = false;
     }
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
-        float protection = drn.getDRN() + stats["sv"] * (100-stats["sp"])/100 + stats["av"]*(100 -stats["ap"])/100 + stats["tou"]/4;
+        int protection = (int)(drn.getDRN() + stats["sv"] * (100-stats["sp"])/100 + stats["av"]*(100 -stats["ap"])/100 + stats["tou"]/4);
         //Debug.Log("Damage: "+damage);
         //Debug.Log("Protection: " +protection);
         
@@ -220,7 +220,7 @@ public class StatUpdate : MonoBehaviour
         text.text = ""+damage;
         showText();
         //Debug.Log("hit!" + damage);
-        currentHealth -= damage;
+        currentHealth -= (float)damage;
         if(currentHealth < 0){
             currentHealth = 0;
         }

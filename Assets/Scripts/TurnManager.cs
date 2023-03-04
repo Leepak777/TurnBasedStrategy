@@ -101,14 +101,7 @@ public class TurnManager : MonoBehaviour
 
     private void updateTurn(ActionCenter ac)
     {
-        turnElasped++;
-        if(turnElasped >= currentPlay.GetComponent<StatUpdate>().getDictStats("attack_num")){
-            updateIndex();
-            turnElasped = 0;
-        }
-        else{
-            gamestate = 0;    
-        }
+        updateIndex();
     }
 
     private void updateIndex()

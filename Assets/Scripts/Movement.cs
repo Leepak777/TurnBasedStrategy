@@ -101,9 +101,6 @@ public class Movement : MonoBehaviour
         
         if (GetMouseButtonDown(0)) //check for a new target
             {
-            if(tilemap.WorldToCell(transform.position) != originNode){
-                transform.position = tilemap.GetCellCenterWorld(originNode);    
-            }
             this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
             Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             targetNode = tilemap.WorldToCell(target);

@@ -97,11 +97,7 @@ public class SetMap : MonoBehaviour
         int tileCount = size.x * size.y;
 
         // Create array of tiles
-        /*Tile[] tiles = new Tile[tileCount];
-        for (int i = 0; i < tileCount; i++)
-        {
-            tiles[i] = tile;
-        }*/
+
 
         // Set tiles on tilemap
         Vector3Int position = Vector3Int.zero;
@@ -109,7 +105,12 @@ public class SetMap : MonoBehaviour
         {
             for (int j = 0; j < size.y; j++)
             {
+                Color c = Color.white; 
+                c.a = 0.1f;
+                Vector3Int tilePos = position + new Vector3Int(i, j, 0);
                 tilemap.SetTile(position + new Vector3Int(i, j, 0), tiles["TerrainAssets_9"]);
+                tilemap.SetTileFlags(tilePos, TileFlags.None);
+                tilemap.SetColor(tilePos, c);
             }
         }
         tilemap.SetTile(position + new Vector3Int(20 , 10 , 0), House["House_1"]);
