@@ -4,23 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aoiti.Pathfinding; //import the pathfinding library
 using UnityEngine.Tilemaps;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
 
-public class startTurnEvent : UnityEvent{
-
-}
-
-public class endTurnEvent : UnityEvent<int>{
-    
-}
-
-public class duringTurnEvent : UnityEvent{
-    
-}
-public class undoEvent :UnityEvent<int>{
-
-}
 
 public class ActionCenter : MonoBehaviour
 {
@@ -37,42 +21,23 @@ public class ActionCenter : MonoBehaviour
     TurnManager TM;
     Attack atk;
     Ghost ghost;
-    startTurnEvent start;
-    endTurnEvent end;
-    duringTurnEvent during;
-    undoEvent undo;
+    
     private List<Vector3Int> Trail = new List<Vector3Int>();
     private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
-    void Start()
+    void Awake()
     {
         
         TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         hightlightReachableTile = new HighlightReachableTiles();
         statupdate = this.gameObject.GetComponent<StatUpdate>();
-        movement = this.gameObject.GetComponent<Movement>();
         atk = this.gameObject.GetComponent<Attack>();
         ghost = this.gameObject.GetComponentInChildren<Ghost>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         Node locn = tileM.GetNodeFromWorld(tilemap.WorldToCell(transform.position));
         Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
-        this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
-        start = new startTurnEvent();
-        end = new endTurnEvent();
-        during = new duringTurnEvent();
-        undo = new undoEvent();
-        if(start != null){
-            start.AddListener(beginningTurn);
-        }
-        if(end != null){
-            end.AddListener(endingTurn);
-        }
-        if(during != null){
-            during.AddListener(duringTurn);
-        }
-        if(undo != null){
-            undo.AddListener(undoTurn);
-        }
+        //this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
+        movement = this.gameObject.GetComponent<Movement>();
         transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
     }
 
@@ -186,20 +151,5 @@ public class ActionCenter : MonoBehaviour
     public void addOrigin(Vector3Int origin){
         pastOrigin.Add(TM.getGameTurn(),origin);
     }
-    public void inovkeEvent(int i, int x){
-        switch(i){
-            case 0:
-                start.Invoke();
-                break;
-            case 1:
-                end.Invoke(x);
-                break;
-            case 2:
-                during.Invoke();
-                break;
-            case 3:
-                undo.Invoke(x);
-                break;
-        }
-    }
+    
 }

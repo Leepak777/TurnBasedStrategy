@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using System.Linq;
 using UnityEditor;
+using Random = System.Random;
 
 
 public class SetMap : MonoBehaviour
@@ -17,6 +18,11 @@ public class SetMap : MonoBehaviour
     public InGameData data;
 
     Dictionary<string,Sprite> tileSprite = new Dictionary<string,Sprite>();
+    Dictionary<string,Tile> tiles = new Dictionary<string,Tile>();
+    Dictionary<string,Tile> UI = new Dictionary<string,Tile>();
+    Dictionary<string,Tile> Water = new Dictionary<string,Tile>();
+    Dictionary<string,Tile> House = new Dictionary<string,Tile>();
+    Random rnd = new Random();
 
     
     void Awake()
@@ -28,12 +34,40 @@ public class SetMap : MonoBehaviour
         //mapData = ReadInputFileAsList();
 
         // Create tile asset
-        tile = ScriptableObject.CreateInstance<Tile>();
         foreach(Sprite s in allsprites){
             //Debug.Log(s.name);
+            tile = ScriptableObject.CreateInstance<Tile>();
+            tile.sprite = s;
+            tile.name = s.name;
             tileSprite.Add(s.name,s);
+            tiles.Add(s.name,tile);
         }
-        tile.sprite = tileSprite["TerrainAssets_9"];
+        foreach(Sprite s in  Resources.LoadAll<Sprite>("UI_")){
+            //Debug.Log(s.name);
+            tile = ScriptableObject.CreateInstance<Tile>();
+            tile.sprite = s;
+            tile.name = s.name;
+            tileSprite.Add(s.name,s);
+            UI.Add(s.name,tile);
+        }
+        foreach(Sprite s in  Resources.LoadAll<Sprite>("Water")){
+            //Debug.Log(s.name);
+            tile = ScriptableObject.CreateInstance<Tile>();
+            tile.sprite = s;
+            tile.name = s.name;
+            tileSprite.Add(s.name,s);
+            Water.Add(s.name,tile);
+            
+        }
+        foreach(Sprite s in  Resources.LoadAll<Sprite>("House")){
+            //Debug.Log(s.name);
+            tile = ScriptableObject.CreateInstance<Tile>();
+            tile.sprite = s;
+            tile.name = s.name;
+            tileSprite.Add(s.name,s);
+            House.Add(s.name,tile);
+        }
+        
         setStage();
         
     }
@@ -63,11 +97,11 @@ public class SetMap : MonoBehaviour
         int tileCount = size.x * size.y;
 
         // Create array of tiles
-        Tile[] tiles = new Tile[tileCount];
+        /*Tile[] tiles = new Tile[tileCount];
         for (int i = 0; i < tileCount; i++)
         {
             tiles[i] = tile;
-        }
+        }*/
 
         // Set tiles on tilemap
         Vector3Int position = Vector3Int.zero;
@@ -75,9 +109,11 @@ public class SetMap : MonoBehaviour
         {
             for (int j = 0; j < size.y; j++)
             {
-                tilemap.SetTile(position + new Vector3Int(i, j, 0), tile);
+                tilemap.SetTile(position + new Vector3Int(i, j, 0), tiles["TerrainAssets_9"]);
             }
         }
+        tilemap.SetTile(position + new Vector3Int(20 , 10 , 0), House["House_1"]);
+        
 
         // Set scale and position of tilemap
         tilemap.transform.localScale = new Vector3(32, 32, 0);
@@ -96,29 +132,17 @@ public class SetMap : MonoBehaviour
         }
         
     }
-
-     public static List<string> ReadInputFileAsList()
-        {
-            string filePath = Application.dataPath + "/Map.txt";
-            List<string> result = new List<string>();
-
-            if (File.Exists(filePath))
-            {
-                using (StreamReader reader = new StreamReader(filePath))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        result.Add(reader.ReadLine());
-                    }
-                }
-            }
-            else
-            {
-                result.Add("File not found.");
-            }
-
-            return result;
-        }
-
+    public Dictionary<string,Tile> getTiles(){
+        return tiles;
+    }
+    public Dictionary<string,Tile> getWater(){
+        return Water;
+    }
+    public Dictionary<string,Tile> getUI(){
+        return UI;
+    }
+    public Dictionary<string,Tile> getHouse(){
+        return House;
+    }
 
 }

@@ -96,7 +96,7 @@ public class txtReader : MonoBehaviour
         player.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
         player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
         Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-        while(tileM.GetNodeFromWorld(allocate).occupant != null){
+        while(!tileM.GetNodeFromWorld(tilemap.WorldToCell(tilemap.GetCellCenterWorld(allocate))).walkable){
             allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
         }
         player.transform.position = tilemap.GetCellCenterWorld(allocate);

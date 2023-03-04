@@ -15,13 +15,10 @@ MonoBehaviour:
   characterlst:
     keys:
     - Player0
-    - Enemy0
     - Player1
-    - Enemy1
     - Player2
-    - Enemy2
     - Player3
-    - Enemy3
+    - Enemy0
     values:
     - keys:
       - Type
@@ -31,25 +28,11 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Praetorian Guard
+      - Brigand
       - Light Glaive
       - Kite Shield
       - Praetorian Armor
       - kekw
-      - kekw
-    - keys:
-      - Type
-      - Weapon
-      - Shield
-      - Armor
-      - Buckler
-      - Mount
-      values:
-      - Imperial Conscript
-      - Great Sword
-      - Tower Shield
-      - Assault Vest
-      - Buckler
       - War Horse
     - keys:
       - Type
@@ -59,25 +42,11 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Praetorian Guard
+      - Brigand
       - Light Glaive
       - Kite Shield
       - Praetorian Armor
       - kekw
-      - kekw
-    - keys:
-      - Type
-      - Weapon
-      - Shield
-      - Armor
-      - Buckler
-      - Mount
-      values:
-      - Imperial Conscript
-      - Great Sword
-      - Tower Shield
-      - Assault Vest
-      - Buckler
       - War Horse
     - keys:
       - Type
@@ -87,25 +56,11 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Praetorian Guard
+      - Brigand
       - Light Glaive
       - Kite Shield
       - Praetorian Armor
       - kekw
-      - kekw
-    - keys:
-      - Type
-      - Weapon
-      - Shield
-      - Armor
-      - Buckler
-      - Mount
-      values:
-      - Imperial Conscript
-      - Great Sword
-      - Tower Shield
-      - Assault Vest
-      - Buckler
       - War Horse
     - keys:
       - Type
@@ -115,24 +70,14 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Praetorian Guard
+      - Brigand
       - Light Glaive
       - Kite Shield
       - Praetorian Armor
       - kekw
-      - kekw
+      - War Horse
     - keys:
       - Type
-      - Weapon
-      - Shield
-      - Armor
-      - Buckler
-      - Mount
       values:
-      - Imperial Conscript
-      - Great Sword
-      - Tower Shield
-      - Assault Vest
-      - Buckler
-      - War Horse
+      - Brigand
   map: Never Gonna Give You Up

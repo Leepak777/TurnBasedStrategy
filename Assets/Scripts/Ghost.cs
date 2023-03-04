@@ -31,8 +31,10 @@ public class Ghost : MonoBehaviour
             Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
             if(tileM.inArea(movement.getOrigin(),shadowtargetNode, movement.getTilesCheck())){
                 Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
-                Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
-                setLocation(loc);
+                if(locn.walkable){
+                    Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
+                    setLocation(loc);
+                }
             }
             else{
                 setOnOff(false);

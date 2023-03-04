@@ -365,6 +365,7 @@ MonoBehaviour:
   stats:
     keys: []
     values: []
+  currentHealth: 0
   maxHealth: 100
   Damage: 50
   healthBar: {fileID: 8906131547528253649}

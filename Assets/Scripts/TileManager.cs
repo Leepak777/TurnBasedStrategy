@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+
+using System;
+using System.Linq;
+ 
 public class Node
 {
     public bool walkable;
@@ -8,9 +12,11 @@ public class Node
     public int gridX;
     public int gridY;
     public GameObject occupant;
+    public Tile tile;
 
-    public Node(bool _walkable, Vector2 _worldPos, int _gridX, int _gridY)
+    public Node(bool _walkable, Vector2 _worldPos, int _gridX, int _gridY,Tile tile)
     {
+        this.tile = tile;
         walkable = _walkable;
         worldPosition = _worldPos;
         gridX = _gridX;
@@ -31,6 +37,10 @@ public class TileManager : MonoBehaviour
     private Vector3Int gridSize;
     public Vector3Int GridSize { get { return gridSize; } }
     private List<Node> reachableTiles;
+    Dictionary<string,Tile> tiles = new Dictionary<string,Tile>();
+    Dictionary<string,Tile> UI = new Dictionary<string,Tile>();
+    Dictionary<string,Tile> Water = new Dictionary<string,Tile>();
+    Dictionary<string,Tile> House = new Dictionary<string,Tile>();
     void Start()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
@@ -38,6 +48,10 @@ public class TileManager : MonoBehaviour
         gridSize = tilemap.size;
         grid = new Node[gridSize.x, gridSize.y];
         reachableTiles = new List<Node>();
+        tiles = GameObject.Find("Canvas").GetComponentInChildren<SetMap>().getTiles();
+        UI = GameObject.Find("Canvas").GetComponentInChildren<SetMap>().getUI();
+        Water = GameObject.Find("Canvas").GetComponentInChildren<SetMap>().getWater();
+        House = GameObject.Find("Canvas").GetComponentInChildren<SetMap>().getHouse();
         CreateGrid();
         //printGrid();
     }
@@ -49,10 +63,14 @@ public class TileManager : MonoBehaviour
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector3Int tilePos = new Vector3Int(x, y, 0);
-                grid[x, y] = new Node(true, tilemap.GetCellCenterWorld(tilePos), x, y);
+                grid[x, y] = new Node(true, tilemap.GetCellCenterWorld(tilePos), x, y, tilemap.GetTile<Tile>(tilePos));
                 reachableTiles.Add(grid[x,y]);
             }
         }
+        foreach(Node n in grid){
+            setTileSize(n.tile,n.gridX,n.gridY);
+        }
+                        
     }
     public void printGrid(){
             for(int i = 0; i < gridSize.x; i++){
@@ -76,6 +94,22 @@ public class TileManager : MonoBehaviour
 
     void Update(){
          
+    }
+    void setTileSize(Tile tile,int x, int  y){
+        if(House.Any(kvp => kvp.Value.Equals(tile))){
+            grid[x,y].walkable = false;
+            int width = (int)(tile.sprite.bounds.extents.x);
+            int height = (int)(tile.sprite.bounds.extents.y);
+            Debug.Log(tile.sprite.bounds.extents.x);
+            for(int i = x-width; i <= x+width;i++){
+                for(int j = y-height; j <= y+height; j++){
+                    //if(grid[i,j] != null){
+                        grid[i,j].walkable = false;
+                    //}
+                }
+            }
+    
+        } 
     }
 
     public void setWalkable(GameObject Ch, Vector3Int world,bool walkable){

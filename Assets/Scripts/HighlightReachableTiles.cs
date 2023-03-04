@@ -25,7 +25,7 @@ public class HighlightReachableTiles
         ActionCenter ac = character.GetComponent<ActionCenter>();
         foreach(Node node in tileM.GetTilesInArea(currentPos,character.GetComponent<StatUpdate>().getMaxTiles())){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
-                if (tilemap.HasTile(tilePos) ){
+                if (tilemap.HasTile(tilePos) && node.walkable){
                     if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !ac.getTrail().Contains(tilePos))
                     {
                             // Save the original tile

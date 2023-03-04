@@ -23,7 +23,6 @@ public class AttackPrompt : MonoBehaviour
         buttons[0].onClick.AddListener(Attack1);
         buttons[1].onClick.AddListener(Attack2);
         buttons[2].onClick.AddListener(Attack3);
-         
     }
 
     void Attack1()
@@ -39,10 +38,12 @@ public class AttackPrompt : MonoBehaviour
 
     void Attack3()
     {
-        turnManager.undoTurn();
+        turnManager.getEvent(3).Invoke();;
         //Quit();
         //Debug.Log("Attack 3");
     }
+
+
 
     public static void Quit()
      {

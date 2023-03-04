@@ -37,9 +37,12 @@ public class ScreenManager : MonoBehaviour
         SceneManagerImage = this.gameObject.GetComponent<Image>();
 
         sceneLoader = GetComponent<SceneLoader>();
-        foreach(GameObject b in GameObject.FindGameObjectsWithTag("button")){
+        /*foreach(GameObject b in GameObject.FindGameObjectsWithTag("button")){
             buttons.Add(b.GetComponent<Button>());
-        }
+        }*/
+        buttons.Add(GameObject.Find("button1").GetComponent<Button>()); 
+        buttons.Add(GameObject.Find("button2").GetComponent<Button>()); 
+        buttons.Add(GameObject.Find("button3").GetComponent<Button>());
         buttons[0].onClick.AddListener(LoadMyScene);
         buttons[1].onClick.AddListener(CreateCharacterFile);
         buttons[2].onClick.AddListener(CreateMapFile);
@@ -69,16 +72,16 @@ public class ScreenManager : MonoBehaviour
         //InGameData Data = ScriptableObject.CreateInstance<InGameData>();
         Data.characterlst.Clear();
         UDictionary<string,string> PlData = new UDictionary<string, string>(){
-            {"Type",types[rnd.Next(0,5)]},{"Weapon","Light Glaive"},{"Shield","Kite Shield"},{"Armor","Praetorian Armor"},{"Buckler","kekw"},{"Mount","kekw"}
+            {"Type",types[rnd.Next(0,5)]},{"Weapon","Light Glaive"},{"Shield","Kite Shield"},{"Armor","Praetorian Armor"},{"Buckler","kekw"},{"Mount","War Horse"}
         };
         UDictionary<string,string> EnData = new UDictionary<string, string>(){
-            {"Type",types[rnd.Next(0,5)]},{"Weapon","Great Sword"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}
+            {"Type",types[rnd.Next(0,5)]}/*,{"Weapon","Great Sword"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}*/
         };
         for(int i = 0; i < 4; i++){
             Data.characterlst.Add("Player"+i,PlData);
-            Data.characterlst.Add("Enemy"+i,EnData);
-        }
-        //EditorUtility.SetDirty(Data);
+            
+        }Data.characterlst.Add("Enemy"+0,EnData);
+        EditorUtility.SetDirty(Data);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
@@ -106,9 +109,8 @@ public class ScreenManager : MonoBehaviour
                  Data= (InGameData )AssetDatabase.LoadAssetAtPath(path, typeof(InGameData ));
                  Debug.Log("Found Asset File !!!");
              }
-        //InGameData Data = ScriptableObject.CreateInstance<InGameData>();
         Data.map = "Never Gonna Give You Up";
-        //EditorUtility.SetDirty(Data);
+        EditorUtility.SetDirty(Data);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

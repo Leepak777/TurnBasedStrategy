@@ -203,7 +203,7 @@ public class Movement : MonoBehaviour
     }
 
     public void setOrigin(){
-        originNode = tilemap.WorldToCell(transform.position);
+        originNode = tilemap.WorldToCell(this.gameObject.transform.position);
 
     }
     

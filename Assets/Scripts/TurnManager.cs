@@ -1,6 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
+
+public class startTurnEvent : UnityEvent{
+
+}
+
+public class endTurnEvent : UnityEvent{
+    
+}
+
+public class duringTurnEvent : UnityEvent{
+    
+}
+public class undoEvent :UnityEvent{
+
+}
 
 public class TurnManager : MonoBehaviour
 {
@@ -14,7 +31,10 @@ public class TurnManager : MonoBehaviour
     public GameObject currentPlay;
     private int turnElasped;
     private int gameTurn = 1;
-
+    startTurnEvent start;
+    endTurnEvent end;
+    duringTurnEvent during;
+    undoEvent undo;
     void Start()
     {
         turnOrder = new List<GameObject>();
@@ -26,6 +46,14 @@ public class TurnManager : MonoBehaviour
         currentTurnIndex = 0;
         currentTurnIndex2 = 0;
         currentPlay = turnOrder[currentTurnIndex];
+        start = new startTurnEvent();
+        end = new endTurnEvent();
+        during = new duringTurnEvent();
+        undo = new undoEvent();
+        start.AddListener(startEvent);
+        end.AddListener(endEvent);
+        during.AddListener(duringEvent);
+        undo.AddListener(undoTurn);
         //reset2();
     }
 
@@ -34,32 +62,40 @@ public class TurnManager : MonoBehaviour
         ActionCenter ac = currentPlay.GetComponent<ActionCenter>();
         switch(gamestate){
             case 0://start
-                if(currentPlay.tag == "Player"){
-                    startTurnSavePlayer();
-                }
-                else{
-                    startTurnSaveEnemy();
-                }
-                Debug.Log(gameTurn);
-                ac.inovkeEvent(0,0);
-                gamestate = 2;
+                start.Invoke();
                 //Active = true;
                 break;
             case 1://end
-                ac.inovkeEvent(1,0);
-                updateTurn(ac);
+                end.Invoke();
                 //Active = false;
-                gamestate = 0;
-                if(currentPlay.tag == "Player"){
-                    gameTurn++;
-                }
                 break;
             case 2://during
-                ac.inovkeEvent(2,0);
+                during.Invoke();
                 break;
         }
         
 
+    }
+    void startEvent(){
+        currentPlay.GetComponent<ActionCenter>().beginningTurn();
+        if(currentPlay.tag == "Player"){        
+            startTurnSavePlayer();
+        }
+        else{
+            startTurnSaveEnemy();
+        }  
+        gamestate = 2;
+    }
+    void endEvent(){
+        currentPlay.GetComponent<ActionCenter>().endingTurn(0);
+        updateTurn(currentPlay.GetComponent<ActionCenter>());
+        gamestate = 0;
+        if(currentPlay.tag == "Player"){
+            gameTurn++;
+        }
+    }
+    void duringEvent(){
+        currentPlay.GetComponent<ActionCenter>().duringTurn();
     }
 
 
@@ -101,22 +137,22 @@ public class TurnManager : MonoBehaviour
             currentPlay = turnOrder[currentTurnIndex];// switch to player's turn
         }
     }
+
     public void undoTurn(){
         if(gameTurn > 1){
-              
             gameTurn--;
             gamestate = 0;
-            currentPlay.GetComponent<ActionCenter>().inovkeEvent(1,1);
+            currentPlay.GetComponent<ActionCenter>().endingTurn(1);
             currentTurnIndex2--;
             currentTurnIndex--;
             if(currentTurnIndex<0){currentTurnIndex = turnOrder.Count-1;}
             if(currentTurnIndex2<0){currentTurnIndex2 = turnOrder2.Count-1;}
             currentPlay = turnOrder[currentTurnIndex];
             foreach(GameObject go in turnOrder){
-                    go.GetComponent<ActionCenter>().inovkeEvent(3,gameTurn);
+                    go.GetComponent<ActionCenter>().undoTurn(gameTurn);
             }
             foreach(GameObject go in turnOrder2){
-                go.GetComponent<ActionCenter>().inovkeEvent(3,gameTurn);
+                go.GetComponent<ActionCenter>().undoTurn(gameTurn);
             }     
         }
     }
@@ -165,5 +201,18 @@ public class TurnManager : MonoBehaviour
     }
     public int getGameTurn(){
         return gameTurn;
+    }
+    public UnityEvent getEvent(int i){
+        switch(i){
+            case 0:
+                return start;
+            case 1:
+                return end;
+            case 2:
+                return during;
+            case 3:
+                return undo;
+        }
+        return null;
     }
 }
