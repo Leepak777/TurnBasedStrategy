@@ -10,12 +10,6 @@ using UnityEngine.UI;
 
 public class txtReader : MonoBehaviour
 { 
-    Dictionary<string,float> tst;
-    Dictionary<string,float> wst;
-    Dictionary<string,float> sst;
-    Dictionary<string,float> ast;
-    Dictionary<string,float> bst;
-    Dictionary<string,float> mst;
     public Tilemap tilemap;
     Dictionary<string,Sprite> Daemons = new Dictionary<string,Sprite>();
     public Equipments equipments;

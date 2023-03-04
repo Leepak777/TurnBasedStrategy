@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
 {
     Pathfinder<Vector3Int> pathfinder;
     List<Vector3Int> path = new List<Vector3Int>();
-    Tilemap tilemap;
+    [SerializeField] Tilemap tilemap;
     [SerializeField] float movementSpeed = 100f;  // Add this to control the movement speed
     int maxTiles; // Add this to limit the number of tiles the object can travel
     public int tilescheck = 0;
@@ -44,10 +44,10 @@ public class Movement : MonoBehaviour
         if(!setPath){
             
             //GameObject targetPlayer = tileM.getClosestReachablePlayer("Player", transform.position, attackrange,tilescheck);
-            targetNode = tileM.getClosestReachablePlayer("Player", originNode, attackrange,tilescheck).Value;
+            KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode, attackrange,tilescheck);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);  
               
-            //targetNode = tilemap.WorldToCell(tileM.getClosestTiletoObject(targetPlayer, originNode, attackrange, tilescheck));   
+            targetNode = target.Value;   
             if(tileM.EnemyInRange("Player", attackrange, this.gameObject)){
                 AIreturn();
             }
@@ -188,7 +188,7 @@ public class Movement : MonoBehaviour
                     ac.setTilesFat(tilesTraveled);
                     isMoving = false;
                     if(this.gameObject.tag == "Enemy"){
-                        ac.endTurn();   
+                        GameObject.Find("TurnManager").GetComponent<TurnManager>().endTurn();
                     }
                     tilesTraveled = 0;
                 }
@@ -200,6 +200,9 @@ public class Movement : MonoBehaviour
     }
 
     public void setOrigin(){
+        if(tilemap == null){
+            tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        }
         originNode = tilemap.WorldToCell(this.gameObject.transform.position);
 
     }

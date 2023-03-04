@@ -100,7 +100,6 @@ public class TileManager : MonoBehaviour
             grid[x,y].walkable = false;
             int width = (int)(tile.sprite.bounds.extents.x);
             int height = (int)(tile.sprite.bounds.extents.y);
-            Debug.Log(tile.sprite.bounds.extents.x);
             for(int i = x-width; i <= x+width;i++){
                 for(int j = y-height; j <= y+height; j++){
                     //if(grid[i,j] != null){
@@ -235,15 +234,28 @@ public class TileManager : MonoBehaviour
     public Vector3Int getClosestTiletoObject(GameObject go, Vector3Int originNode, float attackrange, int movrange){
         GameObject player = go;
         Node ans = null;
-        int mindis = int.MaxValue;    
+        int mindis = int.MaxValue;   
+        int tiledis = int.MaxValue; 
         Vector3Int cellpos = tilemap.WorldToCell(player.transform.position);
         foreach(Node n in GetTilesInArea(originNode,movrange)){
             Vector3Int target = tilemap.WorldToCell(new Vector3Int((int)n.worldPosition.x,(int)n.worldPosition.y,0));
             int distance = (int)GetDistance(cellpos,target);
-                if(n.walkable && distance < mindis && distance >= (int)attackrange){
-                    mindis = distance;
-                    ans = n;
-                }
+            int distance2 = (int)GetDistance(originNode,target);
+            if(n.walkable && distance + distance2 < mindis ){
+                mindis = distance + distance2;
+                ans = n;
+            }
+        }
+        tiledis = int.MaxValue;
+        foreach(Node n in GetTilesInArea(originNode,movrange)){
+            Vector3Int target = tilemap.WorldToCell(new Vector3Int((int)n.worldPosition.x,(int)n.worldPosition.y,0));
+            int distance = (int)GetDistance(cellpos,target);
+            int distance2 = (int)GetDistance(originNode,target);
+            if(n.walkable && distance == (int)attackrange && distance2 < tiledis){
+                tiledis = distance2;
+                ans = n;
+            }
+            
         }
         if(ans == null){
             return originNode;

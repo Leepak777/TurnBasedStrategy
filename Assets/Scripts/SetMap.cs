@@ -27,6 +27,7 @@ public class SetMap : MonoBehaviour
     
     void Awake()
     {
+        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         // Load sprite from resources
         allsprites = Resources.LoadAll<Sprite>("TerrainAssets");
 

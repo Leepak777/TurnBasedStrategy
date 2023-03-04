@@ -27,7 +27,7 @@ public class AttackPrompt : MonoBehaviour
 
     void Attack1()
     {
-        turnManager.currentPlay.GetComponent<ActionCenter>().endTurn();
+        turnManager.endTurn();
     }
 
     void Attack2()

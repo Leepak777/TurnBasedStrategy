@@ -62,6 +62,7 @@ public class TurnManager : MonoBehaviour
         ActionCenter ac = currentPlay.GetComponent<ActionCenter>();
         switch(gamestate){
             case 0://start
+                Debug.Log(currentPlay.name);
                 start.Invoke();
                 //Active = true;
                 break;
@@ -151,12 +152,12 @@ public class TurnManager : MonoBehaviour
     }
     public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
-                go.GetComponent<ActionCenter>().saveTurnStatData();
+                go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
             }
     }
     public void startTurnSaveEnemy(){
         foreach(GameObject go in turnOrder2){
-                go.GetComponent<ActionCenter>().saveTurnStatData();
+                go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
         }  
     }
     public void removefromLst(GameObject go){
@@ -194,6 +195,9 @@ public class TurnManager : MonoBehaviour
     }
     public int getGameTurn(){
         return gameTurn;
+    }
+    public void endTurn(){
+        gamestate = 1;
     }
     public UnityEvent getEvent(int i){
         switch(i){

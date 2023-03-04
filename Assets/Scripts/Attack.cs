@@ -86,7 +86,7 @@ public class Attack : MonoBehaviour
         }
         attacking = false;
             
-        ac.endTurn();
+        GameObject.Find("TurnManager").GetComponent<TurnManager>().endTurn();
         
     }
     public void setAttackArea(int i){

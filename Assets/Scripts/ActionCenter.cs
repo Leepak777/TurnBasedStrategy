@@ -18,7 +18,7 @@ public class ActionCenter : MonoBehaviour
     Movement movement;
     StatUpdate statupdate;
     TileManager tileM;
-    TurnManager TM;
+    //TurnManager TM;
     Attack atk;
     Ghost ghost;
     
@@ -27,7 +27,7 @@ public class ActionCenter : MonoBehaviour
     void Awake()
     {
         
-        TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        //TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         hightlightReachableTile = new HighlightReachableTiles();
         statupdate = this.gameObject.GetComponent<StatUpdate>();
@@ -53,20 +53,20 @@ public class ActionCenter : MonoBehaviour
         hightlightReachableTile.UnhighlightReachable();
         hightlightReachableTile.HighlightReachable(gameObject);
         if(this.gameObject.tag == "Player"){
-                GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(TM.getCurrenPlay());
+                GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(this.gameObject);
         }
         if(statupdate.getDictStats("fat") > 100){
             endingTurn(0);
         }
         
     }
-    public void saveTurnStatData(){
+    public void saveTurnStatData(int gameTurn){
         statupdate.startSaveStat();
-        if(pastOrigin.ContainsKey(TM.getGameTurn())){
-            pastOrigin[TM.getGameTurn()] =  tilemap.WorldToCell(transform.position);    
+        if(pastOrigin.ContainsKey(gameTurn)){
+            pastOrigin[gameTurn] =  tilemap.WorldToCell(transform.position);    
         }
         else{
-            pastOrigin.Add(TM.getGameTurn(), tilemap.WorldToCell(transform.position));
+            pastOrigin.Add(gameTurn, tilemap.WorldToCell(transform.position));
         }
     }
     public void endingTurn(int i){
@@ -126,9 +126,9 @@ public class ActionCenter : MonoBehaviour
     public List<Vector3Int> getTrail(){
         return Trail;
     }
-    public void endTurn(){
+    /*public void endTurn(){
         TM.setGameState(1);
-    }
+    }*/
     public HighlightReachableTiles getHighLight(){
         return hightlightReachableTile;
     }
@@ -148,8 +148,6 @@ public class ActionCenter : MonoBehaviour
         hightlightReachableTile.UnhighlightTrail(Trail);
         Trail.Clear();
     }
-    public void addOrigin(Vector3Int origin){
-        pastOrigin.Add(TM.getGameTurn(),origin);
-    }
+
     
 }

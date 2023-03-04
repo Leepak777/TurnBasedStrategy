@@ -181,6 +181,9 @@ public class StatUpdate : MonoBehaviour
         
     }
     public void startSaveStat(){
+        if(tm == null){
+            tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        }
         if(pastFat.ContainsKey(tm.getGameTurn()) && pastHP.ContainsKey(tm.getGameTurn())){
             pastFat[tm.getGameTurn()] = stats["fat"];
             pastHP[tm.getGameTurn()] = currentHealth;
