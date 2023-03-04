@@ -62,7 +62,6 @@ public class TurnManager : MonoBehaviour
         ActionCenter ac = currentPlay.GetComponent<ActionCenter>();
         switch(gamestate){
             case 0://start
-                Debug.Log(currentPlay.name);
                 start.Invoke();
                 //Active = true;
                 break;
@@ -97,6 +96,9 @@ public class TurnManager : MonoBehaviour
     }
     void duringEvent(){
         currentPlay.GetComponent<ActionCenter>().duringTurn();
+        if(!currentPlay.GetComponent<Movement>().getisMoving() && currentPlay.tag == "Enemy"){
+            endTurn();
+        }
     }
 
 

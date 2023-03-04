@@ -87,10 +87,10 @@ public class SetMap : MonoBehaviour
         int x_size = (int)rec.sizeDelta.x / 32;
         int y_size = (int)rec.sizeDelta.y / 32;
         if(x_size%2 != 0){
-            x_size++;
+            x_size--;
         }
         if(y_size%2 != 0){
-            y_size++;
+            y_size--;
         }
         Vector3Int size = new Vector3Int(x_size, y_size, 0);
         tilemap.size = size;
@@ -114,7 +114,7 @@ public class SetMap : MonoBehaviour
                 tilemap.SetColor(tilePos, c);
             }
         }
-        tilemap.SetTile(position + new Vector3Int(20 , 10 , 0), House["House_1"]);
+        tilemap.SetTile(position + new Vector3Int(20 , 15 , 0), House["House_1"]);
         
 
         // Set scale and position of tilemap

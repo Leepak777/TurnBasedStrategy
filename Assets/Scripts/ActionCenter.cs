@@ -34,11 +34,8 @@ public class ActionCenter : MonoBehaviour
         atk = this.gameObject.GetComponent<Attack>();
         ghost = this.gameObject.GetComponentInChildren<Ghost>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        Node locn = tileM.GetNodeFromWorld(tilemap.WorldToCell(transform.position));
-        Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
-        //this.gameObject.GetComponentInChildren<Ghost>().setLocation(loc);
         movement = this.gameObject.GetComponent<Movement>();
-        transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
+        
     }
 
     // Update is called once per frame
@@ -126,9 +123,6 @@ public class ActionCenter : MonoBehaviour
     public List<Vector3Int> getTrail(){
         return Trail;
     }
-    /*public void endTurn(){
-        TM.setGameState(1);
-    }*/
     public HighlightReachableTiles getHighLight(){
         return hightlightReachableTile;
     }

@@ -54,6 +54,10 @@ public class TileManager : MonoBehaviour
         House = GameObject.Find("Canvas").GetComponentInChildren<SetMap>().getHouse();
         CreateGrid();
         //printGrid();
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+            g.GetComponent<Movement>().setTilemap(tilemap);
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+            g.GetComponent<Movement>().setTilemap(tilemap);
     }
     
     void CreateGrid()
@@ -286,5 +290,9 @@ public class TileManager : MonoBehaviour
     {
         // Use Manhattan distance for tilemap
         return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);
+    }
+
+    public Tilemap getTileMap(){
+        return tilemap;
     }
 }

@@ -140,18 +140,20 @@ public class StatUpdate : MonoBehaviour
     public void attackEn(GameObject targetEnemy){
         Vector3Int enpos = tilemap.WorldToCell(targetEnemy.transform.position);
         Vector3Int playerpos = tilemap.WorldToCell(transform.position);
-        bool drn_check;
-        if(movement.IsAdjacent(enpos,playerpos)){
-            drn_check = meleeRoll(targetEnemy);
-        }
-        else{
-            drn_check = rangeRoll(targetEnemy);
-        }
-        if(drn_check){
-            Damage = (int)(drn.getDRN() + stats["wd"] + stats["pscal"] * stats["pow"] + stats["dscal"]*stats["dex"] + bonus);
-            attackingFatigue();
-            targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
-            targetEnemy.GetComponent<StatUpdate>().attackedFatigue();
+        for(int i = 0; i < stats["attack_num"]; i++){
+            bool drn_check;
+            if(movement.IsAdjacent(enpos,playerpos)){
+                drn_check = meleeRoll(targetEnemy);
+            }
+            else{
+                drn_check = rangeRoll(targetEnemy);
+            }
+            if(drn_check){
+                Damage = (int)(drn.getDRN() + stats["wd"] + stats["pscal"] * stats["pow"] + stats["dscal"]*stats["dex"] + bonus);
+                attackingFatigue();
+                targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
+                targetEnemy.GetComponent<StatUpdate>().attackedFatigue();
+            }
         }
         
     }

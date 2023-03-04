@@ -10,24 +10,52 @@ public class CameraController : MonoBehaviour
 
     void Start(){
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-
-
     }
 
     public void trackPlayer(GameObject go){
         track = true;
         target = go;
     }
+    
     public void initLoc(GameObject go){
         Vector3Int loc = tilemap.WorldToCell(go.transform.position);
         Vector3 newpos = tilemap.GetCellCenterWorld(loc);
         transform.position = new Vector3((int)newpos.x, (int)newpos.y, -1);
     }
+    private bool IsCameraWithinTilemapBounds()
+    {
+        Camera camera = this.gameObject.GetComponent<Camera>();
+
+        if (camera == null || tilemap == null)
+        {
+            return false;
+        }
+
+        Vector3 bottomLeft = camera.ViewportToWorldPoint(new Vector3(0f, 0f, camera.nearClipPlane));
+        Vector3 topRight = camera.ViewportToWorldPoint(new Vector3(1f, 1f, camera.nearClipPlane));
+
+        return tilemap.cellBounds.Contains(tilemap.WorldToCell(bottomLeft)) && tilemap.cellBounds.Contains(tilemap.WorldToCell(topRight));
+    }
+
+
     void arrowControl(){
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        transform.position += new Vector3(horizontal, vertical, 0) * speed * Time.deltaTime;
+        Vector3 newPosition = transform.position + new Vector3(horizontal, vertical, 0) * speed * Time.deltaTime;
+
+        Vector3 cameraExtents = new Vector3(Camera.main.aspect * Camera.main.orthographicSize, Camera.main.orthographicSize, 0f);
+        Vector3 minTile = tilemap.CellToWorld(tilemap.cellBounds.min) + cameraExtents;
+        Vector3 maxTile = tilemap.CellToWorld(tilemap.cellBounds.max) - cameraExtents;
+
+        newPosition = new Vector3(
+            Mathf.Clamp(newPosition.x, minTile.x, maxTile.x),
+            Mathf.Clamp(newPosition.y, minTile.y, maxTile.y),
+            transform.position.z
+        );
+
+        transform.position = newPosition;
     }
+
 
     void tracking(){
         if(track){
@@ -37,21 +65,18 @@ public class CameraController : MonoBehaviour
                 track = false;
                 return;
             }
-            int h = -1;
-            if(newpos.x > transform.position.x){
-                h = 1;
+            if (!IsCameraWithinTilemapBounds())
+            {
+                // Move camera in by 1 pixel
+                Vector3 moveDir = tilemap.transform.position - transform.position;
+                transform.position += moveDir.normalized * 0.5f;
+                track = false;
+                return;
             }
-            if(newpos.x == transform.position.x){
-                h = 0;
-            }
-            int v = -1;
-            if(newpos.y > transform.position.y){
-                v = 1;
-            }
-            if(newpos.y == transform.position.y){
-                v = 0;
-            }
-            transform.position += new Vector3(h, v, 0) * (int)(speed*1.9f * Time.deltaTime);
+            Vector2 direction = newpos - transform.position;
+            Vector2 movement = Vector2.ClampMagnitude(direction, speed*1.9f*Time.deltaTime);
+
+            transform.position += new Vector3(movement.x, movement.y, 0);
         }
     }
 
@@ -59,6 +84,5 @@ public class CameraController : MonoBehaviour
     {
         arrowControl();
         tracking();
-        
     }
 }
