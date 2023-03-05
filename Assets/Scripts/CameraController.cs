@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
     void arrowControl(){
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        Vector3 newPosition = transform.position + new Vector3(horizontal, vertical, 0) * speed * Time.deltaTime;
+        Vector3 newPosition = transform.position + new Vector3(horizontal, vertical, 0) * speed*2 * Time.deltaTime;
 
         Vector3 cameraExtents = new Vector3(Camera.main.aspect * Camera.main.orthographicSize, Camera.main.orthographicSize, 0f);
         Vector3 minTile = tilemap.CellToWorld(tilemap.cellBounds.min) + cameraExtents;

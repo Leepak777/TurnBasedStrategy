@@ -8,7 +8,7 @@ using Random = System.Random;
 using UnityEditor;
 using UnityEngine.UI;
 
-public class txtReader : MonoBehaviour
+public class InitCharacter : MonoBehaviour
 { 
     public Tilemap tilemap;
     Dictionary<string,Sprite> Daemons = new Dictionary<string,Sprite>();

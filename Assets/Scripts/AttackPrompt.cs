@@ -20,9 +20,12 @@ public class AttackPrompt : MonoBehaviour
         buttons.Add(GameObject.Find("Attack1").GetComponent<Button>()); 
         buttons.Add(GameObject.Find("Attack2").GetComponent<Button>()); 
         buttons.Add(GameObject.Find("Attack3").GetComponent<Button>());
+        buttons.Add(GameObject.Find("Attack4").GetComponent<Button>());
         buttons[0].onClick.AddListener(Attack1);
         buttons[1].onClick.AddListener(Attack2);
         buttons[2].onClick.AddListener(Attack3);
+        buttons[3].onClick.AddListener(Attack4);
+
     }
 
     void Attack1()
@@ -41,6 +44,10 @@ public class AttackPrompt : MonoBehaviour
         turnManager.getEvent(3).Invoke();;
         //Quit();
         //Debug.Log("Attack 3");
+    }
+
+    void Attack4(){
+        turnManager.resetTurn();
     }
 
 

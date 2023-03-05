@@ -80,6 +80,7 @@ public class TurnManager : MonoBehaviour
         currentPlay.GetComponent<ActionCenter>().beginningTurn();
         if(currentPlay.tag == "Player"){        
             startTurnSavePlayer();
+            startTurnSaveEnemy();
         }
         else{
             startTurnSaveEnemy();
@@ -133,7 +134,15 @@ public class TurnManager : MonoBehaviour
             currentPlay = turnOrder[currentTurnIndex];// switch to player's turn
         }
     }
-
+    public void resetTurn(){
+        gamestate = 0;
+        foreach(GameObject go in turnOrder){
+            go.GetComponent<ActionCenter>().undoTurn(gameTurn);
+        }
+        foreach(GameObject go in turnOrder2){
+            go.GetComponent<ActionCenter>().undoTurn(gameTurn);
+        } 
+    }
     public void undoTurn(){
         if(gameTurn > 1){
             gameTurn--;

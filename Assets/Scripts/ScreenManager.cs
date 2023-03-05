@@ -72,10 +72,10 @@ public class ScreenManager : MonoBehaviour
         //InGameData Data = ScriptableObject.CreateInstance<InGameData>();
         Data.characterlst.Clear();
         UDictionary<string,string> PlData = new UDictionary<string, string>(){
-            {"Type",types[rnd.Next(0,5)]},{"Weapon","Light Glaive"},{"Shield","Kite Shield"},{"Armor","Praetorian Armor"},{"Buckler","kekw"},{"Mount","War Horse"}
+            {"Type",types[rnd.Next(0,5)]},{"Weapon","Great Sword"},{"Shield","Kite Shield"},{"Armor","Praetorian Armor"},{"Buckler","kekw"},{"Mount","War Horse"}
         };
         UDictionary<string,string> EnData = new UDictionary<string, string>(){
-            {"Type",types[rnd.Next(0,5)]}/*,{"Weapon","Great Sword"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}*/
+            {"Type",types[rnd.Next(0,5)]}/*,{"Weapon","Light Glaive"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}*/
         };
         for(int i = 0; i < 4; i++){
             Data.characterlst.Add("Player"+i,PlData);

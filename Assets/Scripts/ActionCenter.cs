@@ -45,9 +45,13 @@ public class ActionCenter : MonoBehaviour
         
     }
     public void beginningTurn(){
+        if(tilesfat > 0){
+            tilesfat = 0;
+        }
         movement.setOrigin();
         movement.setRange();
         hightlightReachableTile.UnhighlightReachable();
+        clearTrail();
         hightlightReachableTile.HighlightReachable(gameObject);
         if(this.gameObject.tag == "Player"){
                 GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(this.gameObject);
