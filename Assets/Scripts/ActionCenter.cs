@@ -83,20 +83,20 @@ public class ActionCenter : MonoBehaviour
         notmoving();
     }
 
-
     public void duringTurn(){
         if(!atk.isAttacking()){
             ghost.setGhost();
             movement.moving();
-            //highlight();
         }
     }
 
     public void undoTurn(int i){
         if(pastOrigin.ContainsKey(i)){
-            if(transform.position != tilemap.GetCellCenterWorld(movement.getOrigin())){
-                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), true);
-                transform.position = tilemap.GetCellCenterWorld( pastOrigin[i]);
+            Vector3 ogPos = transform.position;
+            transform.position = tilemap.GetCellCenterWorld( pastOrigin[i]);
+            if(transform.position != ogPos){
+                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(ogPos), true);
+                
             }
             
             pastOrigin.Remove(i);
