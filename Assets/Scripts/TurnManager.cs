@@ -73,21 +73,22 @@ public class TurnManager : MonoBehaviour
                 during.Invoke();
                 break;
         }
-        
-
     }
     void startEvent(){
+        //To-DO: Added skill check for skills that update each game turn
         currentPlay.GetComponent<ActionCenter>().beginningTurn();
         if(currentPlay.tag == "Player"){        
             startTurnSavePlayer();
-            startTurnSaveEnemy();
+            //startTurnSaveEnemy();
         }
         else{
             startTurnSaveEnemy();
-        }  
+        }
+        GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(currentPlay);  
         gamestate = 2;
     }
     void endEvent(){
+        //To-DO: Added skill check for skills that update each game turn
         currentPlay.GetComponent<ActionCenter>().endingTurn(0);
         updateTurn(currentPlay.GetComponent<ActionCenter>());
         gamestate = 0;
@@ -136,12 +137,8 @@ public class TurnManager : MonoBehaviour
     }
     public void resetTurn(){
         gamestate = 0;
-        foreach(GameObject go in turnOrder){
-            go.GetComponent<ActionCenter>().undoTurn(gameTurn);
-        }
-        foreach(GameObject go in turnOrder2){
-            go.GetComponent<ActionCenter>().undoTurn(gameTurn);
-        } 
+        currentPlay.GetComponent<ActionCenter>().undoTurn(gameTurn);
+         
     }
     public void undoTurn(){
         if(gameTurn > 1){
@@ -168,7 +165,7 @@ public class TurnManager : MonoBehaviour
     }
     public void startTurnSaveEnemy(){
         foreach(GameObject go in turnOrder2){
-                go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
+            go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
         }  
     }
     public void removefromLst(GameObject go){

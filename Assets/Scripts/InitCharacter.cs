@@ -98,6 +98,7 @@ public class InitCharacter : MonoBehaviour
         player.GetComponent<StatUpdate>().setUp();
         setStats(player,ch.Value);
         player.GetComponent<StatUpdate>().setCalStat();
+        player.GetComponent<ActionCenter>().saveTurnStatData(0);
     }
    
 

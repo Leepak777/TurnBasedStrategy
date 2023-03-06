@@ -30,9 +30,9 @@ public class HealthBar : MonoBehaviour
         float currentWidth = barWidth * fillAmount;
 
         healthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, currentWidth);
-        if(currentHealth >= 75){
+        if(currentHealth >= maxHealth*0.75f){
             healthBar.color = Color.green;
-        }else if(currentHealth >= 50){
+        }else if(currentHealth >= maxHealth*0.5f){
             healthBar.color = Color.yellow;
         }else{
             healthBar.color = Color.red;

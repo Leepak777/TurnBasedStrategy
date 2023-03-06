@@ -52,7 +52,7 @@ public class StatUpdate : MonoBehaviour
         stats.Add("pr",0);//parry rating
         stats.Add("pv",0);//parry value
         stats.Add("w_enc",0);
-        stats.Add("attack_num",0);
+        stats.Add("attack_num",1);
         //armor
         stats.Add("av",0);//armor value
         stats.Add("sv",0);//shield value
@@ -166,6 +166,7 @@ public class StatUpdate : MonoBehaviour
         drn = new DRN();
         movement = this.gameObject.GetComponent<Movement>(); 
         text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
+        maxHealth = stats["maxHealth"];
         currentHealth = maxHealth;
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
@@ -197,6 +198,7 @@ public class StatUpdate : MonoBehaviour
     }
     public void revertStat(int i){
         if(pastHP.Count > 0){
+            Debug.Log(pastHP[i]);
             currentHealth = pastHP[i];
             pastHP.Remove(i);
             healthBar.UpdateHealth(currentHealth);
@@ -233,8 +235,9 @@ public class StatUpdate : MonoBehaviour
         flag = false;
         if(currentHealth <= 0){
             tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
-            tm.removefromLst(this.gameObject);
-            Destroy(this.gameObject);
+            //tm.removefromLst(this.gameObject);
+            //Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 
@@ -262,6 +265,10 @@ public class StatUpdate : MonoBehaviour
                 stats[s.Key] /= lst[s.Key];
             }
         }
+    }
+
+    public void updateHealthBar(){
+        healthBar.UpdateHealth(currentHealth);
     }
     
     public void Flagging(){

@@ -19,6 +19,7 @@ MonoBehaviour:
     - Player2
     - Player3
     - Enemy0
+    - Enemy1
     values:
     - keys:
       - Type
@@ -79,5 +80,9 @@ MonoBehaviour:
     - keys:
       - Type
       values:
-      - Imperial Legionary
+      - Praetorian Guard
+    - keys:
+      - Type
+      values:
+      - Praetorian Guard
   map: Never Gonna Give You Up

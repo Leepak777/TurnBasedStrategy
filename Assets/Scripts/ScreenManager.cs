@@ -81,6 +81,7 @@ public class ScreenManager : MonoBehaviour
             Data.characterlst.Add("Player"+i,PlData);
             
         }Data.characterlst.Add("Enemy"+0,EnData);
+        Data.characterlst.Add("Enemy"+1,EnData);
         EditorUtility.SetDirty(Data);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
