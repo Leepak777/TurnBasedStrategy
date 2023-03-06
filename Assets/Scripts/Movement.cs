@@ -119,7 +119,7 @@ public class Movement : MonoBehaviour
             if(!tileM.inArea(originNode,targetNode, tilescheck)){
                 AIreturn();
             }
-            tileM.setWalkable(this.gameObject,startNode,true);
+            
             path = new List<Vector3Int>();
             
             if (pathfinder.GenerateAstarPath(startNode, targetNode, out path))
@@ -130,6 +130,7 @@ public class Movement : MonoBehaviour
                     path = null;
                 }
                 else{
+                    tileM.setWalkable(this.gameObject,startNode,true);
                     tilesTraveled = 0;
                     isMoving = true;
                 }

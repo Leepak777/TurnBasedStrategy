@@ -11,7 +11,6 @@ public class ActionCenter : MonoBehaviour
     // Start is called before the first frame update
     HighlightReachableTiles hightlightReachableTile;
     Tilemap tilemap;
-    public bool dead = false;
     //bool gameTurn = true;
     public int tilesfat = 0;
     GameObject targetEnemy;
@@ -85,7 +84,9 @@ public class ActionCenter : MonoBehaviour
 
     public void duringTurn(){
         if(!atk.isAttacking()){
-            ghost.setGhost();
+            if(this.gameObject.tag == "Player"){
+                ghost.setGhost();
+            }
             movement.moving();
         }
         else{
@@ -96,14 +97,14 @@ public class ActionCenter : MonoBehaviour
     public void undoTurn(int i){
         //To-DO: Check what kind of buff undoed 
         if(!this.gameObject.activeInHierarchy){
-            i-=2;
+            i--;
         }
         if(pastOrigin.ContainsKey(i)){
-            Vector3 ogPos = transform.position;
-            transform.position = tilemap.GetCellCenterWorld( pastOrigin[i]);
+            Vector3 ogPos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
+            transform.position = tilemap.GetCellCenterWorld(pastOrigin[i]);
             if(transform.position != ogPos){
                 tileM.setWalkable(this.gameObject,tilemap.WorldToCell(ogPos), true);
-                
+                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);   
             }
             
             pastOrigin.Remove(i);
@@ -111,17 +112,19 @@ public class ActionCenter : MonoBehaviour
             if(!this.gameObject.activeInHierarchy){
                 this.gameObject.SetActive(true);
                 statupdate.updateHealthBar();
-                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
+                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),false);
             }
         }
 
     }
 
     public void notmoving(){
+        if(this.gameObject.activeInHierarchy){
             tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
             hightlightReachableTile.UnhighlightReachable();
             hightlightReachableTile.UnhighlightEnemy();
             clearTrail();
+        }
     }
     public void onMove(){
         hightlightReachableTile.UnhighlightReachable();

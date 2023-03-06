@@ -119,7 +119,12 @@ public class TurnManager : MonoBehaviour
                 currentTurnIndex = 0;
                  
             }
-            
+            while(!turnOrder[currentTurnIndex].activeInHierarchy){
+                currentTurnIndex++;
+                if(currentTurnIndex>=turnOrder.Count){
+                    currentTurnIndex =0;
+                }
+            }
             this.player = false;
             currentPlay = turnOrder2[currentTurnIndex2];// switch to enemy's turn
         }
@@ -130,6 +135,12 @@ public class TurnManager : MonoBehaviour
             {
                 currentTurnIndex2 = 0;
                 
+            }
+            while(!turnOrder2[currentTurnIndex2].activeInHierarchy){
+                currentTurnIndex2++;
+                if(currentTurnIndex2>=turnOrder2.Count){
+                    currentTurnIndex2 =0;
+                }
             }
             this.player = true; 
             currentPlay = turnOrder[currentTurnIndex];// switch to player's turn
