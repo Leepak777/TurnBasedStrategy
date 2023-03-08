@@ -155,10 +155,24 @@ public class TileManager : MonoBehaviour
 
     public List<Node> GetTilesInArea(Vector3Int center, float range){
         List<Node> Area = new List<Node>();
-        for(int x = (int)-range; x <= (int)range; x++){
-            for(int y = (int)-range; y <= (int)range; y++){
-                if(Mathf.Sqrt(x*x + y*y) <= range){
-                    Vector3Int target = new Vector3Int(center.x+x, center.y+y,center.z);
+        /*int top =   (int) Math.Ceiling(center.y - range);
+        int bottom  = (int) Math.Floor(center.y + range);
+        for(int y= top; y <= bottom; y++){
+            int dy = y - center.y;
+            float dx = Mathf.Sqrt(range*range - dy*dy);
+            int left = (int) Math.Ceiling(center.x - dx);
+            int right = (int) Math.Floor(center.x + dx);
+            for(int x = left; x <= right; x++){
+                Vector3Int target = new Vector3Int(x, y,center.z);
+                if(GetNodeFromWorld(target)!=null){
+                    Area.Add(GetNodeFromWorld(target));
+                }
+            }
+        }*/
+        for(float x = -range; x <= range; x++){
+            for(float y = -range; y <= range; y++){
+                if(Mathf.Sqrt(x*x + y*y) < (range+0.5f)){
+                    Vector3Int target = new Vector3Int((int)(center.x+x),(int)( center.y+y),center.z);
                     if(GetNodeFromWorld(target)!=null){
                         Area.Add(GetNodeFromWorld(target));
                     }

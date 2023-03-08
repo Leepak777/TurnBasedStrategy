@@ -96,7 +96,7 @@ public class ActionCenter : MonoBehaviour
 
     public void undoTurn(int i){
         //To-DO: Check what kind of buff undoed 
-        if(!this.gameObject.activeInHierarchy){
+        if(!this.gameObject.activeInHierarchy && i > 1){
             i--;
         }
         if(pastOrigin.ContainsKey(i)){
