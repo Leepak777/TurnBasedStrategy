@@ -94,7 +94,7 @@ public class StatUpdate : MonoBehaviour
     }
 
     public bool meleeRoll(GameObject enemy){
-        float player_roll = drn.getDRN() + stats["ma"]+ stats["acc"] + stats["pow"] + stats["dex"] + stats["acu"];
+        float player_roll = drn.getDRN() + stats["ma"]+ stats["acc"] + stats["pow"]/2 + stats["dex"] + stats["acu"]/2;
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
         float enemy_roll = drn.getDRN() + en_stat.getDictStats("md") + en_stat.getDictStats("mdb") + en_stat.getDictStats("tou")/2 + en_stat.getDictStats("dex")/2 + en_stat.getDictStats("acu")/2;
         //Debug.Log("Player: "+player_roll);
@@ -163,7 +163,7 @@ public class StatUpdate : MonoBehaviour
     void Start()
     {   
         ac = this.gameObject.GetComponent<ActionCenter>();
-        drn = new DRN();
+        drn = DRN.getInstance();
         movement = this.gameObject.GetComponent<Movement>(); 
         text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
         maxHealth = stats["maxHealth"];

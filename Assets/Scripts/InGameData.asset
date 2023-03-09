@@ -29,7 +29,7 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Brigand
+      - Imperial Legionary
       - Great Sword
       - Kite Shield
       - Praetorian Armor
@@ -43,7 +43,7 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Brigand
+      - Imperial Legionary
       - Great Sword
       - Kite Shield
       - Praetorian Armor
@@ -57,7 +57,7 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Brigand
+      - Imperial Legionary
       - Great Sword
       - Kite Shield
       - Praetorian Armor
@@ -71,7 +71,7 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Brigand
+      - Imperial Legionary
       - Great Sword
       - Kite Shield
       - Praetorian Armor
@@ -80,9 +80,9 @@ MonoBehaviour:
     - keys:
       - Type
       values:
-      - Praetorian Guard
+      - Mecenary
     - keys:
       - Type
       values:
-      - Praetorian Guard
+      - Mecenary
   map: Never Gonna Give You Up
