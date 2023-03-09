@@ -102,7 +102,7 @@ public class Skills : MonoBehaviour
         foreach(GameObject go in tileM.getTaginArea(movement.getOrigin(),statupdate.getDictStats("mov"),tag)){
             StatUpdate checker = go.GetComponent<StatUpdate>();
             checker.Flagging();
-            atk.AttackCheck(tag);
+            atk.AttackCheck(go);
         }
     }
 

@@ -11,7 +11,7 @@ public class Attack : MonoBehaviour
     Movement movement;
     Tilemap tilemap;
     public bool attacking= false;
-    int attackArea = 0;
+    public int attackArea = 0;
     public int attackrange;
     void Start()
     {
@@ -44,7 +44,7 @@ public class Attack : MonoBehaviour
         Vector3Int targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
         ac.setTargetEnemy(targetPlayer);
         tileM.flagEnemyArea(targetPlayer,"Player",attackArea);
-        AttackCheck("Player");
+        AttackCheck(targetPlayer);
         return;
     }
     public void PlayerAttack(){
@@ -55,8 +55,8 @@ public class Attack : MonoBehaviour
                 GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
                 if(attacking && tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
                     ac.setTargetEnemy(go);
-                    tileM.flagEnemyArea(go,"Enemy",attackArea);
-                    AttackCheck("Enemy");
+                    //tileM.flagEnemyArea(go,"Enemy",attackArea);
+                    AttackCheck(go);
                 }              
             }
         }
@@ -71,12 +71,12 @@ public class Attack : MonoBehaviour
             hightlightReachableTile.UnhighlightEnemy();
         }
     }
-    public void AttackCheck(string tag){
-        foreach(GameObject en in GameObject.FindGameObjectsWithTag(tag)){
-            if(en.GetComponent<StatUpdate>().flag){
+    public void AttackCheck(GameObject en){
+        //foreach(GameObject en in GameObject.FindGameObjectsWithTag(tag)){
+        //    if(en.GetComponent<StatUpdate>().flag){
                 this.gameObject.GetComponent<StatUpdate>().attackEn(en);
-            }
-        }
+        //    }
+        //}
         attacking = false;
             
         GameObject.Find("TurnManager").GetComponent<TurnManager>().endTurn();

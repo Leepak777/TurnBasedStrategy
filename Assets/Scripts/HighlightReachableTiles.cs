@@ -23,7 +23,7 @@ public class HighlightReachableTiles
         reachableTiles.Clear();
         Vector3Int currentPos = character.GetComponent<Movement>().getOrigin();//tilemap.WorldToCell(transform.position);
         ActionCenter ac = character.GetComponent<ActionCenter>();
-        foreach(Node node in tileM.GetTilesInArea(currentPos,character.GetComponent<StatUpdate>().getMaxTiles())){
+        foreach(Node node in tileM.GetTilesInArea(currentPos,(character.GetComponent<StatUpdate>().getMaxTiles())+0.5f)){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
                 if (tilemap.HasTile(tilePos) && node.walkable){
                     if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !ac.getTrail().Contains(tilePos))

@@ -155,23 +155,9 @@ public class TileManager : MonoBehaviour
 
     public List<Node> GetTilesInArea(Vector3Int center, float range){
         List<Node> Area = new List<Node>();
-        /*int top =   (int) Math.Ceiling(center.y - range);
-        int bottom  = (int) Math.Floor(center.y + range);
-        for(int y= top; y <= bottom; y++){
-            int dy = y - center.y;
-            float dx = Mathf.Sqrt(range*range - dy*dy);
-            int left = (int) Math.Ceiling(center.x - dx);
-            int right = (int) Math.Floor(center.x + dx);
-            for(int x = left; x <= right; x++){
-                Vector3Int target = new Vector3Int(x, y,center.z);
-                if(GetNodeFromWorld(target)!=null){
-                    Area.Add(GetNodeFromWorld(target));
-                }
-            }
-        }*/
         for(float x = -range; x <= range; x++){
             for(float y = -range; y <= range; y++){
-                if(Mathf.Sqrt(x*x + y*y) < (range+0.5f)){
+                if(Mathf.Sqrt(x*x + y*y) <= (range)){
                     Vector3Int target = new Vector3Int((int)(center.x+x),(int)( center.y+y),center.z);
                     if(GetNodeFromWorld(target)!=null){
                         Area.Add(GetNodeFromWorld(target));
@@ -228,7 +214,7 @@ public class TileManager : MonoBehaviour
         return close;
     }
 
-     public KeyValuePair<GameObject,Vector3Int> getClosestReachablePlayer(string tag, Vector3Int currentpos, float attackrange, int movrange){
+     public KeyValuePair<GameObject,Vector3Int> getClosestReachablePlayer(string tag, Vector3Int currentpos, float attackrange, float movrange){
         int mindis = int.MaxValue;   
         GameObject close = null; 
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);            
@@ -249,7 +235,7 @@ public class TileManager : MonoBehaviour
         return new KeyValuePair<GameObject, Vector3Int>(close,targetNode);
     }
 
-    public Vector3Int getClosestTiletoObject(GameObject go, Vector3Int originNode, float attackrange, int movrange){
+    public Vector3Int getClosestTiletoObject(GameObject go, Vector3Int originNode, float attackrange, float movrange){
         GameObject player = go;
         Node ans = null;
         int mindis = int.MaxValue;   
@@ -281,7 +267,7 @@ public class TileManager : MonoBehaviour
         return tilemap.WorldToCell(new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0));
     }
 
-    public void flagEnemyArea(GameObject enemy, string tag,int range){
+    public void flagEnemyArea(GameObject enemy, string tag,float range){
         enemy.GetComponent<StatUpdate>().Flagging();
         foreach(Node n in GetTilesInArea(tilemap.WorldToCell(enemy.transform.position),range)){
                 if(n.occupant != null&& n.occupant.tag == tag){
@@ -291,7 +277,7 @@ public class TileManager : MonoBehaviour
     }
     public bool EnemyInRange(string tag, int attackrange, GameObject go){
         Vector3Int currentPos = tilemap.WorldToCell(go.transform.position);
-        foreach(Node node in GetTilesInArea(currentPos,attackrange)){
+        foreach(Node node in GetTilesInArea(currentPos,(attackrange))){
             if(node.occupant!=null){
                 if(node.occupant.tag == tag){
                     return true;

@@ -94,7 +94,7 @@ public class StatUpdate : MonoBehaviour
     }
 
     public bool meleeRoll(GameObject enemy){
-        float player_roll = drn.getDRN() + stats["ma"]+ stats["acc"] + stats["pow"]/2 + stats["dex"] + stats["acu"]/2;
+        float player_roll = drn.getDRN() + stats["ma"]+ stats["acc"] + stats["pow"] + stats["dex"] + stats["acu"];
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
         float enemy_roll = drn.getDRN() + en_stat.getDictStats("md") + en_stat.getDictStats("mdb") + en_stat.getDictStats("tou")/2 + en_stat.getDictStats("dex")/2 + en_stat.getDictStats("acu")/2;
         //Debug.Log("Player: "+player_roll);
@@ -200,11 +200,11 @@ public class StatUpdate : MonoBehaviour
         if(pastHP.Count > 0){
             Debug.Log(pastHP[i]);
             currentHealth = pastHP[i];
-            pastHP.Remove(i);
+            //pastHP.Remove(i);
             healthBar.UpdateHealth(currentHealth);
         }
         stats["fat"] = pastFat[i];
-        pastFat.Remove(i);
+        //pastFat.Remove(i);
     }
     void showText(){
         text.enabled = true;
@@ -215,7 +215,7 @@ public class StatUpdate : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
-        int protection = (int)(drn.getDRN() + stats["sv"] * (100-stats["sp"])/100 + stats["av"]*(100 -stats["ap"])/100 + stats["tou"]/4);
+        int protection = (int)(drn.getDRN() + stats["sv"] * (100-stats["sp"])/100 + stats["av"]*(100 -stats["ap"])/100 + stats["tou"]/42);
         //Debug.Log("Damage: "+damage);
         //Debug.Log("Protection: " +protection);
         
@@ -238,9 +238,10 @@ public class StatUpdate : MonoBehaviour
             //tm.removefromLst(this.gameObject);
             //Destroy(this.gameObject);
             this.gameObject.SetActive(false);
+            tm.gameEndCheck();
         }
     }
-
+    
     public void modifyStat(Dictionary<string,float> lst, bool buff){
         if(buff){
             foreach(KeyValuePair<string, float> s in lst){

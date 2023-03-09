@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
     List<Vector3Int> path = new List<Vector3Int>();
     [SerializeField] Tilemap tilemap;
     [SerializeField] float movementSpeed = 100f;  // Add this to control the movement speed
-    public int tilescheck = 0;
+    public float tilescheck = 0;
     int attackrange; 
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
     public bool isMoving = false;
@@ -30,7 +30,7 @@ public class Movement : MonoBehaviour
         ac = this.gameObject.GetComponent<ActionCenter>();
         pathfinder = new Pathfinder<Vector3Int>(GetDistance, GetNeighbourNodes);
         transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
-        tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();;
+        tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() + 0.5f;
         originNode = tilemap.WorldToCell(transform.position);
     }
 
@@ -191,7 +191,7 @@ public class Movement : MonoBehaviour
             }
     }
     public void setRange(){
-        tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles();
+        tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() + 0.5f;
     }
 
     public void setOrigin(){
@@ -245,7 +245,7 @@ public class Movement : MonoBehaviour
     public Vector3Int getOrigin(){
         return originNode;
     }
-    public int getTilesCheck(){
+    public float getTilesCheck(){
         return tilescheck;
     }
     void AIreturn(){

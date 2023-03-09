@@ -63,11 +63,9 @@ public class TurnManager : MonoBehaviour
         switch(gamestate){
             case 0://start
                 start.Invoke();
-                //Active = true;
                 break;
             case 1://end
                 end.Invoke();
-                //Active = false;
                 break;
             case 2://during
                 during.Invoke();
@@ -80,8 +78,8 @@ public class TurnManager : MonoBehaviour
         if(currentPlay.tag == "Player"){        
             startTurnSavePlayer();
             //startTurnSaveEnemy();
-        }
-        else{
+        /*}
+        else{*/
             startTurnSaveEnemy();
         }
         GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(currentPlay);  
@@ -179,14 +177,20 @@ public class TurnManager : MonoBehaviour
             go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
         }  
     }
-    public void removefromLst(GameObject go){
-        if(go.tag == "Player"){
-            turnOrder.Remove(go);
+    public void gameEndCheck(){
+        bool PlayerDied = true;
+        bool EnemyDied = true;
+        foreach(GameObject go in turnOrder){
+            if(go.activeInHierarchy){
+                PlayerDied = false;
+            }
         }
-        if(go.tag == "Enemy"){
-            turnOrder2.Remove(go);
+        foreach(GameObject go in turnOrder2){
+            if(go.activeInHierarchy){
+                EnemyDied = false;
+            }
         }
-        if(turnOrder.Count == 0 || turnOrder2.Count == 0){
+        if(PlayerDied || EnemyDied){
            #if UNITY_EDITOR
            UnityEditor.EditorApplication.isPlaying = false;
            #elif UNITY_WEBPLAYER

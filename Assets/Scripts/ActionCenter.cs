@@ -58,7 +58,7 @@ public class ActionCenter : MonoBehaviour
         
     }
     public void saveTurnStatData(int gameTurn){
-        if(this.gameObject.activeInHierarchy){
+        if(this.gameObject.activeInHierarchy || gameTurn == 0){
             statupdate.startSaveStat();
             if(pastOrigin.ContainsKey(gameTurn)){
                 pastOrigin[gameTurn] =  tilemap.WorldToCell(transform.position);    
@@ -96,24 +96,23 @@ public class ActionCenter : MonoBehaviour
 
     public void undoTurn(int i){
         //To-DO: Check what kind of buff undoed 
-        if(!this.gameObject.activeInHierarchy && i > 1){
+        if(!this.gameObject.activeInHierarchy){
             i--;
         }
         if(pastOrigin.ContainsKey(i)){
             Vector3 ogPos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
             transform.position = tilemap.GetCellCenterWorld(pastOrigin[i]);
             if(transform.position != ogPos){
-                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(ogPos), true);
-                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);   
+                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(ogPos), true);   
             }
-            
-            pastOrigin.Remove(i);
+            //pastOrigin.Remove(i);
             statupdate.revertStat(i);
             if(!this.gameObject.activeInHierarchy){
                 this.gameObject.SetActive(true);
                 statupdate.updateHealthBar();
-                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),false);
+                
             }
+            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),false);
         }
 
     }
