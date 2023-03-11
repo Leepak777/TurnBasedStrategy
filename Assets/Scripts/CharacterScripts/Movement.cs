@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
 {
     Pathfinder<Vector3Int> pathfinder;
     List<Vector3Int> path = new List<Vector3Int>();
+    List<Vector3Int> trail = new List<Vector3Int>();
     [SerializeField] Tilemap tilemap;
     [SerializeField] float movementSpeed = 100f;  // Add this to control the movement speed
     public float tilescheck = 0;
@@ -157,12 +158,15 @@ public class Movement : MonoBehaviour
 
                 if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
                 {
-                    Node node =tileM.GetNodeFromWorld(tilemap.WorldToCell(targetPosition));
-                    Color c = Color.red;
-                    c.a = 0.5f;
-                    Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
-                    tilemap.SetColor(tilePos, c);
-                    ac.addTrail(tilePos);
+                    Vector3Int node =  tilemap.WorldToCell(targetPosition);
+                    if (pathfinder.GenerateAstarPath(originNode, node, out trail))
+                    {
+                        ac.clearTrail();
+                        ac.addTrail(originNode);
+                        foreach(Vector3Int v in trail){
+                            ac.addTrail(v);
+                        }
+                    }
                     path.RemoveAt(0);
                     tilesTraveled++; // Increment the tiles traveled
                     

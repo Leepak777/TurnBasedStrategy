@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 303c7bef3757f304f89e5278f3b35103, type: 3}
+  m_Name: Player0(Clone)
+  m_EditorClassIdentifier: 
+  stats:
+    keys:
+    - pow
+    - dex
+    - tou
+    - acu
+    - mid
+    - ma
+    - ra
+    - md
+    - rd
+    - sa
+    - mr
+    - base_hp
+    - base_mov
+    - base_init
+    - base_enc
+    - base_ene
+    - wd
+    - rng
+    - pscal
+    - dscal
+    - sp
+    - ap
+    - acc
+    - pr
+    - pv
+    - w_enc
+    - attack_num
+    - av
+    - sv
+    - mdb
+    - rdb
+    - eq_mov
+    - eq_init
+    - eq_enc
+    - hp
+    - ene
+    - fat
+    - stb
+    - maxstb
+    - mov
+    - bite
+    - enc
+    - size
+    - maxHealth
+    - maxStb
+    - maxTiles
+    values:
+    - 7
+    - 5
+    - 6
+    - 2
+    - 3
+    - 13
+    - 9
+    - 15
+    - 14
+    - 3
+    - 10
+    - 45
+    - 1
+    - 10
+    - 0
+    - 0
+    - 9
+    - 1.5
+    - 1.3
+    - 1
+    - 100
+    - 0
+    - 2
+    - 4
+    - 15
+    - 3
+    - 2
+    - 0
+    - 0
+    - 3
+    - -2
+    - 9
+    - 4
+    - -2
+    - 82
+    - 14
+    - 0
+    - 33
+    - 0
+    - 13.5
+    - 21.75
+    - -0.75
+    - 0
+    - 82
+    - 47
+    - 13

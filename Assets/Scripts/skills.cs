@@ -112,20 +112,16 @@ public class Skills : MonoBehaviour
             //during turn
             if(ac.getTargetEnemy() == null){
                 statupdate.setbuff(14,true);
-                checker.modifyStat(new Dictionary<string,float>(){{"attack_num",1}}, true);
             }
         }
         if(x == 1){
             //start turn
             if(TM.getTurnElasped() == 1){
-                checker.multiplyStat(new Dictionary<string,float>(){{"mov",2}}, false);
             }
         }
         if(x == 2){
             //end turn
             if(checker.getbuff(14) && TM.getTurnElasped() == 0){            
-                checker.modifyStat(new Dictionary<string,float>(){{"attack_num",1}}, false);
-                checker.multiplyStat(new Dictionary<string,float>(){{"mov",2}}, true);
                 checker.setbuff(14,false);
             }
         }
@@ -193,14 +189,11 @@ public class Skills : MonoBehaviour
         StatUpdate checker = this.gameObject.GetComponent<StatUpdate>();
         if (startEnd == 1){
             if(as_turn == 0){
-                checker.setbuff(1,true);
-                checker.multiplyStat(new Dictionary<string,float>(){{"attack_num",2}}, true);
-                
+                checker.setbuff(1,true);                
             }
         }
         else if (startEnd == 2){
             if(checker.getbuff(1) && TM.getTurnElasped() == 0){            
-                checker.multiplyStat(new Dictionary<string,float>(){{"attack_num",2}}, false);
                 checker.setbuff(1,false);
             }
 

@@ -362,9 +362,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9672ac2063fb984eb802eb9d008d34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats:
-    keys: []
-    values: []
   currentHealth: 0
   maxHealth: 100
   Damage: 50
@@ -418,8 +415,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983e2691afc70d840bc2f9348f578ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dead: 0
   tilesfat: 0
+  healthBar: {fileID: 0}
 --- !u!114 &492597581560471947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,6 +430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacking: 0
+  attackArea: 0
   attackrange: 0
 --- !u!114 &1340744478867490675
 MonoBehaviour:
@@ -446,6 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a18ad274419294f9bde15054ad340d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilemap: {fileID: 0}
   movementSpeed: 100
   tilescheck: 0
   tilesTraveled: 0

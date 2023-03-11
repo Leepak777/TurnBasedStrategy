@@ -4,20 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class startTurnEvent : UnityEvent{
 
-}
-
-public class endTurnEvent : UnityEvent{
-    
-}
-
-public class duringTurnEvent : UnityEvent{
-    
-}
-public class undoEvent :UnityEvent{
-
-}
 
 public class TurnManager : MonoBehaviour
 {
@@ -31,10 +18,10 @@ public class TurnManager : MonoBehaviour
     public GameObject currentPlay;
     private int turnElasped;
     private int gameTurn = 1;
-    startTurnEvent start;
-    endTurnEvent end;
-    duringTurnEvent during;
-    undoEvent undo;
+    public UnityEvent start;
+    public UnityEvent end;
+    public UnityEvent during;
+    public UnityEvent undo;
     void Start()
     {
         turnOrder = new List<GameObject>();
@@ -46,14 +33,6 @@ public class TurnManager : MonoBehaviour
         currentTurnIndex = 0;
         currentTurnIndex2 = 0;
         currentPlay = turnOrder[currentTurnIndex];
-        start = new startTurnEvent();
-        end = new endTurnEvent();
-        during = new duringTurnEvent();
-        undo = new undoEvent();
-        start.AddListener(startEvent);
-        end.AddListener(endEvent);
-        during.AddListener(duringEvent);
-        undo.AddListener(undoTurn);
         //reset2();
     }
 
@@ -72,7 +51,7 @@ public class TurnManager : MonoBehaviour
                 break;
         }
     }
-    void startEvent(){
+    public void startEvent(){
         //To-DO: Added skill check for skills that update each game turn
         currentPlay.GetComponent<ActionCenter>().beginningTurn();
         if(currentPlay.tag == "Player"){        
@@ -85,7 +64,7 @@ public class TurnManager : MonoBehaviour
         GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(currentPlay);  
         gamestate = 2;
     }
-    void endEvent(){
+    public void endEvent(){
         //To-DO: Added skill check for skills that update each game turn
         currentPlay.GetComponent<ActionCenter>().endingTurn(0);
         updateTurn(currentPlay.GetComponent<ActionCenter>());
@@ -94,7 +73,7 @@ public class TurnManager : MonoBehaviour
             gameTurn++;
         }
     }
-    void duringEvent(){
+    public void duringEvent(){
         currentPlay.GetComponent<ActionCenter>().duringTurn();
         if(!currentPlay.GetComponent<Movement>().getisMoving() && currentPlay.tag == "Enemy"){
             endTurn();

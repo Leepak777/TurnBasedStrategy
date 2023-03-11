@@ -22,81 +22,11 @@ using Random = UnityEngine.Random;
 
 public class StatUpdate : MonoBehaviour
 {
-    public UDictionary<string,float> stats = new UDictionary<string,float>();
-    public void setUp(){
-        //Raw stat
-        stats.Add("pow",0);//power
-        stats.Add("dex",0);//dexterity
-        stats.Add("tou",0);//toughness
-        stats.Add("acu",0);//accuity
-        stats.Add("mid",0);//mind
-        stats.Add("ma",0);//melee attack
-        stats.Add("ra",0);//range attack
-        stats.Add("md",0);//melee defence
-        stats.Add("rd",0);//range defence
-        stats.Add("sa",0);//spell attack
-        stats.Add("mr",0);//magic resistance
-        stats.Add("base_hp",0);
-        stats.Add("base_mov",0);
-        stats.Add("base_init",0);
-        stats.Add("base_enc",0);
-        stats.Add("base_ene",0);
-        //weapon
-        stats.Add("wd",0);//weapon damage
-        stats.Add("rng",0);//range
-        stats.Add("pscal",0);//pow scaling
-        stats.Add("dscal",0);//dex scaling
-        stats.Add("sp",0);//shield piercing
-        stats.Add("ap",0);//armor piercing
-        stats.Add("acc",0);//accuracy
-        stats.Add("pr",0);//parry rating
-        stats.Add("pv",0);//parry value
-        stats.Add("w_enc",0);
-        stats.Add("attack_num",1);
-        //armor
-        stats.Add("av",0);//armor value
-        stats.Add("sv",0);//shield value
-        stats.Add("mdb",0);//melee defence bonus
-        stats.Add("rdb",0); //range defence bonus
-        stats.Add("eq_mov",0);
-        stats.Add("eq_init",0);
-        stats.Add("eq_enc",0);
-         //calculated stat
-        stats.Add("hp",0);//health point
-        stats.Add("ene",0);//energy
-        stats.Add("fat",0);//fatigue
-        stats.Add("stb",0);//stability
-        stats.Add("maxstb",0); 
-        stats.Add("mov",0);//movement range
-        stats.Add("bite",0);//base initiative
-        stats.Add("enc",0);//encumbrance
-        stats.Add("size",0);//size
-    } 
-    public void setStats(UDictionary<string,float> input){
-        foreach(KeyValuePair<string,float> s in input){
-            if(stats.ContainsKey(s.Key)){
-                stats[s.Key] += input[s.Key];
-            }
-        }
-    }
-
-    public void setCalStat(){
-        stats["hp"] = stats["tou"]*5 + stats["pow"] + stats["base_hp"];
-        stats["maxHealth"] = stats["hp"];
-        stats["ene"] = stats["mid"] * 4 + stats["acu"] + stats["base_ene"];
-        stats["fat"] = 0;
-        stats["stb"] = stats["mid"]*5 +stats["acu"]*3 + stats["tou"] *2;
-        stats["maxStb"] = stats["mid"] * 7 + stats["acu"] * 4 + stats["tou"] * 3;
-        stats["mov"] = stats["base_mov"] + stats["pow"]/2 + stats["eq_mov"];
-        stats["maxTiles"] = (int)stats["mov"];
-        stats["enc"] = stats["w_enc"] + stats["eq_enc"] + stats["base_enc"] - stats["pow"]/4;
-        stats["bite"] = stats["base_init"] + stats["dex"] + stats["acu"] + stats["eq_init"] - stats["enc"];
-    }
 
     public bool meleeRoll(GameObject enemy){
-        float player_roll = drn.getDRN() + stats["ma"]+ stats["acc"] + stats["pow"]/2 + stats["dex"] + stats["acu"]/2;
+        float player_roll = drn.getDRN() + stats.getMeleeAttackRoll();
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
-        float enemy_roll = drn.getDRN() + en_stat.getDictStats("md") + en_stat.getDictStats("mdb") + en_stat.getDictStats("tou")/2 + en_stat.getDictStats("dex")/2 + en_stat.getDictStats("acu")/2;
+        float enemy_roll = drn.getDRN() + en_stat.getStats().getMeleeDefenceRoll();
         //Debug.Log("Player: "+player_roll);
         //Debug.Log("Enemy: " +enemy_roll);
         if(player_roll > enemy_roll){
@@ -108,9 +38,9 @@ public class StatUpdate : MonoBehaviour
     public bool rangeRoll(GameObject enemy){
         Vector3Int enpos = tilemap.WorldToCell(enemy.transform.position);
         Vector3Int playerpos = tilemap.WorldToCell(transform.position);
-        float player_roll = drn.getDRN() + stats["ra"]+ stats["acc"] + stats["dex"] + stats["acu"]/2 - movement.GetDistance(enpos, playerpos);
+        float player_roll = drn.getDRN() + stats.getRangeAttackRoll(movement.GetDistance(enpos, playerpos));
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
-        float enemy_roll = drn.getDRN() + en_stat.getDictStats("rd") + en_stat.getDictStats("rdb") + en_stat.getDictStats("dex")/2 + en_stat.getDictStats("acu")/2;
+        float enemy_roll = drn.getDRN() + en_stat.getStats().getRangeDefenceRoll();
         //Debug.Log("Player: "+player_roll);
         //Debug.Log("Enemy: " +enemy_roll);
         if(player_roll > enemy_roll){
@@ -136,11 +66,12 @@ public class StatUpdate : MonoBehaviour
     Text text;
     Dictionary<int,float> pastHP = new Dictionary<int, float>();
     Dictionary<int,float> pastFat = new Dictionary<int, float>();
+    CharacterStat stats;
 
     public void attackEn(GameObject targetEnemy){
         Vector3Int enpos = tilemap.WorldToCell(targetEnemy.transform.position);
         Vector3Int playerpos = tilemap.WorldToCell(transform.position);
-        for(int i = 0; i < stats["attack_num"]; i++){
+        for(int i = 0; i < stats.getStat("attack_num"); i++){
             bool drn_check;
             if(movement.IsAdjacent(enpos,playerpos)){
                 drn_check = meleeRoll(targetEnemy);
@@ -149,7 +80,7 @@ public class StatUpdate : MonoBehaviour
                 drn_check = rangeRoll(targetEnemy);
             }
             if(drn_check){
-                Damage = (int)(drn.getDRN() + stats["wd"] + stats["pscal"] * stats["pow"] + stats["dscal"]*stats["dex"] + bonus);
+                Damage = (int)(drn.getDRN() + stats.getBaseDamage() + bonus);
                 attackingFatigue();
                 targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
                 targetEnemy.GetComponent<StatUpdate>().attackedFatigue();
@@ -162,11 +93,12 @@ public class StatUpdate : MonoBehaviour
 
     void Start()
     {   
+        //stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
         ac = this.gameObject.GetComponent<ActionCenter>();
         drn = DRN.getInstance();
         movement = this.gameObject.GetComponent<Movement>(); 
         text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
-        maxHealth = stats["maxHealth"];
+        maxHealth = stats.getStat("maxHealth");
         currentHealth = maxHealth;
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
@@ -188,11 +120,11 @@ public class StatUpdate : MonoBehaviour
             tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         }
         if(pastFat.ContainsKey(tm.getGameTurn()) && pastHP.ContainsKey(tm.getGameTurn())){
-            pastFat[tm.getGameTurn()] = stats["fat"];
+            pastFat[tm.getGameTurn()] = stats.getStat("fat");
             pastHP[tm.getGameTurn()] = currentHealth;
         }
         else{
-            pastFat.Add(tm.getGameTurn(), stats["fat"]);
+            pastFat.Add(tm.getGameTurn(), stats.getStat("fat"));
             pastHP.Add(tm.getGameTurn(), currentHealth);
         }
     }
@@ -203,7 +135,7 @@ public class StatUpdate : MonoBehaviour
             //pastHP.Remove(i);
             healthBar.UpdateHealth(currentHealth);
         }
-        stats["fat"] = pastFat[i];
+        stats.setStat("fat", pastFat[i]);
         //pastFat.Remove(i);
     }
     void showText(){
@@ -215,7 +147,7 @@ public class StatUpdate : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
-        int protection = (int)(drn.getDRN() + stats["sv"] * (100-stats["sp"])/100 + stats["av"]*(100 -stats["ap"])/100 + stats["tou"]/42);
+        int protection = drn.getDRN() + stats.getProtection();
         //Debug.Log("Damage: "+damage);
         //Debug.Log("Protection: " +protection);
         
@@ -242,30 +174,11 @@ public class StatUpdate : MonoBehaviour
         }
     }
     
-    public void modifyStat(Dictionary<string,float> lst, bool buff){
-        if(buff){
-            foreach(KeyValuePair<string, float> s in lst){
-                stats[s.Key] += lst[s.Key];
-            }
-        }
-        else{
-            foreach(KeyValuePair<string, float > s in lst){
-                stats[s.Key] -= lst[s.Key];
-            }
-        }
+    public void setStatAsset(CharacterStat s){
+        stats = s;
     }
-
-    public void multiplyStat(Dictionary<string,float> lst, bool buff){
-        if(buff){
-            foreach(KeyValuePair<string, float> s in lst){
-                stats[s.Key] *= lst[s.Key];
-            }
-        }
-        else{
-            foreach(KeyValuePair<string, float > s in lst){
-                stats[s.Key] /= lst[s.Key];
-            }
-        }
+    public CharacterStat getStats(){
+        return stats;
     }
 
     public void updateHealthBar(){
@@ -277,7 +190,7 @@ public class StatUpdate : MonoBehaviour
     }
 
     public float getDictStats(string name){
-        return stats[name];
+        return stats.getStat(name);
     }
 
     public bool getbuff(int i){
@@ -309,11 +222,11 @@ public class StatUpdate : MonoBehaviour
 
     public int getMaxTiles(){
         
-        return (int)stats["mov"]/4 +1;
+        return (int)stats.getStat("mov")/4 +1;
     }
 
     public void setMaxTiles(int x){
-        stats["mov"] = (float)x;
+        stats.setStat("mov", (float)x);
     }
 
     public float getMaxHealth(){
@@ -328,45 +241,44 @@ public class StatUpdate : MonoBehaviour
         attackrange = x;
     }
     public int getAttackRange(){
-        return (int)stats["rng"];
+        return (int)stats.getStat("rng");
     }
 
     public void attackingFatigue(){
-        stats["fat"] += stats["enc"];
+        stats.modifyStat("fat", stats.getStat("enc"));
     }
 
     public void attackedFatigue(){
-        stats["fat"]++;
+        stats.modifyStat("fat",1);
     }
 
     public void tileFatigue(int tiles){
-        
-        stats["fat"] += tiles;
+        stats.modifyStat("fat", tiles);
         //Debug.Log(this.gameObject.tag + "Fatigue: "+ stats["fat"]);
 
     }
 
     public void restoreFatigue(){
-        stats["fat"] -= stats["tou"];
+        stats.modifyStat("fat", -stats.getStat("tou"));
         //Debug.Log("Fatigue: "+fat);
         //Debug.Log("Toughness: "+tou);
-        if(stats["fat"] <= 0){
-            stats["fat"] = 0;
+        if(stats.getStat("fat") <= 0){
+            stats.setStat("fat", 0);
         }
     }
 
     public void checkFatigue(int tiles){
         tileFatigue(tiles);
         restoreFatigue();
-        if(stats["fat"] >= 75){
-            stats["rd"] -= stats["fat"] / 5;
-            stats["md"] -= stats["fat"] / 10;
-            stats["ma"] -= stats["fat"] / 20;
-            stats["ra"] -= stats["fat"] / 30;
+        if(stats.getStat("fat") >= 75){
+            stats.modifyStat("rd", -stats.getStat("fat")/5);
+            stats.modifyStat("md",-stats.getStat("fat")/10);
+            stats.modifyStat("ma",-stats.getStat("fat")/20);
+            stats.modifyStat("ra",-stats.getStat("fat")/30);
         }
-        if(stats["fat"] >= 100){
-            stats["stb"] -= stats["fat"] - 100;
-            stats["fat"] = 100;
+        if(stats.getStat("fat") >= 100){
+            stats.modifyStat("stb",-stats.getStat("fat")-100);
+            stats.modifyStat("fat",100);   
         }
 
     }

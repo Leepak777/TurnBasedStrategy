@@ -52,11 +52,11 @@ public class InitCharacter : MonoBehaviour
         }
         return null;
     }
-    void setStats(GameObject character, UDictionary<string,string> attributes){
+    void setDataStats(CharacterStat character, UDictionary<string,string> attributes){
         
         foreach(KeyValuePair<string,string> attribute in attributes){
             if(getAttributeStats(attribute)!=null){
-                character.GetComponent<StatUpdate>().setStats(getAttributeStats(attribute));
+                character.setStats(getAttributeStats(attribute));
             }
         }
        
@@ -64,7 +64,7 @@ public class InitCharacter : MonoBehaviour
 
     public void setStage(){
         //List<string> lst = ReadInputFileAsList();
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/InGameData.asset");
+        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
         foreach(KeyValuePair<string, UDictionary<string,string>> ch in chlst){
             //string[] words = lst[i].Split(',');
@@ -84,6 +84,8 @@ public class InitCharacter : MonoBehaviour
         GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
         prefab.name = ch.Key;
         GameObject player = Instantiate(prefab) as GameObject;
+        CreateCharacterAsset(player,ch.Value);
+        player.GetComponent<StatUpdate>().setStatAsset((CharacterStat )AssetDatabase.LoadAssetAtPath("Assets/Scripts/Data/"+player.name+".asset", typeof(CharacterStat)));
         player.tag = tag;
         player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
         player.transform.SetParent(transform);
@@ -95,10 +97,8 @@ public class InitCharacter : MonoBehaviour
         }
         player.transform.position = tilemap.GetCellCenterWorld(allocate);
         tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
-        player.GetComponent<StatUpdate>().setUp();
-        setStats(player,ch.Value);
-        player.GetComponent<StatUpdate>().setCalStat();
         player.GetComponent<ActionCenter>().saveTurnStatData(0);
+        
     }
    
 
@@ -112,6 +112,33 @@ public class InitCharacter : MonoBehaviour
         }
     }
 
+    public void CreateCharacterAsset(GameObject go, UDictionary<string,string> ch) {    
+        string[] result = AssetDatabase.FindAssets("/Data/"+go.name);
+        CharacterStat Data = null;
+        if (result.Length > 2)
+        {
+            Debug.LogError("More than 1 Asset founded");
+            return;
+        }
+        if(result.Length == 0)
+        {
+            Debug.Log("Create new Asset");
+            Data = ScriptableObject.CreateInstance<CharacterStat>();
+            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go.name+".asset");
+        }
+        else
+        {
+            string path = AssetDatabase.GUIDToAssetPath(result[0]);
+            Data= (CharacterStat )AssetDatabase.LoadAssetAtPath(path, typeof(CharacterStat ));
+            Debug.Log("Found Asset File !!!");
+        }
+        Data.setUp();
+        setDataStats(Data,ch);
+        Data.setCalStat();
+        EditorUtility.SetDirty(Data);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
 
     // Update is called once per frame
     void Update()

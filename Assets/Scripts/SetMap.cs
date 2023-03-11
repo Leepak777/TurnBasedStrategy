@@ -127,7 +127,7 @@ public class SetMap : MonoBehaviour
 
     public void setStage()
     {
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/InGameData.asset");
+        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         if (data.map == "Never Gonna Give You Up")
         {
             createTilemap();

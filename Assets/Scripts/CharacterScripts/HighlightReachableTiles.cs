@@ -49,6 +49,22 @@ public class HighlightReachableTiles
         return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);
     }
 
+    public void highlight(Vector3Int tile){
+        Color c = Color.red; 
+        c.a = 0.5f;
+        tilemap.SetTileFlags(tile, TileFlags.None);
+        tilemap.SetColor(tile, c);
+
+    }
+
+    public void unhighlight(Vector3Int tile){
+        Color c = Color.white; 
+        c.a = 0.1f;
+        tilemap.SetTileFlags(tile, TileFlags.None);
+        tilemap.SetColor(tile, c);
+
+    }
+
     public void HighlightEnemy(GameObject character){
         highlightColor2.a = 0.5f;
         //Debug.Log(this.gameObject.GetComponent<StatUpdate>().getAttackRange());

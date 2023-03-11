@@ -57,6 +57,7 @@ public class ActionCenter : MonoBehaviour
         statupdate.updateHealthBar();
         
     }
+    
     public void saveTurnStatData(int gameTurn){
         if(this.gameObject.activeInHierarchy || gameTurn == 0){
             statupdate.startSaveStat();
@@ -136,6 +137,7 @@ public class ActionCenter : MonoBehaviour
         hightlightReachableTile.HighlightReachable(gameObject);
     }
     public void addTrail(Vector3Int tile){
+        hightlightReachableTile.highlight(tile);
         Trail.Add(tile);
     }
     public List<Vector3Int> getTrail(){
@@ -156,7 +158,7 @@ public class ActionCenter : MonoBehaviour
     public void setTargetEnemy(GameObject go){
         this.targetEnemy = go;
     }
-    void clearTrail(){
+    public void clearTrail(){
         hightlightReachableTile.UnhighlightTrail(Trail);
         Trail.Clear();
     }
