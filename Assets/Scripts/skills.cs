@@ -29,25 +29,11 @@ public class Skills : MonoBehaviour
     public int bl_turn = 0;
     public int as_turn = 0;
     public int charge_bonus = 0;
-    TileManager tileM;
-    Tilemap tilemap;
-    Movement movement;
-    StatUpdate statupdate;
-    TurnManager TM;
-    ActionCenter ac;
-    Attack atk;
-    bool gameTurn = true;
-    bool characterTurn = false;
+    
     // Start is called before the first frame update
     void Start()
     {
-        ac = this.gameObject.GetComponent<ActionCenter>();
-        atk = this.gameObject.GetComponent<Attack>();
-        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        TM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
-        movement = this.gameObject.GetComponent<Movement>();
-        statupdate = this.gameObject.GetComponent<StatUpdate>();
+        
     }
 
     void checkChStartTurnSkills(){
@@ -94,144 +80,34 @@ public class Skills : MonoBehaviour
     }
 
     void opportunity(){
-        string tag = "Enemy";
-        if(this.gameObject.tag == "Enemy")
-        {
-            tag = "Player";
-        }
-        foreach(GameObject go in tileM.getTaginArea(movement.getOrigin(),statupdate.getDictStats("mov"),tag)){
-            StatUpdate checker = go.GetComponent<StatUpdate>();
-            checker.Flagging();
-            atk.AttackCheck(go);
-        }
+        
     }
 
     void checkBloodLust(int x){
-        StatUpdate checker = this.gameObject.GetComponent<StatUpdate>();
-        if(x == 0){
-            //during turn
-            if(ac.getTargetEnemy() == null){
-                statupdate.setbuff(14,true);
-            }
-        }
-        if(x == 1){
-            //start turn
-            if(TM.getTurnElasped() == 1){
-            }
-        }
-        if(x == 2){
-            //end turn
-            if(checker.getbuff(14) && TM.getTurnElasped() == 0){            
-                checker.setbuff(14,false);
-            }
-        }
+       
     }
 
     void checkSplash(int x){
-        if(x == 1){
-            //during turn
-            atk.setAttackArea(1);
-        }
-        if(x == 2){
-           atk.setAttackArea(0);
-        }
+        
     }
 
     void checkIntercept(){
-        opportunity();
     }
     void checkCharge(int x){
-        if(x == 0){
-            //during turn
-            if(!movement.getisMoving() && ac.getTilesFat() > 0 && !statupdate.getbuff(7)){
-                statupdate.setbuff(7,true);
-                statupdate.setBonus(ac.getTilesFat());
-                charge_bonus = ac.getTilesFat();
-            }
-            if(movement.getisMoving() && ac.getTilesFat() > 0 && statupdate.getbuff(7)){
-                statupdate.setbuff(7,false);
-                statupdate.setBonus(-ac.getTilesFat());
-                charge_bonus = 0;
-            }
-        }
-        if(x == 2){
-            //end turn
-            if(statupdate.getbuff(7) && charge_bonus > 0){
-                statupdate.setbuff(7,false);
-                statupdate.setBonus(-charge_bonus);
-                charge_bonus = 0;
-            }
-        }
+        
     }
     void checkLeaderShipAura(){
-        string tag = "Enemy";
-        if(this.gameObject.tag == "Player")
-        {
-            tag = "Player";
-        }
-        foreach(GameObject go in GameObject.FindGameObjectsWithTag(tag)){
-                StatUpdate checker = go.GetComponent<StatUpdate>();
-                if(tileM.inArea(movement.getOrigin(), tilemap.WorldToCell(go.transform.position),3)){
-                    if(!checker.getbuff(0)){
-                        checker.setbuff(0,true);
-                        checker.setBonus(1);
-                    }
-                }
-                else{
-                    if(checker.getbuff(0)){
-                        checker.setbuff(0,false);
-                        checker.setBonus(-1);
-                    }
-                }
-        }
+        
     }
     void checkActionSurge(int startEnd){
-        StatUpdate checker = this.gameObject.GetComponent<StatUpdate>();
-        if (startEnd == 1){
-            if(as_turn == 0){
-                checker.setbuff(1,true);                
-            }
-        }
-        else if (startEnd == 2){
-            if(checker.getbuff(1) && TM.getTurnElasped() == 0){            
-                checker.setbuff(1,false);
-            }
-
-            as_turn++;
-            if(as_turn >=5){
-                as_turn = 0;
-            }
-        }
+        
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        //check when a turn start
-        if(TM.getActive() && gameTurn){
-            //check when character turn start
-            if(TM.getCurrenPlay() == this.gameObject){
-                checkChStartTurnSkills();
-                characterTurn = true;
-            }    
-            //overall startturn check
-            checkGameStartTurnSkills();
-            gameTurn = false;
-        }else if(!TM.getActive()){
-            gameTurn = true;
-            //character end turn check
-            if(TM.getCurrenPlay() == this.gameObject){
-                checkChEndTurnSkills();
-                characterTurn = false;
-            }
-            //overall endturn check
-            checkGameEndTurnSkills();
-        }
-        //check during character turn
-        if(characterTurn){
-            checkDuringTurnSkills();
-        }
+        
     }
 
 

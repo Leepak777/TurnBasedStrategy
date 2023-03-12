@@ -530,9 +530,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5925291172722692194}
-        m_TargetAssemblyTypeName: ActionCenter, Assembly-CSharp
-        m_MethodName: clearTrail
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightMoveTrail
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -546,6 +546,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Ghost, Assembly-CSharp
         m_MethodName: setOnOff
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 5340198930151324993}
+        m_TargetAssemblyTypeName: StatUpdate, Assembly-CSharp
+        m_MethodName: startFatCheck
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -629,6 +641,42 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightReachable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightEnemy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightMoveTrail
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDuring:
     m_PersistentCalls:
       m_Calls:
@@ -683,6 +731,45 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onAttacking:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5340198930151324993}
+        m_TargetAssemblyTypeName: StatUpdate, Assembly-CSharp
+        m_MethodName: attackEn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 492597581560471947}
+        m_TargetAssemblyTypeName: Attack, Assembly-CSharp
+        m_MethodName: setAttacking
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 1728de16cf4b5b743a4c894c5afe120b, type: 2}
+        m_TargetAssemblyTypeName: GameEvent, Assembly-CSharp
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onEnemyAttack:
     m_PersistentCalls:
       m_Calls:
@@ -729,6 +816,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Ghost, Assembly-CSharp
         m_MethodName: setOnOff
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightReachable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightMoveTrail
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -848,6 +959,138 @@ MonoBehaviour:
   onReset:
     m_PersistentCalls:
       m_Calls: []
+  onMoveStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onMoveStop:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightReachable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: HighlightReachable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onHover:
+    m_PersistentCalls:
+      m_Calls: []
+  onAttackTrue:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: HighlightEnemy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 492597581560471947}
+        m_TargetAssemblyTypeName: Attack, Assembly-CSharp
+        m_MethodName: setAttacking
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onAttackFalse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 492597581560471947}
+        m_TargetAssemblyTypeName: Attack, Assembly-CSharp
+        m_MethodName: setAttacking
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightEnemy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHighLight:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: highlight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5925291172722692194}
+        m_TargetAssemblyTypeName: ActionCenter, Assembly-CSharp
+        m_MethodName: addTrail
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onUnHighLight:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2400225220951129278}
+        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
+        m_MethodName: UnhighlightTrail
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &2331907350683025971
 PrefabInstance:
   m_ObjectHideFlags: 0

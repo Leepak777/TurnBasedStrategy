@@ -27,7 +27,6 @@ public class StatUpdate : MonoBehaviour
     public int Damage = 0;
     public HealthBar healthBar;
     public List<bool> buff =new List<bool>();
-    public bool flag = false;
     public float bonus = 0;
     Tilemap tilemap;
     TileManager tileM;
@@ -40,7 +39,7 @@ public class StatUpdate : MonoBehaviour
 
     void Start()
     {   
-        //stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
+        stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
         drn = DRN.getInstance();
         text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
         maxHealth = stats.getStat("maxHealth");
@@ -146,16 +145,11 @@ public class StatUpdate : MonoBehaviour
             currentHealth = 0;
         }
         healthBar.UpdateHealth();
-        flag = false;
         if(currentHealth <= 0){
             tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
             this.gameObject.SetActive(false);
         }
         attackedFatigue();
-    }
-    
-    public void setStatAsset(CharacterStat s){
-        stats = s;
     }
     public CharacterStat getStats(){
         return stats;
@@ -163,10 +157,6 @@ public class StatUpdate : MonoBehaviour
 
     public void updateHealthBar(){
         healthBar.UpdateHealth();
-    }
-    
-    public void Flagging(){
-        this.flag = true;
     }
 
     public float getDictStats(string name){
@@ -262,7 +252,11 @@ public class StatUpdate : MonoBehaviour
         }
 
     }
-
+    public void startFatCheck(){
+        if(stats.getStat("fat") > 100){
+            this.gameObject.GetComponent<CharacterEvents>().onEnd.Invoke(1);
+        }
+    }
     public void destablize(){
         
     }

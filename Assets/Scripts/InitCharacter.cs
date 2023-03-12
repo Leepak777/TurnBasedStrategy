@@ -83,9 +83,8 @@ public class InitCharacter : MonoBehaviour
     void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch){
         GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
         prefab.name = ch.Key;
+        CreateCharacterAsset(ch.Key,ch.Value);
         GameObject player = Instantiate(prefab) as GameObject;
-        CreateCharacterAsset(player,ch.Value);
-        player.GetComponent<StatUpdate>().setStatAsset((CharacterStat )AssetDatabase.LoadAssetAtPath("Assets/Scripts/Data/"+player.name+".asset", typeof(CharacterStat)));
         player.tag = tag;
         player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
         player.transform.SetParent(transform);
@@ -112,8 +111,8 @@ public class InitCharacter : MonoBehaviour
         }
     }
 
-    public void CreateCharacterAsset(GameObject go, UDictionary<string,string> ch) {    
-        string[] result = AssetDatabase.FindAssets("/Data/"+go.name);
+    public void CreateCharacterAsset(string go, UDictionary<string,string> ch) {    
+        string[] result = AssetDatabase.FindAssets("/Data/"+go);
         CharacterStat Data = null;
         if (result.Length > 2)
         {
@@ -124,7 +123,7 @@ public class InitCharacter : MonoBehaviour
         {
             //Debug.Log("Create new Asset");
             Data = ScriptableObject.CreateInstance<CharacterStat>();
-            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go.name+".asset");
+            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go+".asset");
         }
         else
         {

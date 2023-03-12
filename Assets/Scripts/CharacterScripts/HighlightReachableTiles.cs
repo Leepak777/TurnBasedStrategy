@@ -25,11 +25,10 @@ public class HighlightReachableTiles : MonoBehaviour
         GameObject character = this.gameObject;
         reachableTiles.Clear();
         Vector3Int currentPos = character.GetComponent<Movement>().getOrigin();//tilemap.WorldToCell(transform.position);
-        ActionCenter ac = character.GetComponent<ActionCenter>();
         foreach(Node node in tileM.GetTilesInArea(currentPos,(character.GetComponent<StatUpdate>().getMaxTiles())+0.5f)){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
                 if (tilemap.HasTile(tilePos) && node.walkable){
-                    if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !ac.getTrail().Contains(tilePos))
+                    if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !character.GetComponent<Movement>().getTrail().Contains(tilePos))
                     {
                             // Save the original tile
                             var temp = tilemap.GetTile(tilePos);
@@ -131,5 +130,18 @@ public class HighlightReachableTiles : MonoBehaviour
         }        
     }
 
+    public void UnhighlightMoveTrail()
+    {
+        List<Vector3Int> trail = gameObject.GetComponent<Movement>().getTrail();
+        for (int i = 0; i < trail.Count; i++)
+        {
+            Color c = Color.white; 
+            c.a = 0.1f;
+            Vector3Int tilePos = trail[i];
+            tilemap.SetTileFlags(tilePos, TileFlags.None);
+            tilemap.SetColor(tilePos, c);
+            
+        }        
+    }
 
 }

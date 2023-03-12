@@ -21,14 +21,12 @@ public class Movement : MonoBehaviour
     TileManager tileM;
     Vector3Int originNode;
     Vector3Int targetNode;
-    ActionCenter ac;
     private void Start()
     {
         // Get the Tilemap component from the scene
         attackrange = this.gameObject.GetComponent<StatUpdate>().getAttackRange();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();        
         tilemap = tileM.getTileMap();
-        ac = this.gameObject.GetComponent<ActionCenter>();
         pathfinder = new Pathfinder<Vector3Int>(tileM.GetDistance, GetNeighbourNodes);
         transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
         tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() + 0.5f;
@@ -108,7 +106,6 @@ public class Movement : MonoBehaviour
             }
             
             path = new List<Vector3Int>();
-            trail = new List<Vector3Int>();
             if (pathfinder.GenerateAstarPath(startNode, targetNode, out path))
             {
                 if(path.Count > tilescheck && !tileM.inArea(originNode,targetNode,tilescheck)){
@@ -143,12 +140,12 @@ public class Movement : MonoBehaviour
                 if ((transform.position - targetPosition).sqrMagnitude < movementSpeed * movementSpeed * Time.deltaTime * Time.deltaTime)
                 {
                     Vector3Int node =  tilemap.WorldToCell(targetPosition);
+                    this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke(trail);
                     if (pathfinder.GenerateAstarPath(originNode, node, out trail))
                     {
-                        ac.clearTrail();
-                        ac.addTrail(originNode);
+                        this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(originNode);
                         foreach(Vector3Int v in trail){
-                            ac.addTrail(v);
+                            this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(v);
                         }
                     }
                     path.RemoveAt(0);
@@ -167,7 +164,7 @@ public class Movement : MonoBehaviour
                     isMoving = false;
                     tilesTraveled = 0;
                 }
-                ac.onStop();
+                this.gameObject.GetComponent<CharacterEvents>().onMoveStop.Invoke();
             }
     }
     public void setRange(){
@@ -228,5 +225,8 @@ public class Movement : MonoBehaviour
     }
     public int gettrailCount(){
         return trail.Count;
+    }
+    public List<Vector3Int> getTrail(){
+        return trail;
     }
 }

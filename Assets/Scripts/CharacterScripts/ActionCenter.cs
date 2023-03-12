@@ -9,19 +9,14 @@ using UnityEngine.Events;
 public class ActionCenter : MonoBehaviour
 {
     // Start is called before the first frame update
-    HighlightReachableTiles hightlightReachableTile;
     Tilemap tilemap;
     //bool gameTurn = true;
     public int tilesfat = 0;
-    GameObject targetEnemy;
     TileManager tileM;
-        
-    private List<Vector3Int> Trail = new List<Vector3Int>();
     private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
     void Awake()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        hightlightReachableTile = this.gameObject.GetComponent<HighlightReachableTiles>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
     public bool GetMouseButtonDown(int button)
@@ -42,6 +37,7 @@ public class ActionCenter : MonoBehaviour
         if(tilesfat > 0){
             tilesfat = 0;
         }
+        //remove
         if(gameObject.GetComponent<StatUpdate>().getDictStats("fat") > 100){
             this.gameObject.GetComponent<CharacterEvents>().onEnd.Invoke(1);
         }
@@ -86,7 +82,6 @@ public class ActionCenter : MonoBehaviour
             if(transform.position != ogPos){
                 tileM.setWalkable(this.gameObject,tilemap.WorldToCell(ogPos), true);   
             }
-            //pastOrigin.Remove(i);
             if(!this.gameObject.activeInHierarchy){
                 this.gameObject.SetActive(true);
                 
@@ -99,22 +94,7 @@ public class ActionCenter : MonoBehaviour
     public void notmoving(){
         if(this.gameObject.activeInHierarchy){
             tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
-            hightlightReachableTile.UnhighlightReachable();
-            hightlightReachableTile.UnhighlightEnemy();
-            clearTrail();
         }
-    }
-
-    public void onMove(){
-        hightlightReachableTile.UnhighlightReachable();
-        if(Trail.Count > 0){
-            clearTrail();
-        }
-    }
-
-    public void onStop(){
-        hightlightReachableTile.UnhighlightReachable();
-        hightlightReachableTile.HighlightReachable();
     }
 
     public void saveTurnStatData(int gameTurn){
@@ -128,33 +108,15 @@ public class ActionCenter : MonoBehaviour
             }
         }
     }
-
-    public void addTrail(Vector3Int tile){
-        hightlightReachableTile.highlight(tile);
-        Trail.Add(tile);
-    }
-    public List<Vector3Int> getTrail(){
-        return Trail;
-    }
-    public HighlightReachableTiles getHighLight(){
-        return hightlightReachableTile;
-    }
     public void setTilesFat(int tilesfat){
         this.tilesfat = tilesfat;
     }
     public int getTilesFat(){
         return tilesfat;
     }
-    public GameObject getTargetEnemy(){
-        return targetEnemy;
-    }
-    public void setTargetEnemy(GameObject go){
-        this.targetEnemy = go;
-    }
-    public void clearTrail(){
-        hightlightReachableTile.UnhighlightTrail(Trail);
-        Trail.Clear();
-    }
+
+
+
 
     
 }
