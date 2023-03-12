@@ -291,6 +291,16 @@ public class TileManager : MonoBehaviour
         // Use Manhattan distance for tilemap
         return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);
     }
+    public bool IsAdjacent(Vector3Int node1, Vector3Int node2)
+    {
+        int xDiff = Mathf.Abs(node1.x - node2.x);
+        int yDiff = Mathf.Abs(node1.y - node2.y);
+        if (xDiff + yDiff == 1)
+        {
+            return true;
+        }
+        return false;
+    }
 
     public Tilemap getTileMap(){
         return tilemap;

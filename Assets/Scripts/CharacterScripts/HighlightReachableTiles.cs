@@ -46,12 +46,6 @@ public class HighlightReachableTiles : MonoBehaviour
         }
     }
 
-    float GetDistance(Vector3Int A, Vector3Int B)
-    {
-        // Use Manhattan distance for tilemap
-        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);
-    }
-
     public void highlight(Vector3Int tile){
         Color c = Color.red; 
         c.a = 0.5f;

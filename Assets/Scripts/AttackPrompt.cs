@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
@@ -12,6 +13,8 @@ public class AttackPrompt : MonoBehaviour
     //public Button attackButton2;
     //public Button attackButton3;
     public List<Button> buttons = new List<Button>();
+    public UnityEvent undo;
+    public UnityEvent reset;
     private void Start()
     {
         attackPromptImage = this.gameObject.GetComponent<Image>();
@@ -44,14 +47,14 @@ public class AttackPrompt : MonoBehaviour
     void Attack3()
     {
         if(!turnManager.currentPlay.GetComponent<Movement>().getisMoving())
-            turnManager.getEvent(3).Invoke();;
+            undo.Invoke();
         //Quit();
         //Debug.Log("Attack 3");
     }
 
     void Attack4(){
         if(!turnManager.currentPlay.GetComponent<Movement>().getisMoving())
-            turnManager.resetTurn();
+            reset.Invoke();
     }
 
 

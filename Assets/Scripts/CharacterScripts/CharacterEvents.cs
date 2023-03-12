@@ -15,4 +15,6 @@ public class CharacterEvents : MonoBehaviour
     public UnityEvent onEnemyMove;
     public UnityEvent onMoving;
     public UnityEvent<int> saveStat;
+    public UnityEvent<int> onUndo;
+    public UnityEvent<int> onReset;
 }

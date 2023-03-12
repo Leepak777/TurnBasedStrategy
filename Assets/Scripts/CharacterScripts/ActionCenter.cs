@@ -14,11 +14,7 @@ public class ActionCenter : MonoBehaviour
     //bool gameTurn = true;
     public int tilesfat = 0;
     GameObject targetEnemy;
-    Movement movement;
-    StatUpdate statupdate;
     TileManager tileM;
-    Attack atk;
-    public HealthBar healthBar;
         
     private List<Vector3Int> Trail = new List<Vector3Int>();
     private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
@@ -26,10 +22,7 @@ public class ActionCenter : MonoBehaviour
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         hightlightReachableTile = this.gameObject.GetComponent<HighlightReachableTiles>();
-        statupdate = this.gameObject.GetComponent<StatUpdate>();
-        atk = this.gameObject.GetComponent<Attack>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        movement = this.gameObject.GetComponent<Movement>();
     }
     public bool GetMouseButtonDown(int button)
     {
@@ -49,28 +42,24 @@ public class ActionCenter : MonoBehaviour
         if(tilesfat > 0){
             tilesfat = 0;
         }
-        if(statupdate.getDictStats("fat") > 100){
-            endingTurn(0);
+        if(gameObject.GetComponent<StatUpdate>().getDictStats("fat") > 100){
+            this.gameObject.GetComponent<CharacterEvents>().onEnd.Invoke(1);
         }
     }
     
     public void endingTurn(int i){
         //To-DO: Added skill check for skills that update each Character turn
         if(i == 0){
-            movement.setPath = false;
             if(this.gameObject.tag == "Enemy"){
                 this.gameObject.GetComponent<CharacterEvents>().onEnemyAttack.Invoke();
             }
-            statupdate.checkFatigue(tilesfat);
-            statupdate.setDamage(0);
-            tilesfat = 0;
         }
     }
 
     public void duringTurn(){
         if(gameObject.tag == "Player"){
             if(GetMouseButtonDown(0)){
-                if(!atk.isAttacking()){
+                if(!gameObject.GetComponent<Attack>().isAttacking()){
                     this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
                 }
                 else{
@@ -98,10 +87,8 @@ public class ActionCenter : MonoBehaviour
                 tileM.setWalkable(this.gameObject,tilemap.WorldToCell(ogPos), true);   
             }
             //pastOrigin.Remove(i);
-            statupdate.revertStat(i);
             if(!this.gameObject.activeInHierarchy){
                 this.gameObject.SetActive(true);
-                statupdate.updateHealthBar();
                 
             }
             tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),false);

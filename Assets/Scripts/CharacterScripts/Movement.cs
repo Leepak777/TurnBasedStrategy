@@ -29,7 +29,7 @@ public class Movement : MonoBehaviour
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();        
         tilemap = tileM.getTileMap();
         ac = this.gameObject.GetComponent<ActionCenter>();
-        pathfinder = new Pathfinder<Vector3Int>(GetDistance, GetNeighbourNodes);
+        pathfinder = new Pathfinder<Vector3Int>(tileM.GetDistance, GetNeighbourNodes);
         transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
         tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() + 0.5f;
         originNode = tilemap.WorldToCell(transform.position);
@@ -108,7 +108,7 @@ public class Movement : MonoBehaviour
             }
             
             path = new List<Vector3Int>();
-            
+            trail = new List<Vector3Int>();
             if (pathfinder.GenerateAstarPath(startNode, targetNode, out path))
             {
                 if(path.Count > tilescheck && !tileM.inArea(originNode,targetNode,tilescheck)){
@@ -133,7 +133,7 @@ public class Movement : MonoBehaviour
 
                 if (path.Count > 1)
                 {
-                    if (!IsAdjacent(path[0], path[1]))
+                    if (!tileM.IsAdjacent(path[0], path[1]))
                     {
                         path.RemoveAt(0);
                         return;
@@ -164,7 +164,6 @@ public class Movement : MonoBehaviour
             if ((path == null || path.Count == 0))
             {
                 if(isMoving || tilesTraveled >= tilescheck){
-                    ac.setTilesFat(trail.Count);
                     isMoving = false;
                     tilesTraveled = 0;
                 }
@@ -183,22 +182,6 @@ public class Movement : MonoBehaviour
 
     }
     
-   public bool IsAdjacent(Vector3Int node1, Vector3Int node2)
-    {
-        int xDiff = Mathf.Abs(node1.x - node2.x);
-        int yDiff = Mathf.Abs(node1.y - node2.y);
-        if (xDiff + yDiff == 1)
-        {
-            return true;
-        }
-        return false;
-    }
-    
-    public float GetDistance(Vector3Int A, Vector3Int B)
-    {
-        // Use Manhattan distance for tilemap
-        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);
-    }
 
     Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos) 
     {
@@ -238,5 +221,12 @@ public class Movement : MonoBehaviour
     }
     public void setTilemap(Tilemap tilemap){
         this.tilemap = tilemap;
+    }
+
+    public void SetsetPath(bool setPath){
+        this.setPath = setPath;
+    }
+    public int gettrailCount(){
+        return trail.Count;
     }
 }

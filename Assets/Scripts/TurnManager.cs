@@ -66,7 +66,6 @@ public class TurnManager : MonoBehaviour
     public void endEvent(){
         //To-DO: Added skill check for skills that update each game turn
         currentPlay.GetComponent<CharacterEvents>().onEnd.Invoke(0);
-        updateTurn(currentPlay.GetComponent<ActionCenter>());
         gamestate = 0;
         if(currentPlay.tag == "Player"){
             gameTurn++;
@@ -79,13 +78,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-
-    private void updateTurn(ActionCenter ac)
-    {
-        updateIndex();
-    }
-
-    private void updateIndex()
+    public void updateIndex()
     {
         if (this.player)
         {
@@ -138,10 +131,20 @@ public class TurnManager : MonoBehaviour
             if(currentTurnIndex2<0){currentTurnIndex2 = turnOrder2.Count-1;}
             currentPlay = turnOrder[currentTurnIndex];
             foreach(GameObject go in turnOrder){
-                go.GetComponent<ActionCenter>().undoTurn(gameTurn);
+                if(go.activeInHierarchy){
+                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn);
+                }
+                else{
+                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn-1);
+                }
             }
             foreach(GameObject go in turnOrder2){
-                go.GetComponent<ActionCenter>().undoTurn(gameTurn);
+                if(go.activeInHierarchy){
+                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn);
+                }
+                else{
+                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn-1);
+                }
             }     
         }
     }
@@ -199,18 +202,5 @@ public class TurnManager : MonoBehaviour
     }
     public void endTurn(){
         gamestate = 1;
-    }
-    public UnityEvent getEvent(int i){
-        switch(i){
-            case 0:
-                return start;
-            case 1:
-                return end;
-            case 2:
-                return during;
-            case 3:
-                return undo;
-        }
-        return null;
     }
 }

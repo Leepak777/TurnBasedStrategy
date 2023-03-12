@@ -31,8 +31,6 @@ public class StatUpdate : MonoBehaviour
     public float bonus = 0;
     Tilemap tilemap;
     TileManager tileM;
-    Movement movement;
-    ActionCenter ac;
     DRN drn;
     int attackrange = 1;
     Text text;
@@ -43,9 +41,7 @@ public class StatUpdate : MonoBehaviour
     void Start()
     {   
         //stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
-        ac = this.gameObject.GetComponent<ActionCenter>();
         drn = DRN.getInstance();
-        movement = this.gameObject.GetComponent<Movement>(); 
         text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
         maxHealth = stats.getStat("maxHealth");
         currentHealth = maxHealth;
@@ -72,7 +68,7 @@ public class StatUpdate : MonoBehaviour
     public bool rangeRoll(GameObject enemy){
         Vector3Int enpos = tilemap.WorldToCell(enemy.transform.position);
         Vector3Int playerpos = tilemap.WorldToCell(transform.position);
-        float player_roll = drn.getDRN() + stats.getRangeAttackRoll(movement.GetDistance(enpos, playerpos));
+        float player_roll = drn.getDRN() + stats.getRangeAttackRoll(tileM.GetDistance(enpos, playerpos));
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
         float enemy_roll = drn.getDRN() + en_stat.getStats().getRangeDefenceRoll();
         //Debug.Log("Player: "+player_roll);
@@ -88,7 +84,7 @@ public class StatUpdate : MonoBehaviour
         Vector3Int playerpos = tilemap.WorldToCell(transform.position);
         for(int i = 0; i < stats.getStat("attack_num"); i++){
             bool drn_check;
-            if(movement.IsAdjacent(enpos,playerpos)){
+            if(tileM.IsAdjacent(enpos,playerpos)){
                 drn_check = meleeRoll(targetEnemy);
             }
             else{
@@ -97,7 +93,6 @@ public class StatUpdate : MonoBehaviour
             if(drn_check){
                 Damage = (int)(drn.getDRN() + stats.getBaseDamage() + bonus);
                 attackingFatigue();
-                //targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
                 targetEnemy.GetComponent<CharacterEvents>().onDamage.Invoke(Damage);
             }
         }
@@ -115,13 +110,14 @@ public class StatUpdate : MonoBehaviour
         }
     }
     public void revertStat(int i){
-        if(pastHP.Count > 0){
-            Debug.Log(pastHP[i]);
-            currentHealth = pastHP[i];
-            //pastHP.Remove(i);
-            healthBar.UpdateHealth();
+        if(pastFat.ContainsKey(i)){
+            if(pastHP.Count > 0){
+                currentHealth = pastHP[i];
+                //pastHP.Remove(i);
+                healthBar.UpdateHealth();
+            }
+            stats.setStat("fat", pastFat[i]);
         }
-        stats.setStat("fat", pastFat[i]);
         //pastFat.Remove(i);
     }
     public void showText(){
@@ -251,8 +247,8 @@ public class StatUpdate : MonoBehaviour
         }
     }
 
-    public void checkFatigue(int tiles){
-        tileFatigue(tiles);
+    public void checkFatigue(){
+        tileFatigue(gameObject.GetComponent<Movement>().gettrailCount());
         restoreFatigue();
         if(stats.getStat("fat") >= 75){
             stats.modifyStat("rd", -stats.getStat("fat")/5);
