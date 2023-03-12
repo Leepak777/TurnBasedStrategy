@@ -39,8 +39,7 @@ public class Movement : MonoBehaviour
     {
     }
     public void setPathAI(){
-        if(!setPath){
-            
+        if(!setPath){ 
             //GameObject targetPlayer = tileM.getClosestReachablePlayer("Player", transform.position, attackrange,tilescheck);
             KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode, attackrange,tilescheck);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);  
@@ -50,11 +49,11 @@ public class Movement : MonoBehaviour
                 AIreturn();
             }
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
-                Debug.Log("Target occupied.");
+                //Debug.Log("Target occupied.");
                 AIreturn();
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant.tag == "Enemy"){
-                Debug.Log("Target occupied.");
+                //Debug.Log("Target occupied.");
                 AIreturn();
             }
             
@@ -86,30 +85,17 @@ public class Movement : MonoBehaviour
         }
     }
 
-    public bool GetMouseButtonDown(int button)
-    {
-        if(GameObject.Find("AttackPrompt").GetComponent<AttackPrompt>().checkOnButton()){
-            return false;
-        }
-        return Input.GetMouseButtonDown(button);
-    }
-
-
-    public void setPathPlayer(){
-        
-        if (GetMouseButtonDown(0)) //check for a new target
-            {
-            this.gameObject.GetComponentInChildren<Ghost>().setOnOff(false);
-            Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    public void setPathPlayer(Vector3 mousePosition){
+            Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
             targetNode = tilemap.WorldToCell(target);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);           
 
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
-                Debug.Log("Target occupied.");
+                //Debug.Log("Target occupied.");
                 AIreturn();
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant.tag == "Player"){
-                Debug.Log("Target occupied.");
+                //Debug.Log("Target occupied.");
                 AIreturn();
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null){
@@ -136,8 +122,6 @@ public class Movement : MonoBehaviour
                     isMoving = true;
                 }
             }
-            ac.onMove();
-        }
     }
 
     public void moveTo(){
@@ -176,18 +160,11 @@ public class Movement : MonoBehaviour
     }
 
     public void moving(){
-            if(gameObject.tag == "Player"){
-                setPathPlayer();
-            }
-            else{
-                setPathAI();
-            }
-            moveTo();
            
             if ((path == null || path.Count == 0))
             {
                 if(isMoving || tilesTraveled >= tilescheck){
-                    ac.setTilesFat(tilesTraveled);
+                    ac.setTilesFat(trail.Count);
                     isMoving = false;
                     tilesTraveled = 0;
                 }
@@ -216,6 +193,7 @@ public class Movement : MonoBehaviour
         }
         return false;
     }
+    
     public float GetDistance(Vector3Int A, Vector3Int B)
     {
         // Use Manhattan distance for tilemap

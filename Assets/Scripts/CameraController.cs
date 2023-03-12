@@ -12,9 +12,9 @@ public class CameraController : MonoBehaviour
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
     }
 
-    public void trackPlayer(GameObject go){
+    public void trackPlayer(){
         track = true;
-        target = go;
+        target = GameObject.Find("TurnManager").GetComponent<TurnManager>().getCurrenPlay();
     }
     
     public void initLoc(GameObject go){

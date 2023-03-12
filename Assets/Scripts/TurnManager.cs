@@ -53,7 +53,7 @@ public class TurnManager : MonoBehaviour
     }
     public void startEvent(){
         //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponent<ActionCenter>().beginningTurn();
+        currentPlay.GetComponent<CharacterEvents>().onStart.Invoke();
         if(currentPlay.tag == "Player"){        
             startTurnSavePlayer();
             //startTurnSaveEnemy();
@@ -61,12 +61,11 @@ public class TurnManager : MonoBehaviour
         else{*/
             startTurnSaveEnemy();
         }
-        GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(currentPlay);  
         gamestate = 2;
     }
     public void endEvent(){
         //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponent<ActionCenter>().endingTurn(0);
+        currentPlay.GetComponent<CharacterEvents>().onEnd.Invoke(0);
         updateTurn(currentPlay.GetComponent<ActionCenter>());
         gamestate = 0;
         if(currentPlay.tag == "Player"){
@@ -74,7 +73,7 @@ public class TurnManager : MonoBehaviour
         }
     }
     public void duringEvent(){
-        currentPlay.GetComponent<ActionCenter>().duringTurn();
+        currentPlay.GetComponent<CharacterEvents>().onDuring.Invoke();
         if(!currentPlay.GetComponent<Movement>().getisMoving() && currentPlay.tag == "Enemy"){
             endTurn();
         }
@@ -139,7 +138,7 @@ public class TurnManager : MonoBehaviour
             if(currentTurnIndex2<0){currentTurnIndex2 = turnOrder2.Count-1;}
             currentPlay = turnOrder[currentTurnIndex];
             foreach(GameObject go in turnOrder){
-                    go.GetComponent<ActionCenter>().undoTurn(gameTurn);
+                go.GetComponent<ActionCenter>().undoTurn(gameTurn);
             }
             foreach(GameObject go in turnOrder2){
                 go.GetComponent<ActionCenter>().undoTurn(gameTurn);
@@ -148,12 +147,12 @@ public class TurnManager : MonoBehaviour
     }
     public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
-                go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
+            go.GetComponent<CharacterEvents>().saveStat.Invoke(gameTurn);
             }
     }
     public void startTurnSaveEnemy(){
         foreach(GameObject go in turnOrder2){
-            go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
+            go.GetComponent<CharacterEvents>().saveStat.Invoke(gameTurn);
         }  
     }
     public void gameEndCheck(){

@@ -122,7 +122,7 @@ public class InitCharacter : MonoBehaviour
         }
         if(result.Length == 0)
         {
-            Debug.Log("Create new Asset");
+            //Debug.Log("Create new Asset");
             Data = ScriptableObject.CreateInstance<CharacterStat>();
             AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go.name+".asset");
         }

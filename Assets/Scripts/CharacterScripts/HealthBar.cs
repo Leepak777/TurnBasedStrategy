@@ -14,12 +14,12 @@ public class HealthBar : MonoBehaviour
         currentHealth = maxHealth;
         healthBar = this.gameObject.GetComponent<RawImage>();
         barWidth = healthBar.rectTransform.rect.width;
-        UpdateHealth(currentHealth);
+        UpdateHealth();
     }
 
-    public void UpdateHealth(float health)
+    public void UpdateHealth()
     {
-        currentHealth = health;
+        currentHealth = this.gameObject.GetComponentInParent<StatUpdate>().currentHealth;
         if(currentHealth < 0){
             currentHealth = 0;
         }

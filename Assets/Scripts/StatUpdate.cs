@@ -22,7 +22,41 @@ using Random = UnityEngine.Random;
 
 public class StatUpdate : MonoBehaviour
 {
+    public float currentHealth;
+    public float maxHealth = 100f;
+    public int Damage = 0;
+    public HealthBar healthBar;
+    public List<bool> buff =new List<bool>();
+    public bool flag = false;
+    public float bonus = 0;
+    Tilemap tilemap;
+    TileManager tileM;
+    Movement movement;
+    ActionCenter ac;
+    DRN drn;
+    int attackrange = 1;
+    Text text;
+    Dictionary<int,float> pastHP = new Dictionary<int, float>();
+    Dictionary<int,float> pastFat = new Dictionary<int, float>();
+    CharacterStat stats;
 
+    void Start()
+    {   
+        //stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
+        ac = this.gameObject.GetComponent<ActionCenter>();
+        drn = DRN.getInstance();
+        movement = this.gameObject.GetComponent<Movement>(); 
+        text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
+        maxHealth = stats.getStat("maxHealth");
+        currentHealth = maxHealth;
+        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
+        for(int i = 0; i < 18; i++){
+            buff.Add(false);
+        }
+        
+    }
     public bool meleeRoll(GameObject enemy){
         float player_roll = drn.getDRN() + stats.getMeleeAttackRoll();
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
@@ -48,26 +82,7 @@ public class StatUpdate : MonoBehaviour
         }
         return false;
     }
-
-    public float currentHealth;
-    public float maxHealth = 100f;
-    public int Damage = 0;
-    public HealthBar healthBar;
-    TurnManager tm;
-    public List<bool> buff =new List<bool>();
-    public bool flag = false;
-    public float bonus = 0;
-    Tilemap tilemap;
-    TileManager tileM;
-    Movement movement;
-    ActionCenter ac;
-    DRN drn;
-    int attackrange = 1;
-    Text text;
-    Dictionary<int,float> pastHP = new Dictionary<int, float>();
-    Dictionary<int,float> pastFat = new Dictionary<int, float>();
-    CharacterStat stats;
-
+    
     public void attackEn(GameObject targetEnemy){
         Vector3Int enpos = tilemap.WorldToCell(targetEnemy.transform.position);
         Vector3Int playerpos = tilemap.WorldToCell(transform.position);
@@ -82,50 +97,21 @@ public class StatUpdate : MonoBehaviour
             if(drn_check){
                 Damage = (int)(drn.getDRN() + stats.getBaseDamage() + bonus);
                 attackingFatigue();
-                targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
-                targetEnemy.GetComponent<StatUpdate>().attackedFatigue();
+                //targetEnemy.GetComponent<StatUpdate>().TakeDamage(Damage);
+                targetEnemy.GetComponent<CharacterEvents>().onDamage.Invoke(Damage);
             }
         }
         
     }
 
-
-
-    void Start()
-    {   
-        //stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
-        ac = this.gameObject.GetComponent<ActionCenter>();
-        drn = DRN.getInstance();
-        movement = this.gameObject.GetComponent<Movement>(); 
-        text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
-        maxHealth = stats.getStat("maxHealth");
-        currentHealth = maxHealth;
-        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
-        healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
-        for(int i = 0; i < 18; i++){
-            buff.Add(false);
-        }
-        
-    }
-    void Update(){
-        
-
-        
-        
-    }
-    public void startSaveStat(){
-        if(tm == null){
-            tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
-        }
-        if(pastFat.ContainsKey(tm.getGameTurn()) && pastHP.ContainsKey(tm.getGameTurn())){
-            pastFat[tm.getGameTurn()] = stats.getStat("fat");
-            pastHP[tm.getGameTurn()] = currentHealth;
+    public void startSaveStat(int gameTurn){
+        if(pastFat.ContainsKey(gameTurn) && pastHP.ContainsKey(gameTurn)){
+            pastFat[gameTurn] = stats.getStat("fat");
+            pastHP[gameTurn] = currentHealth;
         }
         else{
-            pastFat.Add(tm.getGameTurn(), stats.getStat("fat"));
-            pastHP.Add(tm.getGameTurn(), currentHealth);
+            pastFat.Add(gameTurn, stats.getStat("fat"));
+            pastHP.Add(gameTurn, currentHealth);
         }
     }
     public void revertStat(int i){
@@ -133,12 +119,12 @@ public class StatUpdate : MonoBehaviour
             Debug.Log(pastHP[i]);
             currentHealth = pastHP[i];
             //pastHP.Remove(i);
-            healthBar.UpdateHealth(currentHealth);
+            healthBar.UpdateHealth();
         }
         stats.setStat("fat", pastFat[i]);
         //pastFat.Remove(i);
     }
-    void showText(){
+    public void showText(){
         text.enabled = true;
         Invoke("disableText",2f);
     }
@@ -163,15 +149,13 @@ public class StatUpdate : MonoBehaviour
         if(currentHealth < 0){
             currentHealth = 0;
         }
-        healthBar.UpdateHealth(currentHealth);
+        healthBar.UpdateHealth();
         flag = false;
         if(currentHealth <= 0){
             tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
-            //tm.removefromLst(this.gameObject);
-            //Destroy(this.gameObject);
             this.gameObject.SetActive(false);
-            tm.gameEndCheck();
         }
+        attackedFatigue();
     }
     
     public void setStatAsset(CharacterStat s){
@@ -182,7 +166,7 @@ public class StatUpdate : MonoBehaviour
     }
 
     public void updateHealthBar(){
-        healthBar.UpdateHealth(currentHealth);
+        healthBar.UpdateHealth();
     }
     
     public void Flagging(){

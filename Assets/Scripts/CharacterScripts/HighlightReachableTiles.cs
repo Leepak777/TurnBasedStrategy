@@ -2,24 +2,27 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 
-public class HighlightReachableTiles
+public class HighlightReachableTiles : MonoBehaviour
 {
-    Tilemap tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+    Tilemap tilemap;
     //int maxTiles;
 
-    public Color highlightColor = Color.blue;
-    public Color highlightColor2 = Color.red;
+    Color highlightColor = Color.blue;
+    Color highlightColor2 = Color.red;
     private List<Vector3Int> reachableTiles = new List<Vector3Int>();
     private List<Vector3Int> EnemyTiles = new List<Vector3Int>();
     private List<Vector3Int> unreachableTiles = new List<Vector3Int>();
-    TileManager tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+    TileManager tileM;
     //public Vector3Int highlightorigin;
+    void Start(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+    }
 
-
-  public void HighlightReachable(GameObject character)
+    public void HighlightReachable()
     {   
         highlightColor.a = 0.5f;
-
+        GameObject character = this.gameObject;
         reachableTiles.Clear();
         Vector3Int currentPos = character.GetComponent<Movement>().getOrigin();//tilemap.WorldToCell(transform.position);
         ActionCenter ac = character.GetComponent<ActionCenter>();
@@ -65,7 +68,8 @@ public class HighlightReachableTiles
 
     }
 
-    public void HighlightEnemy(GameObject character){
+    public void HighlightEnemy(){
+        GameObject character = this.gameObject;
         highlightColor2.a = 0.5f;
         //Debug.Log(this.gameObject.GetComponent<StatUpdate>().getAttackRange());
         EnemyTiles.Clear();

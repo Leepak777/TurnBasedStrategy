@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Aoiti.Pathfinding; //import the pathfinding library
 using UnityEngine.Tilemaps;
-
+using UnityEngine.Events;
 
 public class ActionCenter : MonoBehaviour
 {
@@ -18,23 +18,26 @@ public class ActionCenter : MonoBehaviour
     StatUpdate statupdate;
     TileManager tileM;
     Attack atk;
-    Ghost ghost;
     public HealthBar healthBar;
-    
+        
     private List<Vector3Int> Trail = new List<Vector3Int>();
     private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
     void Awake()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        hightlightReachableTile = new HighlightReachableTiles();
+        hightlightReachableTile = this.gameObject.GetComponent<HighlightReachableTiles>();
         statupdate = this.gameObject.GetComponent<StatUpdate>();
         atk = this.gameObject.GetComponent<Attack>();
-        ghost = this.gameObject.GetComponentInChildren<Ghost>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         movement = this.gameObject.GetComponent<Movement>();
-        
     }
-
+    public bool GetMouseButtonDown(int button)
+    {
+        if(GameObject.Find("AttackPrompt").GetComponent<AttackPrompt>().checkOnButton()){
+            return false;
+        }
+        return Input.GetMouseButtonDown(button);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -46,53 +49,41 @@ public class ActionCenter : MonoBehaviour
         if(tilesfat > 0){
             tilesfat = 0;
         }
-        movement.setOrigin();
-        movement.setRange();
-        hightlightReachableTile.UnhighlightReachable();
-        clearTrail();
-        hightlightReachableTile.HighlightReachable(gameObject);
         if(statupdate.getDictStats("fat") > 100){
             endingTurn(0);
         }
-        statupdate.updateHealthBar();
-        
     }
     
-    public void saveTurnStatData(int gameTurn){
-        if(this.gameObject.activeInHierarchy || gameTurn == 0){
-            statupdate.startSaveStat();
-            if(pastOrigin.ContainsKey(gameTurn)){
-                pastOrigin[gameTurn] =  tilemap.WorldToCell(transform.position);    
-            }
-            else{
-                pastOrigin.Add(gameTurn, tilemap.WorldToCell(transform.position));
-            }
-        }
-    }
     public void endingTurn(int i){
         //To-DO: Added skill check for skills that update each Character turn
         if(i == 0){
             movement.setPath = false;
             if(this.gameObject.tag == "Enemy"){
-                atk.EnemyAttack();
+                this.gameObject.GetComponent<CharacterEvents>().onEnemyAttack.Invoke();
             }
             statupdate.checkFatigue(tilesfat);
             statupdate.setDamage(0);
             tilesfat = 0;
         }
-        notmoving();
     }
 
     public void duringTurn(){
-        if(!atk.isAttacking()){
-            if(this.gameObject.tag == "Player"){
-                ghost.setGhost();
+        if(gameObject.tag == "Player"){
+            if(GetMouseButtonDown(0)){
+                if(!atk.isAttacking()){
+                    this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
+                }
+                else{
+                    this.gameObject.GetComponent<CharacterEvents>().onPlayerAttack.Invoke(Input.mousePosition);
+                }
             }
-            movement.moving();
         }
         else{
-            atk.PlayerAttack();
+            this.gameObject.GetComponent<CharacterEvents>().onEnemyMove.Invoke();
         }
+
+        this.gameObject.GetComponent<CharacterEvents>().onMoving.Invoke();
+
     }
 
     public void undoTurn(int i){
@@ -126,16 +117,31 @@ public class ActionCenter : MonoBehaviour
             clearTrail();
         }
     }
+
     public void onMove(){
         hightlightReachableTile.UnhighlightReachable();
         if(Trail.Count > 0){
             clearTrail();
         }
     }
+
     public void onStop(){
         hightlightReachableTile.UnhighlightReachable();
-        hightlightReachableTile.HighlightReachable(gameObject);
+        hightlightReachableTile.HighlightReachable();
     }
+
+    public void saveTurnStatData(int gameTurn){
+        if(this.gameObject.activeInHierarchy || gameTurn == 0){
+            //statupdate.startSaveStat(gameTurn);
+            if(pastOrigin.ContainsKey(gameTurn)){
+                pastOrigin[gameTurn] =  tilemap.WorldToCell(transform.position);    
+            }
+            else{
+                pastOrigin.Add(gameTurn, tilemap.WorldToCell(transform.position));
+            }
+        }
+    }
+
     public void addTrail(Vector3Int tile){
         hightlightReachableTile.highlight(tile);
         Trail.Add(tile);

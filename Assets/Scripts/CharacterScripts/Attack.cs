@@ -15,7 +15,6 @@ public class Attack : MonoBehaviour
     public int attackrange;
     void Start()
     {
-        
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         ac = this.gameObject.GetComponent<ActionCenter>();
         hightlightReachableTile = ac.getHighLight();
@@ -24,18 +23,10 @@ public class Attack : MonoBehaviour
         attackrange = this.gameObject.GetComponent<StatUpdate>().getAttackRange();
     }
 
-    public bool GetMouseButtonDown(int button)
-    {
-        if(GameObject.Find("AttackPrompt").GetComponent<AttackPrompt>().checkOnButton()){
-            return false;
-        }
-        return Input.GetMouseButtonDown(button);
-    }
+
     // Update is called once per frame
     void Update()
     {
-        //PlayerAttack();
-        //EnemyAttack();
         
         
     }
@@ -47,23 +38,22 @@ public class Attack : MonoBehaviour
         AttackCheck(targetPlayer);
         return;
     }
-    public void PlayerAttack(){
-        if (GetMouseButtonDown(0)){
-            Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int targetNode = tilemap.WorldToCell(target);
-            if(tileM.GetNodeFromWorld(targetNode).occupant != null){
-                GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-                if(attacking && tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
-                    ac.setTargetEnemy(go);
-                    //tileM.flagEnemyArea(go,"Enemy",attackArea);
-                    AttackCheck(go);
-                }              
-            }
-        }
+    public void PlayerAttack(Vector3 mousePosition){
+        Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3Int targetNode = tilemap.WorldToCell(target);
+        if(tileM.GetNodeFromWorld(targetNode).occupant != null){
+            GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
+            if(tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
+                ac.setTargetEnemy(go);
+                //tileM.flagEnemyArea(go,"Enemy",attackArea);
+                AttackCheck(go);
+           }              
+       }
+        
     }
     public void Attacking(string tag){
         if(!attacking && tileM.EnemyInRange(tag, attackrange, this.gameObject)){
-            hightlightReachableTile.HighlightEnemy(gameObject);
+            hightlightReachableTile.HighlightEnemy();
             attacking = true;
         }
         else{
