@@ -77,13 +77,13 @@ public class InitCharacter : MonoBehaviour
         }
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Player");
         GameObject.Find("Main Camera").GetComponent<CameraController>().initLoc(objectsWithTag[0]);
-
+        
     }
 
     void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch){
+        CreateCharacterAsset(ch.Key,ch.Value);
         GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
         prefab.name = ch.Key;
-        CreateCharacterAsset(ch.Key,ch.Value);
         GameObject player = Instantiate(prefab) as GameObject;
         player.tag = tag;
         player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
@@ -123,7 +123,7 @@ public class InitCharacter : MonoBehaviour
         {
             //Debug.Log("Create new Asset");
             Data = ScriptableObject.CreateInstance<CharacterStat>();
-            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go+".asset");
+            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go+"(Clone).asset");
         }
         else
         {

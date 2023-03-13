@@ -25,7 +25,6 @@ public class StatUpdate : MonoBehaviour
     public float currentHealth;
     public float maxHealth = 100f;
     public int Damage = 0;
-    public HealthBar healthBar;
     public List<bool> buff =new List<bool>();
     public float bonus = 0;
     Tilemap tilemap;
@@ -40,13 +39,12 @@ public class StatUpdate : MonoBehaviour
     void Start()
     {   
         stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
-        drn = DRN.getInstance();
-        text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
         maxHealth = stats.getStat("maxHealth");
         currentHealth = maxHealth;
+        drn = DRN.getInstance();
+        text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
         for(int i = 0; i < 18; i++){
             buff.Add(false);
         }
@@ -113,7 +111,6 @@ public class StatUpdate : MonoBehaviour
             if(pastHP.Count > 0){
                 currentHealth = pastHP[i];
                 //pastHP.Remove(i);
-                healthBar.UpdateHealth();
             }
             stats.setStat("fat", pastFat[i]);
         }
@@ -144,7 +141,6 @@ public class StatUpdate : MonoBehaviour
         if(currentHealth < 0){
             currentHealth = 0;
         }
-        healthBar.UpdateHealth();
         if(currentHealth <= 0){
             tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
             this.gameObject.SetActive(false);
@@ -154,11 +150,6 @@ public class StatUpdate : MonoBehaviour
     public CharacterStat getStats(){
         return stats;
     }
-
-    public void updateHealthBar(){
-        healthBar.UpdateHealth();
-    }
-
     public float getDictStats(string name){
         return stats.getStat(name);
     }

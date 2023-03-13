@@ -267,14 +267,14 @@ public class TileManager : MonoBehaviour
         return tilemap.WorldToCell(new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0));
     }
 
-    public void flagEnemyArea(GameObject enemy, string tag,float range){
+    /*public void flagEnemyArea(GameObject enemy, string tag,float range){
         enemy.GetComponent<StatUpdate>().Flagging();
         foreach(Node n in GetTilesInArea(tilemap.WorldToCell(enemy.transform.position),range)){
                 if(n.occupant != null&& n.occupant.tag == tag){
                     n.occupant.GetComponent<StatUpdate>().Flagging();
                 }
         }
-    }
+    }*/
     public bool EnemyInRange(string tag, int attackrange, GameObject go){
         Vector3Int currentPos = tilemap.WorldToCell(go.transform.position);
         foreach(Node node in GetTilesInArea(currentPos,(attackrange))){

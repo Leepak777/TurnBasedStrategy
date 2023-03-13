@@ -27,7 +27,7 @@ public class Attack : MonoBehaviour
     public void EnemyAttack(){
         GameObject targetPlayer = tileM.getClosestPlayer("Player", transform.position);
         Vector3Int targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
-        tileM.flagEnemyArea(targetPlayer,"Player",attackArea);
+        //tileM.flagEnemyArea(targetPlayer,"Player",attackArea);
         this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(targetPlayer);
         return;
     }

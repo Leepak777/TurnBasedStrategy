@@ -165,6 +165,7 @@ public class Movement : MonoBehaviour
                     tilesTraveled = 0;
                 }
                 this.gameObject.GetComponent<CharacterEvents>().onMoveStop.Invoke();
+                this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(originNode);
             }
     }
     public void setRange(){
@@ -224,6 +225,7 @@ public class Movement : MonoBehaviour
         this.setPath = setPath;
     }
     public int gettrailCount(){
+        Debug.Log(trail.Count);
         return trail.Count;
     }
     public List<Vector3Int> getTrail(){

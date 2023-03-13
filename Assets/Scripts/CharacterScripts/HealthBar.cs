@@ -19,7 +19,12 @@ public class HealthBar : MonoBehaviour
 
     public void UpdateHealth()
     {
-        currentHealth = this.gameObject.GetComponentInParent<StatUpdate>().currentHealth;
+        if(this.gameObject.GetComponentInParent<StatUpdate>() != null){
+            currentHealth  = this.gameObject.GetComponentInParent<StatUpdate>().currentHealth;
+        }
+        else{
+            currentHealth = 0;
+        }
         if(currentHealth < 0){
             currentHealth = 0;
         }

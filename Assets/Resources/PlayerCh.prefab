@@ -366,9 +366,7 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 100
   Damage: 50
-  healthBar: {fileID: 8906131547528253649}
   buff: 
-  flag: 0
   bonus: 0
 --- !u!114 &5925291172722692194
 MonoBehaviour:
@@ -383,6 +381,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilesfat: 0
+  openPopUp:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 23f2bdf39c255ef49949430fcaaf72a4, type: 2}
+        m_TargetAssemblyTypeName: GameEvent, Assembly-CSharp
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &492597581560471947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,18 +813,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5925291172722692194}
-        m_TargetAssemblyTypeName: ActionCenter, Assembly-CSharp
-        m_MethodName: onMove
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1953167151735107551}
         m_TargetAssemblyTypeName: Ghost, Assembly-CSharp
         m_MethodName: setOnOff
@@ -827,18 +828,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2400225220951129278}
         m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
         m_MethodName: UnhighlightReachable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2400225220951129278}
-        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
-        m_MethodName: UnhighlightMoveTrail
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1055,18 +1044,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2400225220951129278}
         m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
         m_MethodName: highlight
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5925291172722692194}
-        m_TargetAssemblyTypeName: ActionCenter, Assembly-CSharp
-        m_MethodName: addTrail
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

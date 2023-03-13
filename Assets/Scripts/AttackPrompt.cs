@@ -22,12 +22,12 @@ public class AttackPrompt : MonoBehaviour
 
         buttons.Add(GameObject.Find("Attack1").GetComponent<Button>()); 
         buttons.Add(GameObject.Find("Attack2").GetComponent<Button>()); 
-        buttons.Add(GameObject.Find("Attack3").GetComponent<Button>());
-        buttons.Add(GameObject.Find("Attack4").GetComponent<Button>());
+        //buttons.Add(GameObject.Find("Attack3").GetComponent<Button>());
+        //buttons.Add(GameObject.Find("Attack4").GetComponent<Button>());
         buttons[0].onClick.AddListener(Attack1);
         buttons[1].onClick.AddListener(Attack2);
-        buttons[2].onClick.AddListener(Attack3);
-        buttons[3].onClick.AddListener(Attack4);
+        //buttons[2].onClick.AddListener(Attack3);
+        //buttons[3].onClick.AddListener(Attack4);
 
     }
 
@@ -37,7 +37,7 @@ public class AttackPrompt : MonoBehaviour
             turnManager.endTurn();
     }
 
-    void Attack2()
+    public void Attack2()
     {
         if(!turnManager.currentPlay.GetComponent<Movement>().getisMoving())
             turnManager.currentPlay.GetComponent<Attack>().Attacking("Enemy");

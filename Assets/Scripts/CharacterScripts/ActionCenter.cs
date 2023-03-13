@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Aoiti.Pathfinding; //import the pathfinding library
 using UnityEngine.Tilemaps;
 using UnityEngine.Events;
 
@@ -14,6 +13,7 @@ public class ActionCenter : MonoBehaviour
     public int tilesfat = 0;
     TileManager tileM;
     private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
+    public UnityEvent openPopUp;
     void Awake()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
@@ -59,7 +59,15 @@ public class ActionCenter : MonoBehaviour
                     this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
                 }
                 else{
-                    this.gameObject.GetComponent<CharacterEvents>().onPlayerAttack.Invoke(Input.mousePosition);
+                    //this.gameObject.GetComponent<CharacterEvents>().onPlayerAttack.Invoke(Input.mousePosition);
+                    
+                    Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Node n = tileM.GetNodeFromWorld(tilemap.WorldToCell(pos));
+                    if(n.occupant != null && n.occupant.tag =="Enemy")
+                    {
+                        openPopUp.Invoke();
+                        GameObject.Find("Popup").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+                    }
                 }
             }
         }
