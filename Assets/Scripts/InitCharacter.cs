@@ -85,6 +85,7 @@ public class InitCharacter : MonoBehaviour
         GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
         prefab.name = ch.Key;
         GameObject player = Instantiate(prefab) as GameObject;
+        player.name = ch.Key;
         player.tag = tag;
         player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
         player.transform.SetParent(transform);
@@ -123,7 +124,7 @@ public class InitCharacter : MonoBehaviour
         {
             //Debug.Log("Create new Asset");
             Data = ScriptableObject.CreateInstance<CharacterStat>();
-            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go+"(Clone).asset");
+            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go+".asset");
         }
         else
         {

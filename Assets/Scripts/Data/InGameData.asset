@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterlst:
     keys:
-    - Player0
     - Player1
     - Player2
     - Player3
-    - Enemy0
+    - Player4
     - Enemy1
+    - Enemy2
     values:
     - keys:
       - Type
@@ -29,7 +29,7 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Imperial Legionary
+      - Praetorian Guard
       - Great Sword
       - Kite Shield
       - Praetorian Armor
@@ -43,7 +43,7 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Imperial Legionary
+      - Praetorian Guard
       - Great Sword
       - Kite Shield
       - Praetorian Armor
@@ -57,7 +57,7 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Imperial Legionary
+      - Praetorian Guard
       - Great Sword
       - Kite Shield
       - Praetorian Armor
@@ -71,7 +71,7 @@ MonoBehaviour:
       - Buckler
       - Mount
       values:
-      - Imperial Legionary
+      - Praetorian Guard
       - Great Sword
       - Kite Shield
       - Praetorian Armor
@@ -80,9 +80,9 @@ MonoBehaviour:
     - keys:
       - Type
       values:
-      - Mecenary
+      - Imperial Legionary
     - keys:
       - Type
       values:
-      - Mecenary
+      - Imperial Legionary
   map: Never Gonna Give You Up

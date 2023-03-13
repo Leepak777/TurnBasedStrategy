@@ -7,6 +7,7 @@ public class PopEvent : MonoBehaviour
 {
     public UnityEvent<Vector3, GameObject> setPos;
     GameObject go;
+    public GameObject popwindow;
     Vector3 target;
     Tilemap tilemap;
 
@@ -23,7 +24,7 @@ public class PopEvent : MonoBehaviour
         if(GameObject.Find("Main Camera").transform.position.x < GameObject.Find("Canvas").transform.position.x){
             modpos = new Vector3(-64,0,0);
         }
-        this.transform.position = newpos + modpos;
+        popwindow.transform.position = newpos + modpos;
         this.go = go;
         
     }

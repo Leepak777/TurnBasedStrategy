@@ -78,10 +78,10 @@ public class ScreenManager : MonoBehaviour
             {"Type",types[rnd.Next(0,5)]}/*,{"Weapon","Light Glaive"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}*/
         };
         for(int i = 0; i < 4; i++){
-            Data.characterlst.Add("Player"+i,PlData);
+            Data.characterlst.Add("Player"+(i+1),PlData);
             
-        }Data.characterlst.Add("Enemy"+0,EnData);
-        Data.characterlst.Add("Enemy"+1,EnData);
+        }Data.characterlst.Add("Enemy"+1,EnData);
+        Data.characterlst.Add("Enemy"+2,EnData);
         EditorUtility.SetDirty(Data);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

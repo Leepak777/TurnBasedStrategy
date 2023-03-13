@@ -133,6 +133,7 @@ public class HighlightReachableTiles : MonoBehaviour
     public void UnhighlightMoveTrail()
     {
         List<Vector3Int> trail = gameObject.GetComponent<Movement>().getTrail();
+        trail.Add(gameObject.GetComponent<Movement>().getOrigin());
         for (int i = 0; i < trail.Count; i++)
         {
             Color c = Color.white; 

@@ -143,7 +143,7 @@ public class Movement : MonoBehaviour
                     this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke(trail);
                     if (pathfinder.GenerateAstarPath(originNode, node, out trail))
                     {
-                        this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(originNode);
+                        trail.Add(originNode);
                         foreach(Vector3Int v in trail){
                             this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(v);
                         }

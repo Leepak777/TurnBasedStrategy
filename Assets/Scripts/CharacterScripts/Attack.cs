@@ -28,19 +28,20 @@ public class Attack : MonoBehaviour
         GameObject targetPlayer = tileM.getClosestPlayer("Player", transform.position);
         Vector3Int targetNode = tilemap.WorldToCell(targetPlayer.transform.position);
         //tileM.flagEnemyArea(targetPlayer,"Player",attackArea);
-        this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(targetPlayer);
-        return;
+        if(tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(targetPlayer.transform.position),attackrange)){
+            this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(targetPlayer);
+            this.gameObject.GetComponent<CharacterEvents>().onAttackFalse.Invoke();
+        }
     }
     public void PlayerAttack(Vector3 mousePosition){
         Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector3Int targetNode = tilemap.WorldToCell(target);
         if(tileM.GetNodeFromWorld(targetNode).occupant != null){
             GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-            if(tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(go.transform.position),attackrange)){
-                //tileM.flagEnemyArea(go,"Enemy",attackArea);
-                this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(go);
-           }              
+            this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(go);
+            this.gameObject.GetComponent<CharacterEvents>().onAttackFalse.Invoke();
        }
+       
         
     }
     public void Attacking(string tag){
@@ -58,6 +59,6 @@ public class Attack : MonoBehaviour
         this.attacking = attacking;
     }
     public bool isAttacking(){
-        return attacking;
+        return this.attacking;
     }
 }

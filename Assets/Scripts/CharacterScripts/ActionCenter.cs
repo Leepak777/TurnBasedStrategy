@@ -13,7 +13,6 @@ public class ActionCenter : MonoBehaviour
     public int tilesfat = 0;
     TileManager tileM;
     private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
-    public UnityEvent openPopUp;
     void Awake()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
@@ -55,18 +54,20 @@ public class ActionCenter : MonoBehaviour
     public void duringTurn(){
         if(gameObject.tag == "Player"){
             if(GetMouseButtonDown(0)){
+                Debug.Log("pog");
                 if(!gameObject.GetComponent<Attack>().isAttacking()){
                     this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
                 }
-                else{
-                    //this.gameObject.GetComponent<CharacterEvents>().onPlayerAttack.Invoke(Input.mousePosition);
-                    
+                else{                    
                     Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Node n = tileM.GetNodeFromWorld(tilemap.WorldToCell(pos));
                     if(n.occupant != null && n.occupant.tag =="Enemy")
                     {
-                        openPopUp.Invoke();
-                        GameObject.Find("Popup").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+                        if(tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(n.occupant.transform.position),gameObject.GetComponent<StatUpdate>().getAttackRange())){
+                            //tileM.flagEnemyArea(go,"Enemy",attackArea);
+                            GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+                        }
+                        
                     }
                 }
             }
