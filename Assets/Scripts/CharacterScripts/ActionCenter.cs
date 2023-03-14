@@ -13,6 +13,9 @@ public class ActionCenter : MonoBehaviour
     public int tilesfat = 0;
     TileManager tileM;
     private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
+    Vector3Int nodePos;
+    Node tmNode;
+    Vector3 worldPos;
     void Awake()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
@@ -25,11 +28,19 @@ public class ActionCenter : MonoBehaviour
         }
         return Input.GetMouseButtonDown(button);
     }
-    // Update is called once per frame
-    void Update()
-    {
- 
-        
+    
+    public void updatePos(){
+        if(ifmoved()){
+            nodePos = tilemap.WorldToCell(transform.position);
+            tmNode = tileM.GetNodeFromWorld(nodePos);
+            worldPos = tilemap.GetCellCenterWorld(nodePos);
+            Debug.Log("Tilemap Position"+nodePos);
+            Debug.Log("TileManager Node"+tmNode);
+            Debug.Log("World Position"+worldPos);
+        }
+    }
+    public bool ifmoved(){
+        return tilemap.WorldToCell(transform.position) != nodePos;
     }
     public void beginningTurn(){
         //To-DO: Added skill check for skills that update each Character turn
@@ -54,7 +65,6 @@ public class ActionCenter : MonoBehaviour
     public void duringTurn(){
         if(gameObject.tag == "Player"){
             if(GetMouseButtonDown(0)){
-                Debug.Log("pog");
                 if(!gameObject.GetComponent<Attack>().isAttacking()){
                     this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
                 }
@@ -117,6 +127,15 @@ public class ActionCenter : MonoBehaviour
             }
         }
     }
+    public void HoverTest(){
+        GameObject.Find("PanelEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+    }
+    public void exitTest(){
+        GameObject.Find("Panel").SetActive(false);
+    }
+    public void invokeHover(){
+        gameObject.GetComponent<CharacterEvents>().onHover.Invoke();
+    }
     public void setTilesFat(int tilesfat){
         this.tilesfat = tilesfat;
     }
@@ -124,8 +143,15 @@ public class ActionCenter : MonoBehaviour
         return tilesfat;
     }
 
-
-
+    public Vector3Int getMapPos(){
+        return nodePos;
+    }
+    public Node getMapNode(){
+        return tmNode;
+    }
+    public Vector3 getWorldPos(){
+        return worldPos;
+    }
 
     
 }

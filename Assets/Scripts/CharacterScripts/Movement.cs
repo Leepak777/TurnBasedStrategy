@@ -17,6 +17,7 @@ public class Movement : MonoBehaviour
     int attackrange; 
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
     public bool isMoving = false;
+    public bool outClick = false;
     public bool setPath = false;
     TileManager tileM;
     Vector3Int originNode;
@@ -33,9 +34,6 @@ public class Movement : MonoBehaviour
         originNode = tilemap.WorldToCell(transform.position);
     }
 
-    private void Update()
-    {
-    }
     public void setPathAI(){
         if(!setPath){ 
             //GameObject targetPlayer = tileM.getClosestReachablePlayer("Player", transform.position, attackrange,tilescheck);
@@ -99,7 +97,7 @@ public class Movement : MonoBehaviour
             if(tileM.GetNodeFromWorld(targetNode).occupant != null){
                 GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
                 targetNode = tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck);
-                
+                outClick = true;
             }
             if(!tileM.inArea(originNode,targetNode, tilescheck)){
                 AIreturn();
@@ -164,8 +162,12 @@ public class Movement : MonoBehaviour
                     isMoving = false;
                     tilesTraveled = 0;
                 }
-                this.gameObject.GetComponent<CharacterEvents>().onMoveStop.Invoke();
-                this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(originNode);
+                if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
+                    if(outClick){outClick = false;}
+                    this.gameObject.GetComponent<CharacterEvents>().onMoveStop.Invoke();
+                    this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(originNode);
+                }
+                
             }
     }
     public void setRange(){
@@ -215,6 +217,7 @@ public class Movement : MonoBehaviour
         setPath = true;
         path = null;
         isMoving = true;
+        outClick = true;
         return;
     }
     public void setTilemap(Tilemap tilemap){
@@ -230,5 +233,8 @@ public class Movement : MonoBehaviour
     }
     public List<Vector3Int> getTrail(){
         return trail;
+    }
+    public void ClearTrail(){
+        trail.Clear();
     }
 }

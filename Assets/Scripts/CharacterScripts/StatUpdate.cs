@@ -35,7 +35,7 @@ public class StatUpdate : MonoBehaviour
     Dictionary<int,float> pastHP = new Dictionary<int, float>();
     Dictionary<int,float> pastFat = new Dictionary<int, float>();
     CharacterStat stats;
-
+    AttackSimulation atkSim;
     void Start()
     {   
         stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
@@ -48,7 +48,7 @@ public class StatUpdate : MonoBehaviour
         for(int i = 0; i < 18; i++){
             buff.Add(false);
         }
-        
+        atkSim = new AttackSimulation(drn);
     }
     public bool meleeRoll(GameObject enemy){
         float player_roll = drn.getDRN() + stats.getMeleeAttackRoll();
@@ -56,10 +56,7 @@ public class StatUpdate : MonoBehaviour
         float enemy_roll = drn.getDRN() + en_stat.getStats().getMeleeDefenceRoll();
         //Debug.Log("Player: "+player_roll);
         //Debug.Log("Enemy: " +enemy_roll);
-        if(player_roll > enemy_roll){
-            return true;
-        }
-        return false;
+        return player_roll > enemy_roll;
     }
 
     public bool rangeRoll(GameObject enemy){
@@ -70,10 +67,7 @@ public class StatUpdate : MonoBehaviour
         float enemy_roll = drn.getDRN() + en_stat.getStats().getRangeDefenceRoll();
         //Debug.Log("Player: "+player_roll);
         //Debug.Log("Enemy: " +enemy_roll);
-        if(player_roll > enemy_roll){
-            return true;
-        }
-        return false;
+        return player_roll > enemy_roll;
     }
     
     public void attackEn(GameObject targetEnemy){
@@ -172,6 +166,9 @@ public class StatUpdate : MonoBehaviour
     public void setBonus(int i ){
         bonus += i;
     }
+    public float getBonus(){
+        return bonus;
+    }
 
     public bool getTextEnabled(){
         return text.enabled;
@@ -193,7 +190,9 @@ public class StatUpdate : MonoBehaviour
     public float getMaxHealth(){
         return maxHealth;
     }
-
+    public float getCurrentHealth(){
+        return currentHealth;
+    }
     public void setMaxHealth(float x){
         maxHealth = x;
     }

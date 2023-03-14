@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterStat : ScriptableObject
 {
     public UDictionary<string,float> stats = new UDictionary<string,float>();
+    public UDictionary<string,string> attributes = new UDictionary<string, string>();
     public void setUp(){
         //Raw stat
         stats.Add("pow",0);//power
@@ -62,6 +63,10 @@ public class CharacterStat : ScriptableObject
         }
     }
 
+    public void addAttributes(string key, string value){
+        attributes.Add(key,value);
+    }
+
     public void setCalStat(){
         stats["hp"] = stats["tou"]*5 + stats["pow"] + stats["base_hp"];
         stats["maxHealth"] = stats["hp"];
@@ -77,6 +82,12 @@ public class CharacterStat : ScriptableObject
 
     public float getStat(string s){
         return stats[s];
+    }
+    public string getAttribute(string s){
+        if(attributes.ContainsKey(s)){
+            return attributes[s];
+        }
+        return null;
     }
 
     public void setStat(string key, float value){

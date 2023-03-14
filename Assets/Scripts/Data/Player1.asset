@@ -107,3 +107,14 @@ MonoBehaviour:
     - 88
     - 58
     - 14
+  attributes:
+    keys:
+    - Type
+    - Weapon
+    - Shield
+    - Mount
+    values:
+    - Praetorian Guard
+    - Great Sword
+    - Kite Shield
+    - War Horse

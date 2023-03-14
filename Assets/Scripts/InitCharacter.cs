@@ -53,9 +53,9 @@ public class InitCharacter : MonoBehaviour
         return null;
     }
     void setDataStats(CharacterStat character, UDictionary<string,string> attributes){
-        
         foreach(KeyValuePair<string,string> attribute in attributes){
             if(getAttributeStats(attribute)!=null){
+                character.addAttributes(attribute.Key, attribute.Value);
                 character.setStats(getAttributeStats(attribute));
             }
         }

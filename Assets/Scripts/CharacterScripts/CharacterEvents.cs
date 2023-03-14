@@ -22,6 +22,7 @@ public class CharacterEvents : MonoBehaviour
     public UnityEvent onMoveStop;
     public UnityEvent onDeath;
     public UnityEvent onHover;//later UI for attack and stat showcase
+    public UnityEvent onHoverExit;
     public UnityEvent onAttackTrue;
     public UnityEvent onAttackFalse;
     public UnityEvent<Vector3Int> onHighLight;
