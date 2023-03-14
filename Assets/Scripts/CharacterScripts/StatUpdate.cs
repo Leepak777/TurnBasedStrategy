@@ -228,7 +228,7 @@ public class StatUpdate : MonoBehaviour
     }
 
     public void checkFatigue(){
-        tileFatigue(gameObject.GetComponent<Movement>().gettrailCount());
+        tileFatigue(gameObject.GetComponent<Teleport>().gettrailCount());
         restoreFatigue();
         if(stats.getStat("fat") >= 75){
             stats.modifyStat("rd", -stats.getStat("fat")/5);

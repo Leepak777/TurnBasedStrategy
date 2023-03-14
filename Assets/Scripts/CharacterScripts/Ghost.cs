@@ -8,13 +8,13 @@ public class Ghost : MonoBehaviour
     SpriteRenderer Ghost_render;
     Tilemap tilemap;
     TileManager tileM;
-    Movement movement;
+    Teleport movement;
     // Start is called before the first frame update
     void Start()
     {   
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        movement = this.gameObject.GetComponentInParent<Movement>();
+        movement = this.gameObject.GetComponentInParent<Teleport>();
         if(this.transform.parent.tag == "Enemy"){
             Destroy(this.gameObject);
         }

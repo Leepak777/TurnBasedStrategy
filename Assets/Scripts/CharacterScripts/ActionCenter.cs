@@ -60,6 +60,11 @@ public class ActionCenter : MonoBehaviour
                 this.gameObject.GetComponent<CharacterEvents>().onEnemyAttack.Invoke();
             }
         }
+
+    }
+    public void updateWalkable(){
+        tileM.setWalkable(this.gameObject,gameObject.GetComponent<Teleport>().getOrigin(),true);
+        tileM.setWalkable(this.gameObject,gameObject.GetComponent<Teleport>().getTarget(),false);
     }
 
     public void duringTurn(){
@@ -86,7 +91,7 @@ public class ActionCenter : MonoBehaviour
             this.gameObject.GetComponent<CharacterEvents>().onEnemyMove.Invoke();
         }
 
-        this.gameObject.GetComponent<CharacterEvents>().onMoving.Invoke();
+        //this.gameObject.GetComponent<CharacterEvents>().onMoving.Invoke();
 
     }
 

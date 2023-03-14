@@ -319,6 +319,7 @@ GameObject:
   - component: {fileID: 1340744478867490675}
   - component: {fileID: 2400225220951129278}
   - component: {fileID: 7030014303971415226}
+  - component: {fileID: 9182922433516024795}
   m_Layer: 6
   m_Name: PlayerCh
   m_TagString: Player
@@ -528,6 +529,30 @@ MonoBehaviour:
   onStart:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 9182922433516024795}
+        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
+        m_MethodName: setOrigin
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9182922433516024795}
+        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
+        m_MethodName: setRange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 5925291172722692194}
         m_TargetAssemblyTypeName: ActionCenter, Assembly-CSharp
         m_MethodName: beginningTurn
@@ -576,30 +601,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1340744478867490675}
-        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: setOrigin
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1340744478867490675}
-        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: setRange
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2400225220951129278}
         m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
         m_MethodName: UnhighlightReachable
@@ -639,6 +640,18 @@ MonoBehaviour:
       - m_Target: {fileID: 5340198930151324993}
         m_TargetAssemblyTypeName: StatUpdate, Assembly-CSharp
         m_MethodName: startFatCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 9182922433516024795}
+        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
+        m_MethodName: ClearTrail
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -759,8 +772,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1340744478867490675}
-        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+      - m_Target: {fileID: 9182922433516024795}
+        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
         m_MethodName: ClearTrail
         m_Mode: 1
         m_Arguments:
@@ -882,9 +895,21 @@ MonoBehaviour:
   onPlayerMove:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1340744478867490675}
-        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: setPathPlayer
+      - m_Target: {fileID: 9182922433516024795}
+        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
+        m_MethodName: ClearTrail
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9182922433516024795}
+        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
+        m_MethodName: PlayerTeleport
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -906,24 +931,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2400225220951129278}
-        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
-        m_MethodName: UnhighlightReachable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   onEnemyMove:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1340744478867490675}
-        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: setPathAI
+      - m_Target: {fileID: 9182922433516024795}
+        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
+        m_MethodName: EnemyTeleport
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1035,33 +1048,21 @@ MonoBehaviour:
   onMoveStop:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2400225220951129278}
-        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
-        m_MethodName: UnhighlightReachable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2400225220951129278}
-        m_TargetAssemblyTypeName: HighlightReachableTiles, Assembly-CSharp
-        m_MethodName: HighlightReachable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 5925291172722692194}
         m_TargetAssemblyTypeName: ActionCenter, Assembly-CSharp
         m_MethodName: updatePos
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9182922433516024795}
+        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
+        m_MethodName: ClearTrail
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1176,6 +1177,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &9182922433516024795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321727165239358837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f5c8ad9092166940b0c43cdef1ecaa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 0}
+  tilescheck: 0
+  tilesTraveled: 0
+  isMoving: 0
+  outClick: 0
+  setPath: 0
 --- !u!1 &8951542586426555525
 GameObject:
   m_ObjectHideFlags: 0

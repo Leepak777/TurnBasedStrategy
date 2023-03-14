@@ -55,9 +55,9 @@ public class TileManager : MonoBehaviour
         CreateGrid();
         //printGrid();
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
-            g.GetComponent<Movement>().setTilemap(tilemap);
+            g.GetComponent<Teleport>().setTilemap(tilemap);
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
-            g.GetComponent<Movement>().setTilemap(tilemap);
+            g.GetComponent<Teleport>().setTilemap(tilemap);
     }
     
     void CreateGrid()
@@ -155,9 +155,9 @@ public class TileManager : MonoBehaviour
 
     public List<Node> GetTilesInArea(Vector3Int center, float range){
         List<Node> Area = new List<Node>();
-        for(float x = -range; x <= range; x++){
-            for(float y = -range; y <= range; y++){
-                if(Mathf.Sqrt(x*x + y*y) <= (range)){
+        for(float x = -range; x <= range+1; x++){
+            for(float y = -range; y <= range+1; y++){
+                if(Mathf.Sqrt(x*x + y*y) <= (range+1)){
                     Vector3Int target = new Vector3Int((int)(center.x+x),(int)( center.y+y),center.z);
                     if(GetNodeFromWorld(target)!=null){
                         Area.Add(GetNodeFromWorld(target));

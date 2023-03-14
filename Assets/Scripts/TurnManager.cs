@@ -73,7 +73,7 @@ public class TurnManager : MonoBehaviour
     }
     public void duringEvent(){
         currentPlay.GetComponent<CharacterEvents>().onDuring.Invoke();
-        if(!currentPlay.GetComponent<Movement>().getisMoving() && currentPlay.tag == "Enemy"){
+        if(!currentPlay.GetComponent<Teleport>().getisMoving() && currentPlay.tag == "Enemy"){
             endTurn();
         }
     }

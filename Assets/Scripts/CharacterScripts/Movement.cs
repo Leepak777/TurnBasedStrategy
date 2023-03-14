@@ -85,7 +85,7 @@ public class Movement : MonoBehaviour
             Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
             targetNode = tilemap.WorldToCell(target);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);           
-
+    
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 //Debug.Log("Target occupied.");
                 AIreturn();

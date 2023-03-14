@@ -24,11 +24,11 @@ public class HighlightReachableTiles : MonoBehaviour
         highlightColor.a = 0.5f;
         GameObject character = this.gameObject;
         reachableTiles.Clear();
-        Vector3Int currentPos = character.GetComponent<Movement>().getOrigin();//tilemap.WorldToCell(transform.position);
+        Vector3Int currentPos = character.GetComponent<Teleport>().getOrigin();//tilemap.WorldToCell(transform.position);
         foreach(Node node in tileM.GetTilesInArea(currentPos,(character.GetComponent<StatUpdate>().getMaxTiles())+0.5f)){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
                 if (tilemap.HasTile(tilePos) && node.walkable){
-                    if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !character.GetComponent<Movement>().getTrail().Contains(tilePos))
+                    if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !character.GetComponent<Teleport>().getTrail().Contains(tilePos))
                     {
                             // Save the original tile
                             var temp = tilemap.GetTile(tilePos);
@@ -132,8 +132,8 @@ public class HighlightReachableTiles : MonoBehaviour
 
     public void UnhighlightMoveTrail()
     {
-        List<Vector3Int> trail = gameObject.GetComponent<Movement>().getTrail();
-        trail.Add(gameObject.GetComponent<Movement>().getOrigin());
+        List<Vector3Int> trail = gameObject.GetComponent<Teleport>().getTrail();
+        trail.Add(gameObject.GetComponent<Teleport>().getOrigin());
         for (int i = 0; i < trail.Count; i++)
         {
             Color c = Color.white; 
