@@ -16,6 +16,7 @@ public class ActionCenter : MonoBehaviour
     Vector3Int nodePos;
     Node tmNode;
     Vector3 worldPos;
+    bool inButton = false;
     void Awake()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
@@ -23,7 +24,7 @@ public class ActionCenter : MonoBehaviour
     }
     public bool GetMouseButtonDown(int button)
     {
-        if(GameObject.Find("AttackPrompt").GetComponent<AttackPrompt>().checkOnButton()){
+        if(GameObject.Find("AttackPrompt").GetComponent<AttackPrompt>().checkOnButton() || inButton){
             return false;
         }
         return Input.GetMouseButtonDown(button);
@@ -34,9 +35,9 @@ public class ActionCenter : MonoBehaviour
             nodePos = tilemap.WorldToCell(transform.position);
             tmNode = tileM.GetNodeFromWorld(nodePos);
             worldPos = tilemap.GetCellCenterWorld(nodePos);
-            Debug.Log("Tilemap Position"+nodePos);
+            /*Debug.Log("Tilemap Position"+nodePos);
             Debug.Log("TileManager Node"+tmNode);
-            Debug.Log("World Position"+worldPos);
+            Debug.Log("World Position"+worldPos);*/
         }
     }
     public bool ifmoved(){
@@ -68,31 +69,31 @@ public class ActionCenter : MonoBehaviour
     }
 
     public void duringTurn(){
-        if(gameObject.tag == "Player"){
-            if(GetMouseButtonDown(0)){
-                if(!gameObject.GetComponent<Attack>().isAttacking()){
-                    this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
-                }
-                else{                    
-                    Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Node n = tileM.GetNodeFromWorld(tilemap.WorldToCell(pos));
-                    if(n.occupant != null && n.occupant.tag =="Enemy")
-                    {
-                        if(tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(n.occupant.transform.position),gameObject.GetComponent<StatUpdate>().getAttackRange())){
-                            //tileM.flagEnemyArea(go,"Enemy",attackArea);
-                            GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
-                        }
-                        
-                    }
-                }
-            }
-        }
-        else{
+        if(gameObject.tag == "Enemy"){
             this.gameObject.GetComponent<CharacterEvents>().onEnemyMove.Invoke();
         }
 
-        //this.gameObject.GetComponent<CharacterEvents>().onMoving.Invoke();
+    }
 
+    public void mapClick(){
+        Debug.Log("pog");
+        if(!gameObject.GetComponent<Attack>().isAttacking()){
+            this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
+        }
+    }
+
+    public void entityClick(){
+        if(gameObject.GetComponent<Attack>().isAttacking()){
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Node n = tileM.GetNodeFromWorld(tilemap.WorldToCell(pos));
+            if(n.occupant != null && n.occupant.tag =="Enemy")
+            {
+                if(tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(n.occupant.transform.position),gameObject.GetComponent<StatUpdate>().getAttackRange())){
+                    //tileM.flagEnemyArea(go,"Enemy",attackArea);
+                    GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+                }                
+            }
+        }
     }
 
     public void undoTurn(int i){
@@ -158,5 +159,7 @@ public class ActionCenter : MonoBehaviour
         return worldPos;
     }
 
-    
+    public void setInButton(bool inB){
+        inButton = inB;
+    }
 }

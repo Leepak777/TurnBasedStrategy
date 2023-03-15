@@ -27,4 +27,7 @@ public class CharacterEvents : MonoBehaviour
     public UnityEvent onAttackFalse;
     public UnityEvent<Vector3Int> onHighLight;
     public UnityEvent<List<Vector3Int>> onUnHighLight;
+
+    public UnityEvent onEntityClick;
+    public UnityEvent onMapClick;
 }

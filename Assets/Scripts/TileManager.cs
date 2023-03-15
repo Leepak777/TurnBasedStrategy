@@ -155,10 +155,10 @@ public class TileManager : MonoBehaviour
 
     public List<Node> GetTilesInArea(Vector3Int center, float range){
         List<Node> Area = new List<Node>();
-        for(float x = -range; x <= range+1; x++){
-            for(float y = -range; y <= range+1; y++){
-                if(Mathf.Sqrt(x*x + y*y) <= (range+1)){
-                    Vector3Int target = new Vector3Int((int)(center.x+x),(int)( center.y+y),center.z);
+        for(float x = -range; x <= range; x++){
+            for(float y = -range; y <= range; y++){
+                if((int)Mathf.Sqrt((x*x + y*y)) < (range)){
+                    Vector3Int target = new Vector3Int((int)(center.x+x),(int)(center.y+y),center.z);
                     if(GetNodeFromWorld(target)!=null){
                         Area.Add(GetNodeFromWorld(target));
                     }
@@ -275,7 +275,7 @@ public class TileManager : MonoBehaviour
                 }
         }
     }*/
-    public bool EnemyInRange(string tag, int attackrange, GameObject go){
+    public bool EnemyInRange(string tag, float attackrange, GameObject go){
         Vector3Int currentPos = tilemap.WorldToCell(go.transform.position);
         foreach(Node node in GetTilesInArea(currentPos,(attackrange))){
             if(node.occupant!=null){

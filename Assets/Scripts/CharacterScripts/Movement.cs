@@ -14,7 +14,7 @@ public class Movement : MonoBehaviour
     [SerializeField] Tilemap tilemap;
     [SerializeField] float movementSpeed = 100f;  // Add this to control the movement speed
     public float tilescheck = 0;
-    int attackrange; 
+    float attackrange; 
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
     public bool isMoving = false;
     public bool outClick = false;
@@ -85,7 +85,7 @@ public class Movement : MonoBehaviour
             Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
             targetNode = tilemap.WorldToCell(target);
             Vector3Int startNode = tilemap.WorldToCell(transform.position);           
-    
+
             if(!tileM.GetNodeFromWorld(targetNode).walkable && tileM.GetNodeFromWorld(targetNode).occupant == null){
                 //Debug.Log("Target occupied.");
                 AIreturn();

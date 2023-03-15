@@ -30,7 +30,6 @@ public class StatUpdate : MonoBehaviour
     Tilemap tilemap;
     TileManager tileM;
     DRN drn;
-    int attackrange = 1;
     Text text;
     Dictionary<int,float> pastHP = new Dictionary<int, float>();
     Dictionary<int,float> pastFat = new Dictionary<int, float>();
@@ -196,12 +195,8 @@ public class StatUpdate : MonoBehaviour
     public void setMaxHealth(float x){
         maxHealth = x;
     }
-    
-    public void setAttackRange(int x){
-        attackrange = x;
-    }
-    public int getAttackRange(){
-        return (int)stats.getStat("rng");
+    public float getAttackRange(){
+        return stats.getStat("rng");
     }
 
     public void attackingFatigue(){

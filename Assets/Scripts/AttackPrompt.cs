@@ -33,28 +33,23 @@ public class AttackPrompt : MonoBehaviour
 
     void Attack1()
     {
-        if(!turnManager.currentPlay.GetComponent<Movement>().getisMoving())
-            turnManager.endTurn();
+        turnManager.endTurn();
     }
 
     public void Attack2()
     {
-        if(!turnManager.currentPlay.GetComponent<Movement>().getisMoving())
-            turnManager.currentPlay.GetComponent<Attack>().Attacking("Enemy");
-        //Debug.Log("Attack 2");
+        turnManager.currentPlay.GetComponent<Attack>().Attacking("Enemy");
     }
 
     void Attack3()
     {
-        if(!turnManager.currentPlay.GetComponent<Movement>().getisMoving())
-            undo.Invoke();
+        undo.Invoke();
         //Quit();
         //Debug.Log("Attack 3");
     }
 
     void Attack4(){
-        if(!turnManager.currentPlay.GetComponent<Movement>().getisMoving())
-            reset.Invoke();
+        reset.Invoke();
     }
 
 

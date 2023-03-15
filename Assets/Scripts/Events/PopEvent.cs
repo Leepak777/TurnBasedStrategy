@@ -18,6 +18,9 @@ public class PopEvent : MonoBehaviour
     Vector3 target;
     Tilemap tilemap;
 
+    public void togglePanel(){
+        popwindow.SetActive(!popwindow.activeInHierarchy);
+    }
     public void goAttack(){
         go.GetComponent<CharacterEvents>().onPlayerAttack.Invoke(target);
     }

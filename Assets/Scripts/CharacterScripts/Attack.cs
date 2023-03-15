@@ -9,7 +9,7 @@ public class Attack : MonoBehaviour
     Tilemap tilemap;
     public bool attacking= false;
     public int attackArea = 0;
-    public int attackrange;
+    public float attackrange;
     void Start()
     {
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();

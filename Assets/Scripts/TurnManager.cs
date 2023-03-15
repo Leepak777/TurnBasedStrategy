@@ -148,6 +148,12 @@ public class TurnManager : MonoBehaviour
             }     
         }
     }
+    public void currentPlayClickMap(){
+        currentPlay.GetComponent<CharacterEvents>().onMapClick.Invoke();
+    }
+    public void currentPlayClickEntity(){
+        currentPlay.GetComponent<CharacterEvents>().onEntityClick.Invoke();
+    }
     public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
             go.GetComponent<CharacterEvents>().saveStat.Invoke(gameTurn);

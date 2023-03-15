@@ -12,7 +12,7 @@ public class Teleport : MonoBehaviour
     List<Vector3Int> trail = new List<Vector3Int>();
     [SerializeField] Tilemap tilemap;
     public float tilescheck = 0;
-    int attackrange; 
+    float attackrange; 
     public int tilesTraveled = 0; // Add this to keep track of the number of tiles the object has traveled
     public bool isMoving = false;
     public bool outClick = false;
@@ -52,24 +52,21 @@ public class Teleport : MonoBehaviour
         if(!tileM.inArea(originNode,targetNode, tilescheck)){
             AIreturn();
         }
-        this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke(trail);
-        
-        
+
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {   
             if(tileM.inArea(originNode,targetNode, tilescheck)){
                 tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
                 tileM.setWalkable(this.gameObject,targetNode,false);
                 transform.position = tilemap.GetCellCenterWorld(targetNode);
-                foreach(Vector3Int v in trail){
+                /*foreach(Vector3Int v in trail){
                     this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(v);
-                }
+                }*/
             }
         }
         if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
             if(outClick){outClick = false;}
             this.gameObject.GetComponent<CharacterEvents>().onMoveStop.Invoke();
-            this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(originNode);
         }
     }
     public void EnemyTeleport(){
@@ -97,6 +94,7 @@ public class Teleport : MonoBehaviour
             if(tileM.inArea(originNode,targetNode, tilescheck)){
                 tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
                 tileM.setWalkable(this.gameObject,targetNode,false);
+                isMoving = false;
                 transform.position = tilemap.GetCellCenterWorld(targetNode);
                 foreach(Vector3Int v in trail){
                     this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(v);
@@ -151,8 +149,7 @@ public class Teleport : MonoBehaviour
 
     }
     void AIreturn(){
-        setPath = true;
-        isMoving = true;
+        isMoving = false;
         outClick = true;
         return;
     }
