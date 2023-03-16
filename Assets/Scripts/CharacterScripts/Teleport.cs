@@ -44,18 +44,24 @@ public class Teleport : MonoBehaviour
             //Debug.Log("Target occupied.");
             AIreturn();
         }
+        if(tileM.GetNodeFromWorld(targetNode).occupant != null && tileM.GetNodeFromWorld(targetNode).occupant == this.gameObject){
+            //Debug.Log("Target occupied.");
+            AIreturn();
+        }
         if(tileM.GetNodeFromWorld(targetNode).occupant != null){
             GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
             targetNode = tileM.getClosestTiletoObject(go, originNode, attackrange, (int)tilescheck);
             outClick = true;
         }
+
         if(!tileM.inArea(originNode,targetNode, (int)tilescheck)){
             AIreturn();
         }
+        
 
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {   
-            if(tileM.inArea(originNode,targetNode, (int)tilescheck)){
+            if(tileM.inArea(originNode,targetNode, (int)tilescheck) && targetNode != tilemap.WorldToCell(transform.position)){
                 tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
                 tileM.setWalkable(this.gameObject,targetNode,false);
                 transform.position = tilemap.GetCellCenterWorld(targetNode);

@@ -98,7 +98,7 @@ public class InitCharacter : MonoBehaviour
         player.transform.position = tilemap.GetCellCenterWorld(allocate);
         tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
         player.GetComponent<ActionCenter>().saveTurnStatData(0);
-        
+        player.GetComponent<ActionCenter>().updatePos();
     }
    
 

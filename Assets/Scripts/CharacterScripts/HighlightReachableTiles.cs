@@ -67,7 +67,7 @@ public class HighlightReachableTiles : MonoBehaviour
         //Debug.Log(this.gameObject.GetComponent<StatUpdate>().getAttackRange());
         EnemyTiles.Clear();
         Vector3Int currentPos = tilemap.WorldToCell(character.transform.position);
-        foreach(Node node in tileM.GetTilesInArea(currentPos,character.GetComponent<StatUpdate>().getAttackRange())){
+        foreach(Node node in tileM.GetTilesInArea(currentPos,(int)character.GetComponent<StatUpdate>().getAttackRange())){
             GameObject go = null;
             if(node.occupant!=null){
                 if(node.occupant.tag == "Enemy"){

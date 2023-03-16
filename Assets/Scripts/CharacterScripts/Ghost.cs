@@ -27,26 +27,23 @@ public class Ghost : MonoBehaviour
     }
 
     public void setGhost(){
-        //if(transform.parent.tag == "Player"){
-            if(!movement.getisMoving()){
-                setOnOff(true);
-                Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
-                if(tileM.inArea(movement.getOrigin(),shadowtargetNode, (int)movement.getTilesCheck())){
-                    Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
-                    if(locn.walkable){
-                        Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
-                        setLocation(loc);
-                    }
-                }
-                else{
-                    setOnOff(false);
-                }
+        
+        Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
+        if(tileM.inArea(movement.getOrigin(),shadowtargetNode, (int)movement.getTilesCheck()) ){
+            setOnOff(true);
+            Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
+            if(locn.walkable){
+                Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
+                setLocation(loc);
             }
-            else if(this.enabled){
+            if(shadowtargetNode == gameObject.GetComponentInParent<ActionCenter>().getMapPos()){
                 setOnOff(false);
             }
-        //}
+        }
+        else{
+            setOnOff(false);
+        }
     }
 
     public void setSprite(Sprite s){

@@ -45,7 +45,7 @@ public class Attack : MonoBehaviour
         
     }
     public void Attacking(string tag){
-        if(!attacking && tileM.EnemyInRange(tag, attackrange, this.gameObject)){
+        if(!attacking && tileM.EnemyInRange(tag, (int)attackrange, this.gameObject)){
             this.gameObject.GetComponent<CharacterEvents>().onAttackTrue.Invoke();
         }
         else{

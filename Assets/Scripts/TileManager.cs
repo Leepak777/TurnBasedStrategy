@@ -157,13 +157,23 @@ public class TileManager : MonoBehaviour
         List<Node> Area = new List<Node>();
         for(float x = -range; x <= range; x++){
             for(float y = -range; y <= range; y++){
-                if((int)(x*x + y*y) < (int)(range*range)){
+                if((int)(x*x + y*y) <= (int)(range*range)){
                     Vector3Int target = new Vector3Int((int)(center.x+x),(int)(center.y+y),center.z);
                     if(GetNodeFromWorld(target)!=null){
                         Area.Add(GetNodeFromWorld(target));
                     }
                 }
             }    
+        }
+        if((int) range > 1){
+            Vector3Int top = new Vector3Int((int)(center.x),(int)(center.y+range),center.z);
+            Vector3Int bottom = new Vector3Int((int)(center.x),(int)(center.y-range),center.z);
+            Vector3Int left = new Vector3Int((int)(center.x+range),(int)(center.y),center.z);
+            Vector3Int right = new Vector3Int((int)(center.x-range),(int)(center.y),center.z);
+            Area.Remove(GetNodeFromWorld(top));
+            Area.Remove(GetNodeFromWorld(bottom));
+            Area.Remove(GetNodeFromWorld(left));
+            Area.Remove(GetNodeFromWorld(right));
         }
         return Area;
     }
