@@ -157,7 +157,7 @@ public class TileManager : MonoBehaviour
         List<Node> Area = new List<Node>();
         for(float x = -range; x <= range; x++){
             for(float y = -range; y <= range; y++){
-                if((int)Mathf.Sqrt((x*x + y*y)) < (range)){
+                if((int)(x*x + y*y) < (int)(range*range)){
                     Vector3Int target = new Vector3Int((int)(center.x+x),(int)(center.y+y),center.z);
                     if(GetNodeFromWorld(target)!=null){
                         Area.Add(GetNodeFromWorld(target));
@@ -179,12 +179,12 @@ public class TileManager : MonoBehaviour
     }
 
     public bool inArea(Vector3Int start,Vector3Int target, float range){
-        foreach(Node n in GetTilesInArea(start,range)){
+        /*foreach(Node n in GetTilesInArea(start,range)){
             if(n.gridX == target.x  && n.gridY == target.y){
                 return true;
             }
-        }
-        return false;
+        }*/
+        return GetTilesInArea(start,range).Contains(GetNodeFromWorld(target));;
     }
 
     public Vector3Int inAreaTile(Vector3Int start,Vector3Int target, float range){

@@ -76,7 +76,6 @@ public class ActionCenter : MonoBehaviour
     }
 
     public void mapClick(){
-        Debug.Log("pog");
         if(!gameObject.GetComponent<Attack>().isAttacking()){
             this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
         }

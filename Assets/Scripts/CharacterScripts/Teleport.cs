@@ -46,22 +46,25 @@ public class Teleport : MonoBehaviour
         }
         if(tileM.GetNodeFromWorld(targetNode).occupant != null){
             GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-            targetNode = tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck);
+            targetNode = tileM.getClosestTiletoObject(go, originNode, attackrange, (int)tilescheck);
             outClick = true;
         }
-        if(!tileM.inArea(originNode,targetNode, tilescheck)){
+        if(!tileM.inArea(originNode,targetNode, (int)tilescheck)){
             AIreturn();
         }
 
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {   
-            if(tileM.inArea(originNode,targetNode, tilescheck)){
+            if(tileM.inArea(originNode,targetNode, (int)tilescheck)){
                 tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
                 tileM.setWalkable(this.gameObject,targetNode,false);
                 transform.position = tilemap.GetCellCenterWorld(targetNode);
                 /*foreach(Vector3Int v in trail){
                     this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(v);
                 }*/
+            }
+            else{
+                trail.Clear();
             }
         }
         if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
@@ -70,7 +73,7 @@ public class Teleport : MonoBehaviour
         }
     }
     public void EnemyTeleport(){
-        KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode, attackrange,tilescheck);
+        KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode, attackrange,(int)tilescheck);
         Vector3Int startNode = tilemap.WorldToCell(transform.position);  
               
         targetNode = target.Value;   
@@ -85,13 +88,13 @@ public class Teleport : MonoBehaviour
             //Debug.Log("Target occupied.");
             AIreturn();
         }  
-        if(!tileM.inArea(originNode,targetNode, tilescheck)){
+        if(!tileM.inArea(originNode,targetNode,(int) tilescheck)){
             AIreturn();
         }
         this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke(trail);
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {
-            if(tileM.inArea(originNode,targetNode, tilescheck)){
+            if(tileM.inArea(originNode,targetNode, (int)tilescheck)){
                 tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
                 tileM.setWalkable(this.gameObject,targetNode,false);
                 isMoving = false;

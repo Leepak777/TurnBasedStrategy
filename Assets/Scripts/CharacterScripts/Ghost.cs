@@ -32,7 +32,7 @@ public class Ghost : MonoBehaviour
                 setOnOff(true);
                 Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
-                if(tileM.inArea(movement.getOrigin(),shadowtargetNode, movement.getTilesCheck())){
+                if(tileM.inArea(movement.getOrigin(),shadowtargetNode, (int)movement.getTilesCheck())){
                     Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
                     if(locn.walkable){
                         Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
