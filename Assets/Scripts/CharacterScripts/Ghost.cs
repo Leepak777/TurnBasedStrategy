@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class Ghost : MonoBehaviour
 {
     SpriteRenderer Ghost_render;
-    Tilemap tilemap;
     TileManager tileM;
     Teleport movement;
     // Start is called before the first frame update
     void Start()
     {   
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         movement = this.gameObject.GetComponentInParent<Teleport>();
         if(this.transform.parent.tag == "Enemy"){
@@ -27,21 +24,25 @@ public class Ghost : MonoBehaviour
     }
 
     public void setGhost(){
-        
-        Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int shadowtargetNode = tilemap.WorldToCell(shadowtarget);
-        if(tileM.inArea(movement.getOrigin(),shadowtargetNode, (int)movement.getTilesCheck()) ){
-            setOnOff(true);
-            Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
-            if(locn.walkable){
-                Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
-                setLocation(loc);
+        if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null){
+            Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int shadowtargetNode = tileM.WorldToCell(shadowtarget);
+            if(tileM.inArea(movement.getOrigin(),shadowtargetNode, (int)movement.getTilesCheck()) ){
+                setOnOff(true);
+                Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
+                if(locn.occupant==null){
+                    Vector3Int loc = new Vector3Int((int)locn.worldPosition.x,(int)locn.worldPosition.y,0);
+                    setLocation(loc);
+                }
+                if(shadowtargetNode == gameObject.GetComponentInParent<ActionCenter>().getMapPos()){
+                    setOnOff(false);
+                }
             }
-            if(shadowtargetNode == gameObject.GetComponentInParent<ActionCenter>().getMapPos()){
+            else{
                 setOnOff(false);
             }
         }
-        else{
+        if(tileM.WorldToCell(transform.position) !=  tileM.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition))){
             setOnOff(false);
         }
     }

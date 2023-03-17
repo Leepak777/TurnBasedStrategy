@@ -1,22 +1,18 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 
 public class HighlightReachableTiles : MonoBehaviour
 {
-    Tilemap tilemap;
     //int maxTiles;
 
     Color highlightColor = Color.blue;
     Color highlightColor2 = Color.red;
     private List<Vector3Int> reachableTiles = new List<Vector3Int>();
     private List<Vector3Int> EnemyTiles = new List<Vector3Int>();
-    private List<Vector3Int> unreachableTiles = new List<Vector3Int>();
     TileManager tileM;
-    //public Vector3Int highlightorigin;
     void Start(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
     }
 
     public void HighlightReachable()
@@ -24,21 +20,21 @@ public class HighlightReachableTiles : MonoBehaviour
         highlightColor.a = 0.5f;
         GameObject character = this.gameObject;
         reachableTiles.Clear();
-        Vector3Int currentPos = character.GetComponent<Teleport>().getOrigin();//tilemap.WorldToCell(transform.position);
+        Vector3Int currentPos = character.GetComponent<Teleport>().getOrigin();//tileM.WorldToCell(transform.position);
         foreach(Node node in tileM.GetTilesInArea(currentPos,((int)character.GetComponent<Teleport>().getTilesCheck()))){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
-                if (tilemap.HasTile(tilePos) && node.walkable&& !character.GetComponent<Teleport>().getTrail().Contains(tilePos)){
+                if (tileM.HasTile(tilePos) && node.walkable&& !character.GetComponent<Teleport>().getTrail().Contains(tilePos)){
                     //if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !character.GetComponent<Teleport>().getTrail().Contains(tilePos))
                     //{
                             // Save the original tile
-                            var temp = tilemap.GetTile(tilePos);
+                            var temp = tileM.GetTile(tilePos);
                             // Highlight the tile
-                            tilemap.SetTileFlags(tilePos, TileFlags.None);
-                            tilemap.SetColor(tilePos, highlightColor);
+                            tileM.SetTileFlags(tilePos, TileFlags.None);
+                            tileM.SetColor(tilePos, highlightColor);
                             reachableTiles.Add(tilePos);
                             
                             // put the original tile back
-                            tilemap.SetTile(tilePos,temp);
+                            tileM.SetTile(tilePos,temp);
                         //}
                     //}
                 }
@@ -48,16 +44,16 @@ public class HighlightReachableTiles : MonoBehaviour
     public void highlight(Vector3Int tile){
         Color c = Color.red; 
         c.a = 0.5f;
-        tilemap.SetTileFlags(tile, TileFlags.None);
-        tilemap.SetColor(tile, c);
+        tileM.SetTileFlags(tile, TileFlags.None);
+        tileM.SetColor(tile, c);
 
     }
 
     public void unhighlight(Vector3Int tile){
         Color c = Color.white; 
         c.a = 0.1f;
-        tilemap.SetTileFlags(tile, TileFlags.None);
-        tilemap.SetColor(tile, c);
+        tileM.SetTileFlags(tile, TileFlags.None);
+        tileM.SetColor(tile, c);
 
     }
 
@@ -66,7 +62,7 @@ public class HighlightReachableTiles : MonoBehaviour
         highlightColor2.a = 0.5f;
         //Debug.Log(this.gameObject.GetComponent<StatUpdate>().getAttackRange());
         EnemyTiles.Clear();
-        Vector3Int currentPos = tilemap.WorldToCell(character.transform.position);
+        Vector3Int currentPos = tileM.WorldToCell(character.transform.position);
         foreach(Node node in tileM.GetTilesInArea(currentPos,(int)character.GetComponent<StatUpdate>().getAttackRange())){
             GameObject go = null;
             if(node.occupant!=null){
@@ -75,16 +71,16 @@ public class HighlightReachableTiles : MonoBehaviour
                 }
             }
             if(go!=null){
-            Vector3Int tilePos = tilemap.WorldToCell(go.transform.position);
-             var temp = tilemap.GetTile(tilePos);
+            Vector3Int tilePos = tileM.WorldToCell(go.transform.position);
+             var temp = tileM.GetTile(tilePos);
 
             // Highlight the tile
-            tilemap.SetTileFlags(tilePos, TileFlags.None);
-            tilemap.SetColor(tilePos, highlightColor2);
+            tileM.SetTileFlags(tilePos, TileFlags.None);
+            tileM.SetColor(tilePos, highlightColor2);
             EnemyTiles.Add(tilePos);
                         
             // put the original tile back
-            tilemap.SetTile(tilePos,temp);
+            tileM.SetTile(tilePos,temp);
             }
         }
     }
@@ -96,8 +92,8 @@ public class HighlightReachableTiles : MonoBehaviour
                 Color c = Color.white; 
                 c.a = 0.1f;
                 Vector3Int tilePos = EnemyTiles[i];
-                tilemap.SetTileFlags(tilePos, TileFlags.None);
-                tilemap.SetColor(tilePos, c);
+                tileM.SetTileFlags(tilePos, TileFlags.None);
+                tileM.SetColor(tilePos, c);
             }
             EnemyTiles.Clear();
         
@@ -110,8 +106,8 @@ public class HighlightReachableTiles : MonoBehaviour
             Color c = Color.white; 
             c.a = 0.1f;
             Vector3Int tilePos = reachableTiles[i];
-            tilemap.SetTileFlags(tilePos, TileFlags.None);
-            tilemap.SetColor(tilePos, c);
+            tileM.SetTileFlags(tilePos, TileFlags.None);
+            tileM.SetColor(tilePos, c);
             
         }
         reachableTiles.Clear();
@@ -124,8 +120,8 @@ public class HighlightReachableTiles : MonoBehaviour
             Color c = Color.white; 
             c.a = 0.1f;
             Vector3Int tilePos = trail[i];
-            tilemap.SetTileFlags(tilePos, TileFlags.None);
-            tilemap.SetColor(tilePos, c);
+            tileM.SetTileFlags(tilePos, TileFlags.None);
+            tileM.SetColor(tilePos, c);
             
         }        
     }
@@ -139,8 +135,8 @@ public class HighlightReachableTiles : MonoBehaviour
             Color c = Color.white; 
             c.a = 0.1f;
             Vector3Int tilePos = trail[i];
-            tilemap.SetTileFlags(tilePos, TileFlags.None);
-            tilemap.SetColor(tilePos, c);
+            tileM.SetTileFlags(tilePos, TileFlags.None);
+            tileM.SetColor(tilePos, c);
             
         }        
     }
@@ -154,8 +150,8 @@ public class HighlightReachableTiles : MonoBehaviour
             Color c = Color.red; 
             c.a = 0.5f;
             tile = trail[i];
-            tilemap.SetTileFlags(tile, TileFlags.None);
-            tilemap.SetColor(tile, c);
+            tileM.SetTileFlags(tile, TileFlags.None);
+            tileM.SetColor(tile, c);
             
         }        
     }

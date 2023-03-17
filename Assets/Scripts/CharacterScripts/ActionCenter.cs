@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Tilemaps;
 using UnityEngine.Events;
 
 public class ActionCenter : MonoBehaviour
 {
     // Start is called before the first frame update
-    Tilemap tilemap;
     //bool gameTurn = true;
     public int tilesfat = 0;
     TileManager tileM;
@@ -17,43 +15,44 @@ public class ActionCenter : MonoBehaviour
     Node tmNode;
     Vector3 worldPos;
     bool inButton = false;
+    bool clicked = false;
+
     void Awake()
     {
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
     public bool GetMouseButtonDown(int button)
     {
-        if(GameObject.Find("AttackPrompt").GetComponent<AttackPrompt>().checkOnButton() || inButton){
+        if(GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton() || inButton){
             return false;
         }
         return Input.GetMouseButtonDown(button);
     }
-    
+    //update current position of character, just made it incase we need it
     public void updatePos(){
         if(ifmoved()){
-            nodePos = tilemap.WorldToCell(transform.position);
+            nodePos = tileM.WorldToCell(transform.position);
             tmNode = tileM.GetNodeFromWorld(nodePos);
-            worldPos = tilemap.GetCellCenterWorld(nodePos);
-            /*Debug.Log("Tilemap Position"+nodePos);
+            worldPos = tileM.GetCellCenterWorld(nodePos);
+            /*Debug.Log("tileM Position"+nodePos);
             Debug.Log("TileManager Node"+tmNode);
             Debug.Log("World Position"+worldPos);*/
         }
     }
+    //check if character moved after click or movement, if not can skip some checks
     public bool ifmoved(){
-        return tilemap.WorldToCell(transform.position) != nodePos;
+        return tileM.WorldToCell(transform.position) != nodePos;
     }
+    //checks at beginning of turn, decoupled it so rn its empty lol
     public void beginningTurn(){
-        //To-DO: Added skill check for skills that update each Character turn
         if(tilesfat > 0){
             tilesfat = 0;
         }
         //remove
-        if(gameObject.GetComponent<StatUpdate>().getDictStats("fat") > 100){
-            this.gameObject.GetComponent<CharacterEvents>().onEnd.Invoke(1);
-        }
+        
     }
-    
+    //checks at end of turn, also that's when enemy attack,
+    // takes int bc reset and undo ends the current play turn before going to the previous character, can removeit not that we don't use undo
     public void endingTurn(int i){
         //To-DO: Added skill check for skills that update each Character turn
         if(i == 0){
@@ -63,34 +62,31 @@ public class ActionCenter : MonoBehaviour
         }
 
     }
-    public void updateWalkable(){
-        tileM.setWalkable(this.gameObject,gameObject.GetComponent<Teleport>().getOrigin(),true);
-        tileM.setWalkable(this.gameObject,gameObject.GetComponent<Teleport>().getTarget(),false);
-    }
-
+    
+    //checks during turn 
     public void duringTurn(){
         if(gameObject.tag == "Enemy"){
             this.gameObject.GetComponent<CharacterEvents>().onEnemyMove.Invoke();
         }
 
     }
-
-    public void mapClick(){
-        if(!gameObject.GetComponent<Attack>().isAttacking()){
-            this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
-        }
-    }
-
-    public void entityClick(){
-        if(gameObject.GetComponent<Attack>().isAttacking()){
+    // invoke events onClick, either movement or attack
+    public void onClick(){
+        if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null){
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Node n = tileM.GetNodeFromWorld(tilemap.WorldToCell(pos));
-            if(n.occupant != null && n.occupant.tag =="Enemy")
+            Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
+            if(n != null && n.occupant != null && n.occupant.tag =="Enemy")
             {
-                if(tileM.inArea(tilemap.WorldToCell(transform.position),tilemap.WorldToCell(n.occupant.transform.position),gameObject.GetComponent<StatUpdate>().getAttackRange())){
+                if(tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(n.occupant.transform.position),(int)gameObject.GetComponent<StatUpdate>().getAttackRange())){
                     //tileM.flagEnemyArea(go,"Enemy",attackArea);
                     GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
-                }                
+                } 
+                else{
+                   this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition); 
+                }               
+            }
+            else if(tileM.WorldToCell(transform.position) != tileM.WorldToCell(pos)){
+                this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
             }
         }
     }
@@ -101,53 +97,62 @@ public class ActionCenter : MonoBehaviour
             i--;
         }
         if(pastOrigin.ContainsKey(i)){
-            Vector3 ogPos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(transform.position));
-            transform.position = tilemap.GetCellCenterWorld(pastOrigin[i]);
+            Vector3 ogPos = tileM.GetCellCenterWorld(tileM.WorldToCell(transform.position));
+            transform.position = tileM.GetCellCenterWorld(pastOrigin[i]);
             if(transform.position != ogPos){
-                tileM.setWalkable(this.gameObject,tilemap.WorldToCell(ogPos), true);   
+                tileM.setWalkable(this.gameObject,tileM.WorldToCell(ogPos), true);   
             }
             if(!this.gameObject.activeInHierarchy){
                 this.gameObject.SetActive(true);
                 
             }
-            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),false);
+            tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),false);
         }
 
     }
 
     public void notmoving(){
         if(this.gameObject.activeInHierarchy){
-            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position), false);
+            tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position), false);
         }
     }
-
+    //originally keep track of stats throughout turn for undo, can still keep for other features
     public void saveTurnStatData(int gameTurn){
         if(this.gameObject.activeInHierarchy || gameTurn == 0){
             //statupdate.startSaveStat(gameTurn);
             if(pastOrigin.ContainsKey(gameTurn)){
-                pastOrigin[gameTurn] =  tilemap.WorldToCell(transform.position);    
+                pastOrigin[gameTurn] =  tileM.WorldToCell(transform.position);    
             }
             else{
-                pastOrigin.Add(gameTurn, tilemap.WorldToCell(transform.position));
+                pastOrigin.Add(gameTurn, tileM.WorldToCell(transform.position));
             }
         }
     }
-    public void HoverTest(){
-        GameObject.Find("PanelEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+    void OnGUI()
+    {
+        Event e = Event.current;
+        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
+        if (e.isMouse && e.button == 1 && n.occupant == gameObject)
+        {
+            if(!clicked){
+                gameObject.GetComponentInChildren<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+                clicked = true;
+            }
+            else{
+                clicked = false;
+            }
+            
+        }
+        
     }
-    public void exitTest(){
-        GameObject.Find("Panel").SetActive(false);
-    }
-    public void invokeHover(){
-        gameObject.GetComponent<CharacterEvents>().onHover.Invoke();
-    }
+
     public void setTilesFat(int tilesfat){
         this.tilesfat = tilesfat;
     }
     public int getTilesFat(){
         return tilesfat;
     }
-
     public Vector3Int getMapPos(){
         return nodePos;
     }

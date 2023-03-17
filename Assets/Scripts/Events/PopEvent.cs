@@ -19,7 +19,13 @@ public class PopEvent : MonoBehaviour
     Tilemap tilemap;
 
     public void togglePanel(){
-        popwindow.SetActive(!popwindow.activeInHierarchy);
+        Debug.Log(popwindow);
+        if(popwindow.activeInHierarchy){
+            popwindow.SetActive(false);
+        }
+        else{
+            popwindow.SetActive(true);
+        }
     }
     public void goAttack(){
         go.GetComponent<CharacterEvents>().onPlayerAttack.Invoke(target);
@@ -50,7 +56,7 @@ public class PopEvent : MonoBehaviour
         goType.text = chStat.getAttribute("Type");
         foreach(string str in eqlst){
             if(chStat.getAttribute(str) != null){
-            goEquipment.text += str+": \n"+ chStat.getAttribute(str) +"\n"; 
+                goEquipment.text += str+": \n"+ chStat.getAttribute(str) +"\n"; 
             }
         }
         goStat.text = "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";

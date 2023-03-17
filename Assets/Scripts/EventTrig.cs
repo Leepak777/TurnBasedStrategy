@@ -1,11 +1,17 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
-
+using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Collections;
 public class EventTrig: MonoBehaviour
 {
     public UnityEvent mapClick;
     bool clicked = false;
+    bool inButton = false;
+    public void setClicked(bool click){
+        this.clicked = click;
+    }
     void OnGUI()
     {
         Event e = Event.current;
@@ -19,5 +25,12 @@ public class EventTrig: MonoBehaviour
                 clicked = false;
             }
         }
+        
+    }
+    public void setInButton(bool inB){
+        this.inButton = inB;
+    }
+    public bool checkOnButton(){
+        return inButton;
     }
 }

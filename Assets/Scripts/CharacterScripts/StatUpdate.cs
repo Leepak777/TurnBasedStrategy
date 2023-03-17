@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 #if UNITY_EDITOR
@@ -18,8 +17,6 @@ using UnityEditorInternal;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-
-
 public class StatUpdate : MonoBehaviour
 {
     public float currentHealth;
@@ -27,7 +24,6 @@ public class StatUpdate : MonoBehaviour
     public int Damage = 0;
     public List<bool> buff =new List<bool>();
     public float bonus = 0;
-    Tilemap tilemap;
     TileManager tileM;
     DRN drn;
     Text text;
@@ -42,7 +38,6 @@ public class StatUpdate : MonoBehaviour
         currentHealth = maxHealth;
         drn = DRN.getInstance();
         text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
-        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         for(int i = 0; i < 18; i++){
             buff.Add(false);
@@ -59,8 +54,8 @@ public class StatUpdate : MonoBehaviour
     }
 
     public bool rangeRoll(GameObject enemy){
-        Vector3Int enpos = tilemap.WorldToCell(enemy.transform.position);
-        Vector3Int playerpos = tilemap.WorldToCell(transform.position);
+        Vector3Int enpos = tileM.WorldToCell(enemy.transform.position);
+        Vector3Int playerpos = tileM.WorldToCell(transform.position);
         float player_roll = drn.getDRN() + stats.getRangeAttackRoll(tileM.GetDistance(enpos, playerpos));
         StatUpdate en_stat = enemy.GetComponent<StatUpdate>();
         float enemy_roll = drn.getDRN() + en_stat.getStats().getRangeDefenceRoll();
@@ -70,8 +65,8 @@ public class StatUpdate : MonoBehaviour
     }
     
     public void attackEn(GameObject targetEnemy){
-        Vector3Int enpos = tilemap.WorldToCell(targetEnemy.transform.position);
-        Vector3Int playerpos = tilemap.WorldToCell(transform.position);
+        Vector3Int enpos = tileM.WorldToCell(targetEnemy.transform.position);
+        Vector3Int playerpos = tileM.WorldToCell(transform.position);
         for(int i = 0; i < stats.getStat("attack_num"); i++){
             bool drn_check;
             if(tileM.IsAdjacent(enpos,playerpos)){
@@ -135,11 +130,12 @@ public class StatUpdate : MonoBehaviour
             currentHealth = 0;
         }
         if(currentHealth <= 0){
-            tileM.setWalkable(this.gameObject,tilemap.WorldToCell(transform.position),true);
+            tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
             this.gameObject.SetActive(false);
         }
         attackedFatigue();
     }
+
     public CharacterStat getStats(){
         return stats;
     }

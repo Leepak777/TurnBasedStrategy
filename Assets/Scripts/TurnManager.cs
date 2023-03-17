@@ -73,9 +73,7 @@ public class TurnManager : MonoBehaviour
     }
     public void duringEvent(){
         currentPlay.GetComponent<CharacterEvents>().onDuring.Invoke();
-        if(!currentPlay.GetComponent<Teleport>().getisMoving() && currentPlay.tag == "Enemy"){
-            endTurn();
-        }
+        
     }
 
     public void updateIndex()
@@ -148,11 +146,8 @@ public class TurnManager : MonoBehaviour
             }     
         }
     }
-    public void currentPlayClickMap(){
-        currentPlay.GetComponent<CharacterEvents>().onMapClick.Invoke();
-    }
-    public void currentPlayClickEntity(){
-        currentPlay.GetComponent<CharacterEvents>().onEntityClick.Invoke();
+    public void currentPlayClick(){
+        currentPlay.GetComponent<CharacterEvents>().onClick.Invoke();
     }
     public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
