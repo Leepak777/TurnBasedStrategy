@@ -10,7 +10,7 @@ public class HighlightReachableTiles : MonoBehaviour
     Color highlightColor2 = Color.red;
     private List<Vector3Int> reachableTiles = new List<Vector3Int>();
     private List<Vector3Int> EnemyTiles = new List<Vector3Int>();
-    TileManager tileM;
+    public TileManager tileM;
     void Start(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }

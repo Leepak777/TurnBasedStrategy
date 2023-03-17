@@ -14,7 +14,6 @@ public class PopEvent : MonoBehaviour
     public GameObject type;
     public GameObject equipment;
     public GameObject stat;
-
     Vector3 target;
     Tilemap tilemap;
 
@@ -45,6 +44,23 @@ public class PopEvent : MonoBehaviour
         }
         popwindow.transform.position = newpos + modpos;
         this.go = go;
+        
+    }
+    public void setLocMenu(){
+        if(tilemap == null){
+            tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        }
+        this.target = go.transform.position;
+        Vector3 newpos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+        Vector3 modpos = new Vector3(0,128,0);
+        /*if(GameObject.Find("Main Camera").transform.position.x < GameObject.Find("Canvas").transform.position.x){
+            modpos = new Vector3(-64,0,0);
+        }*/
+        if(popwindow.name == "Panel"){
+            modpos.x *= 2;
+        }
+        popwindow.transform.position = newpos + modpos;
+        
         
     }
 

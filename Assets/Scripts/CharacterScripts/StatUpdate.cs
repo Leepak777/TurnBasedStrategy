@@ -37,7 +37,9 @@ public class StatUpdate : MonoBehaviour
         maxHealth = stats.getStat("maxHealth");
         currentHealth = maxHealth;
         drn = DRN.getInstance();
-        text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
+        if(SceneManager.GetActiveScene().name != "MapSelection"){
+            text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
+        }
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         for(int i = 0; i < 18; i++){
             buff.Add(false);
