@@ -14,7 +14,7 @@ public class HighlightReachableTiles : MonoBehaviour
     void Start(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
-
+    //highlight movement area
     public void HighlightReachable()
     {   
         highlightColor.a = 0.5f;
@@ -40,7 +40,7 @@ public class HighlightReachableTiles : MonoBehaviour
                 }
         }
     }
-
+    //highlight tile
     public void highlight(Vector3Int tile){
         Color c = Color.red; 
         c.a = 0.5f;
@@ -48,7 +48,7 @@ public class HighlightReachableTiles : MonoBehaviour
         tileM.SetColor(tile, c);
 
     }
-
+    //unhighlight tile
     public void unhighlight(Vector3Int tile){
         Color c = Color.white; 
         c.a = 0.1f;
@@ -56,7 +56,7 @@ public class HighlightReachableTiles : MonoBehaviour
         tileM.SetColor(tile, c);
 
     }
-
+    //highlight enemy in range
     public void HighlightEnemy(){
         GameObject character = this.gameObject;
         highlightColor2.a = 0.5f;
@@ -85,7 +85,7 @@ public class HighlightReachableTiles : MonoBehaviour
         }
     }
 
-    
+    //unhighligh enemy
     public void UnhighlightEnemy(){
             for (int i = 0; i < EnemyTiles.Count; i++)
             {
@@ -113,18 +113,6 @@ public class HighlightReachableTiles : MonoBehaviour
         reachableTiles.Clear();
         
     }
-    public void UnhighlightTrail(List<Vector3Int> trail)
-    {
-        for (int i = 0; i < trail.Count; i++)
-        {
-            Color c = Color.white; 
-            c.a = 0.1f;
-            Vector3Int tilePos = trail[i];
-            tileM.SetTileFlags(tilePos, TileFlags.None);
-            tileM.SetColor(tilePos, c);
-            
-        }        
-    }
 
     public void UnhighlightMoveTrail()
     {
@@ -140,6 +128,7 @@ public class HighlightReachableTiles : MonoBehaviour
             
         }        
     }
+    //hightlight trail after movement
     public void highlightMoveTrail()
     {
         Vector3Int tile;

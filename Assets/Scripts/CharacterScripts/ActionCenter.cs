@@ -21,13 +21,7 @@ public class ActionCenter : MonoBehaviour
     {
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
-    public bool GetMouseButtonDown(int button)
-    {
-        if(GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton() || inButton){
-            return false;
-        }
-        return Input.GetMouseButtonDown(button);
-    }
+
     //update current position of character, just made it incase we need it
     public void updatePos(){
         if(ifmoved()){
@@ -72,6 +66,9 @@ public class ActionCenter : MonoBehaviour
     }
     // invoke events onClick, either movement or attack
     public void onClick(){
+        if(GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton() || inButton){
+            return;
+        }
         if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null){
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
@@ -128,6 +125,7 @@ public class ActionCenter : MonoBehaviour
             }
         }
     }
+    //sense when character is being right clicked, show the stat panel 
     void OnGUI()
     {
         Event e = Event.current;

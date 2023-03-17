@@ -24,7 +24,7 @@ public class Ghost : MonoBehaviour
     }
 
     public void setGhost(){
-        if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null){
+        if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null ){
             Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int shadowtargetNode = tileM.WorldToCell(shadowtarget);
             if(tileM.inArea(movement.getOrigin(),shadowtargetNode, (int)movement.getTilesCheck()) ){
@@ -42,7 +42,7 @@ public class Ghost : MonoBehaviour
                 setOnOff(false);
             }
         }
-        if(tileM.WorldToCell(transform.position) !=  tileM.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition))){
+        if(tileM.WorldToCell(transform.position) !=  tileM.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)) || GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton()){
             setOnOff(false);
         }
     }
