@@ -85,4 +85,19 @@ MonoBehaviour:
       - Type
       values:
       - Imperial Legionary
+  positions:
+    keys:
+    - Player1
+    - Player2
+    - Player3
+    - Player4
+    - Enemy1
+    - Enemy2
+    values:
+    - {x: 23, y: 9, z: 0}
+    - {x: 28, y: 16, z: 0}
+    - {x: 28, y: 12, z: 0}
+    - {x: 29, y: 8, z: 0}
+    - {x: 31, y: 12, z: 0}
+    - {x: 36, y: 14, z: 0}
   map: Never Gonna Give You Up

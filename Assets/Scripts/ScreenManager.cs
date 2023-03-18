@@ -124,7 +124,7 @@ public class ScreenManager : MonoBehaviour
     }
     void LoadMyScene()
     {
-        sceneLoader.LoadScene("GameScene");
+        sceneLoader.LoadScene("MapSelection");
     }
 
     // Update is called once per frame

@@ -69,10 +69,10 @@ public class InitCharacter : MonoBehaviour
         foreach(KeyValuePair<string, UDictionary<string,string>> ch in chlst){
             //string[] words = lst[i].Split(',');
             if(ch.Key[0] == 'P'){
-                createCharacter("Player",ch);   
+                createCharacter("Player",ch, data.positions[ch.Key]);   
             }
             else if(ch.Key[0] == 'E'){
-                createCharacter("Enemy",ch);
+                createCharacter("Enemy",ch, data.positions[ch.Key]);
             }
         }
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Player");
@@ -80,7 +80,7 @@ public class InitCharacter : MonoBehaviour
         
     }
 
-    void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch){
+    void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch, Vector3Int pos){
         CreateCharacterAsset(ch.Key,ch.Value);
         GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
         prefab.name = ch.Key;
@@ -91,10 +91,7 @@ public class InitCharacter : MonoBehaviour
         player.transform.SetParent(transform);
         player.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
         player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
-        Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-        while(!tileM.GetNodeFromWorld(tilemap.WorldToCell(tilemap.GetCellCenterWorld(allocate))).walkable){
-            allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-        }
+        Vector3Int allocate = pos;
         player.transform.position = tilemap.GetCellCenterWorld(allocate);
         tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
         player.GetComponent<ActionCenter>().saveTurnStatData(0);

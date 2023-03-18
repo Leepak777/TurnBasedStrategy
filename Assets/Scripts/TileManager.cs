@@ -60,10 +60,12 @@ public class TileManager : MonoBehaviour
             GameObject.Find("HighLight").GetComponentInChildren<HighlightReachableTiles>().tileM = this;
             highlightMap();
         }
-        /*foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
-            g.GetComponent<Teleport>().settileM(this);
-        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
-            g.GetComponent<Teleport>().settileM(this);*/
+        else{
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+                g.GetComponent<Teleport>().settileM(this);
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+                g.GetComponent<Teleport>().settileM(this);
+        }
     }
     
     void CreateGrid()

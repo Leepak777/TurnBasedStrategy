@@ -873,6 +873,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilesfat: 0
+  unhighlightTile:
+    m_PersistentCalls:
+      m_Calls: []
+  highlightTile:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &492597581560471947
 MonoBehaviour:
   m_ObjectHideFlags: 0

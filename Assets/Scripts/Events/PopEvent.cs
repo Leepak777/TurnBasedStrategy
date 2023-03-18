@@ -70,9 +70,11 @@ public class PopEvent : MonoBehaviour
         Text goStat = stat.GetComponent<Text>();
         CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
         goType.text = chStat.getAttribute("Type");
-        foreach(string str in eqlst){
-            if(chStat.getAttribute(str) != null){
-                goEquipment.text += str+": \n"+ chStat.getAttribute(str) +"\n"; 
+        if(goEquipment.text == ""){
+            foreach(string str in eqlst){
+                if(chStat.getAttribute(str) != null){
+                    goEquipment.text += str+": \n"+ chStat.getAttribute(str) +"\n"; 
+                }
             }
         }
         goStat.text = "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";

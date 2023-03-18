@@ -16,7 +16,8 @@ public class ActionCenter : MonoBehaviour
     Vector3 worldPos;
     bool inButton = false;
     bool clicked = false;
-
+    public UnityEvent<Vector3Int> unhighlightTile;
+    public UnityEvent<Vector3Int> highlightTile;
     void Awake()
     {
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
@@ -137,7 +138,6 @@ public class ActionCenter : MonoBehaviour
         if (e.isMouse && e.button == 1 && n.occupant == gameObject)
         {
             if(!clicked){
-                
                 gameObject.GetComponentInChildren<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
                 clicked = true;
             }
@@ -148,18 +148,7 @@ public class ActionCenter : MonoBehaviour
         }
         
     }
-    public void moveWithMouse(){
-        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        gameObject.transform.position = tileM.GetCellCenterWorld(tileM.WorldToCell(pos));
-        if(!GameObject.Find("ChPanel").GetComponent<RectTransform>().rect.Contains(transform.position)){
-            Debug.Log("pog");
-            gameObject.transform.SetParent(GameObject.Find("ChPanel").transform);
-        }
-        else{
-            Debug.Log("bonkers");
-            gameObject.transform.SetParent(GameObject.Find("Canvas").transform);
-        }
-    }
+    
     public void setTilesFat(int tilesfat){
         this.tilesfat = tilesfat;
     }
