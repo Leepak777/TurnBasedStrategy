@@ -134,8 +134,10 @@ public class Teleport : MonoBehaviour
     }
 
     public void setOrigin(){
+        if(tileM == null){
+            tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        }
         originNode = tileM.WorldToCell(this.gameObject.transform.position);
-
     }
     void AIreturn(){
         isMoving = false;

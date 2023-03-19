@@ -82,7 +82,7 @@ public class InitCharacter : MonoBehaviour
     }
 
     void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch, Vector3Int pos){
-        CreateCharacterAsset(ch.Key,ch.Value);
+        //CreateCharacterAsset(ch.Key,ch.Value);
         GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
         prefab.name = ch.Key;
         GameObject player = Instantiate(prefab) as GameObject;

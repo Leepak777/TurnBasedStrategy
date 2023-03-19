@@ -176,7 +176,6 @@ public class StatUpdate : MonoBehaviour
     }
 
     public int getMaxTiles(){
-        
         return (int)stats.getStat("mov")/4 +1;
     }
 

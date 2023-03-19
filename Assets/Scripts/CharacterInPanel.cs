@@ -61,7 +61,7 @@ public class CharacterInPanel : MonoBehaviour
         }
        
     }
-    void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch, int pos){
+    void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch){
         CreateCharacterAsset(ch.Key,ch.Value);
         GameObject prefab = Resources.Load<GameObject>("ChDemo") as GameObject;
         prefab.name = ch.Key;
@@ -77,21 +77,20 @@ public class CharacterInPanel : MonoBehaviour
         //List<string> lst = ReadInputFileAsList();
         
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
-        int pos = 0;
         foreach(KeyValuePair<string, UDictionary<string,string>> ch in chlst){
             //string[] words = lst[i].Split(',');
             if(ch.Key[0] == 'P'){
-                createCharacter("Player",ch,pos);   
+                createCharacter("Player",ch);   
             }
             else if(ch.Key[0] == 'E'){
-                createCharacter("Enemy",ch,pos);
+                createCharacter("Enemy",ch);
             }
-            pos++;
         }
         
         
     }
     public void CreateCharacterAsset(string go, UDictionary<string,string> ch) {    
+        DeleteAssets(go);
         string[] result = AssetDatabase.FindAssets("/Data/"+go);
         CharacterStat Data = null;
         if (result.Length > 2)
@@ -123,5 +122,27 @@ public class CharacterInPanel : MonoBehaviour
         if(GameObject.Find("ChPanel").transform.childCount == 0){
             sceneLoader.LoadScene("GameScene");
         }
+    }
+
+    [MenuItem("Tools/Delete Assets with Substring")]
+    static void DeleteAssets(string name)
+    {
+        string targetSubstring = name; // Change this to your desired substring
+
+        string[] guids = AssetDatabase.FindAssets("t:Object"); // Find all assets in the project
+        int count = 0;
+
+        foreach (string guid in guids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            if (path.Contains(targetSubstring))
+            {
+                AssetDatabase.DeleteAsset(path);
+                count++;
+            }
+        }
+
+        AssetDatabase.Refresh(); // Refresh the asset database to update the project window
+        Debug.Log("Deleted " + count + " assets with substring '" + targetSubstring + "'");
     }
 }

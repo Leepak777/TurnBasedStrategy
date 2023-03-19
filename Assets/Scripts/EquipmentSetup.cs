@@ -31,6 +31,7 @@ public class EquipmentSetup : MonoBehaviour
         
     }
     public void setScene(){
+        attributes.Clear();
         weapon.ClearOptions();
         armor.ClearOptions();
         shield.ClearOptions();
