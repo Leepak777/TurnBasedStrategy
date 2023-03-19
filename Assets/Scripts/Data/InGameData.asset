@@ -13,13 +13,77 @@ MonoBehaviour:
   m_Name: InGameData
   m_EditorClassIdentifier: 
   characterlst:
-    keys: []
-    values: []
+    keys:
+    - Player1
+    - Player2
+    - Player3
+    - Player4
+    - Enemy1
+    - Enemy2
+    - Enemy3
+    - Enemy4
+    values:
+    - keys:
+      - Type
+      values:
+      - Praetorian Guard
+    - keys:
+      - Type
+      values:
+      - Imperial Legionary
+    - keys:
+      - Type
+      values:
+      - Imperial Conscript
+    - keys:
+      - Type
+      values:
+      - Imperial Legionary
+    - keys:
+      - Type
+      values:
+      - Imperial Legionary
+    - keys:
+      - Type
+      values:
+      - Imperial Conscript
+    - keys:
+      - Type
+      values:
+      - Imperial Conscript
+    - keys:
+      - Type
+      values:
+      - Imperial Legionary
   positions:
-    keys: []
-    values: []
+    keys:
+    - Enemy4
+    - Player1
+    - Player2
+    - Enemy3
+    values:
+    - {x: 34, y: 11, z: 0}
+    - {x: 25, y: 10, z: 0}
+    - {x: 25, y: 13, z: 0}
+    - {x: 33, y: 10, z: 0}
   sprites:
-    keys: []
-    values: []
+    keys:
+    - Player1
+    - Player2
+    - Player3
+    - Player4
+    - Enemy1
+    - Enemy2
+    - Enemy3
+    - Enemy4
+    values:
+    - {fileID: 2223229156712978820, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -6205263883817022554, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -6812436413751847659, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 2506328554285755566, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 5736237562643917380, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 6177075501601533703, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 2223229156712978820, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 1480903098374382782, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
   map: Never Gonna Give You Up
   currentSetCh: 

@@ -15,17 +15,13 @@ public class PositionSetup : MonoBehaviour
     // Start is called before the first frame update
     public UnityEvent<Vector3Int> unhighlightTile;
     public UnityEvent<Vector3Int> highlightTile;
-    Vector3 originNode;
     public InGameData data;
     void Awake()
     { 
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        originNode = Camera.main.WorldToScreenPoint(transform.position);
         data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
     }
-    public void setOrigin(Vector3 pos){
-        originNode = Camera.main.WorldToScreenPoint(pos);
-    }
+
     void Update(){
         
     }
@@ -42,10 +38,9 @@ public class PositionSetup : MonoBehaviour
     public void moveWithMouse(){
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         gameObject.transform.position = tileM.GetCellCenterWorld(tileM.WorldToCell(pos));
-        RectTransform r = GameObject.Find("ChPanel").GetComponent<RectTransform>();
+        RectTransform r = GameObject.Find("scroll").GetComponent<RectTransform>();
         if(RectTransformUtility.RectangleContainsScreenPoint(r, Input.mousePosition, Camera.main)){
             gameObject.transform.SetParent(GameObject.Find("ChPanel").transform);
-            //transform.position = Camera.main.ScreenToWorldPoint(originNode);
         }
         else{
             gameObject.transform.SetParent(GameObject.Find("Canvas").transform);
@@ -61,7 +56,6 @@ public class PositionSetup : MonoBehaviour
     public void unhighlightCurrent(){
         if(!tileM.GetNodeFromWorld(tileM.WorldToCell(transform.position)).walkable){
             gameObject.transform.SetParent(GameObject.Find("ChPanel").transform);
-            transform.position = Camera.main.ScreenToWorldPoint(originNode);
             return;
         }
         if(transform.parent.gameObject.name != "ChPanel"){
@@ -69,9 +63,7 @@ public class PositionSetup : MonoBehaviour
             tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),false);
             addEntry();
         }
-        else{
-            transform.position = Camera.main.ScreenToWorldPoint(originNode);
-        }
+        
     }
 
     public void addEntry(){

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 303c7bef3757f304f89e5278f3b35103, type: 3}
-  m_Name: Player1
+  m_Name: Player2
   m_EditorClassIdentifier: 
   stats:
     keys:
@@ -61,17 +61,17 @@ MonoBehaviour:
     - maxStb
     - maxTiles
     values:
-    - 8
-    - 6
     - 7
-    - 4
-    - 3
-    - 15
-    - 9
-    - 16
-    - 16
+    - 5
+    - 6
+    - 2
     - 3
     - 13
+    - 9
+    - 15
+    - 14
+    - 3
+    - 10
     - 10
     - 1
     - 10
@@ -95,20 +95,20 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-    - 53
-    - 16
+    - 47
+    - 14
     - 0
-    - 41
+    - 33
     - 0
-    - 5
-    - 22
-    - -2
+    - 4.5
+    - 18.75
+    - -1.75
     - 0
-    - 53
-    - 58
-    - 5
+    - 47
+    - 47
+    - 4
   attributes:
     keys:
     - Type
     values:
-    - Praetorian Guard
+    - Imperial Legionary

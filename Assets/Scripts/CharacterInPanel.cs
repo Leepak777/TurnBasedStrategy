@@ -71,11 +71,6 @@ public class CharacterInPanel : MonoBehaviour
         player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
         player.transform.SetParent(transform);
         player.GetComponent<SpriteRenderer>().sprite = data.sprites[ch.Key];
-        Vector3 panelPos = transform.position;
-        RectTransform rect = gameObject.GetComponent<RectTransform>();
-        Vector3 allocate = new Vector3Int((int)(rect.rect.xMin + pos * 64) , (int)(rect.rect.yMin - 169),0);
-        player.transform.position = allocate;
-        player.GetComponent<PositionSetup>().setOrigin(player.transform.position);
     }
 
     public void setStage(){
