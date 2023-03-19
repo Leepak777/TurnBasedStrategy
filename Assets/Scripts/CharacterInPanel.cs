@@ -129,13 +129,12 @@ public class CharacterInPanel : MonoBehaviour
     {
         string targetSubstring = name; // Change this to your desired substring
 
-        string[] guids = AssetDatabase.FindAssets("t:Object"); // Find all assets in the project
+        string[] assetPaths = AssetDatabase.GetAllAssetPaths(); // Get all asset paths in the project
         int count = 0;
 
-        foreach (string guid in guids)
+        foreach (string path in assetPaths)
         {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            if (path.Contains(targetSubstring))
+            if (path.EndsWith(".asset") && path.Contains(targetSubstring))
             {
                 AssetDatabase.DeleteAsset(path);
                 count++;
@@ -143,6 +142,6 @@ public class CharacterInPanel : MonoBehaviour
         }
 
         AssetDatabase.Refresh(); // Refresh the asset database to update the project window
-        Debug.Log("Deleted " + count + " assets with substring '" + targetSubstring + "'");
+        Debug.Log("Deleted " + count + " .asset files with substring '" + targetSubstring + "'");
     }
 }

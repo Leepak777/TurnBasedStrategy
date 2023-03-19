@@ -20,7 +20,7 @@ MonoBehaviour:
     - keys:
       - Type
       values:
-      - Imperial Legionary
+      - Praetorian Guard
     - keys:
       - Type
       values:
@@ -30,14 +30,14 @@ MonoBehaviour:
     - Player1
     - Enemy1
     values:
-    - {x: 26, y: 12, z: 0}
-    - {x: 28, y: 12, z: 0}
+    - {x: 25, y: 15, z: 0}
+    - {x: 29, y: 13, z: 0}
   sprites:
     keys:
     - Player1
     - Enemy1
     values:
-    - {fileID: -4866676472983080188, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
-    - {fileID: 8619593181315066144, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -1426656124264659525, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 7658542407909571512, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
   map: Never Gonna Give You Up
   currentSetCh: 
