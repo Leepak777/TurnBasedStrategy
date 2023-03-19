@@ -20,6 +20,7 @@ public class InitCharacter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
+        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         Sprite[] allsprites = Resources.LoadAll<Sprite>("Daemons");
         foreach(Sprite s in allsprites){
             //Debug.Log(s.name);
@@ -64,7 +65,7 @@ public class InitCharacter : MonoBehaviour
 
     public void setStage(){
         //List<string> lst = ReadInputFileAsList();
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
         foreach(KeyValuePair<string, UDictionary<string,string>> ch in chlst){
             //string[] words = lst[i].Split(',');
@@ -89,7 +90,7 @@ public class InitCharacter : MonoBehaviour
         player.tag = tag;
         player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
         player.transform.SetParent(transform);
-        player.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
+        player.GetComponent<SpriteRenderer>().sprite = data.sprites[ch.Key];
         player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
         Vector3Int allocate = pos;
         player.transform.position = tilemap.GetCellCenterWorld(allocate);

@@ -41,52 +41,12 @@ public class ScreenManager : MonoBehaviour
             buttons.Add(b.GetComponent<Button>());
         }*/
         buttons.Add(GameObject.Find("button1").GetComponent<Button>()); 
-        buttons.Add(GameObject.Find("button2").GetComponent<Button>()); 
         buttons.Add(GameObject.Find("button3").GetComponent<Button>());
         buttons[0].onClick.AddListener(LoadMyScene);
-        buttons[1].onClick.AddListener(CreateCharacterFile);
         buttons[2].onClick.AddListener(CreateMapFile);
     }
 
-    public static void CreateCharacterFile() {
-        string[] result = AssetDatabase.FindAssets("InGameData");
-        InGameData Data = null;
-        if (result.Length > 2)
-        {
-            Debug.LogError("More than 1 Asset founded");
-            return;
-        }
-     
-        if(result.Length == 0)
-        {
-            Debug.Log("Create new Asset");
-            Data = ScriptableObject.CreateInstance<InGameData >();
-            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/InGameData.asset");
-        }
-        else
-        {
-            string path = AssetDatabase.GUIDToAssetPath(result[0]);
-            Data= (InGameData )AssetDatabase.LoadAssetAtPath(path, typeof(InGameData));
-            Debug.Log("Found Asset File !!!");
-        }
-        //InGameData Data = ScriptableObject.CreateInstance<InGameData>();
-        Data.characterlst.Clear();
-        UDictionary<string,string> PlData = new UDictionary<string, string>(){
-            {"Type",types[rnd.Next(0,5)]},{"Weapon","Great Sword"},{"Shield","Kite Shield"},{"Armor","Praetorian Armor"},{"Buckler","kekw"},{"Mount","War Horse"}
-        };
-        UDictionary<string,string> EnData = new UDictionary<string, string>(){
-            {"Type",types[rnd.Next(0,5)]}/*,{"Weapon","Light Glaive"},{"Shield","Tower Shield"},{"Armor","Assault Vest"},{"Buckler","Buckler"},{"Mount","War Horse"}*/
-        };
-        for(int i = 0; i < 4; i++){
-            Data.characterlst.Add("Player"+(i+1),PlData);
-            
-        }Data.characterlst.Add("Enemy"+1,EnData);
-        Data.characterlst.Add("Enemy"+2,EnData);
-        EditorUtility.SetDirty(Data);
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-
-    }
+    
 
     public static void CreateMapFile() {
         string[] result = AssetDatabase.FindAssets("InGameData");

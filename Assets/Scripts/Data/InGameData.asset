@@ -15,89 +15,29 @@ MonoBehaviour:
   characterlst:
     keys:
     - Player1
-    - Player2
-    - Player3
-    - Player4
     - Enemy1
-    - Enemy2
     values:
     - keys:
       - Type
-      - Weapon
-      - Shield
-      - Armor
-      - Buckler
-      - Mount
-      values:
-      - Praetorian Guard
-      - Great Sword
-      - Kite Shield
-      - Praetorian Armor
-      - kekw
-      - War Horse
-    - keys:
-      - Type
-      - Weapon
-      - Shield
-      - Armor
-      - Buckler
-      - Mount
-      values:
-      - Praetorian Guard
-      - Great Sword
-      - Kite Shield
-      - Praetorian Armor
-      - kekw
-      - War Horse
-    - keys:
-      - Type
-      - Weapon
-      - Shield
-      - Armor
-      - Buckler
-      - Mount
-      values:
-      - Praetorian Guard
-      - Great Sword
-      - Kite Shield
-      - Praetorian Armor
-      - kekw
-      - War Horse
-    - keys:
-      - Type
-      - Weapon
-      - Shield
-      - Armor
-      - Buckler
-      - Mount
-      values:
-      - Praetorian Guard
-      - Great Sword
-      - Kite Shield
-      - Praetorian Armor
-      - kekw
-      - War Horse
-    - keys:
-      - Type
       values:
       - Imperial Legionary
     - keys:
       - Type
       values:
-      - Imperial Legionary
+      - Imperial Conscript
   positions:
     keys:
-    - Player1
-    - Player2
-    - Player3
-    - Player4
     - Enemy1
-    - Enemy2
+    - Player1
     values:
-    - {x: 23, y: 9, z: 0}
-    - {x: 28, y: 16, z: 0}
     - {x: 28, y: 12, z: 0}
-    - {x: 29, y: 8, z: 0}
-    - {x: 31, y: 12, z: 0}
-    - {x: 36, y: 14, z: 0}
+    - {x: 24, y: 12, z: 0}
+  sprites:
+    keys:
+    - Player1
+    - Enemy1
+    values:
+    - {fileID: -5383051665984936242, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -6205263883817022554, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
   map: Never Gonna Give You Up
+  currentSetCh: 

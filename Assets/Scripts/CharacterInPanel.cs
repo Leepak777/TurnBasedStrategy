@@ -19,13 +19,15 @@ public class CharacterInPanel : MonoBehaviour
 
     void Start()
     {
+        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         Sprite[] allsprites = Resources.LoadAll<Sprite>("Daemons");
         foreach(Sprite s in allsprites){
             //Debug.Log(s.name);
             Daemons.Add(s.name,s);
         }
-        sceneLoader = GetComponent<SceneLoader>();
         setStage();
+        sceneLoader = GetComponent<SceneLoader>();
+
     }
 
     void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch, int pos){
@@ -36,7 +38,7 @@ public class CharacterInPanel : MonoBehaviour
         player.tag = tag;
         player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
         player.transform.SetParent(transform);
-        player.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
+        player.GetComponent<SpriteRenderer>().sprite = data.sprites[ch.Key];
         Vector3 panelPos = transform.position;
         RectTransform rect = gameObject.GetComponent<RectTransform>();
         Vector3 allocate = new Vector3Int((int)(rect.rect.xMin + pos * 64) , (int)(rect.rect.yMin - 169),0);
@@ -46,7 +48,7 @@ public class CharacterInPanel : MonoBehaviour
 
     public void setStage(){
         //List<string> lst = ReadInputFileAsList();
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
         int pos = 0;
         foreach(KeyValuePair<string, UDictionary<string,string>> ch in chlst){
@@ -65,6 +67,8 @@ public class CharacterInPanel : MonoBehaviour
 
     public void LoadMyScene()
     {
-        sceneLoader.LoadScene("GameScene");
+        if(GameObject.Find("ChPanel").transform.childCount == 0){
+            sceneLoader.LoadScene("GameScene");
+        }
     }
 }
