@@ -18,7 +18,6 @@ public class PopEvent : MonoBehaviour
     Tilemap tilemap;
 
     public void togglePanel(){
-        Debug.Log(popwindow);
         if(popwindow.activeInHierarchy){
             popwindow.SetActive(false);
         }

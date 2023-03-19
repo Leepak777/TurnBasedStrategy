@@ -293,8 +293,10 @@ public class TileManager : MonoBehaviour
         {
             for (int y = 0; y < gridSize.y; y++)
             {
-                Vector3Int pos = new Vector3Int(x, y, 0);
-                highlightTile.Invoke(pos);
+                if(grid[x,y].walkable){
+                    Vector3Int pos = new Vector3Int(x, y, 0);
+                    highlightTile.Invoke(pos);
+                }
             }
         }
     }

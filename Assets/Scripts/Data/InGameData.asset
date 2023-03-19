@@ -15,29 +15,18 @@ MonoBehaviour:
   characterlst:
     keys:
     - Player1
-    - Enemy1
     values:
     - keys:
-      - Type
+      - Armor
       values:
-      - Praetorian Guard
-    - keys:
-      - Type
-      values:
-      - Imperial Legionary
+      - Half Plate
   positions:
-    keys:
-    - Player1
-    - Enemy1
-    values:
-    - {x: 25, y: 15, z: 0}
-    - {x: 29, y: 13, z: 0}
+    keys: []
+    values: []
   sprites:
     keys:
     - Player1
-    - Enemy1
     values:
-    - {fileID: -1426656124264659525, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
-    - {fileID: 7658542407909571512, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 0}
   map: Never Gonna Give You Up
-  currentSetCh: 
+  currentSetCh: Player1

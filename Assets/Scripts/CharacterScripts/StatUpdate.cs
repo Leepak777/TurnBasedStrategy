@@ -176,6 +176,9 @@ public class StatUpdate : MonoBehaviour
     }
 
     public int getMaxTiles(){
+        if(stats == null){
+            stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
+        }
         return (int)stats.getStat("mov")/4 +1;
     }
 

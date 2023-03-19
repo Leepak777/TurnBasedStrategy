@@ -124,7 +124,6 @@ public class CharacterInPanel : MonoBehaviour
         }
     }
 
-    [MenuItem("Tools/Delete Assets with Substring")]
     static void DeleteAssets(string name)
     {
         string targetSubstring = name; // Change this to your desired substring
@@ -142,6 +141,6 @@ public class CharacterInPanel : MonoBehaviour
         }
 
         AssetDatabase.Refresh(); // Refresh the asset database to update the project window
-        Debug.Log("Deleted " + count + " .asset files with substring '" + targetSubstring + "'");
+        //Debug.Log("Deleted " + count + " .asset files with substring '" + targetSubstring + "'");
     }
 }

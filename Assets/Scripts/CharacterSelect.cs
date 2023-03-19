@@ -73,14 +73,6 @@ public class CharacterSelect : MonoBehaviour
                     data.characterlst[gameObject.name].Add(at);
                 }
             }
-            /*foreach(KeyValuePair<string,string> at in attributes){
-                if(data.characterlst[gameObject.name].ContainsKey(at.Key)){
-                    data.characterlst[gameObject.name][at.Key] = at.Value;
-                }
-                else{
-                    data.characterlst[gameObject.name].Add(at);
-                }
-            }*/
         }
         else{
             data.characterlst.Add(gameObject.name, attributes);

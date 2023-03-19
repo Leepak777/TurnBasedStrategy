@@ -31,6 +31,8 @@ public class EquipmentSetup : MonoBehaviour
         
     }
     public void setScene(){
+        AssetDatabase.Refresh();
+        data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         attributes.Clear();
         weapon.ClearOptions();
         armor.ClearOptions();
@@ -42,7 +44,23 @@ public class EquipmentSetup : MonoBehaviour
         shield.AddOptions(shie);
         buckler.AddOptions(buc);
         mount.AddOptions(mou);
-        data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        /*if(data.characterlst.ContainsKey(data.currentSetCh)){
+            if(data.characterlst[data.currentSetCh].ContainsKey("Weapon")){
+                weapon.value = weapon.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Weapon"]);
+            }
+            if(data.characterlst[data.currentSetCh].ContainsKey("Armor")){
+                armor.value = armor.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Armor"]);
+            }
+            if(data.characterlst[data.currentSetCh].ContainsKey("Shield")){
+                shield.value = shield.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Shield"]);
+            }
+            if(data.characterlst[data.currentSetCh].ContainsKey("Buckler")){
+                buckler.value = buckler.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Buckler"]);
+            }
+            if(data.characterlst[data.currentSetCh].ContainsKey("Mount")){
+                mount.value = mount.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Mount"]);
+            }
+        }*/
         txt.text = data.currentSetCh;
         if(data.sprites.ContainsKey(txt.text)){
             img.sprite = data.sprites[txt.text]; 
@@ -101,14 +119,6 @@ public class EquipmentSetup : MonoBehaviour
                     data.characterlst[data.currentSetCh].Add(at);
                 }
             }
-            /*foreach(KeyValuePair<string,string> at in attributes){
-                if(data.characterlst[data.currentSetCh].ContainsKey(at.Key)){
-                    data.characterlst[data.currentSetCh][at.Key] = at.Value;
-                }
-                else{
-                    data.characterlst[data.currentSetCh].Add(at);
-                }
-            }*/
         }
         else{
             data.characterlst.Add(data.currentSetCh, attributes);

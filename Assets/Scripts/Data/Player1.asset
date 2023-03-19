@@ -88,27 +88,29 @@ MonoBehaviour:
     - 0
     - 0
     - 1
+    - 14
     - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - -1
+    - -1
+    - -1
+    - -1
+    - 4
     - 53
     - 16
     - 0
     - 41
     - 0
-    - 5
-    - 22
-    - -2
+    - 4
+    - 17
+    - 2
     - 0
     - 53
     - 58
-    - 5
+    - 4
   attributes:
     keys:
     - Type
+    - Armor
     values:
     - Praetorian Guard
+    - Half Plate
