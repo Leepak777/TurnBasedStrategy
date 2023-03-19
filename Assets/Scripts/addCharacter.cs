@@ -18,6 +18,7 @@ public class addCharacter : MonoBehaviour
         player.transform.SetParent(goParent.transform);
         player.transform.localScale = new Vector3(1, 1, 1);
     }
+
     public void addEnemy(){
         GameObject goParent = GameObject.Find("scrollPanel_en");
         GameObject prefab = Resources.Load<GameObject>("EnemySetup") as GameObject;
@@ -28,11 +29,19 @@ public class addCharacter : MonoBehaviour
     }
 
     public void removePlayer(){
-       GameObject player = GameObject.Find("Player"+GameObject.Find("scrollPanel").transform.childCount);
+       string name ="Player"+GameObject.Find("scrollPanel").transform.childCount;
+       GameObject player = GameObject.Find(name);
        Destroy(player);
+       InGameData data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+       data.characterlst.Remove(name);
+       data.sprites.Remove(name);
     }
      public void removeEnemy(){
-        GameObject player = GameObject.Find("Enemy"+GameObject.Find("scrollPanel_en").transform.childCount);
+        string name = "Enemy"+GameObject.Find("scrollPanel_en").transform.childCount;
+        GameObject player = GameObject.Find(name);
         Destroy(player);
+        InGameData data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+       data.characterlst.Remove(name);
+       data.sprites.Remove(name);
     }
 }

@@ -61,17 +61,17 @@ MonoBehaviour:
     - maxStb
     - maxTiles
     values:
-    - 7
-    - 5
+    - 8
     - 6
-    - 2
+    - 7
+    - 4
+    - 3
+    - 15
+    - 9
+    - 16
+    - 16
     - 3
     - 13
-    - 9
-    - 15
-    - 14
-    - 3
-    - 10
     - 10
     - 1
     - 10
@@ -95,20 +95,20 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-    - 47
-    - 14
+    - 53
+    - 16
     - 0
-    - 33
+    - 41
     - 0
-    - 4.5
-    - 18.75
-    - -1.75
+    - 5
+    - 22
+    - -2
     - 0
-    - 47
-    - 47
-    - 4
+    - 53
+    - 58
+    - 5
   attributes:
     keys:
     - Type
     values:
-    - Imperial Legionary
+    - Praetorian Guard
