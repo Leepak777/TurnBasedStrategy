@@ -574,12 +574,12 @@ GameObject:
   m_Component:
   - component: {fileID: 2826008092802605566}
   - component: {fileID: 5340198930151324999}
-  - component: {fileID: 4079539431778862988}
   - component: {fileID: 3298421056229670967}
   - component: {fileID: 1944612926}
   - component: {fileID: 1944612925}
   - component: {fileID: 1944612927}
   - component: {fileID: 1944612928}
+  - component: {fileID: -1271688898221639201}
   m_Layer: 3
   m_Name: ChDemo
   m_TagString: Player
@@ -599,7 +599,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8906131547528253646}
+  - {fileID: 6894578260372162078}
   - {fileID: 7370549606511633878}
   - {fileID: 2111127331438647350}
   - {fileID: 1817712687738378631}
@@ -663,23 +663,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &4079539431778862988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8316715853530580724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9672ac2063fb984eb802eb9d008d34f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 0
-  maxHealth: 100
-  Damage: 0
-  buff: 
-  bonus: 0
 --- !u!114 &3298421056229670967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,7 +883,24 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   data: {fileID: 0}
---- !u!1001 &2331907350683025971
+--- !u!114 &-1271688898221639201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8316715853530580724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9672ac2063fb984eb802eb9d008d34f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 100
+  Damage: 0
+  buff: 
+  bonus: 0
+--- !u!1001 &318067221334775011
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -910,10 +910,6 @@ PrefabInstance:
     - target: {fileID: 6014361673809869159, guid: 01cceb71c4048d94f92fc6236a134c37, type: 3}
       propertyPath: m_Name
       value: healthbar
-      objectReference: {fileID: 0}
-    - target: {fileID: 6014361673809869159, guid: 01cceb71c4048d94f92fc6236a134c37, type: 3}
-      propertyPath: m_Layer
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6612539988871992061, guid: 01cceb71c4048d94f92fc6236a134c37, type: 3}
       propertyPath: m_Pivot.x
@@ -1001,8 +997,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01cceb71c4048d94f92fc6236a134c37, type: 3}
---- !u!224 &8906131547528253646 stripped
+--- !u!224 &6894578260372162078 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6612539988871992061, guid: 01cceb71c4048d94f92fc6236a134c37, type: 3}
-  m_PrefabInstance: {fileID: 2331907350683025971}
+  m_PrefabInstance: {fileID: 318067221334775011}
   m_PrefabAsset: {fileID: 0}

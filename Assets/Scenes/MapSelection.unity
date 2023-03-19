@@ -736,6 +736,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 0}
+  equipments: {fileID: 11400000, guid: fb17da8d5da0fe848a7d3b69fe58a79f, type: 2}
+  types: {fileID: 11400000, guid: a0419dca955bab445a63118ec68c555a, type: 2}
 --- !u!114 &1017022072
 MonoBehaviour:
   m_ObjectHideFlags: 0

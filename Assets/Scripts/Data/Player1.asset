@@ -88,21 +88,21 @@ MonoBehaviour:
     - 0
     - 0
     - 1
+    - 13
     - 0
     - 0
     - 0
     - 0
     - 0
-    - 0
-    - 0
+    - 2
     - 47
     - 14
     - 0
     - 33
     - 0
     - 4.5
-    - 18.75
-    - -1.75
+    - 16.75
+    - 0.25
     - 0
     - 47
     - 47
@@ -110,5 +110,7 @@ MonoBehaviour:
   attributes:
     keys:
     - Type
+    - Armor
     values:
     - Imperial Legionary
+    - Synthe Armor
