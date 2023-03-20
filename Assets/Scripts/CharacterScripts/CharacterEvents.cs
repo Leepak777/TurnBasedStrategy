@@ -28,4 +28,6 @@ public class CharacterEvents : MonoBehaviour
     public UnityEvent<Vector3Int> onHighLight;
     public UnityEvent<List<Vector3Int>> onUnHighLight;
     public UnityEvent onClick;
+    public UnityEvent<Vector3> setTargetTile;
+    
 }

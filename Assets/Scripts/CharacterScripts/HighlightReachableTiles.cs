@@ -9,6 +9,7 @@ public class HighlightReachableTiles : MonoBehaviour
     Color highlightColor = Color.blue;
     Color highlightColor2 = Color.red;
     private List<Vector3Int> reachableTiles = new List<Vector3Int>();
+    private List<Vector3Int> test = new List<Vector3Int>();
     private List<Vector3Int> EnemyTiles = new List<Vector3Int>();
     public TileManager tileM;
     void Start(){
@@ -23,7 +24,7 @@ public class HighlightReachableTiles : MonoBehaviour
         Vector3Int currentPos = character.GetComponent<Teleport>().getOrigin();//tileM.WorldToCell(transform.position);
         foreach(Node node in tileM.GetTilesInArea(currentPos,(character.GetComponent<Teleport>().getTilesCheck()))){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
-                if (tileM.HasTile(tilePos) && node.walkable&& !character.GetComponent<Teleport>().getTrail().Contains(tilePos)){
+                if (tileM.HasTile(tilePos) && node.walkable){//&& !character.GetComponent<Teleport>().getTrail().Contains(tilePos)){
                     //if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !character.GetComponent<Teleport>().getTrail().Contains(tilePos))
                     //{
                             // Save the original tile
@@ -134,6 +135,29 @@ public class HighlightReachableTiles : MonoBehaviour
         Vector3Int tile;
         List<Vector3Int> trail = gameObject.GetComponent<Teleport>().getTrail();
         trail.Add(gameObject.GetComponent<Teleport>().getOrigin());
+        for (int i = 0; i < trail.Count; i++)
+        {
+            Color c = Color.red; 
+            c.a = 0.5f;
+            tile = trail[i];
+            tileM.SetTileFlags(tile, TileFlags.None);
+            tileM.SetColor(tile, c);
+            
+        }        
+    }
+
+    public void unhighlightTestTrail()
+    {        
+        foreach(Vector3Int v in test){
+            unhighlight(v);
+        }        
+        test.Clear();
+    }
+    public void highlightTestTrail(Vector3 pos)
+    {
+        Vector3Int tile;
+        List<Vector3Int> trail = gameObject.GetComponent<Teleport>().GetPosTrail(pos);
+        this.test = trail;
         for (int i = 0; i < trail.Count; i++)
         {
             Color c = Color.red; 

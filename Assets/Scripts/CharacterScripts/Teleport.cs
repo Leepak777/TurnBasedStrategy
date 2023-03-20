@@ -31,6 +31,7 @@ public class Teleport : MonoBehaviour
     public void PlayerTeleport(Vector3 mousePosition){
         Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
         targetNode = tileM.WorldToCell(target);
+        targetNode = tileM.getCloestTile(targetNode,originNode,attackrange,tilescheck);
         Node n = tileM.GetNodeFromWorld(targetNode);
         if(n.occupant != null && n.occupant.tag == "Enemy"){
             if(tileM.entityInRange(gameObject, n.occupant, gameObject.GetComponent<StatUpdate>().getAttackRange())){
@@ -39,11 +40,7 @@ public class Teleport : MonoBehaviour
         }
         //Debug.Log(targetNode);
         //Debug.Log(tileM.WorldToCell(transform.position));
-        if(n.occupant != null){
-            GameObject go = n.occupant;
-            targetNode = tileM.getClosestTiletoObject(go, originNode, (int)attackrange, (int)tilescheck);
-            outClick = true;
-        }
+        
         
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail) && tileM.inArea(originNode,targetNode, tilescheck))
         {   
@@ -87,6 +84,27 @@ public class Teleport : MonoBehaviour
             this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(originNode);
         }
     }
+    public List<Vector3Int> GetPosTrail(Vector3 mousePosition){
+        List<Vector3Int> test = new List<Vector3Int>();
+        List<Vector3Int> toorigin = new List<Vector3Int>();
+        List<Vector3Int> fuckme = new List<Vector3Int>();
+        Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
+        targetNode = tileM.WorldToCell(target);
+        targetNode = tileM.getCloestTile(targetNode,originNode,attackrange,tilescheck);
+        if(pathfinder.GenerateAstarPath(tileM.WorldToCell(transform.position), targetNode, out fuckme)){
+            if(!fuckme.Contains(originNode)){
+                return fuckme;
+            }
+        }
+        if(pathfinder.GenerateAstarPath(originNode, targetNode, out test) && pathfinder.GenerateAstarPath(tileM.WorldToCell(transform.position), originNode, out toorigin)){
+            foreach(Vector3Int v in toorigin){
+                test.Add(v);
+            }
+            toorigin.Clear();
+            return test;
+        }
+        return null;
+    }
    
     Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos) 
     {
@@ -111,6 +129,9 @@ public class Teleport : MonoBehaviour
 
     public bool getisMoving(){
         return isMoving;
+    }
+    public int getAttackRange(){
+        return (int)attackrange;
     }
     public void setisMoving(bool move){
         this.isMoving = move;

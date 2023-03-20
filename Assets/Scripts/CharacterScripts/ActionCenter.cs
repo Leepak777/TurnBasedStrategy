@@ -12,6 +12,7 @@ public class ActionCenter : MonoBehaviour
     TileManager tileM;
     private Dictionary<int,Vector3Int> pastOrigin = new Dictionary<int, Vector3Int>();
     Vector3Int nodePos;
+    Vector3Int target;
     Node tmNode;
     Vector3 worldPos;
     bool inButton = false;
@@ -73,18 +74,24 @@ public class ActionCenter : MonoBehaviour
         if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null){
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
-            if(n != null && n.occupant != null && n.occupant.tag =="Enemy")
-            {
-                if(tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(n.occupant.transform.position),(int)gameObject.GetComponent<StatUpdate>().getAttackRange())){
-                    //tileM.flagEnemyArea(go,"Enemy",attackArea);
-                    GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
-                } 
-                else{
-                   this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition); 
-                }               
+            if(target != tileM.WorldToCell(pos)){
+                target = tileM.WorldToCell(pos);
+                this.gameObject.GetComponent<CharacterEvents>().setTargetTile.Invoke(Input.mousePosition);
             }
-            else if(tileM.WorldToCell(transform.position) != tileM.WorldToCell(pos)){
-                this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
+            else{
+                if(n != null && n.occupant != null && n.occupant.tag =="Enemy")
+                {
+                    if(tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(n.occupant.transform.position),(int)gameObject.GetComponent<StatUpdate>().getAttackRange())){
+                        //tileM.flagEnemyArea(go,"Enemy",attackArea);
+                        GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+                    } 
+                    else{
+                    this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition); 
+                    }               
+                }
+                else if(tileM.WorldToCell(transform.position) != tileM.WorldToCell(pos)){
+                    this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
+                }
             }
         }
     }

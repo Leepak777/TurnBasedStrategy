@@ -96,7 +96,7 @@ public class Movement : MonoBehaviour
             }
             if(tileM.GetNodeFromWorld(targetNode).occupant != null){
                 GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-                targetNode = tileM.getClosestTiletoObject(go, originNode, attackrange, tilescheck);
+                targetNode = tileM.getClosestTiletoObject(tileM.WorldToCell(go.transform.position), originNode, attackrange, tilescheck);
                 outClick = true;
             }
             if(!tileM.inArea(originNode,targetNode, tilescheck)){
