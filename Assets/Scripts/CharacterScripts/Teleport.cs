@@ -154,7 +154,6 @@ public class Teleport : MonoBehaviour
         outClick = true;
     }
     public int gettrailCount(){
-        Debug.Log(trail.Count);
         return trail.Count;
     }
     public List<Vector3Int> getTrail(){

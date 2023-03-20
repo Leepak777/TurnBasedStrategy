@@ -76,7 +76,9 @@ public class ActionCenter : MonoBehaviour
             Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
             if(target != tileM.WorldToCell(pos)){
                 target = tileM.WorldToCell(pos);
-                this.gameObject.GetComponent<CharacterEvents>().setTargetTile.Invoke(Input.mousePosition);
+                if(!(tileM.GetNodeFromWorld(target).occupant != null && tileM.IsAdjacent(target,tileM.WorldToCell(transform.position)))){
+                    this.gameObject.GetComponent<CharacterEvents>().setTargetTile.Invoke(Input.mousePosition);
+                }
             }
             else{
                 if(n != null && n.occupant != null && n.occupant.tag =="Enemy")
