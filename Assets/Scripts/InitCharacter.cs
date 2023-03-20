@@ -12,14 +12,13 @@ public class InitCharacter : MonoBehaviour
 { 
     public Tilemap tilemap;
     Dictionary<string,Sprite> Daemons = new Dictionary<string,Sprite>();
-    public Equipments equipments;
-    public Types types;
     public InGameData data;
     Random rnd = new Random();
     TileManager tileM;
     // Start is called before the first frame update
     void Start()
     { 
+        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         Sprite[] allsprites = Resources.LoadAll<Sprite>("Daemons");
         foreach(Sprite s in allsprites){
             //Debug.Log(s.name);
@@ -41,81 +40,43 @@ public class InitCharacter : MonoBehaviour
     5. buckler
     6. mount
     */
-    UDictionary<string,float> getAttributeStats(KeyValuePair<string,string> attribute){
-        switch(attribute.Key){
-            case "Type":    return types.getTypeStat(attribute.Value);
-            case "Weapon":  return equipments.getWeaponStat(attribute.Value);
-            case "Shield":  return equipments.getShieldStat(attribute.Value);
-            case "Armor":   return equipments.getArmorStat(attribute.Value);
-            case "Buckler": return equipments.getBucklerStat(attribute.Value);
-            case "Mount":   return equipments.getMountStat(attribute.Value);
-        }
-        return null;
-    }
-    void setStats(GameObject character, UDictionary<string,string> attributes){
-        
-        foreach(KeyValuePair<string,string> attribute in attributes){
-            if(getAttributeStats(attribute)!=null){
-                character.GetComponent<StatUpdate>().setStats(getAttributeStats(attribute));
-            }
-        }
-       
-    }
+    
 
     public void setStage(){
         //List<string> lst = ReadInputFileAsList();
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/InGameData.asset");
+        
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
         foreach(KeyValuePair<string, UDictionary<string,string>> ch in chlst){
             //string[] words = lst[i].Split(',');
             if(ch.Key[0] == 'P'){
-                createCharacter("Player",ch);   
+                createCharacter("Player",ch, data.positions[ch.Key]);   
             }
             else if(ch.Key[0] == 'E'){
-                createCharacter("Enemy",ch);
+                createCharacter("Enemy",ch, data.positions[ch.Key]);
             }
         }
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Player");
         GameObject.Find("Main Camera").GetComponent<CameraController>().initLoc(objectsWithTag[0]);
-
+        
     }
 
-    void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch){
+    void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch, Vector3Int pos){
         GameObject prefab = Resources.Load<GameObject>("PlayerCh") as GameObject;
         prefab.name = ch.Key;
         GameObject player = Instantiate(prefab) as GameObject;
+        player.name = ch.Key;
         player.tag = tag;
         player.transform.Find("NameIndicator").GetComponentInChildren<Text>().text = ch.Key;
         player.transform.SetParent(transform);
-        player.GetComponent<SpriteRenderer>().sprite = Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
+        player.GetComponent<SpriteRenderer>().sprite = data.sprites[ch.Key];
         player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
-        Vector3Int allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-        while(!tileM.GetNodeFromWorld(tilemap.WorldToCell(tilemap.GetCellCenterWorld(allocate))).walkable){
-            allocate = new Vector3Int(20+rnd.Next(1,7),12+rnd.Next(1,7),0);
-        }
+        Vector3Int allocate = pos;
         player.transform.position = tilemap.GetCellCenterWorld(allocate);
         tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
-        player.GetComponent<StatUpdate>().setUp();
-        setStats(player,ch.Value);
-        player.GetComponent<StatUpdate>().setCalStat();
         player.GetComponent<ActionCenter>().saveTurnStatData(0);
+        player.GetComponent<ActionCenter>().updatePos();
     }
    
 
-    public static List<string> ReadInputFileAsList() {
-        string filePath = Application.dataPath + "/Character.txt";
-
-        if (File.Exists(filePath)) {
-            return File.ReadAllLines(filePath).ToList();
-        } else {
-            return new List<string>() { "File not found." };
-        }
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

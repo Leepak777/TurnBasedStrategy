@@ -4,20 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class startTurnEvent : UnityEvent{
 
-}
-
-public class endTurnEvent : UnityEvent{
-    
-}
-
-public class duringTurnEvent : UnityEvent{
-    
-}
-public class undoEvent :UnityEvent{
-
-}
 
 public class TurnManager : MonoBehaviour
 {
@@ -31,10 +18,10 @@ public class TurnManager : MonoBehaviour
     public GameObject currentPlay;
     private int turnElasped;
     private int gameTurn = 1;
-    startTurnEvent start;
-    endTurnEvent end;
-    duringTurnEvent during;
-    undoEvent undo;
+    public UnityEvent start;
+    public UnityEvent end;
+    public UnityEvent during;
+    public UnityEvent undo;
     void Start()
     {
         turnOrder = new List<GameObject>();
@@ -46,14 +33,6 @@ public class TurnManager : MonoBehaviour
         currentTurnIndex = 0;
         currentTurnIndex2 = 0;
         currentPlay = turnOrder[currentTurnIndex];
-        start = new startTurnEvent();
-        end = new endTurnEvent();
-        during = new duringTurnEvent();
-        undo = new undoEvent();
-        start.AddListener(startEvent);
-        end.AddListener(endEvent);
-        during.AddListener(duringEvent);
-        undo.AddListener(undoTurn);
         //reset2();
     }
 
@@ -72,9 +51,9 @@ public class TurnManager : MonoBehaviour
                 break;
         }
     }
-    void startEvent(){
+    public void startEvent(){
         //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponent<ActionCenter>().beginningTurn();
+        currentPlay.GetComponent<CharacterEvents>().onStart.Invoke();
         if(currentPlay.tag == "Player"){        
             startTurnSavePlayer();
             //startTurnSaveEnemy();
@@ -82,32 +61,22 @@ public class TurnManager : MonoBehaviour
         else{*/
             startTurnSaveEnemy();
         }
-        GameObject.Find("Main Camera").GetComponent<CameraController>().trackPlayer(currentPlay);  
         gamestate = 2;
     }
-    void endEvent(){
+    public void endEvent(){
         //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponent<ActionCenter>().endingTurn(0);
-        updateTurn(currentPlay.GetComponent<ActionCenter>());
+        currentPlay.GetComponent<CharacterEvents>().onEnd.Invoke(0);
         gamestate = 0;
         if(currentPlay.tag == "Player"){
             gameTurn++;
         }
     }
-    void duringEvent(){
-        currentPlay.GetComponent<ActionCenter>().duringTurn();
-        if(!currentPlay.GetComponent<Movement>().getisMoving() && currentPlay.tag == "Enemy"){
-            endTurn();
-        }
+    public void duringEvent(){
+        currentPlay.GetComponent<CharacterEvents>().onDuring.Invoke();
+        
     }
 
-
-    private void updateTurn(ActionCenter ac)
-    {
-        updateIndex();
-    }
-
-    private void updateIndex()
+    public void updateIndex()
     {
         if (this.player)
         {
@@ -160,21 +129,34 @@ public class TurnManager : MonoBehaviour
             if(currentTurnIndex2<0){currentTurnIndex2 = turnOrder2.Count-1;}
             currentPlay = turnOrder[currentTurnIndex];
             foreach(GameObject go in turnOrder){
-                    go.GetComponent<ActionCenter>().undoTurn(gameTurn);
+                if(go.activeInHierarchy){
+                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn);
+                }
+                else{
+                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn-1);
+                }
             }
             foreach(GameObject go in turnOrder2){
-                go.GetComponent<ActionCenter>().undoTurn(gameTurn);
+                if(go.activeInHierarchy){
+                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn);
+                }
+                else{
+                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn-1);
+                }
             }     
         }
     }
+    public void currentPlayClick(){
+        currentPlay.GetComponent<CharacterEvents>().onClick.Invoke();
+    }
     public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
-                go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
+            go.GetComponent<CharacterEvents>().saveStat.Invoke(gameTurn);
             }
     }
     public void startTurnSaveEnemy(){
         foreach(GameObject go in turnOrder2){
-            go.GetComponent<ActionCenter>().saveTurnStatData(gameTurn);
+            go.GetComponent<CharacterEvents>().saveStat.Invoke(gameTurn);
         }  
     }
     public void gameEndCheck(){
@@ -221,18 +203,5 @@ public class TurnManager : MonoBehaviour
     }
     public void endTurn(){
         gamestate = 1;
-    }
-    public UnityEvent getEvent(int i){
-        switch(i){
-            case 0:
-                return start;
-            case 1:
-                return end;
-            case 2:
-                return during;
-            case 3:
-                return undo;
-        }
-        return null;
     }
 }

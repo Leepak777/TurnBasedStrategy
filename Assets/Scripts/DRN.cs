@@ -5,33 +5,44 @@ using Random = System.Random;
 
 public class DRN
 {
-    // Start is called before the first frame update
-    
-    int dice_1 = 0;
-    int dice_2 = 0;
-    int drn = 0;
+    int dice_1;
+    int dice_2;
 
+    Random rnd;
+
+    private static DRN instance = new DRN();
+
+    private DRN()
+    {
+        dice_1 = 0;
+        dice_2 = 0;
+        rnd = new Random((int)Time.time*1000);
+    }
+
+    public static DRN getInstance()
+    {
+        return instance;
+    }
 
     public int getDRN(){
-        drn = 0;
-        Random rnd = new Random();
+        int retVal = 0;
+        
         dice_1 = rnd.Next(1,7);
         dice_2 = rnd.Next(1,7);
-        drn = dice_1 + dice_2;
+        retVal = dice_1 + dice_2;
         while(dice_1 == 6 || dice_2 == 6){
             if(dice_1 == 6){
-                drn--;
+                retVal--;
                 dice_1 = rnd.Next(1,6);
-                drn += dice_1;
+                retVal += dice_1;
             }
             if(dice_2 == 6){
-                drn--;
+                retVal--;
                 dice_2 = rnd.Next(1,6);
-                drn += dice_2;
+                retVal += dice_2;
             }
         }
-        return drn;
+        return retVal;
     }
-    // Update is called once per frame
     
 }
