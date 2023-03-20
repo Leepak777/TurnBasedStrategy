@@ -44,4 +44,5 @@ public class addCharacter : MonoBehaviour
        data.characterlst.Remove(name);
        data.sprites.Remove(name);
     }
+    
 }

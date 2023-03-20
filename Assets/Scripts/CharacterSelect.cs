@@ -87,4 +87,9 @@ public class CharacterSelect : MonoBehaviour
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
+    public void returnCheck(){
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("CharacterInfoPane")){
+            go.GetComponent<SetInfo>().updateInfo();
+        }
+    }
 }

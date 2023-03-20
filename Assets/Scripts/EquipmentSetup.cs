@@ -44,23 +44,25 @@ public class EquipmentSetup : MonoBehaviour
         shield.AddOptions(shie);
         buckler.AddOptions(buc);
         mount.AddOptions(mou);
-        /*if(data.characterlst.ContainsKey(data.currentSetCh)){
-            if(data.characterlst[data.currentSetCh].ContainsKey("Weapon")){
-                weapon.value = weapon.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Weapon"]);
+        UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
+        if(chlst.ContainsKey(data.currentSetCh)){
+            UDictionary<string,string> curlst = chlst[data.currentSetCh];
+            if(curlst.ContainsKey("Weapon")){
+                weapon.value = weapon.options.FindIndex(x => x.text == curlst["Weapon"]);
             }
-            if(data.characterlst[data.currentSetCh].ContainsKey("Armor")){
-                armor.value = armor.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Armor"]);
+            if(curlst.ContainsKey("Armor")){
+                armor.value = armor.options.FindIndex(x => x.text == curlst["Armor"]);
             }
-            if(data.characterlst[data.currentSetCh].ContainsKey("Shield")){
-                shield.value = shield.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Shield"]);
+            if(curlst.ContainsKey("Shield")){
+                shield.value = shield.options.FindIndex(x => x.text == curlst["Shield"]);
             }
-            if(data.characterlst[data.currentSetCh].ContainsKey("Buckler")){
-                buckler.value = buckler.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Buckler"]);
+            if(curlst.ContainsKey("Buckler")){
+                buckler.value = buckler.options.FindIndex(x => x.text == curlst["Buckler"]);
             }
-            if(data.characterlst[data.currentSetCh].ContainsKey("Mount")){
-                mount.value = mount.options.FindIndex(x => x.text == data.characterlst[data.currentSetCh]["Mount"]);
+            if(curlst.ContainsKey("Mount")){
+                mount.value = mount.options.FindIndex(x => x.text == curlst["Mount"]);
             }
-        }*/
+        }
         txt.text = data.currentSetCh;
         if(data.sprites.ContainsKey(txt.text)){
             img.sprite = data.sprites[txt.text]; 
@@ -126,5 +128,11 @@ public class EquipmentSetup : MonoBehaviour
         EditorUtility.SetDirty(data);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+        returnCheck();
+    }
+    public void returnCheck(){
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("CharacterInfoPane")){
+            go.GetComponent<SetInfo>().updateInfo();
+        }
     }
 }

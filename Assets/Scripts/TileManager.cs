@@ -181,6 +181,9 @@ public class TileManager : MonoBehaviour
             Area.Remove(GetNodeFromWorld(left));
             Area.Remove(GetNodeFromWorld(right));
         }
+        foreach(Node n in Area){
+            //Debug.Log(n.gridX +", "+ n.gridY);
+        }
         return Area;
     }
 
@@ -200,12 +203,14 @@ public class TileManager : MonoBehaviour
         return inArea(atk, def, (int) range);
     }
     public bool inArea(Vector3Int start,Vector3Int target, float range){
-        /*foreach(Node n in GetTilesInArea(start,range)){
-            if(n.gridX == target.x  && n.gridY == target.y){
+        
+        foreach(Node n in GetTilesInArea(start,range)){                
+            if((int)n.gridX == (int)target.x  && (int)n.gridY == (int)target.y){
+                
                 return true;
             }
-        }*/
-        return GetTilesInArea(start,range).Contains(GetNodeFromWorld(target));;
+        }
+        return false;//GetTilesInArea(start,range).Contains(GetNodeFromWorld(target));;
     }
 
     public Vector3Int inAreaTile(Vector3Int start,Vector3Int target, float range){

@@ -660,6 +660,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1123933565}
+        m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
+        m_MethodName: Confirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &81838513
 MonoBehaviour:
@@ -1417,6 +1429,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 252924702}
   m_CullTransparentMesh: 1
+--- !u!1 &269302161 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 730450478564792287, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
+  m_PrefabInstance: {fileID: 1073528056}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &302263727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2655,6 +2672,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1123933565}
+        m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
+        m_MethodName: Confirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &468374533
 MonoBehaviour:
@@ -2962,6 +2991,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
         m_MethodName: setCharacterArmor
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1123933565}
+        m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
+        m_MethodName: Confirm
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3336,6 +3377,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
         m_MethodName: setCharacterWeapon
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1123933565}
+        m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
+        m_MethodName: Confirm
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4824,6 +4877,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1123933565}
+        m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
+        m_MethodName: Confirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &907973300
 MonoBehaviour:
@@ -5088,10 +5153,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 368192053179932395, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
   m_PrefabInstance: {fileID: 1073528056}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 269302161}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d1bd8a1d1ce99d4b9916306e7defc03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &951887805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269302161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2857c083aea8c554681b62a145e85054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &952562095
@@ -5420,6 +5497,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 443339089}
     m_Modifications:
+    - target: {fileID: 145995431924565655, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 368192052494157329, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 951887805}
     - target: {fileID: 368192052891312252, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -8828,6 +8913,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1123933565}
         m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
         m_MethodName: Confirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1123933565}
+        m_TargetAssemblyTypeName: EquipmentSetup, Assembly-CSharp
+        m_MethodName: returnCheck
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

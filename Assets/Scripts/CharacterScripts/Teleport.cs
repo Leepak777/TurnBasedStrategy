@@ -37,28 +37,24 @@ public class Teleport : MonoBehaviour
                 return;
             }
         }
-        
+        //Debug.Log(targetNode);
+        //Debug.Log(tileM.WorldToCell(transform.position));
         if(n.occupant != null){
             GameObject go = n.occupant;
             targetNode = tileM.getClosestTiletoObject(go, originNode, (int)attackrange, (int)tilescheck);
             outClick = true;
         }
-
-        if(!tileM.inArea(originNode,targetNode, (int)tilescheck)){
-            AIreturn();
-        }
         
 
-        if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
+        if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail) &&tileM.inArea(originNode,targetNode, tilescheck))
         {   
-            if(tileM.inArea(originNode,targetNode, (int)tilescheck)){
-                tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
-                tileM.setWalkable(this.gameObject,targetNode,false);
-                transform.position = tileM.GetCellCenterWorld(targetNode);
-            }
-            else{
-                trail.Clear();
-            }
+            tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
+            tileM.setWalkable(this.gameObject,targetNode,false);
+            transform.position = tileM.GetCellCenterWorld(targetNode);
+        }
+        else
+        {
+            trail.Clear();
         }
         if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
             if(outClick){outClick = false;}
@@ -74,9 +70,6 @@ public class Teleport : MonoBehaviour
             AIreturn();
         }
 
-        if(!tileM.inArea(originNode,targetNode,(int) tilescheck)){
-            AIreturn();
-        }
         this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke(trail);
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {
@@ -130,7 +123,7 @@ public class Teleport : MonoBehaviour
         return tilescheck;
     }
     public void setRange(){
-        tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() + 0.5f;
+        tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() ;//+ 0.5f;
     }
 
     public void setOrigin(){

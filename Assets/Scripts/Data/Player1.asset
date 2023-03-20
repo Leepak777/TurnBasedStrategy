@@ -72,45 +72,53 @@ MonoBehaviour:
     - 16
     - 3
     - 13
-    - 10
+    - 45
     - 1
     - 10
     - 0
     - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 5
     - 1
-    - 14
+    - 1
+    - 0.5
+    - 100
+    - 25
+    - 3
+    - 8
+    - 35
+    - 2
+    - 3
+    - 15
     - 0
-    - -1
-    - -1
-    - -1
-    - -1
+    - 0
+    - -6
+    - 9
     - 4
-    - 53
+    - -1
+    - 88
     - 16
     - 0
     - 41
     - 0
-    - 4
-    - 17
-    - 2
+    - 14
+    - 25
+    - -1
     - 0
-    - 53
+    - 88
     - 58
-    - 4
+    - 14
   attributes:
     keys:
     - Type
     - Armor
+    - Weapon
+    - Mount
+    - Shield
+    - Buckler
     values:
     - Praetorian Guard
-    - Half Plate
+    - Legionary Armor
+    - Gladius
+    - War Horse
+    - Tower Shield
+    - Buckler2

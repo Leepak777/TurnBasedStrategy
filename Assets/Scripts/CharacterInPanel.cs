@@ -41,28 +41,8 @@ public class CharacterInPanel : MonoBehaviour
     5. buckler
     6. mount
     */
-    UDictionary<string,float> getAttributeStats(KeyValuePair<string,string> attribute){
-        switch(attribute.Key){
-            case "Type":    return types.getTypeStat(attribute.Value);
-            case "Weapon":  return equipments.getWeaponStat(attribute.Value);
-            case "Shield":  return equipments.getShieldStat(attribute.Value);
-            case "Armor":   return equipments.getArmorStat(attribute.Value);
-            case "Buckler": return equipments.getBucklerStat(attribute.Value);
-            case "Mount":   return equipments.getMountStat(attribute.Value);
-        }
-        return null;
-    }
-    void setDataStats(CharacterStat character, UDictionary<string,string> attributes){
-        foreach(KeyValuePair<string,string> attribute in attributes){
-            if(getAttributeStats(attribute)!=null){
-                character.addAttributes(attribute.Key, attribute.Value);
-                character.setStats(getAttributeStats(attribute));
-            }
-        }
-       
-    }
+    
     void createCharacter(string tag, KeyValuePair<string, UDictionary<string,string>> ch){
-        CreateCharacterAsset(ch.Key,ch.Value);
         GameObject prefab = Resources.Load<GameObject>("ChDemo") as GameObject;
         prefab.name = ch.Key;
         GameObject player = Instantiate(prefab) as GameObject;
@@ -89,58 +69,11 @@ public class CharacterInPanel : MonoBehaviour
         
         
     }
-    public void CreateCharacterAsset(string go, UDictionary<string,string> ch) {    
-        DeleteAssets(go);
-        string[] result = AssetDatabase.FindAssets("/Data/"+go);
-        CharacterStat Data = null;
-        if (result.Length > 2)
-        {
-            Debug.LogError("More than 1 Asset founded");
-            return;
-        }
-        if(result.Length == 0)
-        {
-            //Debug.Log("Create new Asset");
-            Data = ScriptableObject.CreateInstance<CharacterStat>();
-            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go+".asset");
-        }
-        else
-        {
-            string path = AssetDatabase.GUIDToAssetPath(result[0]);
-            Data= (CharacterStat )AssetDatabase.LoadAssetAtPath(path, typeof(CharacterStat ));
-            Debug.Log("Found Asset File !!!");
-        }
-        Data.setUp();
-        setDataStats(Data,ch);
-        Data.setCalStat();
-        EditorUtility.SetDirty(Data);
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-    }
+    
     public void LoadMyScene()
     {
         if(GameObject.Find("ChPanel").transform.childCount == 0){
             sceneLoader.LoadScene("GameScene");
         }
-    }
-
-    static void DeleteAssets(string name)
-    {
-        string targetSubstring = name; // Change this to your desired substring
-
-        string[] assetPaths = AssetDatabase.GetAllAssetPaths(); // Get all asset paths in the project
-        int count = 0;
-
-        foreach (string path in assetPaths)
-        {
-            if (path.EndsWith(".asset") && path.Contains(targetSubstring))
-            {
-                AssetDatabase.DeleteAsset(path);
-                count++;
-            }
-        }
-
-        AssetDatabase.Refresh(); // Refresh the asset database to update the project window
-        //Debug.Log("Deleted " + count + " .asset files with substring '" + targetSubstring + "'");
     }
 }

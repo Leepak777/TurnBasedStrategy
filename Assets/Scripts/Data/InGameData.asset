@@ -15,18 +15,50 @@ MonoBehaviour:
   characterlst:
     keys:
     - Player1
+    - Player3
+    - Enemy1
     values:
     - keys:
+      - Type
       - Armor
+      - Weapon
+      - Mount
+      - Shield
+      - Buckler
       values:
-      - Half Plate
+      - Praetorian Guard
+      - Legionary Armor
+      - Gladius
+      - War Horse
+      - Tower Shield
+      - Buckler2
+    - keys:
+      - Type
+      - Mount
+      values:
+      - Imperial Conscript
+      - War Horse
+    - keys:
+      - Type
+      values:
+      - Mecenary
   positions:
-    keys: []
-    values: []
+    keys:
+    - Player1
+    - Player3
+    - Enemy1
+    values:
+    - {x: 26, y: 13, z: 0}
+    - {x: 24, y: 14, z: 0}
+    - {x: 23, y: 12, z: 0}
   sprites:
     keys:
     - Player1
+    - Player3
+    - Enemy1
     values:
-    - {fileID: 0}
+    - {fileID: 2223229156712978820, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -1415322032550958920, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 1480903098374382782, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
   map: Never Gonna Give You Up
-  currentSetCh: Player1
+  currentSetCh: Player3

@@ -16,8 +16,10 @@ public class PositionSetup : MonoBehaviour
     public UnityEvent<Vector3Int> unhighlightTile;
     public UnityEvent<Vector3Int> highlightTile;
     public InGameData data;
+    int index;
     void Awake()
     { 
+        index = gameObject.transform.GetSiblingIndex();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
     }
@@ -40,6 +42,7 @@ public class PositionSetup : MonoBehaviour
         gameObject.transform.position = tileM.GetCellCenterWorld(tileM.WorldToCell(pos));
         RectTransform r = GameObject.Find("scroll").GetComponent<RectTransform>();
         if(RectTransformUtility.RectangleContainsScreenPoint(r, Input.mousePosition, Camera.main)){
+            gameObject.transform.SetSiblingIndex(index);
             gameObject.transform.SetParent(GameObject.Find("ChPanel").transform);
         }
         else{
@@ -55,6 +58,7 @@ public class PositionSetup : MonoBehaviour
     }
     public void unhighlightCurrent(){
         if(!tileM.GetNodeFromWorld(tileM.WorldToCell(transform.position)).walkable){
+            gameObject.transform.SetSiblingIndex(index);
             gameObject.transform.SetParent(GameObject.Find("ChPanel").transform);
             return;
         }

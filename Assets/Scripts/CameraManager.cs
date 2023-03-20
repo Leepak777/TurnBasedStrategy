@@ -49,6 +49,11 @@ public class CameraManager : MonoBehaviour
                 return;
             }
         }
+        foreach(KeyValuePair<string,Sprite> val in data.sprites){
+            if(val.Value == null){
+                return;
+            }
+        }
         if(!data.characterlst.ContainsKey("Player1") || !data.characterlst.ContainsKey("Enemy1")){
             return;
         }
