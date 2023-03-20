@@ -21,7 +21,7 @@ public class HighlightReachableTiles : MonoBehaviour
         GameObject character = this.gameObject;
         reachableTiles.Clear();
         Vector3Int currentPos = character.GetComponent<Teleport>().getOrigin();//tileM.WorldToCell(transform.position);
-        foreach(Node node in tileM.GetTilesInArea(currentPos,((int)character.GetComponent<Teleport>().getTilesCheck()))){
+        foreach(Node node in tileM.GetTilesInArea(currentPos,(character.GetComponent<Teleport>().getTilesCheck()))){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
                 if (tileM.HasTile(tilePos) && node.walkable&& !character.GetComponent<Teleport>().getTrail().Contains(tilePos)){
                     //if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !character.GetComponent<Teleport>().getTrail().Contains(tilePos))

@@ -27,7 +27,7 @@ public class Ghost : MonoBehaviour
         if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null ){
             Vector3 shadowtarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int shadowtargetNode = tileM.WorldToCell(shadowtarget);
-            if(tileM.inArea(movement.getOrigin(),shadowtargetNode, (int)movement.getTilesCheck()) ){
+            if(tileM.inArea(movement.getOrigin(),shadowtargetNode, movement.getTilesCheck()) ){
                 setOnOff(true);
                 Node locn = tileM.GetNodeFromWorld(shadowtargetNode);
                 if(locn.occupant==null){

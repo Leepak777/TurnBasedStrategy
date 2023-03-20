@@ -45,8 +45,7 @@ public class Teleport : MonoBehaviour
             outClick = true;
         }
         
-
-        if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail) &&tileM.inArea(originNode,targetNode, tilescheck))
+        if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail) && tileM.inArea(originNode,targetNode, tilescheck))
         {   
             tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
             tileM.setWalkable(this.gameObject,targetNode,false);
