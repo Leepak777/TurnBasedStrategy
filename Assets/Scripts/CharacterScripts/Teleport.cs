@@ -40,9 +40,7 @@ public class Teleport : MonoBehaviour
         }
         //Debug.Log(targetNode);
         //Debug.Log(tileM.WorldToCell(transform.position));
-        
-        
-        if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail) && tileM.inArea(originNode,targetNode, tilescheck))
+        if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {   
             tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
             tileM.setWalkable(this.gameObject,targetNode,false);
@@ -58,24 +56,23 @@ public class Teleport : MonoBehaviour
         }
     }
     public void EnemyTeleport(){
+        if(tileM.EnemyInRange("Player", (int)attackrange, this.gameObject)){
+            return;
+        }
         KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode, (int)attackrange,(int)tilescheck);
         Vector3Int startNode = tileM.WorldToCell(transform.position);  
               
         targetNode = target.Value;   
-        if(tileM.EnemyInRange("Player", (int)attackrange, this.gameObject)){
-            AIreturn();
-        }
+        
 
         this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke(trail);
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {
-            if(tileM.inArea(originNode,targetNode, (int)tilescheck)){
+            if(tileM.inWalkableArea(originNode,targetNode, (int)tilescheck)){
                 tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
                 tileM.setWalkable(this.gameObject,targetNode,false);
                 transform.position = tileM.GetCellCenterWorld(targetNode);
-                foreach(Vector3Int v in trail){
-                    this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(v);
-                }
+                
             }
         }
         if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
@@ -116,7 +113,7 @@ public class Teleport : MonoBehaviour
                 if (i == 0 && j == 0) continue;{
                     if (Mathf.Abs(i) == Mathf.Abs(j)) continue;{
                         Vector3Int neighbourPos = new Vector3Int(pos.x + i, pos.y + j, pos.z);
-                        if (tileM.inArea(originNode,neighbourPos,(int)tilescheck) && tileM.GetNodeFromWorld(neighbourPos)!=null && tileM.GetNodeFromWorld(neighbourPos).walkable)
+                        if (tileM.inWalkableArea(originNode,neighbourPos,(int)tilescheck) && tileM.GetNodeFromWorld(neighbourPos)!=null && tileM.GetNodeFromWorld(neighbourPos).walkable)
                         {
                             neighbours.Add(neighbourPos, 1);
                         }

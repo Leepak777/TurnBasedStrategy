@@ -14,8 +14,14 @@ public class addCharacter : MonoBehaviour
         GameObject goParent = GameObject.Find("scrollPanel");
         GameObject prefab = Resources.Load<GameObject>("PlayerSetup") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
-        player.name = "Player" + (goParent.transform.childCount+1);
         player.transform.SetParent(goParent.transform);
+        int count = 0;
+        for(int i = 0; i < goParent.transform.childCount; i++){
+            if(goParent.transform.GetChild(i).tag == "CharacterSetup"){
+                count++;
+            }
+        }
+        player.name = "Player" + (count);
         player.transform.localScale = new Vector3(1, 1, 1);
     }
 
@@ -23,8 +29,14 @@ public class addCharacter : MonoBehaviour
         GameObject goParent = GameObject.Find("scrollPanel_en");
         GameObject prefab = Resources.Load<GameObject>("EnemySetup") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
-        player.name = "Enemy" + (goParent.transform.childCount+1);
         player.transform.SetParent(goParent.transform);
+        int count = 0;
+        for(int i = 0; i < goParent.transform.childCount; i++){
+            if(goParent.transform.GetChild(i).tag == "CharacterSetup"){
+                count++;
+            }
+        }
+        player.name = "Enemy" + (count);
         player.transform.localScale = new Vector3(1, 1, 1);
     }
 

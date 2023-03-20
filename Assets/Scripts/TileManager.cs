@@ -159,6 +159,46 @@ public class TileManager : MonoBehaviour
         return reachableTiles;
     }
 
+    public List<Node> GetWalkableTilesInArea(Vector3Int center, float range){
+        List<Node> Area = new List<Node>();
+        for(float x = -range; x <= range; x++){
+            for(float y = -range; y <= range; y++){
+                Vector3Int target = new Vector3Int((int)(center.x+x),(int)(center.y+y),center.z);
+                if((int)GetDistance(target,center) <= (int)(range)){
+                    if(GetNodeFromWorld(target)!=null && GetNodeFromWorld(target).walkable){
+                        Area.Add(GetNodeFromWorld(target));
+                    }
+                }
+            }    
+        }
+        if((int) range > 1){
+            Vector3Int top = new Vector3Int((int)(center.x),(int)(center.y+range),center.z);
+            Vector3Int bottom = new Vector3Int((int)(center.x),(int)(center.y-range),center.z);
+            Vector3Int left = new Vector3Int((int)(center.x+range),(int)(center.y),center.z);
+            Vector3Int right = new Vector3Int((int)(center.x-range),(int)(center.y),center.z);
+            Area.Remove(GetNodeFromWorld(top));
+            Area.Remove(GetNodeFromWorld(bottom));
+            Area.Remove(GetNodeFromWorld(left));
+            Area.Remove(GetNodeFromWorld(right));
+            for(int i = 0; i < Area.Count; i++){
+                Node n = Area[i];
+                Node leftn = GetNodeFromWorld(new Vector3Int(n.gridX-1,n.gridY, center.z));
+                Node rightn = GetNodeFromWorld(new Vector3Int(n.gridX+1,n.gridY, center.z));
+                Node topn = GetNodeFromWorld(new Vector3Int(n.gridX,n.gridY-1, center.z));
+                Node bottomn = GetNodeFromWorld(new Vector3Int(n.gridX,n.gridY+1, center.z));
+                bool l = !(Area.Contains((leftn))); 
+                bool r = !(Area.Contains((rightn)));
+                bool t = !(Area.Contains((topn)));
+                bool b = !(Area.Contains((bottomn)));
+                if(l && r && t && b){
+                    Area.Remove(n);
+                }
+            }
+        }
+        
+        return Area;
+    }
+    
     public List<Node> GetTilesInArea(Vector3Int center, float range){
         List<Node> Area = new List<Node>();
         for(float x = -range; x <= range; x++){
@@ -181,9 +221,6 @@ public class TileManager : MonoBehaviour
             Area.Remove(GetNodeFromWorld(left));
             Area.Remove(GetNodeFromWorld(right));
         }
-        foreach(Node n in Area){
-            //Debug.Log(n.gridX +", "+ n.gridY);
-        }
         return Area;
     }
 
@@ -204,6 +241,9 @@ public class TileManager : MonoBehaviour
     }
     public bool inArea(Vector3Int start,Vector3Int target, float range){
         return GetTilesInArea(start,range).Contains(GetNodeFromWorld(target));
+    }
+    public bool inWalkableArea(Vector3Int start,Vector3Int target, float range){
+        return GetWalkableTilesInArea(start,range).Contains(GetNodeFromWorld(target));
     }
 
 
@@ -235,8 +275,9 @@ public class TileManager : MonoBehaviour
     }
 
      public KeyValuePair<GameObject,Vector3Int> getClosestReachablePlayer(string tag, Vector3Int currentpos, float attackrange, float movrange){
-        GameObject close = getClosestPlayer(tag, tilemap.GetCellCenterWorld(currentpos));            
-        Vector3Int targetNode = getClosestTiletoObject(WorldToCell(close.transform.position), currentpos, attackrange, movrange);
+        GameObject close = getClosestPlayer(tag, tilemap.GetCellCenterWorld(currentpos));   
+        Debug.Log(close.name);         
+        Vector3Int targetNode = getCloestTile(WorldToCell(close.transform.position), currentpos, attackrange, movrange);
         return new KeyValuePair<GameObject, Vector3Int>(close,targetNode);
     }
     public Vector3Int getCloestTile(Vector3Int targetNode, Vector3Int originNode, float attackrange, float movrange){
@@ -244,7 +285,7 @@ public class TileManager : MonoBehaviour
             Vector3Int pos = WorldToCell(GetNodeFromWorld(targetNode).occupant.transform.position);
             return (getClosestTiletoObject(pos, originNode, attackrange, movrange));
         }
-        if(GetNodeFromWorld(targetNode).walkable && inArea(originNode,targetNode,movrange)){
+        if(GetNodeFromWorld(targetNode).walkable && inWalkableArea(originNode,targetNode,movrange)){
             return targetNode;
         }
         else{
@@ -253,23 +294,21 @@ public class TileManager : MonoBehaviour
     }
 
     public Vector3Int getClosestTiletoObject(Vector3Int go, Vector3Int originNode, float attackrange, float movrange){
-        //GameObject player = go;
-        Node ans = null;
         int mindis = int.MaxValue;   
         Vector3Int cellpos = go;//tilemap.WorldToCell(player.transform.position);
-        foreach(Node n in GetTilesInArea(originNode,movrange)){
-            Vector3Int target = new Vector3Int((int)n.gridX,(int)n.gridY,0);
-            int distance = (int)GetDistance(cellpos,target);
-            int distance2 = (int)GetDistance(originNode,target);
-            if(n.walkable && distance  < mindis){
+        List<Node> Area = GetWalkableTilesInArea(originNode,movrange);
+        Node ans = Area[0];
+        Vector3Int target = new Vector3Int((int)ans.gridX,(int)ans.gridY,originNode.z);
+        int distance = (int)GetDistance(cellpos,target);
+        foreach(Node n in Area){
+            target = new Vector3Int((int)n.gridX,(int)n.gridY,originNode.z);
+            distance = (int)GetDistance(cellpos,target);
+            if(distance  < mindis){
                 mindis = distance ;
                 ans = n;
             }
         }
-        if(ans == null){
-            return originNode;
-        }
-        return tilemap.WorldToCell(new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, 0));
+        return tilemap.WorldToCell(new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, originNode.z));
     }
 
     public bool EnemyInRange(string tag, float attackrange, GameObject go){

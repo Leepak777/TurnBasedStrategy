@@ -61,52 +61,64 @@ MonoBehaviour:
     - maxStb
     - maxTiles
     values:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 7
+    - 5
+    - 6
+    - 2
+    - 3
+    - 13
+    - 9
+    - 15
+    - 14
+    - 3
+    - 10
+    - 45
     - 1
+    - 10
     - 0
     - 0
+    - 9
+    - 1.5
+    - 1.3
+    - 1
+    - 100
     - 0
+    - 2
+    - 8
+    - 35
+    - 3
+    - 2
+    - 15
     - 0
+    - 2
+    - -4
+    - 9
+    - 4
+    - -2
+    - 82
+    - 14
     - 0
+    - 33
     - 0
+    - 13.5
+    - 21.75
+    - -0.75
     - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 82
+    - 47
+    - 13
   attributes:
-    keys: []
-    values: []
+    keys:
+    - Type
+    - Armor
+    - Weapon
+    - Mount
+    - Shield
+    - Buckler
+    values:
+    - Imperial Legionary
+    - Legionary Armor
+    - Great Sword
+    - War Horse
+    - Tower Shield
+    - Buckler

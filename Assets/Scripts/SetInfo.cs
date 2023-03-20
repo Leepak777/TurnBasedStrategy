@@ -30,6 +30,13 @@ public class SetInfo : MonoBehaviour
             return null;
         }
     }
+    public void GetData(){
+        string name = gameObject.name;
+        InGameData data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        if(data.characterlst.ContainsKey(name)){
+            CreateCharacterAsset(name, data.characterlst[name]);
+        }        
+    }
     public void updateInfo(){
         settext(info_name);
     }
@@ -74,6 +81,7 @@ public class SetInfo : MonoBehaviour
         }
        
     }
+
     public void CreateCharacterAsset(string go, UDictionary<string,string> ch) {    
         DeleteAssets(go);
         string[] result = AssetDatabase.FindAssets("/Data/"+go);
