@@ -1468,10 +1468,10 @@ RectTransform:
   m_Father: {fileID: 1523050614}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 669, y: 418}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &302263729
 MonoBehaviour:
@@ -5516,7 +5516,15 @@ PrefabInstance:
     - target: {fileID: 368192052494157329, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 951887805}
+      objectReference: {fileID: 951887802}
+    - target: {fileID: 368192052494157329, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Confirm
+      objectReference: {fileID: 0}
+    - target: {fileID: 368192052494157329, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CharacterSelect, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 368192052891312252, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

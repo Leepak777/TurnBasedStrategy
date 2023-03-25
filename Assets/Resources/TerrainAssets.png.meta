@@ -98,7 +98,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -763,32 +763,32 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TerrainAssets_7: 5889159538103203651
-      TerrainAssets_17: 8612300919038010407
-      TerrainAssets_30: -8801934028330383405
-      TerrainAssets_5: -2196023728191421170
-      TerrainAssets_27: -2228668527077984765
-      TerrainAssets_19: 3898429711094306724
-      TerrainAssets_18: 9123671893177109492
-      TerrainAssets_32: 3609017291638279006
-      TerrainAssets_11: -2530486382106441720
       TerrainAssets_0: -1619451203462400347
-      TerrainAssets_26: 6620640183018025588
-      TerrainAssets_29: -2099688642730719201
-      TerrainAssets_16: -1123131518069084544
-      TerrainAssets_24: -2846564104510232652
-      TerrainAssets_15: 1249707055603227533
-      TerrainAssets_6: -7117329282663538569
-      TerrainAssets_3: -19022050088653893
-      TerrainAssets_10: 9210125891935392600
-      TerrainAssets_2: 1728731296460013194
-      TerrainAssets_9: 6966854691642550525
       TerrainAssets_1: 4574537852774786501
-      TerrainAssets_8: 4301426579715587614
+      TerrainAssets_10: 9210125891935392600
+      TerrainAssets_11: -2530486382106441720
+      TerrainAssets_15: 1249707055603227533
+      TerrainAssets_16: -1123131518069084544
+      TerrainAssets_17: 8612300919038010407
+      TerrainAssets_18: 9123671893177109492
+      TerrainAssets_19: 3898429711094306724
+      TerrainAssets_2: 1728731296460013194
+      TerrainAssets_24: -2846564104510232652
       TerrainAssets_25: 2937655413625763620
-      TerrainAssets_31: -7203833015654638484
-      TerrainAssets_4: -5782967555974133783
+      TerrainAssets_26: 6620640183018025588
+      TerrainAssets_27: -2228668527077984765
       TerrainAssets_28: -6529428454181971390
+      TerrainAssets_29: -2099688642730719201
+      TerrainAssets_3: -19022050088653893
+      TerrainAssets_30: -8801934028330383405
+      TerrainAssets_31: -7203833015654638484
+      TerrainAssets_32: 3609017291638279006
+      TerrainAssets_4: -5782967555974133783
+      TerrainAssets_5: -2196023728191421170
+      TerrainAssets_6: -7117329282663538569
+      TerrainAssets_7: 5889159538103203651
+      TerrainAssets_8: 4301426579715587614
+      TerrainAssets_9: 6966854691642550525
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

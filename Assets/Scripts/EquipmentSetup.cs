@@ -131,8 +131,11 @@ public class EquipmentSetup : MonoBehaviour
         returnCheck();
     }
     public void returnCheck(){
-        foreach(GameObject go in GameObject.FindGameObjectsWithTag("CharacterInfoPane")){
-            go.GetComponent<SetInfo>().updateInfo();
+        if(GameObject.Find(data.currentSetCh+"_info")){
+            //foreach(GameObject go in GameObject.FindGameObjectsWithTag("CharacterInfoPane")){
+                GameObject.Find(data.currentSetCh+"_info").GetComponent<SetInfo>().updateInfo();
+            //}
         }
+    
     }
 }

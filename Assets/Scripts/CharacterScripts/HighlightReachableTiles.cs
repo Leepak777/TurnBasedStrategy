@@ -22,7 +22,7 @@ public class HighlightReachableTiles : MonoBehaviour
         GameObject character = this.gameObject;
         reachableTiles.Clear();
         Vector3Int currentPos = character.GetComponent<Teleport>().getOrigin();//tileM.WorldToCell(transform.position);
-        foreach(Node node in tileM.GetWalkableTilesInArea(currentPos,(character.GetComponent<Teleport>().getTilesCheck()))){
+        foreach(Node node in tileM.GetTilesInArea(currentPos,(character.GetComponent<Teleport>().getTilesCheck()))){
                 Vector3Int tilePos = new Vector3Int((int)node.gridX , (int)node.gridY , 0);
                 if (tileM.HasTile(tilePos) && node.walkable){//&& !character.GetComponent<Teleport>().getTrail().Contains(tilePos)){
                     //if(tileM.GetNodeFromWorld(tilePos)!= null && tileM.GetNodeFromWorld(tilePos).occupant == null && !character.GetComponent<Teleport>().getTrail().Contains(tilePos))
@@ -161,16 +161,19 @@ public class HighlightReachableTiles : MonoBehaviour
         List<Vector3Int> trail = gameObject.GetComponent<Teleport>().GetPosTrail(pos);
         this.test = trail;
         if(trail != null){
+            //Debug.Log(trail.Count);
         for (int i = 0; i < trail.Count; i++)
             {
                 Color c = Color.red; 
                 c.a = 0.5f;
                 tile = trail[i];
+                //Debug.Log(tile);
                 tileM.SetTileFlags(tile, TileFlags.None);
                 tileM.SetColor(tile, c);
                 
             }        
         }
     }
+    
 
 }

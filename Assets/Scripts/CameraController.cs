@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class CameraController : MonoBehaviour
 {
     public float speed = 10f;
     public Canvas canvas;
+    public Tilemap tilemap;
     bool track = false;
     GameObject target = null;
 
@@ -65,30 +67,54 @@ public class CameraController : MonoBehaviour
         transform.position = newPosition;
     }
 
-    void tracking()
+   void tracking()
     {
         if (track)
         {
-            Vector3 newpos = target.transform.position;
-            if (transform.position == new Vector3(newpos.x, newpos.y, -1))
+            Vector3 targetPos = target.transform.position;
+            Vector3Int targetTilePos = tilemap.WorldToCell(targetPos);
+
+            // Calculate the center of the hexagon at the target tile position
+            Vector3Int targetHexCenter = new Vector3Int(
+                Mathf.RoundToInt(targetTilePos.x),
+                Mathf.RoundToInt(targetTilePos.y),
+                0
+            );
+            Vector3 targetHexPos = tilemap.GetCellCenterWorld(targetHexCenter);
+
+            // Check if the camera is already at the target position
+            if (transform.position == targetHexPos)
             {
                 track = false;
                 return;
             }
+
+            // Calculate the direction and distance to move the camera
+            Vector2 direction = targetHexPos - transform.position;
+            float distance = direction.magnitude;
+
+            // Check if the camera is within the canvas bounds
             if (!IsCameraWithinCanvasBounds())
             {
-                // Move camera in by 1 pixel
-                Vector3 moveDir = canvas.transform.position - transform.position;
-                transform.position += moveDir.normalized * 0.5f;
-                track = false;
-                return;
+                // Move the camera towards the center of the canvas
+                Vector3 canvasCenter = canvas.transform.position;
+                direction = canvasCenter - transform.position;
+                distance = direction.magnitude;
             }
-            Vector2 direction = newpos - transform.position;
-            Vector2 movement = Vector2.ClampMagnitude(direction, speed * 1.9f * Time.deltaTime);
 
-            transform.position += new Vector3(movement.x, movement.y, 0);
+            // Move the camera towards the target position
+            if (distance > 0)
+            {
+                Vector2 movement = Vector2.ClampMagnitude(direction, speed * Time.deltaTime);
+                transform.position += new Vector3(movement.x, movement.y, 0);
+            }
+            else
+            {
+                track = false;
+            }
         }
     }
+
 
     void Update()
     {

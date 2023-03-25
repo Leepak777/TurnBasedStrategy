@@ -28,10 +28,7 @@ public class Node
 public class TileManager : MonoBehaviour
 {
     Tilemap tilemap;
-    public LayerMask unwalkableMask;
 
-    public Color highlightColor;
-    public Color highlightColor2;
     public UnityEvent<Vector3Int> highlightTile;
     public Node[,] grid;
     public Node[,] Grid { get { return grid; } }
@@ -87,20 +84,9 @@ public class TileManager : MonoBehaviour
     public void printGrid(){
             for(int i = 0; i < gridSize.x; i++){
                 for(int j = 0; j < gridSize.y; j++){
-                    //Debug.Log(grid[i,j].gridX+", "+grid[i,j].gridY +": "+ grid[i,j].walkable);
                     Debug.Log(grid[i,j].worldPosition);
-                    /*Vector3Int tilePos = new Vector3Int(i, j, 0);
-
-                        var temp = tilemap.GetTile(tilePos);
-
-                        // Highlight the tile
-                        tilemap.SetTileFlags(tilePos, TileFlags.None);
-                        tilemap.SetColor(tilePos, highlightColor);
-                        
-                        // put the original tile back
-                        tilemap.SetTile(tilePos,temp);*/
         
-                }
+               }
             }
     }
 
@@ -111,7 +97,7 @@ public class TileManager : MonoBehaviour
             int width = (int)(tile.sprite.bounds.extents.x);
             int height = (int)(tile.sprite.bounds.extents.y);
             for(int i = x-width; i <= x+width;i++){
-                for(int j = y-height; j <= y+height; j++){
+                for(int j = y-height/2; j <= y+height/2; j++){
                     if(grid[i,j] != null){
                         grid[i,j].walkable = false;
                     }
@@ -159,72 +145,46 @@ public class TileManager : MonoBehaviour
         return reachableTiles;
     }
 
-    public List<Node> GetWalkableTilesInArea(Vector3Int center, float range){
-        List<Node> Area = new List<Node>();
-        for(float x = -range; x <= range; x++){
-            for(float y = -range; y <= range; y++){
-                Vector3Int target = new Vector3Int((int)(center.x+x),(int)(center.y+y),center.z);
-                if((int)GetDistance(target,center) <= (int)(range)){
-                    if(GetNodeFromWorld(target)!=null && GetNodeFromWorld(target).walkable){
-                        Area.Add(GetNodeFromWorld(target));
+    public List<Node> GetTilesInArea(Vector3Int center, float range) {
+        List<Node> area = new List<Node>();
+        Vector3Int centerCube = OffsetToCube(center);
+        for (int x = -Mathf.FloorToInt(range); x <= Mathf.FloorToInt(range); x++) {
+            for (int y = -Mathf.FloorToInt(range); y <= Mathf.FloorToInt(range); y++) {
+                Vector3Int target = CubeToOffset(centerCube + new Vector3Int(x, -x-y, y));
+                if (GetDistanceCube(centerCube, OffsetToCube(target)) <= Mathf.FloorToInt(range)) {
+                    Node node = GetNodeFromWorld(target);
+                    if (node != null) {
+                        area.Add(node);
                     }
-                }
-            }    
-        }
-        if((int) range > 1){
-            Vector3Int top = new Vector3Int((int)(center.x),(int)(center.y+range),center.z);
-            Vector3Int bottom = new Vector3Int((int)(center.x),(int)(center.y-range),center.z);
-            Vector3Int left = new Vector3Int((int)(center.x+range),(int)(center.y),center.z);
-            Vector3Int right = new Vector3Int((int)(center.x-range),(int)(center.y),center.z);
-            Area.Remove(GetNodeFromWorld(top));
-            Area.Remove(GetNodeFromWorld(bottom));
-            Area.Remove(GetNodeFromWorld(left));
-            Area.Remove(GetNodeFromWorld(right));
-            for(int i = 0; i < Area.Count; i++){
-                Node n = Area[i];
-                Node leftn = GetNodeFromWorld(new Vector3Int(n.gridX-1,n.gridY, center.z));
-                Node rightn = GetNodeFromWorld(new Vector3Int(n.gridX+1,n.gridY, center.z));
-                Node topn = GetNodeFromWorld(new Vector3Int(n.gridX,n.gridY-1, center.z));
-                Node bottomn = GetNodeFromWorld(new Vector3Int(n.gridX,n.gridY+1, center.z));
-                bool l = !(Area.Contains((leftn))); 
-                bool r = !(Area.Contains((rightn)));
-                bool t = !(Area.Contains((topn)));
-                bool b = !(Area.Contains((bottomn)));
-                if(l && r && t && b){
-                    Area.Remove(n);
                 }
             }
         }
-        
-        return Area;
-    }
-    
-    public List<Node> GetTilesInArea(Vector3Int center, float range){
-        List<Node> Area = new List<Node>();
-        for(float x = -range; x <= range; x++){
-            for(float y = -range; y <= range; y++){
-                Vector3Int target = new Vector3Int((int)(center.x+x),(int)(center.y+y),center.z);
-                if((int)GetDistance(target,center) <= (int)(range)){
-                    if(GetNodeFromWorld(target)!=null){
-                        Area.Add(GetNodeFromWorld(target));
-                    }
-                }
-            }    
-        }
-        if((int) range > 1){
-            Vector3Int top = new Vector3Int((int)(center.x),(int)(center.y+range),center.z);
-            Vector3Int bottom = new Vector3Int((int)(center.x),(int)(center.y-range),center.z);
-            Vector3Int left = new Vector3Int((int)(center.x+range),(int)(center.y),center.z);
-            Vector3Int right = new Vector3Int((int)(center.x-range),(int)(center.y),center.z);
-            Area.Remove(GetNodeFromWorld(top));
-            Area.Remove(GetNodeFromWorld(bottom));
-            Area.Remove(GetNodeFromWorld(left));
-            Area.Remove(GetNodeFromWorld(right));
-        }
-        return Area;
+        return area;
     }
 
-      public List<GameObject> getTaginArea(Vector3Int start, float range, string tag){
+    private Vector3Int OffsetToCube(Vector3Int offset) {
+        int x = offset.x - (offset.y - (offset.y&1)) / 2;
+        int z = offset.y;
+        int y = -x-z;
+        return new Vector3Int(x, y, z);
+    }
+
+    private Vector3Int CubeToOffset(Vector3Int cube) {
+        int x = cube.x + (cube.z - (cube.z&1)) / 2;
+        int y = cube.z;
+        return new Vector3Int(x, y, -x-y);
+    }
+
+    private int GetDistanceCube(Vector3Int a, Vector3Int b) {
+        return Mathf.Max(Mathf.Abs(a.x - b.x), Mathf.Abs(a.y - b.y), Mathf.Abs(a.z - b.z));
+    }
+
+    private bool IsAdjacentCube(Vector3Int node1, Vector3Int node2) {
+        return GetDistanceCube(node1, node2) == 1;
+    }
+
+
+    public List<GameObject> getTaginArea(Vector3Int start, float range, string tag){
         List<GameObject> tags = new List<GameObject>(); 
         foreach(Node n in GetTilesInArea(start,range)){
             if(n.occupant != null && n.occupant.tag == tag){
@@ -242,11 +202,6 @@ public class TileManager : MonoBehaviour
     public bool inArea(Vector3Int start,Vector3Int target, float range){
         return GetTilesInArea(start,range).Contains(GetNodeFromWorld(target));
     }
-    public bool inWalkableArea(Vector3Int start,Vector3Int target, float range){
-        return GetWalkableTilesInArea(start,range).Contains(GetNodeFromWorld(target));
-    }
-
-
     public Vector3Int inAreaTile(Vector3Int start,Vector3Int target, float range){
         foreach(Node n in GetTilesInArea(start,range)){
             if(n.gridX == target.x  && n.gridY == target.y){
@@ -285,7 +240,7 @@ public class TileManager : MonoBehaviour
             Vector3Int pos = WorldToCell(GetNodeFromWorld(targetNode).occupant.transform.position);
             return (getClosestTiletoObject(pos, originNode, attackrange, movrange));
         }
-        if(GetNodeFromWorld(targetNode).walkable && inWalkableArea(originNode,targetNode,movrange)){
+        if(GetNodeFromWorld(targetNode).walkable && inArea(originNode,targetNode,movrange)){
             return targetNode;
         }
         else{
@@ -293,23 +248,48 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public Vector3Int getClosestTiletoObject(Vector3Int go, Vector3Int originNode, float attackrange, float movrange){
-        int mindis = int.MaxValue;   
-        Vector3Int cellpos = go;//tilemap.WorldToCell(player.transform.position);
-        List<Node> Area = GetWalkableTilesInArea(originNode,movrange);
-        Node ans = Area[0];
-        Vector3Int target = new Vector3Int((int)ans.gridX,(int)ans.gridY,originNode.z);
-        int distance = (int)GetDistance(cellpos,target);
-        foreach(Node n in Area){
-            target = new Vector3Int((int)n.gridX,(int)n.gridY,originNode.z);
-            distance = (int)GetDistance(cellpos,target);
-            if(distance  < mindis){
-                mindis = distance ;
-                ans = n;
+   public Vector3Int getClosestTiletoObject(Vector3Int go, Vector3Int originNode, float attackRange, float movRange)
+    {
+        Vector3Int closestTileToGo = originNode;
+        Vector3Int closestTileToOrigin = go;
+        List<Node> areaInMovRange = GetTilesInArea(originNode, movRange);
+        List<Node> areaInAttackRange = GetTilesInArea(go, attackRange);
+        
+        // Get the closest tile to the object within the movement range
+        foreach (Node tile in areaInMovRange)
+        {
+            Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
+            if (GetDistance(go, tilePos) < GetDistance(go, closestTileToGo))
+            {
+                closestTileToGo = tilePos;
             }
         }
-        return tilemap.WorldToCell(new Vector3Int((int)ans.worldPosition.x, (int) ans.worldPosition.y, originNode.z));
+        
+        // Get the farthest tile from the object within the attack range
+        foreach (Node tile in areaInAttackRange)
+        {
+            Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
+            if (GetDistance(go, tilePos) > GetDistance(go, closestTileToOrigin))
+            {
+                closestTileToOrigin = tilePos;
+            }
+        }
+        
+        // Check if there is a tile in both areas
+        foreach (Node tile in areaInMovRange)
+        {
+            Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
+            if (areaInAttackRange.Contains(tile))
+            {
+                return tilePos;
+            }
+        }
+        
+        // If there is no tile in both areas, return the closest tile to the object within the movement range
+        return closestTileToGo;
     }
+
+
 
     public bool EnemyInRange(string tag, float attackrange, GameObject go){
         Vector3Int currentPos = tilemap.WorldToCell(go.transform.position);
@@ -322,21 +302,36 @@ public class TileManager : MonoBehaviour
         }
         return false;
     }
-    public float GetDistance(Vector3Int A, Vector3Int B)
-    {
-        // Use Manhattan distance for tilemap
-        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);
+    public float GetDistance(Vector3Int a, Vector3Int b) {
+        int deltaX = Mathf.Abs(a.x - b.x);
+        int deltaY = Mathf.Abs(a.y - b.y);
+        int deltaZ = Mathf.Abs(a.z - b.z);
+
+        return Mathf.Max(deltaX, deltaY, deltaZ);
     }
+
+
     public bool IsAdjacent(Vector3Int node1, Vector3Int node2)
     {
-        int xDiff = Mathf.Abs(node1.x - node2.x);
-        int yDiff = Mathf.Abs(node1.y - node2.y);
-        if (xDiff + yDiff == 1)
-        {
-            return true;
-        }
-        return false;
+        int deltaX = Mathf.Abs(node1.x - node2.x);
+        int deltaY = Mathf.Abs(node1.y - node2.y);
+
+        // Determine the offset of node1 based on its x position.
+        int offset = node1.x % 2 == 0 ? 0 : 1;
+
+        // Hexagons with a flat top have two possible adjacent hexagons
+        // in the horizontal direction depending on the column of the node.
+        bool isAdjacentHorizontal = (deltaX == 1 && deltaY == 0) || (deltaX == 1 && deltaY == 1 && node1.y % 2 == offset);
+
+        // Hexagons with a flat top have two possible adjacent hexagons
+        // in the vertical direction depending on the row of the node.
+        bool isAdjacentVertical = (deltaX == 0 && deltaY == 1) || (deltaX == 1 && deltaY == 1 && node1.y % 2 != offset);
+
+        return isAdjacentHorizontal || isAdjacentVertical;
     }
+
+
+
     void highlightMap(){
         for (int x = 0; x < gridSize.x; x++)
         {

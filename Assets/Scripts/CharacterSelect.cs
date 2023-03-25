@@ -88,8 +88,10 @@ public class CharacterSelect : MonoBehaviour
         AssetDatabase.Refresh();
     }
     public void returnCheck(){
-        foreach(GameObject go in GameObject.FindGameObjectsWithTag("CharacterInfoPane")){
-            go.GetComponent<SetInfo>().updateInfo();
+        if(GameObject.Find(gameObject.name+"_info")){
+            //foreach(GameObject go in GameObject.FindGameObjectsWithTag("CharacterInfoPane")){
+                GameObject.Find(gameObject.name+"_info").GetComponent<SetInfo>().updateInfo();
+            //}
         }
     }
 }

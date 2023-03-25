@@ -70,7 +70,7 @@ public class InitCharacter : MonoBehaviour
         player.transform.SetParent(transform);
         player.GetComponent<SpriteRenderer>().sprite = data.sprites[ch.Key];
         player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
-        Vector3Int allocate = pos;
+        Vector3Int allocate = pos;//new Vector3Int(pos.y, pos.x, pos.z);
         player.transform.position = tilemap.GetCellCenterWorld(allocate);
         tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
         player.GetComponent<ActionCenter>().saveTurnStatData(0);

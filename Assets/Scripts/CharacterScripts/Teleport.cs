@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Aoiti.Pathfinding; //import the pathfinding library
 using UnityEngine.EventSystems;
 
 public class Teleport : MonoBehaviour
 {
-    Pathfinder<Vector3Int> pathfinder;
+    Pathfinder pathfinder;
     List<Vector3Int> trail = new List<Vector3Int>();
     public float tilescheck = 0;
     float attackrange; 
@@ -21,7 +20,7 @@ public class Teleport : MonoBehaviour
         // Get the tileM component from the scene
         attackrange = this.gameObject.GetComponent<StatUpdate>().getAttackRange();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();        
-        pathfinder = new Pathfinder<Vector3Int>(tileM.GetDistance, GetNeighbourNodes);
+        pathfinder = new Pathfinder(tileM, this);
         transform.position = tileM.GetCellCenterWorld(tileM.WorldToCell(transform.position));
         tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() + 0.5f;
         originNode = tileM.WorldToCell(transform.position);
@@ -40,7 +39,7 @@ public class Teleport : MonoBehaviour
         }
         //Debug.Log(targetNode);
         //Debug.Log(tileM.WorldToCell(transform.position));
-        if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
+        if (pathfinder.GenerateAStarPath(originNode, targetNode, out trail, tilescheck))
         {   
             tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
             tileM.setWalkable(this.gameObject,targetNode,false);
@@ -56,19 +55,19 @@ public class Teleport : MonoBehaviour
         }
     }
     public void EnemyTeleport(){
-        if(tileM.EnemyInRange("Player", (int)attackrange, this.gameObject)){
+        if(tileM.EnemyInRange("Player", attackrange, this.gameObject)){
             return;
         }
-        KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode, (int)attackrange,(int)tilescheck);
+        KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode,attackrange,tilescheck);
         Vector3Int startNode = tileM.WorldToCell(transform.position);  
               
         targetNode = target.Value;   
         
 
         this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke(trail);
-        if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
+        if (pathfinder.GenerateAStarPath(originNode, targetNode, out trail, tilescheck))
         {
-            if(tileM.inWalkableArea(originNode,targetNode, (int)tilescheck)){
+            if(tileM.inArea(originNode,targetNode, (int)tilescheck)){
                 tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
                 tileM.setWalkable(this.gameObject,targetNode,false);
                 transform.position = tileM.GetCellCenterWorld(targetNode);
@@ -82,47 +81,16 @@ public class Teleport : MonoBehaviour
         }
     }
     public List<Vector3Int> GetPosTrail(Vector3 mousePosition){
-        List<Vector3Int> test = new List<Vector3Int>();
-        List<Vector3Int> toorigin = new List<Vector3Int>();
         List<Vector3Int> fuckme = new List<Vector3Int>();
         Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
         targetNode = tileM.WorldToCell(target);
         targetNode = tileM.getCloestTile(targetNode,originNode,attackrange,tilescheck);
-        if(pathfinder.GenerateAstarPath(tileM.WorldToCell(transform.position), targetNode, out fuckme)){
-            if(!fuckme.Contains(originNode)){
-                return fuckme;
-            }
-        }
-        if(pathfinder.GenerateAstarPath(originNode, targetNode, out test) && pathfinder.GenerateAstarPath(tileM.WorldToCell(transform.position), originNode, out toorigin)){
-            foreach(Vector3Int v in toorigin){
-                test.Add(v);
-            }
-            toorigin.Clear();
-            return test;
+        if(pathfinder.GenerateAStarPath(tileM.WorldToCell(transform.position), targetNode, out fuckme, tilescheck)){
+            return fuckme;
         }
         return null;
     }
    
-    Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos) 
-    {
-        Dictionary<Vector3Int, float> neighbours = new Dictionary<Vector3Int, float>();
-        for (int i = -1; i < 2; i++)
-        {
-            for (int j = -1; j < 2; j++)
-            {
-                if (i == 0 && j == 0) continue;{
-                    if (Mathf.Abs(i) == Mathf.Abs(j)) continue;{
-                        Vector3Int neighbourPos = new Vector3Int(pos.x + i, pos.y + j, pos.z);
-                        if (tileM.inWalkableArea(originNode,neighbourPos,(int)tilescheck) && tileM.GetNodeFromWorld(neighbourPos)!=null && tileM.GetNodeFromWorld(neighbourPos).walkable)
-                        {
-                            neighbours.Add(neighbourPos, 1);
-                        }
-                    }
-                }
-            }
-        }
-        return neighbours;
-    }
 
     public bool getisMoving(){
         return isMoving;

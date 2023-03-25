@@ -196,7 +196,7 @@ public class StatUpdate : MonoBehaviour
         maxHealth = x;
     }
     public float getAttackRange(){
-        return stats.getStat("rng");
+        return 1;//stats.getStat("rng");
     }
 
     public void attackingFatigue(){
