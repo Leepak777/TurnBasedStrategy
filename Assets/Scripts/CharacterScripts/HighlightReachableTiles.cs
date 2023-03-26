@@ -18,6 +18,9 @@ public class HighlightReachableTiles : MonoBehaviour
     //highlight movement area
     public void HighlightReachable()
     {   
+        if(tileM == null){
+            tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        }
         highlightColor.a = 0.5f;
         GameObject character = this.gameObject;
         reachableTiles.Clear();

@@ -17,11 +17,33 @@ public class PopEvent : MonoBehaviour
     Vector3 target;
     Tilemap tilemap;
 
-    public void togglePanel(){
+    void Start(){
+        popwindow = FindInActiveObjectByName("InfoPanel");
+        popwindow.SetActive(false);
+    }
+    GameObject FindInActiveObjectByName(string name)
+    {
+        Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
+        for (int i = 0; i < objs.Length; i++)
+        {
+            if (objs[i].hideFlags == HideFlags.None)
+            {
+                if (objs[i].name == name)
+                {
+                    return objs[i].gameObject;
+                }
+            }
+        }
+        return null;
+    }
+    public void togglePanel(Vector3 pos, GameObject go){
         if(popwindow.activeInHierarchy){
             popwindow.SetActive(false);
         }
         else{
+            popwindow.SetActive(true);
+        }
+        if(this.go != go){
             popwindow.SetActive(true);
         }
     }
@@ -38,7 +60,7 @@ public class PopEvent : MonoBehaviour
         if(GameObject.Find("Main Camera").transform.position.x < GameObject.Find("Canvas").transform.position.x){
             modpos = new Vector3(-64,0,0);
         }
-        if(popwindow.name == "Panel"){
+        if(popwindow.name == "InfoPanel"){
             modpos.x *= 2;
         }
         popwindow.transform.position = newpos + modpos;
@@ -58,15 +80,16 @@ public class PopEvent : MonoBehaviour
         if(popwindow.name == "Panel"){
             modpos.x *= 2;
         }
+
         popwindow.transform.position = newpos + modpos;
         
         
     }
 
     public void setText(){
-        Text goType = type.GetComponent<Text>();
-        Text goEquipment = equipment.GetComponent<Text>();
-        Text goStat = stat.GetComponent<Text>();
+        Text goType = popwindow.transform.Find("Type").GetComponent<Text>();
+        Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
+        Text goStat = popwindow.transform.Find("Stats").GetComponent<Text>();
         CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
         goType.text = chStat.getAttribute("Type");
         if(goEquipment.text == ""){
