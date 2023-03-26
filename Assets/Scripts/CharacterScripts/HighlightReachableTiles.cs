@@ -55,7 +55,7 @@ public class HighlightReachableTiles : MonoBehaviour
     //unhighlight tile
     public void unhighlight(Vector3Int tile){
         Color c = Color.white; 
-        c.a = 0.1f;
+        c.a = 0.0f;
         tileM.SetTileFlags(tile, TileFlags.None);
         tileM.SetColor(tile, c);
 
@@ -94,7 +94,7 @@ public class HighlightReachableTiles : MonoBehaviour
             for (int i = 0; i < EnemyTiles.Count; i++)
             {
                 Color c = Color.white; 
-                c.a = 0.1f;
+                c.a = 0.0f;
                 Vector3Int tilePos = EnemyTiles[i];
                 tileM.SetTileFlags(tilePos, TileFlags.None);
                 tileM.SetColor(tilePos, c);
@@ -108,7 +108,7 @@ public class HighlightReachableTiles : MonoBehaviour
         for (int i = 0; i < reachableTiles.Count; i++)
         {
             Color c = Color.white; 
-            c.a = 0.1f;
+            c.a = 0.0f;
             Vector3Int tilePos = reachableTiles[i];
             tileM.SetTileFlags(tilePos, TileFlags.None);
             tileM.SetColor(tilePos, c);
@@ -125,7 +125,7 @@ public class HighlightReachableTiles : MonoBehaviour
         for (int i = 0; i < trail.Count; i++)
         {
             Color c = Color.white; 
-            c.a = 0.1f;
+            c.a = 0.0f;
             Vector3Int tilePos = trail[i];
             tileM.SetTileFlags(tilePos, TileFlags.None);
             tileM.SetColor(tilePos, c);

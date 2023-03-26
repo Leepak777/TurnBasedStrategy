@@ -27,7 +27,7 @@ public class SetMap : MonoBehaviour
     
     void Awake()
     {
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        //tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         // Load sprite from resources
         //allsprites = Resources.LoadAll<Sprite>("TerrainAssets");
         allsprites = Resources.LoadAll<Sprite>("EarthHexXY");
@@ -76,15 +76,18 @@ public class SetMap : MonoBehaviour
     public void createTilemap()
     {
         // Check if a Tilemap component is attached to the GameObject
-        if (tilemap == null)
+        /*if (tilemap == null)
         {
             Debug.LogError("Tilemap component not found");
             return;
-        }
-
+        }*/
+        GameObject prefab = Resources.Load<GameObject>("DemoMap") as GameObject;
+        GameObject map = Instantiate(prefab) as GameObject;
+        tilemap = map.GetComponentInChildren<Tilemap>();
+        map.name = "Grid";
         // Cache RectTransform and Vector3Int
         RectTransform rec = GameObject.Find("Canvas").GetComponent<RectTransform>();
-        int x_size = (int)rec.sizeDelta.y / 16;
+        /*int x_size = (int)rec.sizeDelta.y / 16;
         int y_size = (int)rec.sizeDelta.x / 16;
         if(x_size%2 != 0){
             x_size--;
@@ -114,7 +117,7 @@ public class SetMap : MonoBehaviour
                 tilemap.SetColor(tilePos, c);
             }
         }
-        tilemap.SetTile(position + new Vector3Int(15 , 20 , 0), House["House_1"]);
+        tilemap.SetTile(position + new Vector3Int(15 , 20 , 0), House["House_1"]);*/
         
 
         // Set scale and position of tilemap
@@ -146,5 +149,6 @@ public class SetMap : MonoBehaviour
     public Dictionary<string,Tile> getHouse(){
         return House;
     }
+    public Sprite[] getAllSprite(){return allsprites;}
 
 }

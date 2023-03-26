@@ -64,6 +64,12 @@ public class TileManager : MonoBehaviour
                 g.GetComponent<Teleport>().settileM(this);
         }
     }
+    void Update(){
+        if(Input.GetMouseButtonDown(0)){
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log(WorldToCell(pos));
+        }
+    }
     
     void CreateGrid()
     {
@@ -74,13 +80,30 @@ public class TileManager : MonoBehaviour
                 Vector3Int tilePos = new Vector3Int(x, y, 0);
                 grid[x, y] = new Node(true, tilemap.GetCellCenterWorld(tilePos), x, y, tilemap.GetTile<Tile>(tilePos));
                 reachableTiles.Add(grid[x,y]);
+                
+                // Set the TileFlags.Transparent flag for each tile
+                TileBase tile = tilemap.GetTile(tilePos);
+                if (tile != null && tile.name == "EarthHexXY")
+                {
+                    tilemap.SetTileFlags(tilePos, TileFlags.None);
+                    tilemap.SetColor(tilePos, new Color(1f, 1f, 1f, 0f)); // Set alpha to 0 to make the tile transparent
+                }
             }
         }
-        foreach(Node n in grid){
-            setTileSize(n.tile,n.gridX,n.gridY);
-        }
-                        
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                Vector3Int tilePos = new Vector3Int(x, y, 0);
+                TileBase tile = tilemap.GetTile(tilePos);
+                if (tile != null && tile.name != "EarthHexXY")
+                {
+                    setTileSize(grid[x,y].tile,x,y);
+                }
+            }
+        }                    
     }
+
     public void printGrid(){
             for(int i = 0; i < gridSize.x; i++){
                 for(int j = 0; j < gridSize.y; j++){
@@ -92,7 +115,7 @@ public class TileManager : MonoBehaviour
 
     
     void setTileSize(Tile tile,int x, int  y){
-        if(House.Any(kvp => kvp.Value.Equals(tile))){
+        //if(House.Any(kvp => kvp.Value.Equals(tile))){
             grid[x,y].walkable = false;
             int width = (int)(tile.sprite.bounds.extents.x);
             int height = (int)(tile.sprite.bounds.extents.y);
@@ -104,7 +127,7 @@ public class TileManager : MonoBehaviour
                 }
             }
     
-        } 
+        //}
     }
 
     public void setWalkable(GameObject Ch, Vector3Int world,bool walkable){
@@ -343,7 +366,9 @@ public class TileManager : MonoBehaviour
         {
             for (int y = 0; y < gridSize.y; y++)
             {
+                
                 if(grid[x,y].walkable){
+                    
                     Vector3Int pos = new Vector3Int(x, y, 0);
                     highlightTile.Invoke(pos);
                 }

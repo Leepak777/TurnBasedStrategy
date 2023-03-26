@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
     }
 
