@@ -81,7 +81,7 @@ public class SetMap : MonoBehaviour
             Debug.LogError("Tilemap component not found");
             return;
         }*/
-        GameObject prefab = Resources.Load<GameObject>("DemoMap") as GameObject;
+        GameObject prefab = Resources.Load<GameObject>("MapPrefabs/DemoMap") as GameObject;
         GameObject map = Instantiate(prefab) as GameObject;
         tilemap = map.GetComponentInChildren<Tilemap>();
         map.name = "Grid";
@@ -122,7 +122,7 @@ public class SetMap : MonoBehaviour
 
         // Set scale and position of tilemap
         tilemap.transform.localScale = new Vector3(16, 16, 0);
-        tilemap.transform.position = new Vector3(rec.anchoredPosition.x - rec.sizeDelta.x/2,rec.anchoredPosition.y- rec.sizeDelta.y/2, 0);
+        tilemap.transform.position = new Vector3(rec.anchoredPosition.x /*- rec.sizeDelta.x/2*/,rec.anchoredPosition.y- rec.sizeDelta.y*2, 0);
 
     }
 

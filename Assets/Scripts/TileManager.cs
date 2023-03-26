@@ -119,7 +119,7 @@ public class TileManager : MonoBehaviour
             grid[x,y].walkable = false;
             int width = (int)(tile.sprite.bounds.extents.x);
             int height = (int)(tile.sprite.bounds.extents.y);
-            for(int i = x-width; i <= x+width/2;i++){
+            for(int i = x-width/2; i <= x+width;i++){
                 for(int j = y-height/2; j <= y+height/2; j++){
                     if(grid[i,j] != null){
                         grid[i,j].walkable = false;
