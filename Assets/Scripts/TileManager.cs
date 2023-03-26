@@ -258,30 +258,36 @@ public class TileManager : MonoBehaviour
         // Get the closest tile to the object within the movement range
         foreach (Node tile in areaInMovRange)
         {
-            Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
-            if (GetDistance(go, tilePos) < GetDistance(go, closestTileToGo))
-            {
-                closestTileToGo = tilePos;
+            if(tile.walkable){
+                Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
+                if (GetDistance(go, tilePos) < GetDistance(go, closestTileToGo))
+                {
+                    closestTileToGo = tilePos;
+                }
             }
         }
         
         // Get the farthest tile from the object within the attack range
         foreach (Node tile in areaInAttackRange)
         {
-            Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
-            if (GetDistance(go, tilePos) > GetDistance(go, closestTileToOrigin))
-            {
-                closestTileToOrigin = tilePos;
+            if(tile.walkable){
+                Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
+                if (GetDistance(go, tilePos) > GetDistance(go, closestTileToOrigin))
+                {
+                    closestTileToOrigin = tilePos;
+                }
             }
         }
         
         // Check if there is a tile in both areas
         foreach (Node tile in areaInMovRange)
         {
-            Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
-            if (areaInAttackRange.Contains(tile))
-            {
-                return tilePos;
+            if(tile.walkable){
+                Vector3Int tilePos = new Vector3Int((int)tile.gridX, (int)tile.gridY, originNode.z);
+                if (areaInAttackRange.Contains(tile))
+                {
+                    return tilePos;
+                }   
             }
         }
         
