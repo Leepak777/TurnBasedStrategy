@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
- 
+
 public class Node
 {
     public bool walkable;
@@ -113,22 +113,20 @@ public class TileManager : MonoBehaviour
             }
     }
 
-    
-    void setTileSize(Tile tile,int x, int  y){
-        //if(House.Any(kvp => kvp.Value.Equals(tile))){
-            grid[x,y].walkable = false;
-            int width = (int)(tile.sprite.bounds.extents.x);
-            int height = (int)(tile.sprite.bounds.extents.y);
-            for(int i = x-width/2; i <= x+width;i++){
-                for(int j = y-height/2; j <= y+height/2; j++){
-                    if(grid[i,j] != null){
-                        grid[i,j].walkable = false;
-                    }
-                }
-            }
-    
-        //}
+    void setTileSize(Tile tile, int x, int y) {
+    Bounds spriteBounds = tile.sprite.bounds;
+    float radius = spriteBounds.size.x ;  
+    foreach(Node n in GetTilesInArea(new Vector3Int(x,y,0), radius/2.5f)){
+        Tile nodeTile = tilemap.GetTile<Tile>(new Vector3Int(n.gridX,n.gridY,0));
+        Bounds nodeBounds = nodeTile.sprite.bounds;
+        
+        if(nodeBounds.Intersects(spriteBounds)&& spriteBounds.Contains(nodeBounds.max)){
+            n.walkable = false;
+        }
     }
+    
+}
+
 
     public void setWalkable(GameObject Ch, Vector3Int world,bool walkable){
         if(walkable && !GetNodeFromWorld(world).walkable){
@@ -168,6 +166,7 @@ public class TileManager : MonoBehaviour
         return reachableTiles;
     }
 
+
     public List<Node> GetTilesInArea(Vector3Int center, float range) {
         List<Node> area = new List<Node>();
         Vector3Int centerCube = OffsetToCube(center);
@@ -184,6 +183,7 @@ public class TileManager : MonoBehaviour
         }
         return area;
     }
+
 
     private Vector3Int OffsetToCube(Vector3Int offset) {
         int x = offset.x - (offset.y - (offset.y&1)) / 2;
@@ -205,6 +205,7 @@ public class TileManager : MonoBehaviour
     private bool IsAdjacentCube(Vector3Int node1, Vector3Int node2) {
         return GetDistanceCube(node1, node2) == 1;
     }
+    
 
 
     public List<GameObject> getTaginArea(Vector3Int start, float range, string tag){
