@@ -37,6 +37,7 @@ public class Teleport : MonoBehaviour
                 return;
             }
         }
+        
         //Debug.Log(targetNode);
         //Debug.Log(tileM.WorldToCell(transform.position));
         if (pathfinder.GenerateAStarPath(originNode, targetNode, out trail, tilescheck))
@@ -64,7 +65,6 @@ public class Teleport : MonoBehaviour
         targetNode = target.Value;   
         
 
-        this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke(trail);
         if (pathfinder.GenerateAStarPath(originNode, targetNode, out trail, tilescheck))
         {
             if(tileM.inArea(originNode,targetNode, (int)tilescheck)){
@@ -77,7 +77,6 @@ public class Teleport : MonoBehaviour
         if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
             if(outClick){outClick = false;}
             this.gameObject.GetComponent<CharacterEvents>().onMoveStop.Invoke();
-            this.gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke(originNode);
         }
     }
     public List<Vector3Int> GetPosTrail(Vector3 mousePosition){

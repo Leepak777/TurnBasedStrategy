@@ -17,6 +17,7 @@ public class ActionCenter : MonoBehaviour
     Vector3 worldPos;
     bool inButton = false;
     bool clicked = false;
+    bool attacking = false;
     public UnityEvent<Vector3Int> unhighlightTile;
     public UnityEvent<Vector3Int> highlightTile;
     void Awake()
@@ -74,24 +75,31 @@ public class ActionCenter : MonoBehaviour
         if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null){
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
-            if(target != tileM.WorldToCell(pos)){
+            if(tileM.WorldToCell(pos) == tileM.WorldToCell(transform.position) ||( !tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(pos), gameObject.GetComponent<Teleport>().getTilesCheck())&& tileM.GetNodeFromWorld(tileM.WorldToCell(pos)).occupant==null)){
+                this.gameObject.GetComponent<CharacterEvents>().onReset.Invoke();
+                return;
+            }
+            if(target != tileM.WorldToCell(pos) && !attacking){
                 target = tileM.WorldToCell(pos);
                 this.gameObject.GetComponent<CharacterEvents>().setTargetTile.Invoke(Input.mousePosition);
             }
+            
             else{
                 if(n != null && n.occupant != null && n.occupant.tag =="Enemy")
                 {
-                    if(tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(n.occupant.transform.position),(int)gameObject.GetComponent<StatUpdate>().getAttackRange())){
+                    if(attacking && tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(n.occupant.transform.position),(int)gameObject.GetComponent<StatUpdate>().getAttackRange())){
                         //tileM.flagEnemyArea(go,"Enemy",attackArea);
                         GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+                        attacking = false;
                     } 
                     else{
-                    this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition); 
+                        this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);    
                     }               
                 }
                 else if(tileM.WorldToCell(transform.position) != tileM.WorldToCell(pos)){
                     this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
                 }
+                target = Vector3Int.zero;
             }
         }
     }
@@ -174,5 +182,12 @@ public class ActionCenter : MonoBehaviour
 
     public void setInButton(bool inB){
         inButton = inB;
+    }
+    public bool isAttacking(){
+        return attacking;
+    }
+    public void setAttacking()
+    {
+        this.attacking = !this.attacking;
     }
 }

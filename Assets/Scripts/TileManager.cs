@@ -64,12 +64,6 @@ public class TileManager : MonoBehaviour
                 g.GetComponent<Teleport>().settileM(this);
         }
     }
-    void Update(){
-        if(Input.GetMouseButtonDown(0)){
-            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Debug.Log(WorldToCell(pos));
-        }
-    }
     
     void CreateGrid()
     {
@@ -114,18 +108,18 @@ public class TileManager : MonoBehaviour
     }
 
     void setTileSize(Tile tile, int x, int y) {
-    Bounds spriteBounds = tile.sprite.bounds;
-    float radius = spriteBounds.size.x ;  
-    foreach(Node n in GetTilesInArea(new Vector3Int(x,y,0), radius/2.5f)){
-        Tile nodeTile = tilemap.GetTile<Tile>(new Vector3Int(n.gridX,n.gridY,0));
-        Bounds nodeBounds = nodeTile.sprite.bounds;
-        
-        if(nodeBounds.Intersects(spriteBounds)&& spriteBounds.Contains(nodeBounds.max)){
-            n.walkable = false;
+        Bounds spriteBounds = tile.sprite.bounds;
+        float radius = spriteBounds.size.x ;  
+        foreach(Node n in GetTilesInArea(new Vector3Int(x,y,0), radius/2.5f)){
+            Tile nodeTile = tilemap.GetTile<Tile>(new Vector3Int(n.gridX,n.gridY,0));
+            Bounds nodeBounds = nodeTile.sprite.bounds;
+            
+            if(nodeBounds.Intersects(spriteBounds)&& spriteBounds.Contains(nodeBounds.max)){
+                n.walkable = false;
+            }
         }
+        
     }
-    
-}
 
 
     public void setWalkable(GameObject Ch, Vector3Int world,bool walkable){
@@ -255,7 +249,6 @@ public class TileManager : MonoBehaviour
 
      public KeyValuePair<GameObject,Vector3Int> getClosestReachablePlayer(string tag, Vector3Int currentpos, float attackrange, float movrange){
         GameObject close = getClosestPlayer(tag, tilemap.GetCellCenterWorld(currentpos));   
-        Debug.Log(close.name);         
         Vector3Int targetNode = getCloestTile(WorldToCell(close.transform.position), currentpos, attackrange, movrange);
         return new KeyValuePair<GameObject, Vector3Int>(close,targetNode);
     }

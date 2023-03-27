@@ -55,15 +55,17 @@ public class PopEvent : MonoBehaviour
             tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         }
         this.target = pos;
-        Vector3 newpos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
-        Vector3 modpos = new Vector3(64,0,0);
-        if(GameObject.Find("Main Camera").transform.position.x < GameObject.Find("Canvas").transform.position.x){
-            modpos = new Vector3(-64,0,0);
-        }
+        
         if(popwindow.name == "InfoPanel"){
-            modpos.x *= 2;
+            Vector3 newpos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+            Vector3 modpos = new Vector3(64,0,0);
+            if(GameObject.Find("Main Camera").transform.position.x < GameObject.Find("Canvas").transform.position.x){
+                modpos = new Vector3(-64,0,0);
+            }
+            modpos.y *= 2;
+            popwindow.transform.position = newpos + modpos;
+
         }
-        popwindow.transform.position = newpos + modpos;
         this.go = go;
         
     }

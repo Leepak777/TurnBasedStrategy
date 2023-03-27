@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -78,7 +78,7 @@ public class Movement : MonoBehaviour
             isMoving = true;
             /*Debug.Log("start "+startNode+"target "+targetNode);
             Debug.Log("path "+path);*/
-        }
+    /*    }
     }
 
     public void setPathPlayer(Vector3 mousePosition){
@@ -237,4 +237,4 @@ public class Movement : MonoBehaviour
     public void ClearTrail(){
         trail.Clear();
     }
-}
+}*/

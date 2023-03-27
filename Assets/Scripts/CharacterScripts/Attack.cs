@@ -19,7 +19,7 @@ public class Attack : MonoBehaviour
         //tileM.flagEnemyArea(targetPlayer,"Player",attackArea);
         if(tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(targetPlayer.transform.position),attackrange)){
             this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(targetPlayer);
-            this.gameObject.GetComponent<CharacterEvents>().onAttackFalse.Invoke();
+            this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke();
         }
     }
     //Player Attack enemy on mouseposition, call after click attack button in popup
@@ -30,7 +30,7 @@ public class Attack : MonoBehaviour
         if(tileM.GetNodeFromWorld(targetNode).occupant != null){
             GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
             this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(go);
-            this.gameObject.GetComponent<CharacterEvents>().onAttackFalse.Invoke();
+            this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke();
        }
     }
 

@@ -146,13 +146,24 @@ public class TurnManager : MonoBehaviour
             }     
         }
     }
+    public void currentPlayAttack(){
+        currentPlay.GetComponent<CharacterEvents>().onSetAttack.Invoke();
+    }
+    public void currentPlayHighlighten(){
+        if(currentPlay.GetComponent<ActionCenter>().isAttacking()){
+            currentPlay.GetComponent<CharacterEvents>().onHighLight.Invoke();
+        }
+        else{
+        currentPlay.GetComponent<CharacterEvents>().onUnHighLight.Invoke();
+        }
+    }
     public void currentPlayClick(){
         currentPlay.GetComponent<CharacterEvents>().onClick.Invoke();
     }
     public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
             go.GetComponent<CharacterEvents>().saveStat.Invoke(gameTurn);
-            }
+        }
     }
     public void startTurnSaveEnemy(){
         foreach(GameObject go in turnOrder2){
