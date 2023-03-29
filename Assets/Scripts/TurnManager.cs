@@ -56,9 +56,6 @@ public class TurnManager : MonoBehaviour
         currentPlay.GetComponent<CharacterEvents>().onStart.Invoke();
         if(currentPlay.tag == "Player"){        
             startTurnSavePlayer();
-            //startTurnSaveEnemy();
-        /*}
-        else{*/
             startTurnSaveEnemy();
         }
         gamestate = 2;
@@ -72,8 +69,15 @@ public class TurnManager : MonoBehaviour
         }
     }
     public void duringEvent(){
+        if(currentPlay.tag == "Enemy"){
+            Invoke("duringAction",1.5f);
+        }
+        else{
+            duringAction();
+        }
+    }
+    public void duringAction(){
         currentPlay.GetComponent<CharacterEvents>().onDuring.Invoke();
-        
     }
 
     public void updateIndex()

@@ -249,6 +249,7 @@ public class TileManager : MonoBehaviour
 
      public KeyValuePair<GameObject,Vector3Int> getClosestReachablePlayer(string tag, Vector3Int currentpos, float attackrange, float movrange){
         GameObject close = getClosestPlayer(tag, tilemap.GetCellCenterWorld(currentpos));   
+        //Debug.Log(close.name);         
         Vector3Int targetNode = getCloestTile(WorldToCell(close.transform.position), currentpos, attackrange, movrange);
         return new KeyValuePair<GameObject, Vector3Int>(close,targetNode);
     }

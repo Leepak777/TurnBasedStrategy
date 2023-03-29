@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
 
-public class Pathfinder
+public class PathFinder
 {
     private TileManager tileM;
     private Teleport teleport;
 
-    public Pathfinder(TileManager tileM, Teleport teleport)
+    public PathFinder(TileManager tileM, Teleport teleport)
     {
         this.tileM = tileM;
         this.teleport = teleport;
@@ -43,7 +43,7 @@ public class Pathfinder
             openSet.Remove(current);
 
             // Loop through neighbours and update scores
-            foreach (KeyValuePair<Vector3Int, float> neighbour in GetNeighbourNodes(current, tilescheck))
+            foreach (KeyValuePair<Vector3Int, float> neighbour in GetNeighbourNodes(current, (int)tilescheck))
             {
                 float tentativeGScore = gScores[current] + neighbour.Value;
 

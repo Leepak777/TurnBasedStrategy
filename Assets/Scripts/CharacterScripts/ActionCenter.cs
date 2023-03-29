@@ -75,7 +75,10 @@ public class ActionCenter : MonoBehaviour
         if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null){
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
-            if(tileM.WorldToCell(pos) == tileM.WorldToCell(transform.position) ||( !tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(pos), gameObject.GetComponent<Teleport>().getTilesCheck())&& tileM.GetNodeFromWorld(tileM.WorldToCell(pos)).occupant==null)){
+            if(tileM.WorldToCell(pos) == tileM.WorldToCell(transform.position) 
+            ||(!tileM.inArea(gameObject.GetComponent<Teleport>().getOrigin(),tileM.WorldToCell(pos), gameObject.GetComponent<Teleport>().getTilesCheck())&& tileM.GetNodeFromWorld(tileM.WorldToCell(pos)).occupant==null)
+            ||(tileM.GetNodeFromWorld(tileM.WorldToCell(pos)).occupant!=null && tileM.IsAdjacent(tileM.WorldToCell(transform.position),tileM.WorldToCell(pos))&& !attacking)){
+                target = Vector3Int.zero;
                 this.gameObject.GetComponent<CharacterEvents>().onReset.Invoke();
                 return;
             }

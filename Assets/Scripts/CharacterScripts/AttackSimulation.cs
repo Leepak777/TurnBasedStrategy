@@ -20,10 +20,14 @@ public class AttackSimulation
         }
         ATK = (int)(drn.getDRN() + attack_stat.getStats().getBaseDamage() + attack_stat.getBonus());
         DEF = drn.getDRN() + attack_stat.getStats().getProtection();
-        return new KeyValuePair<bool, int>(roll, ATK-DEF);
+        int damage = ATK - DEF;
+        if(damage <0){
+            damage = 0;
+        }
+        return new KeyValuePair<bool, int>(roll, damage);
     }
 
-    public KeyValuePair<float,int> atkPossibility(GameObject attack, GameObject defense){
+    public KeyValuePair<float,float> atkPossibility(GameObject attack, GameObject defense){
         int sucess = 0;
         int Damage_dealt = 0;
         for(int i = 0; i < 100; i ++){
@@ -33,6 +37,6 @@ public class AttackSimulation
                 Damage_dealt += sim.Value;
             }
         }
-        return new KeyValuePair<float, int>(sucess/100, Damage_dealt/sucess);
+        return new KeyValuePair<float, float>(sucess, Damage_dealt);
     }
 }

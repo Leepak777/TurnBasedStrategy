@@ -16,10 +16,13 @@ public class PopEvent : MonoBehaviour
     public GameObject stat;
     Vector3 target;
     Tilemap tilemap;
+    TileManager tileM;
 
     void Start(){
-        popwindow = FindInActiveObjectByName("InfoPanel");
-        popwindow.SetActive(false);
+        if(popwindow==null){
+            popwindow = FindInActiveObjectByName("InfoPanel");
+            popwindow.SetActive(false);
+        }
     }
     GameObject FindInActiveObjectByName(string name)
     {
@@ -53,9 +56,10 @@ public class PopEvent : MonoBehaviour
     public void setLoc(Vector3 pos, GameObject go){
         if(tilemap == null){
             tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+            tileM = GameObject.Find("Tilemanager").GetComponentInChildren<TileManager>();
         }
         this.target = pos;
-        
+        this.go = go;
         if(popwindow.name == "InfoPanel"){
             Vector3 newpos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
             Vector3 modpos = new Vector3(64,0,0);
@@ -66,8 +70,36 @@ public class PopEvent : MonoBehaviour
             popwindow.transform.position = newpos + modpos;
 
         }
-        this.go = go;
+        else if(popwindow.name == "AttackConfirm"){
+            setAttackConfirmContent();
+
+        }
         
+        
+    }
+    void setAttackConfirmContent(){
+            Debug.Log("pog");
+            Vector3 targetPos = Camera.main.ScreenToWorldPoint(target);
+            Text PlayerStat = popwindow.transform.Find("PlayerInfo").GetComponent<Text>();
+            Text EnemyStat = popwindow.transform.Find("EnemyInfo").GetComponent<Text>();
+            GameObject enemy = tileM.GetNodeFromWorld(tilemap.WorldToCell(targetPos)).occupant;
+            CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
+            CharacterStat enStat = enemy.GetComponent<StatUpdate>().getStats();
+            PlayerStat.text = chStat.getAttribute("Type")+"\n";
+            PlayerStat.text += "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";
+            PlayerStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";
+            PlayerStat.text += "Protection: \n" + chStat.getProtection() + "\n";
+            EnemyStat.text = enStat.getAttribute("Type")+"\n";
+            EnemyStat.text += "HP: "+enemy.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ enStat.getStat("maxHealth") + "\n";
+            EnemyStat.text += "Damage: \n" + enStat.getBaseDamage() + "\n";
+            EnemyStat.text += "Protection: \n" + enStat.getProtection() + "\n";
+            Image PlayerImage = popwindow.transform.Find("PlayerImage").GetComponent<Image>();
+            Image EnemyImage = popwindow.transform.Find("EnemyImage").GetComponent<Image>();
+            PlayerImage.sprite = go.GetComponent<SpriteRenderer>().sprite;
+            EnemyImage.sprite = enemy.GetComponent<SpriteRenderer>().sprite;
+            KeyValuePair<float,float> predict = go.GetComponent<StatUpdate>().getAttackSim().atkPossibility(go,enemy);
+            Text prediction = popwindow.transform.Find("Prediction").GetComponent<Text>();
+            prediction.text = "Sucess rate: " +predict.Key + ", Damage: " + predict.Value;
     }
     public void setLocMenu(){
         if(tilemap == null){

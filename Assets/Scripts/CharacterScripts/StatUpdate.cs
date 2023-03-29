@@ -78,9 +78,13 @@ public class StatUpdate : MonoBehaviour
                 drn_check = rangeRoll(targetEnemy);
             }
             if(drn_check){
+                //Debug.Log("Roll Sucess!");
                 Damage = (int)(drn.getDRN() + stats.getBaseDamage() + bonus);
                 attackingFatigue();
                 targetEnemy.GetComponent<CharacterEvents>().onDamage.Invoke(Damage);
+            }
+            else{
+                //Debug.Log("Roll Fail!");
             }
         }
         
@@ -113,21 +117,20 @@ public class StatUpdate : MonoBehaviour
     void disableText(){
         text.enabled = false;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damageReceived)
     {
         int protection = drn.getDRN() + stats.getProtection();
-        //Debug.Log("Damage: "+damage);
-        //Debug.Log("Protection: " +protection);
+
         
-        damage -= protection;
-        
-        if(damage <= 0){
-            damage = 0;
+        damageReceived -= protection;
+
+        if(damageReceived <= 0){
+            damageReceived = 0;
         }
-        text.text = ""+damage;
+        text.text = ""+damageReceived;
         showText();
         //Debug.Log("hit!" + damage);
-        currentHealth -= (float)damage;
+        currentHealth -= (float)damageReceived;
         if(currentHealth < 0){
             currentHealth = 0;
         }
@@ -170,7 +173,9 @@ public class StatUpdate : MonoBehaviour
     public bool getTextEnabled(){
         return text.enabled;
     }
-
+    public AttackSimulation getAttackSim(){
+        return atkSim;
+    }
     public void setTextActive(bool active){
         text.enabled = active;
     }

@@ -30,7 +30,7 @@ MonoBehaviour:
       - Legionary Armor
       - Great Sword
       - War Horse
-      - Tower Shield
+      - Kite Shield
       - Buckler2
     - keys:
       - Type
@@ -41,42 +41,34 @@ MonoBehaviour:
       - Buckler
       values:
       - Praetorian Guard
-      - Praetorian_Armor
-      - Great Sword
+      - Half Plate
+      - Power Sword
       - War Horse
       - Tower Shield
-      - Buckler
+      - Buckler2
     - keys:
       - Type
-      - Armor
       - Weapon
-      - Mount
-      - Shield
-      - Buckler
       values:
-      - Imperial Conscript
-      - Synthe Armor
-      - Light Glaive
-      - Pack Horse
-      - Tower Shield
-      - Buckler
+      - Imperial Legionary
+      - Pike
   positions:
     keys:
     - Player1
     - Player2
     - Enemy1
     values:
-    - {x: 42, y: 56, z: 0}
-    - {x: 45, y: 48, z: 0}
-    - {x: 39, y: 48, z: 0}
+    - {x: 43, y: 49, z: 0}
+    - {x: 45, y: 54, z: 0}
+    - {x: 41, y: 52, z: 0}
   sprites:
     keys:
     - Player1
     - Player2
     - Enemy1
     values:
-    - {fileID: 4743351366961752154, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
-    - {fileID: 7658542407909571512, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
-    - {fileID: 1480903098374382782, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 8660488064105803115, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -6468955252472751403, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 6177075501601533703, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
   map: Never Gonna Give You Up
   currentSetCh: Enemy1
