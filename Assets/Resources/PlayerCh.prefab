@@ -49,7 +49,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9177659189259090023}
         m_TargetAssemblyTypeName: PopEvent, Assembly-CSharp
-        m_MethodName: togglePanel
+        m_MethodName: setLoc
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -61,7 +61,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 9177659189259090023}
         m_TargetAssemblyTypeName: PopEvent, Assembly-CSharp
-        m_MethodName: setLoc
+        m_MethodName: togglePanel
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

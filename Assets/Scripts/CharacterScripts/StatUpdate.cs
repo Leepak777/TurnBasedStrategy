@@ -91,6 +91,9 @@ public class StatUpdate : MonoBehaviour
     }
 
     public void startSaveStat(int gameTurn){
+        if(stats == null){
+            stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
+        }
         if(pastFat.ContainsKey(gameTurn) && pastHP.ContainsKey(gameTurn)){
             pastFat[gameTurn] = stats.getStat("fat");
             pastHP[gameTurn] = currentHealth;

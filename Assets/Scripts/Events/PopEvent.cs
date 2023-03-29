@@ -46,7 +46,15 @@ public class PopEvent : MonoBehaviour
         else{
             popwindow.SetActive(true);
         }
-        if(this.go != go){
+        if(!popwindow.activeInHierarchy && this.go != go){
+            popwindow.SetActive(true);
+        }
+    }
+    public void toggleP(){
+        if(popwindow.activeInHierarchy){
+            popwindow.SetActive(false);
+        }
+        else{
             popwindow.SetActive(true);
         }
     }
@@ -60,17 +68,7 @@ public class PopEvent : MonoBehaviour
         }
         this.target = pos;
         this.go = go;
-        if(popwindow.name == "InfoPanel"){
-            Vector3 newpos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
-            Vector3 modpos = new Vector3(64,0,0);
-            if(GameObject.Find("Main Camera").transform.position.x < GameObject.Find("Canvas").transform.position.x){
-                modpos = new Vector3(-64,0,0);
-            }
-            modpos.y *= 2;
-            popwindow.transform.position = newpos + modpos;
-
-        }
-        else if(popwindow.name == "AttackConfirm"){
+        if(popwindow.name == "AttackConfirm"){
             setAttackConfirmContent();
 
         }
@@ -108,9 +106,6 @@ public class PopEvent : MonoBehaviour
         this.target = go.transform.position;
         Vector3 newpos = tilemap.GetCellCenterWorld(tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
         Vector3 modpos = new Vector3(0,128,0);
-        /*if(GameObject.Find("Main Camera").transform.position.x < GameObject.Find("Canvas").transform.position.x){
-            modpos = new Vector3(-64,0,0);
-        }*/
         if(popwindow.name == "Panel"){
             modpos.x *= 2;
         }

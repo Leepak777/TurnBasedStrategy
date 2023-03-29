@@ -31,6 +31,10 @@ public class ActionCenter : MonoBehaviour
             nodePos = tileM.WorldToCell(transform.position);
             tmNode = tileM.GetNodeFromWorld(nodePos);
             worldPos = tileM.GetCellCenterWorld(nodePos);
+            if(attacking){
+                gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke();
+                gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke();
+            }
             /*Debug.Log("tileM Position"+nodePos);
             Debug.Log("TileManager Node"+tmNode);
             Debug.Log("World Position"+worldPos);*/
@@ -42,6 +46,7 @@ public class ActionCenter : MonoBehaviour
     }
     //checks at beginning of turn, decoupled it so rn its empty lol
     public void beginningTurn(){
+        attacking = false;
         if(tilesfat > 0){
             tilesfat = 0;
         }
