@@ -8,11 +8,17 @@ public class CameraController : MonoBehaviour
     public Tilemap tilemap;
     bool track = false;
     GameObject target = null;
+    private Vector3 Origin;
+    private Vector3 Difference;
+    private Vector3 ResetCamera;
+
+    private bool drag = false;
 
     void Start()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        ResetCamera = Camera.main.transform.position;
     }
 
     public void trackPlayer()
@@ -122,4 +128,32 @@ public class CameraController : MonoBehaviour
         arrowControl();
         tracking();
     }
+    /*private void LateUpdate()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            Difference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
+            RectTransform r = GameObject.Find("scroll").GetComponent<RectTransform>();
+            if(drag == false  )
+            {
+                drag = true;
+                Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            }
+
+        }
+        else
+        {
+            drag = false;
+        }
+
+        if (drag)
+        {
+            Camera.main.transform.position = Origin - Difference * 0.5f;
+        }
+
+        if (Input.GetMouseButton(1))
+            Camera.main.transform.position = ResetCamera;
+
+    }*/
+
 }

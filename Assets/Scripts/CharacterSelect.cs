@@ -21,7 +21,7 @@ public class CharacterSelect : MonoBehaviour
     {
         types = new List<string>(){"none","Praetorian Guard", "Imperial Legionary", "Imperial Conscript", "Mecenary", "Brigand"};
         data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
-        Sprite[] allsprites = Resources.LoadAll<Sprite>("Daemons");
+        Sprite[] allsprites = Resources.LoadAll<Sprite>("Crystal_Knight");
         foreach(Sprite s in allsprites){
             //Debug.Log(s.name);
             Daemons.Add(s.name,s);
