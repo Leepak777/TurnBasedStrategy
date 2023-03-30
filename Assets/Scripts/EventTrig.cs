@@ -9,13 +9,15 @@ public class EventTrig: MonoBehaviour
     public UnityEvent mapClick;
     bool clicked = false;
     bool inButton = false;
+    bool navigate = false;
+    public GameObject end, attack;
     public void setClicked(bool click){
         this.clicked = click;
     }
     void OnGUI()
     {
         Event e = Event.current;
-        if (e.isMouse && e.button == 0 )
+        if (e.isMouse && e.button == 0 && !navigate)
         {
             if(!clicked){
                 mapClick.Invoke();
@@ -25,6 +27,12 @@ public class EventTrig: MonoBehaviour
                 clicked = false;
             }
         }
+        if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Space)
+        {
+            navigate = !navigate;
+            attack.SetActive(!attack.activeInHierarchy);
+            end.SetActive(!end.activeInHierarchy);
+        }
         
     }
     public void setInButton(bool inB){
@@ -32,5 +40,9 @@ public class EventTrig: MonoBehaviour
     }
     public bool checkOnButton(){
         return inButton;
+    }
+
+    public bool isNavigate(){
+        return navigate;
     }
 }

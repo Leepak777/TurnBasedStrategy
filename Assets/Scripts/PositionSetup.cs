@@ -17,6 +17,7 @@ public class PositionSetup : MonoBehaviour
     public UnityEvent<Vector3Int> highlightTile;
     public InGameData data;
     int index;
+    public bool isDragging;
     void Awake()
     { 
         index = gameObject.transform.GetSiblingIndex();
@@ -38,6 +39,7 @@ public class PositionSetup : MonoBehaviour
         }
     }
     public void moveWithMouse(){
+        isDragging = true;
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         gameObject.transform.position = tileM.GetCellCenterWorld(tileM.WorldToCell(pos));
         RectTransform r = GameObject.Find("scroll").GetComponent<RectTransform>();
@@ -60,11 +62,13 @@ public class PositionSetup : MonoBehaviour
         if(!tileM.GetNodeFromWorld(tileM.WorldToCell(transform.position)).walkable){
             gameObject.transform.SetSiblingIndex(index);
             gameObject.transform.SetParent(GameObject.Find("ChPanel").transform);
+            isDragging = false;
             return;
         }
         if(transform.parent.gameObject.name != "ChPanel"){
             unhighlightTile.Invoke(tileM.WorldToCell(transform.position));
             tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),false);
+            isDragging = false;
             addEntry();
         }
         
@@ -83,5 +87,7 @@ public class PositionSetup : MonoBehaviour
     }
     
     
-
+    public bool checkisDragging(){
+        return isDragging;
+    }
 }

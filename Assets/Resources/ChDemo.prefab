@@ -563,6 +563,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   data: {fileID: 0}
+  isDragging: 0
 --- !u!114 &-1271688898221639201
 MonoBehaviour:
   m_ObjectHideFlags: 0

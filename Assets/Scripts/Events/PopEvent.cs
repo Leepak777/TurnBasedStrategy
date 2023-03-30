@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class PopEvent : MonoBehaviour
 {
@@ -76,7 +78,6 @@ public class PopEvent : MonoBehaviour
         
     }
     void setAttackConfirmContent(){
-            Debug.Log("pog");
             Vector3 targetPos = Camera.main.ScreenToWorldPoint(target);
             Text PlayerStat = popwindow.transform.Find("PlayerInfo").GetComponent<Text>();
             Text EnemyStat = popwindow.transform.Find("EnemyInfo").GetComponent<Text>();

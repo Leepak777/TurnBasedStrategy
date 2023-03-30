@@ -1,24 +1,26 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
-public class CameraController : MonoBehaviour
+
+public class CameraController : MonoBehaviour 
 {
     public float speed = 10f;
     public Canvas canvas;
     public Tilemap tilemap;
     bool track = false;
     GameObject target = null;
-    private Vector3 Origin;
-    private Vector3 Difference;
-    private Vector3 ResetCamera;
-
-    private bool drag = false;
-
+    private bool dragging = false;
+    private Vector3 mouseOrigin;
+    private Vector3 cameraOrigin;
+    private Vector3 difference;
+    private Vector3 resetCamera;
     void Start()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        ResetCamera = Camera.main.transform.position;
+        
     }
 
     public void trackPlayer()
@@ -92,6 +94,7 @@ public class CameraController : MonoBehaviour
             // Check if the camera is already at the target position
             if (transform.position == targetHexPos)
             {
+                resetCamera = transform.position;
                 track = false;
                 return;
             }
@@ -117,10 +120,80 @@ public class CameraController : MonoBehaviour
             }
             else
             {
+                resetCamera = transform.position;
                 track = false;
             }
         }
     }
+    bool inObject(){
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player")){
+            if(g.GetComponent<PositionSetup>().checkisDragging()){
+                return true;
+            }
+        }
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy")){
+            if(g.GetComponent<PositionSetup>().checkisDragging()){
+                return true;
+            }
+        }
+        return false;
+    }
+    private void LateUpdate()
+    {
+        
+        if (Input.GetMouseButton(0)&& GameObject.Find("InfoPanel") == null)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit) && (hit.collider.CompareTag("Player")||hit.collider.CompareTag("Enemy")))
+            {
+                return;
+            }
+            if(SceneManager.GetActiveScene().name == "GameScene" ){
+                if(GameObject.Find("Canvas").GetComponent<EventTrig>().isNavigate()){
+                    dragMove();
+                }
+            }
+            else if(SceneManager.GetActiveScene().name == "MapSelection"){
+                RectTransform r = GameObject.Find("scroll").GetComponent<RectTransform>();
+                if(!RectTransformUtility.RectangleContainsScreenPoint(r, Input.mousePosition, Camera.main) && !inObject()){
+                    dragMove();
+                }
+            }
+            
+        }
+        else
+        {
+            dragging = false;
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            transform.position = resetCamera;
+        }
+    }
+
+    void dragMove(){
+        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
+
+        if (!dragging)
+        {
+            dragging = true;
+            mouseOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            cameraOrigin = transform.position;            }
+
+        Vector3 newPos = cameraOrigin - difference * 0.5f;
+        float cameraHeight = Camera.main.orthographicSize * 2f;
+        float cameraWidth = cameraHeight * Camera.main.aspect;
+        float minX = canvas.transform.position.x - canvas.GetComponent<RectTransform>().rect.width / 2f + cameraWidth / 2f;
+        float maxX = canvas.transform.position.x + canvas.GetComponent<RectTransform>().rect.width / 2f - cameraWidth / 2f;
+        float minY = canvas.transform.position.y - canvas.GetComponent<RectTransform>().rect.height / 2f + cameraHeight / 2f;
+        float maxY = canvas.transform.position.y + canvas.GetComponent<RectTransform>().rect.height / 2f - cameraHeight / 2f;
+        newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
+        newPos.y = Mathf.Clamp(newPos.y, minY, maxY);
+        transform.position = newPos;
+    }
+
 
 
     void Update()
@@ -128,32 +201,6 @@ public class CameraController : MonoBehaviour
         arrowControl();
         tracking();
     }
-    /*private void LateUpdate()
-    {
-        if (Input.GetMouseButton(0))
-        {
-            Difference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
-            RectTransform r = GameObject.Find("scroll").GetComponent<RectTransform>();
-            if(drag == false  )
-            {
-                drag = true;
-                Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            }
-
-        }
-        else
-        {
-            drag = false;
-        }
-
-        if (drag)
-        {
-            Camera.main.transform.position = Origin - Difference * 0.5f;
-        }
-
-        if (Input.GetMouseButton(1))
-            Camera.main.transform.position = ResetCamera;
-
-    }*/
+    
 
 }

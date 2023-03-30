@@ -92,8 +92,8 @@ public class Teleport : MonoBehaviour
     }
    public void resetPos(){
         tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
-        tileM.setWalkable(this.gameObject,originNode,false);
         transform.position = tileM.GetCellCenterWorld(originNode);
+        tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),false);
    }
     public Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos)
     {
