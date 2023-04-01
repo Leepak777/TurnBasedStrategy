@@ -90,4 +90,8 @@ public class PositionSetup : MonoBehaviour
     public bool checkisDragging(){
         return isDragging;
     }
+    public bool inObject(){
+        RectTransform r = gameObject.GetComponent<RectTransform>();
+        return RectTransformUtility.RectangleContainsScreenPoint(r, Input.mousePosition, Camera.main);
+    }
 }

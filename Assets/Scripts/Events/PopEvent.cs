@@ -59,6 +59,11 @@ public class PopEvent : MonoBehaviour
         else{
             popwindow.SetActive(true);
         }
+        if(SceneManager.GetActiveScene().name == "MapSelection"){
+            if(transform.parent.GetComponent<PositionSetup>().checkisDragging()){
+                popwindow.SetActive(false);
+            }
+        }
     }
     public void goAttack(){
         go.GetComponent<CharacterEvents>().onPlayerAttack.Invoke(target);

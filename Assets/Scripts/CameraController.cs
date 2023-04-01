@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     public float speed = 10f;
     public Canvas canvas;
     public Tilemap tilemap;
+    public TileManager tileM;
     bool track = false;
     GameObject target = null;
     private bool dragging = false;
@@ -19,8 +20,9 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        tileM = GameObject.Find("Tilemanager").GetComponentInChildren<TileManager>();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        
+        resetCamera = transform.position;
     }
 
     public void trackPlayer()
@@ -127,60 +129,29 @@ public class CameraController : MonoBehaviour
     }
     bool inObject(){
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player")){
-            if(g.GetComponent<PositionSetup>().checkisDragging()){
+            if(g.GetComponent<PositionSetup>().inObject()){
                 return true;
             }
         }
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy")){
-            if(g.GetComponent<PositionSetup>().checkisDragging()){
+            if(g.GetComponent<PositionSetup>().inObject()){
                 return true;
             }
         }
         return false;
     }
-    private void LateUpdate()
+
+    public void dragMove()
     {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 difference = mousePosition - mouseOrigin;
         
-        if (Input.GetMouseButton(0)&& GameObject.Find("InfoPanel") == null)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit) && (hit.collider.CompareTag("Player")||hit.collider.CompareTag("Enemy")))
-            {
-                return;
-            }
-            if(SceneManager.GetActiveScene().name == "GameScene" ){
-                if(GameObject.Find("Canvas").GetComponent<EventTrig>().isNavigate()){
-                    dragMove();
-                }
-            }
-            else if(SceneManager.GetActiveScene().name == "MapSelection"){
-                RectTransform r = GameObject.Find("scroll").GetComponent<RectTransform>();
-                if(!RectTransformUtility.RectangleContainsScreenPoint(r, Input.mousePosition, Camera.main) && !inObject()){
-                    dragMove();
-                }
-            }
-            
-        }
-        else
-        {
-            dragging = false;
-        }
-
-        if (Input.GetMouseButton(1))
-        {
-            transform.position = resetCamera;
-        }
-    }
-
-    void dragMove(){
-        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
-
         if (!dragging)
         {
             dragging = true;
-            mouseOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            cameraOrigin = transform.position;            }
+            mouseOrigin = mousePosition;
+            cameraOrigin = transform.position;            
+        }
 
         Vector3 newPos = cameraOrigin - difference * 0.5f;
         float cameraHeight = Camera.main.orthographicSize * 2f;
@@ -191,8 +162,15 @@ public class CameraController : MonoBehaviour
         float maxY = canvas.transform.position.y + canvas.GetComponent<RectTransform>().rect.height / 2f - cameraHeight / 2f;
         newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
         newPos.y = Mathf.Clamp(newPos.y, minY, maxY);
-        transform.position = newPos;
+        if (tileM.GetDistance(tileM.WorldToCell(mousePosition), tileM.WorldToCell(mouseOrigin)) <= 1)
+        {
+            return;
+        }
+
+        transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * 25f);
     }
+
+
 
 
 
@@ -201,6 +179,38 @@ public class CameraController : MonoBehaviour
         arrowControl();
         tracking();
     }
+    void OnGUI()
+    {
+            
+            
+            if (Input.GetMouseButton(0)&& GameObject.Find("InfoPanel") == null)
+            {
+                
+                if(SceneManager.GetActiveScene().name == "GameScene" ){
+                    if(GameObject.Find("Canvas").GetComponent<EventTrig>().isNavigate()){
+                        dragMove();
+                    }
+                }
+                else if(SceneManager.GetActiveScene().name == "MapSelection"){
+                    RectTransform r = GameObject.Find("scroll").GetComponent<RectTransform>();
+                    RectTransform r2 = GameObject.Find("Button").GetComponent<RectTransform>();
+                    if(!RectTransformUtility.RectangleContainsScreenPoint(r, Input.mousePosition, Camera.main) && !RectTransformUtility.RectangleContainsScreenPoint(r2, Input.mousePosition, Camera.main)&&!inObject()){
+                        dragMove();
+                    }
+                }
+                
+            }
+            else
+            {
+                dragging = false;
+            }
+
+            if (Input.GetMouseButton(1))
+            {
+                transform.position = resetCamera;
+            }
+    }
+        
     
 
 }
