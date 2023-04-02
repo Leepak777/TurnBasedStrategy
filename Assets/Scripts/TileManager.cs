@@ -90,12 +90,12 @@ public class TileManager : MonoBehaviour
             {
                 Vector3Int tilePos = new Vector3Int(x, y, 0);
                 TileBase tile = tilemap.GetTile(tilePos);
-                if (tile != null && tile.name != "EarthHexXY")
+                if (tile != null)
                 {
                     setTileSize(grid[x,y].tile,x,y);
                 }
             }
-        }                    
+        } 
     }
 
     public void printGrid(){
@@ -108,19 +108,23 @@ public class TileManager : MonoBehaviour
     }
 
     void setTileSize(Tile tile, int x, int y) {
-        Bounds spriteBounds = tile.sprite.bounds;
-        float radius = spriteBounds.size.x ;  
-        foreach(Node n in GetTilesInArea(new Vector3Int(x,y,0), radius/2.5f)){
-            Tile nodeTile = tilemap.GetTile<Tile>(new Vector3Int(n.gridX,n.gridY,0));
-            Bounds nodeBounds = nodeTile.sprite.bounds;
-            
-            if(nodeBounds.Intersects(spriteBounds)&& spriteBounds.Contains(nodeBounds.max)){
-                n.walkable = false;
+        Vector3 pos = GetCellCenterWorld(new Vector3Int(x, y, 0));
+        foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("Obstacles")) {
+            SpriteRenderer spriteRenderer = obstacle.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null) {
+                Bounds spriteBounds = spriteRenderer.bounds;
+                if (spriteBounds.Contains(pos) || 
+                    (pos.x > spriteBounds.min.x - 5f && pos.x < spriteBounds.max.x + 5f &&
+                    pos.y > spriteBounds.min.y - 5f && pos.y < spriteBounds.max.y + 5f)) {
+                    grid[x, y].walkable = false;
+                    break;
+                }
             }
         }
-        
     }
 
+
+    
 
     public void setWalkable(GameObject Ch, Vector3Int world,bool walkable){
         if(walkable && !GetNodeFromWorld(world).walkable){
