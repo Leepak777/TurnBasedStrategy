@@ -48,9 +48,6 @@ public class PopEvent : MonoBehaviour
         else{
             popwindow.SetActive(true);
         }
-        if(!popwindow.activeInHierarchy && this.go != go){
-            popwindow.SetActive(true);
-        }
     }
     public void toggleP(){
         if(popwindow.activeInHierarchy){
@@ -77,8 +74,8 @@ public class PopEvent : MonoBehaviour
         this.go = go;
         if(popwindow.name == "AttackConfirm"){
             setAttackConfirmContent();
-
         }
+        
         
         
     }

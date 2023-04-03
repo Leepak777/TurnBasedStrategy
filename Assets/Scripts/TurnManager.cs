@@ -38,7 +38,6 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
-        ActionCenter ac = currentPlay.GetComponent<ActionCenter>();
         switch(gamestate){
             case 0://start
                 start.Invoke();
@@ -117,39 +116,7 @@ public class TurnManager : MonoBehaviour
             currentPlay = turnOrder[currentTurnIndex];// switch to player's turn
         }
     }
-    public void resetTurn(){
-        gamestate = 0;
-        currentPlay.GetComponent<ActionCenter>().undoTurn(gameTurn);
-         
-    }
-    public void undoTurn(){
-        if(gameTurn > 1){
-            gameTurn--;
-            gamestate = 0;
-            currentPlay.GetComponent<ActionCenter>().endingTurn(1);
-            currentTurnIndex2--;
-            currentTurnIndex--;
-            if(currentTurnIndex<0){currentTurnIndex = turnOrder.Count-1;}
-            if(currentTurnIndex2<0){currentTurnIndex2 = turnOrder2.Count-1;}
-            currentPlay = turnOrder[currentTurnIndex];
-            foreach(GameObject go in turnOrder){
-                if(go.activeInHierarchy){
-                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn);
-                }
-                else{
-                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn-1);
-                }
-            }
-            foreach(GameObject go in turnOrder2){
-                if(go.activeInHierarchy){
-                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn);
-                }
-                else{
-                    go.GetComponent<CharacterEvents>().onUndo.Invoke(gameTurn-1);
-                }
-            }     
-        }
-    }
+    
     public void currentPlayAttack(){
         currentPlay.GetComponent<CharacterEvents>().onSetAttack.Invoke();
     }

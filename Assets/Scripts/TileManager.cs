@@ -114,8 +114,8 @@ public class TileManager : MonoBehaviour
             if (spriteRenderer != null) {
                 Bounds spriteBounds = spriteRenderer.bounds;
                 if (spriteBounds.Contains(pos) || 
-                    (pos.x > spriteBounds.min.x - 5f && pos.x < spriteBounds.max.x + 5f &&
-                    pos.y > spriteBounds.min.y - 5f && pos.y < spriteBounds.max.y + 5f)) {
+                    (pos.x > spriteBounds.min.x - 1f && pos.x < spriteBounds.max.x + 1f &&
+                    pos.y > spriteBounds.min.y - 1f && pos.y < spriteBounds.max.y + 1f)) {
                     grid[x, y].walkable = false;
                     break;
                 }

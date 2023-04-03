@@ -15,7 +15,6 @@ public class ActionCenter : MonoBehaviour
     Vector3Int target;
     Node tmNode;
     Vector3 worldPos;
-    bool inButton = false;
     bool clicked = false;
     bool attacking = false;
     public UnityEvent<Vector3Int> unhighlightTile;
@@ -74,10 +73,10 @@ public class ActionCenter : MonoBehaviour
     }
     // invoke events onClick, either movement or attack
     public void onClick(){
-        if(GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton() || inButton){
+        if(GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton()){
             return;
         }
-        if(GameObject.Find("Panel") == null && GameObject.Find("AttackConfirm")== null){
+        if(GameObject.Find("InfoPanel") == null && GameObject.Find("AttackConfirm")== null){
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
             if(tileM.WorldToCell(pos) == tileM.WorldToCell(transform.position) 
@@ -158,15 +157,9 @@ public class ActionCenter : MonoBehaviour
         /*Debug.Log(e.isMouse);
         Debug.Log(e.button);
         Debug.Log(n.occupant);*/
-        if (e.isMouse && e.button == 1 && n.occupant == gameObject)
+        if (e.type == EventType.MouseUp && e.button  == 0 && n.occupant == gameObject)
         {
-            if(!clicked){
-                gameObject.GetComponentInChildren<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
-                clicked = true;
-            }
-            else{
-                clicked = false;
-            }
+               gameObject.GetComponentInChildren<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
             
         }
         
@@ -187,10 +180,6 @@ public class ActionCenter : MonoBehaviour
     }
     public Vector3 getWorldPos(){
         return worldPos;
-    }
-
-    public void setInButton(bool inB){
-        inButton = inB;
     }
     public bool isAttacking(){
         return attacking;

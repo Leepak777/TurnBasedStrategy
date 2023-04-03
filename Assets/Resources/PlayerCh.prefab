@@ -49,7 +49,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9177659189259090023}
         m_TargetAssemblyTypeName: PopEvent, Assembly-CSharp
-        m_MethodName: setLoc
+        m_MethodName: togglePanel
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -61,7 +61,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 9177659189259090023}
         m_TargetAssemblyTypeName: PopEvent, Assembly-CSharp
-        m_MethodName: togglePanel
+        m_MethodName: setLoc
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -88,6 +88,37 @@ MonoBehaviour:
   type: {fileID: 0}
   equipment: {fileID: 0}
   stat: {fileID: 0}
+--- !u!1 &2529346455036310813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6639759423250374018}
+  m_Layer: 0
+  m_Name: Aura
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6639759423250374018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2529346455036310813}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2826008092802605566}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4372121814336086656
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,12 +417,13 @@ RectTransform:
   - {fileID: 7370549606511633878}
   - {fileID: 5638724381429081094}
   - {fileID: 1817712687738378631}
+  - {fileID: 6639759423250374018}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0000019073486, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &5340198930151324999

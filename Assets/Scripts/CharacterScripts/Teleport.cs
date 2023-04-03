@@ -102,7 +102,7 @@ public class Teleport : MonoBehaviour
         foreach(Node n in area){
             Vector3Int Loc = new Vector3Int(n.gridX,n.gridY,pos.z);
             float distance = tileM.GetDistance(pos,Loc);
-            if(n.walkable && tileM.inArea(pos,Loc,tilescheck)){ 
+            if(n.walkable && tileM.inArea(originNode,Loc,tilescheck)){ 
                 neighbours.Add(Loc, distance);
             }
         }

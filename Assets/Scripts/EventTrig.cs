@@ -17,21 +17,18 @@ public class EventTrig: MonoBehaviour
     void OnGUI()
     {
         Event e = Event.current;
-        if (e.isMouse && e.button == 0 && !navigate)
+        if (e.type == EventType.MouseUp && e.button  == 0 && !navigate)
         {
-            if(!clicked){
-                mapClick.Invoke();
-                clicked = true;
-            }
-            else{
-                clicked = false;
-            }
+            mapClick.Invoke();
         }
         if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Space)
         {
             navigate = !navigate;
             attack.SetActive(!attack.activeInHierarchy);
             end.SetActive(!end.activeInHierarchy);
+            if(!navigate){
+                inButton = false;
+            }
         }
         
     }

@@ -153,7 +153,7 @@ public class CameraController : MonoBehaviour
             cameraOrigin = transform.position;            
         }
 
-        Vector3 newPos = cameraOrigin - difference * 0.5f;
+        Vector3 newPos = cameraOrigin - difference * 0.9f;
         float cameraHeight = Camera.main.orthographicSize * 2f;
         float cameraWidth = cameraHeight * Camera.main.aspect;
         float minX = canvas.transform.position.x - canvas.GetComponent<RectTransform>().rect.width / 2f + cameraWidth / 2f;
