@@ -7,13 +7,9 @@ using System.Collections;
 public class EventTrig: MonoBehaviour
 {
     public UnityEvent mapClick;
-    bool clicked = false;
     bool inButton = false;
     bool navigate = false;
     public GameObject end, attack;
-    public void setClicked(bool click){
-        this.clicked = click;
-    }
     void OnGUI()
     {
         Event e = Event.current;

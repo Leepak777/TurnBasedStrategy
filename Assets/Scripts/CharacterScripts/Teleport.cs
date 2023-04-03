@@ -20,11 +20,11 @@ public class Teleport : MonoBehaviour
     {
         // Get the tileM component from the scene
         attackrange = this.gameObject.GetComponent<StatUpdate>().getAttackRange();
-        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();        
         pathfinder = new Pathfinder<Vector3Int>(tileM.GetDistance,GetNeighbourNodes);
         transform.position = tileM.GetCellCenterWorld(tileM.WorldToCell(transform.position));
         tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() + 0.5f;
         originNode = tileM.WorldToCell(transform.position);
+        getTileM();
     }
 
 
@@ -53,7 +53,7 @@ public class Teleport : MonoBehaviour
         }
         if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
             if(outClick){outClick = false;}
-            this.gameObject.GetComponent<CharacterEvents>().onMoveStop.Invoke();
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
         }
     }
     public void EnemyTeleport(){
@@ -77,7 +77,7 @@ public class Teleport : MonoBehaviour
         }
         if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
             if(outClick){outClick = false;}
-            this.gameObject.GetComponent<CharacterEvents>().onMoveStop.Invoke();
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
         }
     }
     public List<Vector3Int> GetPosTrail(Vector3 mousePosition){
@@ -189,9 +189,6 @@ public class Teleport : MonoBehaviour
     }
 
     public void setOrigin(){
-        if(tileM == null){
-            tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        }
         originNode = tileM.WorldToCell(this.gameObject.transform.position);
     }
     void AIreturn(){
@@ -213,5 +210,8 @@ public class Teleport : MonoBehaviour
     public Vector3Int getTarget(){
         return targetNode;
 
+    }
+    public void getTileM(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
 }

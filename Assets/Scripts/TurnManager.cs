@@ -52,7 +52,7 @@ public class TurnManager : MonoBehaviour
     }
     public void startEvent(){
         //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponent<CharacterEvents>().onStart.Invoke();
+        currentPlay.GetComponentInChildren<CharacterEvents>().onStart.Invoke();
         if(currentPlay.tag == "Player"){        
             startTurnSavePlayer();
             startTurnSaveEnemy();
@@ -61,7 +61,7 @@ public class TurnManager : MonoBehaviour
     }
     public void endEvent(){
         //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponent<CharacterEvents>().onEnd.Invoke(0);
+        currentPlay.GetComponentInChildren<CharacterEvents>().onEnd.Invoke(0);
         gamestate = 0;
         if(currentPlay.tag == "Player"){
             gameTurn++;
@@ -76,7 +76,7 @@ public class TurnManager : MonoBehaviour
         }
     }
     public void duringAction(){
-        currentPlay.GetComponent<CharacterEvents>().onDuring.Invoke();
+        currentPlay.GetComponentInChildren<CharacterEvents>().onDuring.Invoke();
     }
 
     public void updateIndex()
@@ -118,27 +118,27 @@ public class TurnManager : MonoBehaviour
     }
     
     public void currentPlayAttack(){
-        currentPlay.GetComponent<CharacterEvents>().onSetAttack.Invoke();
+        currentPlay.GetComponentInChildren<CharacterEvents>().onSetAttack.Invoke();
     }
     public void currentPlayHighlighten(){
         if(currentPlay.GetComponent<ActionCenter>().isAttacking()){
-            currentPlay.GetComponent<CharacterEvents>().onHighLight.Invoke();
+            currentPlay.GetComponentInChildren<CharacterEvents>().onHighLight.Invoke();
         }
         else{
-        currentPlay.GetComponent<CharacterEvents>().onUnHighLight.Invoke();
+        currentPlay.GetComponentInChildren<CharacterEvents>().onUnHighLight.Invoke();
         }
     }
     public void currentPlayClick(){
-        currentPlay.GetComponent<CharacterEvents>().onClick.Invoke();
+        currentPlay.GetComponentInChildren<CharacterEvents>().onClick.Invoke();
     }
     public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
-            go.GetComponent<CharacterEvents>().saveStat.Invoke(gameTurn);
+            go.GetComponentInChildren<CharacterEvents>().saveStat.Invoke(gameTurn);
         }
     }
     public void startTurnSaveEnemy(){
         foreach(GameObject go in turnOrder2){
-            go.GetComponent<CharacterEvents>().saveStat.Invoke(gameTurn);
+            go.GetComponentInChildren<CharacterEvents>().saveStat.Invoke(gameTurn);
         }  
     }
     public void gameEndCheck(){

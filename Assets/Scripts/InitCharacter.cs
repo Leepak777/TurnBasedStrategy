@@ -7,10 +7,11 @@ using UnityEngine.Tilemaps;
 using Random = System.Random;
 using UnityEditor;
 using UnityEngine.UI;
+using UnityEngine.Events;
+
 
 public class InitCharacter : MonoBehaviour
 { 
-    public Tilemap tilemap;
     Dictionary<string,Sprite> Daemons = new Dictionary<string,Sprite>();
     public InGameData data;
     Random rnd = new Random();
@@ -25,9 +26,7 @@ public class InitCharacter : MonoBehaviour
             Daemons.Add(s.name,s);
         }
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        setStage();
-        
+        setStage();        
     }
 
     //words
@@ -71,10 +70,11 @@ public class InitCharacter : MonoBehaviour
         player.GetComponent<SpriteRenderer>().sprite = data.sprites[ch.Key];
         player.GetComponentInChildren<Ghost>().setSprite(player.GetComponent<SpriteRenderer>().sprite);
         Vector3Int allocate = pos;//new Vector3Int(pos.y, pos.x, pos.z);
-        player.transform.position = tilemap.GetCellCenterWorld(allocate);
-        tileM.setWalkable(player,tilemap.WorldToCell(player.transform.position),false);
+        player.transform.position = tileM.GetCellCenterWorld(allocate);
+        tileM.setWalkable(player,tileM.WorldToCell(player.transform.position),false);
         player.GetComponent<ActionCenter>().saveTurnStatData(0);
         player.GetComponent<ActionCenter>().updatePos();
+        player.GetComponentInChildren<CharacterEvents>().onCreate.Invoke();
     }
    
 

@@ -5,11 +5,10 @@ public class Attack : MonoBehaviour
 {
     // Start is called before the first frame update
     TileManager tileM;
-    public int attackArea = 0;
     public float attackrange;
     void Start()
     {
-        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        getTileM();
         attackrange = this.gameObject.GetComponent<StatUpdate>().getAttackRange();
     }
     //Enemy Attack cloest Player, call after Enemy moved
@@ -18,8 +17,8 @@ public class Attack : MonoBehaviour
         Vector3Int targetNode = tileM.WorldToCell(targetPlayer.transform.position);
         //tileM.flagEnemyArea(targetPlayer,"Player",attackArea);
         if(tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(targetPlayer.transform.position),attackrange)){
-            this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(targetPlayer);
-            this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke();
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onAttacking.Invoke(targetPlayer);
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onUnHighLight.Invoke();
         }
     }
     //Player Attack enemy on mouseposition, call after click attack button in popup
@@ -29,13 +28,13 @@ public class Attack : MonoBehaviour
         Vector3Int targetNode = tileM.WorldToCell(target);
         if(tileM.GetNodeFromWorld(targetNode).occupant != null){
             GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
-            this.gameObject.GetComponent<CharacterEvents>().onAttacking.Invoke(go);
-            this.gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke();
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onAttacking.Invoke(go);
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onUnHighLight.Invoke();
        }
     }
 
-    public void setAttackArea(int i){
-        attackArea = i;
+    public void getTileM(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
 
 }

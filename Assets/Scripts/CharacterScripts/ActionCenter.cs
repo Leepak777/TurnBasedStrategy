@@ -15,13 +15,11 @@ public class ActionCenter : MonoBehaviour
     Vector3Int target;
     Node tmNode;
     Vector3 worldPos;
-    bool clicked = false;
     bool attacking = false;
-    public UnityEvent<Vector3Int> unhighlightTile;
-    public UnityEvent<Vector3Int> highlightTile;
+    bool moving = false;
     void Awake()
     {
-        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        getTileM();
     }
 
     //update current position of character, just made it incase we need it
@@ -31,8 +29,8 @@ public class ActionCenter : MonoBehaviour
             tmNode = tileM.GetNodeFromWorld(nodePos);
             worldPos = tileM.GetCellCenterWorld(nodePos);
             if(attacking){
-                gameObject.GetComponent<CharacterEvents>().onUnHighLight.Invoke();
-                gameObject.GetComponent<CharacterEvents>().onHighLight.Invoke();
+                gameObject.GetComponentInChildren<CharacterEvents>().onUnHighLight.Invoke();
+                gameObject.GetComponentInChildren<CharacterEvents>().onHighLight.Invoke();
             }
             /*Debug.Log("tileM Position"+nodePos);
             Debug.Log("TileManager Node"+tmNode);
@@ -58,7 +56,7 @@ public class ActionCenter : MonoBehaviour
         //To-DO: Added skill check for skills that update each Character turn
         if(i == 0){
             if(this.gameObject.tag == "Enemy"){
-                this.gameObject.GetComponent<CharacterEvents>().onEnemyAttack.Invoke();
+                this.gameObject.GetComponentInChildren<CharacterEvents>().onEnemyAttack.Invoke();
             }
         }
 
@@ -67,7 +65,7 @@ public class ActionCenter : MonoBehaviour
     //checks during turn 
     public void duringTurn(){
         if(gameObject.tag == "Enemy"){
-            this.gameObject.GetComponent<CharacterEvents>().onEnemyMove.Invoke();
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onEnemyMove.Invoke();
         }
 
     }
@@ -83,12 +81,12 @@ public class ActionCenter : MonoBehaviour
             ||(!tileM.inArea(gameObject.GetComponent<Teleport>().getOrigin(),tileM.WorldToCell(pos), gameObject.GetComponent<Teleport>().getTilesCheck())&& tileM.GetNodeFromWorld(tileM.WorldToCell(pos)).occupant==null)
             ||(tileM.GetNodeFromWorld(tileM.WorldToCell(pos)).occupant!=null && tileM.IsAdjacent(tileM.WorldToCell(transform.position),tileM.WorldToCell(pos))&& !attacking)){
                 target = Vector3Int.zero;
-                this.gameObject.GetComponent<CharacterEvents>().onReset.Invoke();
+                this.gameObject.GetComponentInChildren<CharacterEvents>().onReset.Invoke();
                 return;
             }
             if(target != tileM.WorldToCell(pos) && !attacking){
                 target = tileM.WorldToCell(pos);
-                this.gameObject.GetComponent<CharacterEvents>().setTargetTile.Invoke(Input.mousePosition);
+                this.gameObject.GetComponentInChildren<CharacterEvents>().setTargetTile.Invoke(Input.mousePosition);
             }
             
             else{
@@ -100,11 +98,12 @@ public class ActionCenter : MonoBehaviour
                         attacking = false;
                     } 
                     else{
-                        this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);    
+                        this.gameObject.GetComponentInChildren<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);    
                     }               
                 }
                 else if(tileM.WorldToCell(transform.position) != tileM.WorldToCell(pos)){
-                    this.gameObject.GetComponent<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
+                    this.gameObject.GetComponentInChildren<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
+                    moving = true;
                 }
                 target = Vector3Int.zero;
             }
@@ -154,16 +153,18 @@ public class ActionCenter : MonoBehaviour
         Event e = Event.current;
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
-        /*Debug.Log(e.isMouse);
-        Debug.Log(e.button);
-        Debug.Log(n.occupant);*/
-        if (e.type == EventType.MouseUp && e.button  == 0 && n.occupant == gameObject)
+        if (e.type == EventType.MouseUp && e.button  == 1 && n.occupant == gameObject && !moving)
         {
-               gameObject.GetComponentInChildren<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
-            
+            gameObject.GetComponentInChildren<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject); 
+        }
+        else if(moving){
+            moving = false;
         }
         
         
+    }
+    public void getTileM(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
     
     public void setTilesFat(int tilesfat){

@@ -11,11 +11,14 @@ public class Ghost : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        getTileM();
         movement = this.gameObject.GetComponentInParent<Teleport>();
         if(this.transform.parent.tag == "Enemy"){
             Destroy(this.gameObject);
         }
+    }
+    public void getTileM(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
 
     // Update is called once per frame

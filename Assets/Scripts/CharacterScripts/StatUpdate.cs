@@ -81,7 +81,7 @@ public class StatUpdate : MonoBehaviour
                 //Debug.Log("Roll Sucess!");
                 Damage = (int)(drn.getDRN() + stats.getBaseDamage() + bonus);
                 attackingFatigue();
-                targetEnemy.GetComponent<CharacterEvents>().onDamage.Invoke(Damage);
+                targetEnemy.GetComponentInChildren<CharacterEvents>().onDamage.Invoke(Damage);
             }
             else{
                 //Debug.Log("Roll Fail!");
@@ -91,9 +91,6 @@ public class StatUpdate : MonoBehaviour
     }
 
     public void startSaveStat(int gameTurn){
-        if(stats == null){
-            stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
-        }
         if(pastFat.ContainsKey(gameTurn) && pastHP.ContainsKey(gameTurn)){
             pastFat[gameTurn] = stats.getStat("fat");
             pastHP[gameTurn] = currentHealth;
@@ -247,7 +244,7 @@ public class StatUpdate : MonoBehaviour
     }
     public void startFatCheck(){
         if(stats.getStat("fat") > 100){
-            this.gameObject.GetComponent<CharacterEvents>().onEnd.Invoke(1);
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onEnd.Invoke(1);
         }
     }
     public void destablize(){

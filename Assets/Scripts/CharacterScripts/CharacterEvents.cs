@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class CharacterEvents : MonoBehaviour
 {
+    public UnityEvent onCreate;
     public UnityEvent<int> onDamage;
     public UnityEvent onStart;
     public UnityEvent<int> onEnd;
