@@ -66,9 +66,9 @@ MonoBehaviour:
     - Player2
     - Enemy1
     values:
-    - {x: 40, y: 47, z: 0}
-    - {x: 38, y: 48, z: 0}
-    - {x: 40, y: 51, z: 0}
+    - {x: 45, y: 50, z: 0}
+    - {x: 41, y: 53, z: 0}
+    - {x: 45, y: 55, z: 0}
   sprites:
     keys:
     - Player1

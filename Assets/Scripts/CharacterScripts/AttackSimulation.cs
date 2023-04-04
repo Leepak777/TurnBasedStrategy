@@ -8,7 +8,7 @@ public class AttackSimulation
     public AttackSimulation(DRN drn){
         this.drn = drn;
     }
-    public KeyValuePair<bool,int> SimulateAttack(GameObject attack, GameObject defense){
+    public KeyValuePair<bool,KeyValuePair<int,int>> SimulateAttack(GameObject attack, GameObject defense){
         TileManager tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         StatUpdate attack_stat = attack.GetComponent<StatUpdate>();
         StatUpdate defense_stat = defense.GetComponent<StatUpdate>();
@@ -20,24 +20,22 @@ public class AttackSimulation
         }
         ATK = (int)(drn.getDRN() + attack_stat.getStats().getBaseDamage() + attack_stat.getBonus());
         DEF = drn.getDRN() + attack_stat.getStats().getProtection();
-        int damage = ATK - DEF;
-        if(damage <0){
-            damage = 0;
-        }
-        return new KeyValuePair<bool, int>(roll, damage);
+        
+        return new KeyValuePair<bool, KeyValuePair<int,int>>(roll, new KeyValuePair<int, int>(ATK,DEF));
     }
 
     public KeyValuePair<float,float> atkPossibility(GameObject attack, GameObject defense){
         int sucess = 0;
         int Damage_dealt = 0;
+        int Damage_deducted = 0;
         for(int i = 0; i < 100; i ++){
-            KeyValuePair<bool,int> sim = SimulateAttack(attack, defense);
-            if(sim.Key){
+            KeyValuePair<bool,KeyValuePair<int,int>> sim = SimulateAttack(attack, defense);
+            if(sim.Key && sim.Value.Key > sim.Value.Value){
                 sucess++;
-                Damage_dealt += sim.Value;
+                Damage_dealt += sim.Value.Key;
+                Damage_deducted += sim.Value.Value;
             }
         }
-        Debug.Log("Damage dealt: " + Damage_dealt + ", Sucess rate: " +sucess);
-        return new KeyValuePair<float, float>(sucess, Damage_dealt);
+        return new KeyValuePair<float, float>(sucess, (Damage_dealt-Damage_deducted)/sucess);
     }
 }

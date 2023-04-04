@@ -40,7 +40,7 @@ public class PopEvent : MonoBehaviour
         }
         return null;
     }
-    public void togglePanel(Vector3 pos, GameObject go){
+    public void togglePanel(GameObject pos, GameObject go){
         if(popwindow.activeInHierarchy){
             popwindow.SetActive(false);
         }

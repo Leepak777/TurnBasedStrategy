@@ -141,9 +141,7 @@ public class ActionCenter : MonoBehaviour
         }
         else if(moving){
             moving = false;
-        }
-        
-        
+        }   
     }
     public void getTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();

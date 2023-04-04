@@ -1147,6 +1147,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  end: {fileID: 0}
+  attack: {fileID: 0}
 --- !u!114 &1638313359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1324,7 +1326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 100
   canvas: {fileID: 1638313362}
-  tilemap: {fileID: 0}
+  tileM: {fileID: 0}
 --- !u!81 &1647779113
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1477,7 +1479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f49822c611332ce4abdb7211115529db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 0}
   data: {fileID: 11400000, guid: 1ba9eabb0301f9a438edbad858934ceb, type: 2}
 --- !u!1001 &1127481247359919045
 PrefabInstance:
