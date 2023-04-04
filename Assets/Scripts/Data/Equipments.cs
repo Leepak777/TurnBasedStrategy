@@ -5,6 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Equipments", order = 1)]
 public class Equipments : ScriptableObject
 {
+    public List<string> weapon = new List<string>(){"none","Light Glaive", "Gladius", "Power Sword", "Great Sword", "Pike","Mace","Pistol","Rifle"};
+    public List<string> armor = new List<string>(){"none","Plate","Half Plate","Synthe Armor","Legionary Armor","Praetorian_Armor","Flak Suit","Assault Vest","Personal Shield MK I","Personal Shield MK II","Personal Shield MK III"};
+    public List<string> shield = new List<string>(){"none","Kite Shield","Tower Shield"};
+    public List<string> buckler = new List<string>(){"none","Buckler","Buckler2"};
+    public List<string> mount = new List<string>(){"none","Pack Horse","War Horse"};
     //Hands
     /*
     0. wd

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Types", order = 2)]
 public class Types:ScriptableObject
 {
+    public List<string> type = new List<string>(){"none","Praetorian Guard", "Imperial Legionary", "Imperial Conscript", "Mecenary", "Brigand"};
     /*
     0. pow
     1. dex

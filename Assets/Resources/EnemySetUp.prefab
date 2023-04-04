@@ -100,6 +100,7 @@ MonoBehaviour:
   data: {fileID: 0}
   dropdown: {fileID: 2692315839018069745}
   img: {fileID: 2692315838837446920}
+  type: {fileID: 11400000, guid: a0419dca955bab445a63118ec68c555a, type: 2}
   attributes:
     keys: []
     values: []

@@ -8,7 +8,6 @@ public class CameraController : MonoBehaviour
 {
     public float speed = 10f;
     public Canvas canvas;
-    public Tilemap tilemap;
     public TileManager tileM;
     bool track = false;
     GameObject target = null;
@@ -19,7 +18,6 @@ public class CameraController : MonoBehaviour
     private Vector3 resetCamera;
     void Start()
     {
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         tileM = GameObject.Find("Tilemanager").GetComponentInChildren<TileManager>();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         resetCamera = transform.position;
@@ -28,7 +26,7 @@ public class CameraController : MonoBehaviour
     public void trackPlayer()
     {
         track = true;
-        target = GameObject.Find("TurnManager").GetComponent<TurnManager>().getCurrenPlay();
+        target = GameObject.Find("UICanvas").GetComponent<UI>().getCurrentPlay();
     }
 
     public void initLoc(GameObject go)
@@ -83,7 +81,7 @@ public class CameraController : MonoBehaviour
         if (track)
         {
             Vector3 targetPos = target.transform.position;
-            Vector3Int targetTilePos = tilemap.WorldToCell(targetPos);
+            Vector3Int targetTilePos = tileM.WorldToCell(targetPos);
 
             // Calculate the center of the hexagon at the target tile position
             Vector3Int targetHexCenter = new Vector3Int(
@@ -91,7 +89,7 @@ public class CameraController : MonoBehaviour
                 Mathf.RoundToInt(targetTilePos.y),
                 0
             );
-            Vector3 targetHexPos = tilemap.GetCellCenterWorld(targetHexCenter);
+            Vector3 targetHexPos = tileM.GetCellCenterWorld(targetHexCenter);
 
             // Check if the camera is already at the target position
             if (transform.position == targetHexPos)

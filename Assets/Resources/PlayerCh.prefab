@@ -527,33 +527,9 @@ MonoBehaviour:
   onDuring:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9182922433516024795}
-        m_TargetAssemblyTypeName: Teleport, Assembly-CSharp
-        m_MethodName: setisMoving
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 5925291172722692194}
         m_TargetAssemblyTypeName: ActionCenter, Assembly-CSharp
         m_MethodName: duringTurn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 8906131547528253649}
-        m_TargetAssemblyTypeName: HealthBar, Assembly-CSharp
-        m_MethodName: UpdateHealth
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1315,7 +1291,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilescheck: 0
-  isMoving: 0
   outClick: 0
 --- !u!1 &8951542586426555525
 GameObject:

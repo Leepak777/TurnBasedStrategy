@@ -16,10 +16,11 @@ public class CharacterSelect : MonoBehaviour
     public Dropdown dropdown;
     public Image img;
     public static List<string> types;
+    public Types type;
     public UDictionary<string,string> attributes = new UDictionary<string,string>(); 
     private void Start()
     {
-        types = new List<string>(){"none","Praetorian Guard", "Imperial Legionary", "Imperial Conscript", "Mecenary", "Brigand"};
+        types = type.type;
         data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         Sprite[] allsprites = Resources.LoadAll<Sprite>("Crystal_Knight");
         foreach(Sprite s in allsprites){
@@ -89,9 +90,7 @@ public class CharacterSelect : MonoBehaviour
     }
     public void returnCheck(){
         if(GameObject.Find(gameObject.name+"_info")){
-            //foreach(GameObject go in GameObject.FindGameObjectsWithTag("CharacterInfoPane")){
-                GameObject.Find(gameObject.name+"_info").GetComponent<SetInfo>().updateInfo();
-            //}
+            GameObject.Find(gameObject.name+"_info").GetComponent<SetInfo>().updateInfo();
         }
     }
 }

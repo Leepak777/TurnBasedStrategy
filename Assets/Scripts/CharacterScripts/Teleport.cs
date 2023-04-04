@@ -11,7 +11,6 @@ public class Teleport : MonoBehaviour
     List<Vector3Int> trail = new List<Vector3Int>();
     public float tilescheck = 0;
     float attackrange; 
-    public bool isMoving = false;
     public bool outClick = false;
     TileManager tileM;
     Vector3Int originNode;
@@ -168,15 +167,8 @@ public class Teleport : MonoBehaviour
         return neighbours;*/
     }
 
-
-    public bool getisMoving(){
-        return isMoving;
-    }
     public int getAttackRange(){
         return (int)attackrange;
-    }
-    public void setisMoving(bool move){
-        this.isMoving = move;
     }
     public Vector3Int getOrigin(){
         return originNode;
@@ -192,7 +184,6 @@ public class Teleport : MonoBehaviour
         originNode = tileM.WorldToCell(this.gameObject.transform.position);
     }
     void AIreturn(){
-        isMoving = false;
         outClick = true;
     }
     public int gettrailCount(){

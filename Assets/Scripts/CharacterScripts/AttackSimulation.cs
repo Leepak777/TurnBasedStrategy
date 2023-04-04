@@ -37,6 +37,7 @@ public class AttackSimulation
                 Damage_dealt += sim.Value;
             }
         }
+        Debug.Log("Damage dealt: " + Damage_dealt + ", Sucess rate: " +sucess);
         return new KeyValuePair<float, float>(sucess, Damage_dealt);
     }
 }

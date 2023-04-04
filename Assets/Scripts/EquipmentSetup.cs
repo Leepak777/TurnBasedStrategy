@@ -20,12 +20,8 @@ public class EquipmentSetup : MonoBehaviour
     public Image img;
     public InGameData data;
     public Text txt;
+    public Equipments eq;
     public UDictionary<string,string> attributes = new UDictionary<string,string>();
-    List<string> wea = new List<string>(){"none","Light Glaive", "Gladius", "Power Sword", "Great Sword", "Pike","Mace","Pistol","Rifle"};
-    List<string> arm = new List<string>(){"none","Plate","Half Plate","Synthe Armor","Legionary Armor","Praetorian_Armor","Flak Suit","Assault Vest","Personal Shield MK I","Personal Shield MK II","Personal Shield MK III"};
-    List<string> shie = new List<string>(){"none","Kite Shield","Tower Shield"};
-    List<string> buc = new List<string>(){"none","Buckler","Buckler2"};
-    List<string> mou = new List<string>(){"none","Pack Horse","War Horse"};
     void Start()
     {
         
@@ -39,11 +35,11 @@ public class EquipmentSetup : MonoBehaviour
         shield.ClearOptions();
         buckler.ClearOptions();
         mount.ClearOptions();
-        weapon.AddOptions(wea);
-        armor.AddOptions(arm);
-        shield.AddOptions(shie);
-        buckler.AddOptions(buc);
-        mount.AddOptions(mou);
+        weapon.AddOptions(eq.weapon);
+        armor.AddOptions(eq.armor);
+        shield.AddOptions(eq.shield);
+        buckler.AddOptions(eq.buckler);
+        mount.AddOptions(eq.mount);
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
         if(chlst.ContainsKey(data.currentSetCh)){
             UDictionary<string,string> curlst = chlst[data.currentSetCh];
@@ -68,45 +64,44 @@ public class EquipmentSetup : MonoBehaviour
             img.sprite = data.sprites[txt.text]; 
         }
     }
-
     public void setCharacterWeapon(int option) {
         if(attributes.ContainsKey("Weapon")){
-            attributes["Weapon"] = wea[option];
+            attributes["Weapon"] = eq.weapon[option];
         }
         else{
-            attributes.Add("Weapon", wea[option]);
+            attributes.Add("Weapon", eq.weapon[option]);
         }
     }
     public void setCharacterShield(int option) {
         if(attributes.ContainsKey("Shield")){
-            attributes["Shield"] = shie[option];
+            attributes["Shield"] = eq.shield[option];
         }
         else{
-            attributes.Add("Shield", shie[option]);
+            attributes.Add("Shield", eq.shield[option]);
         }
     }
     public void setCharacterArmor(int option) {
         if(attributes.ContainsKey("Armor")){
-            attributes["Armor"] = arm[option];
+            attributes["Armor"] = eq.armor[option];
         }
         else{
-            attributes.Add("Armor", arm[option]);
+            attributes.Add("Armor", eq.armor[option]);
         }
     }
     public void setCharacterBuckler(int option) {
         if(attributes.ContainsKey("Buckler")){
-            attributes["Buckler"] = buc[option];
+            attributes["Buckler"] = eq.buckler[option];
         }
         else{
-            attributes.Add("Buckler", buc[option]);
+            attributes.Add("Buckler", eq.buckler[option]);
         }
     }
     public void setCharacterMount(int option) {
         if(attributes.ContainsKey("Mount")){
-            attributes["Mount"] = mou[option];
+            attributes["Mount"] = eq.mount[option];
         }
         else{
-            attributes.Add("Mount", mou[option]);
+            attributes.Add("Mount", eq.mount[option]);
         }
     }
     public void Confirm(){
@@ -132,10 +127,7 @@ public class EquipmentSetup : MonoBehaviour
     }
     public void returnCheck(){
         if(GameObject.Find(data.currentSetCh+"_info")){
-            //foreach(GameObject go in GameObject.FindGameObjectsWithTag("CharacterInfoPane")){
                 GameObject.Find(data.currentSetCh+"_info").GetComponent<SetInfo>().updateInfo();
-            //}
         }
-    
     }
 }

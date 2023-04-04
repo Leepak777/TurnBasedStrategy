@@ -23,11 +23,9 @@ public class Attack : MonoBehaviour
     }
     //Player Attack enemy on mouseposition, call after click attack button in popup
     //click enemy=>popup=>click attack button=>this
-    public void PlayerAttack(Vector3 mousePosition){
-        Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector3Int targetNode = tileM.WorldToCell(target);
-        if(tileM.GetNodeFromWorld(targetNode).occupant != null){
-            GameObject go = tileM.GetNodeFromWorld(targetNode).occupant;
+    public void PlayerAttack(GameObject target){
+        if(target != null){
+            GameObject go = target;
             this.gameObject.GetComponentInChildren<CharacterEvents>().onAttacking.Invoke(go);
             this.gameObject.GetComponentInChildren<CharacterEvents>().onUnHighLight.Invoke();
        }

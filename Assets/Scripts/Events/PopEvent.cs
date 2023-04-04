@@ -8,14 +8,14 @@ using UnityEngine.SceneManagement;
 
 public class PopEvent : MonoBehaviour
 {
-    public UnityEvent<Vector3, GameObject> setPos;
+    public UnityEvent<GameObject, GameObject> setPos;
     public GameObject go;
     public GameObject popwindow;
     private string[] eqlst = {"Weapon","Shield","Armor","Buckler","Mount"};
     public GameObject type;
     public GameObject equipment;
     public GameObject stat;
-    Vector3 target;
+    public GameObject target;
     TileManager tileM;
 
     void Start(){
@@ -62,21 +62,21 @@ public class PopEvent : MonoBehaviour
         }
     }
     public void goAttack(){
-        go.GetComponent<CharacterEvents>().onPlayerAttack.Invoke(target);
+        go.GetComponentInChildren<CharacterEvents>().onPlayerAttack.Invoke(target);
     }
-    public void setLoc(Vector3 pos, GameObject go){
-        this.target = pos;
+    public void setLoc(GameObject target, GameObject go){
+        this.target = target;
         this.go = go;
         if(popwindow.name == "AttackConfirm"){
             setAttackConfirmContent();
         }
+        
     
     }
     void setAttackConfirmContent(){
-            Vector3 targetPos = Camera.main.ScreenToWorldPoint(target);
             Text PlayerStat = popwindow.transform.Find("PlayerInfo").GetComponent<Text>();
             Text EnemyStat = popwindow.transform.Find("EnemyInfo").GetComponent<Text>();
-            GameObject enemy = tileM.GetNodeFromWorld(tileM.WorldToCell(targetPos)).occupant;
+            GameObject enemy = target;
             CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
             CharacterStat enStat = enemy.GetComponent<StatUpdate>().getStats();
             PlayerStat.text = chStat.getAttribute("Type")+"\n";
@@ -99,7 +99,6 @@ public class PopEvent : MonoBehaviour
         if(tileM == null){
             tileM = GameObject.Find("Tilemanager").GetComponentInChildren<TileManager>();
         }
-        this.target = go.transform.position;
         Vector3 newpos = tileM.GetCellCenterWorld(tileM.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
         Vector3 modpos = new Vector3(0,128,0);
         if(popwindow.name == "Panel"){

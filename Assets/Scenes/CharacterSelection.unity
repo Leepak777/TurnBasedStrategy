@@ -5885,6 +5885,7 @@ MonoBehaviour:
   img: {fileID: 1821395589}
   data: {fileID: 0}
   txt: {fileID: 952562097}
+  eq: {fileID: 11400000, guid: fb17da8d5da0fe848a7d3b69fe58a79f, type: 2}
   attributes:
     keys: []
     values: []

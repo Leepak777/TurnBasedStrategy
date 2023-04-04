@@ -11,7 +11,7 @@ public class CharacterEvents : MonoBehaviour
     public UnityEvent<int> onEnd;
     public UnityEvent onDuring;
     public UnityEvent onSetAttack;
-    public UnityEvent<Vector3> onPlayerAttack;
+    public UnityEvent<GameObject> onPlayerAttack;
     public UnityEvent<GameObject> onAttacking;
     public UnityEvent onEnemyAttack;
     public UnityEvent<Vector3> onPlayerMove;

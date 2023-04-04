@@ -84,7 +84,7 @@ public class ActionCenter : MonoBehaviour
                 this.gameObject.GetComponentInChildren<CharacterEvents>().onReset.Invoke();
                 return;
             }
-            if(target != tileM.WorldToCell(pos) && !attacking){
+            if(target != tileM.WorldToCell(pos) && ((!attacking )|| (attacking && !tileM.IsAdjacent(tileM.WorldToCell(pos),tileM.WorldToCell(transform.position))))){
                 target = tileM.WorldToCell(pos);
                 this.gameObject.GetComponentInChildren<CharacterEvents>().setTargetTile.Invoke(Input.mousePosition);
             }
@@ -94,7 +94,7 @@ public class ActionCenter : MonoBehaviour
                 {
                     if(attacking && tileM.inArea(tileM.WorldToCell(transform.position),tileM.WorldToCell(n.occupant.transform.position),(int)gameObject.GetComponent<StatUpdate>().getAttackRange())){
                         //tileM.flagEnemyArea(go,"Enemy",attackArea);
-                        GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject);
+                        GameObject.Find("PopUpEvent").GetComponent<PopEvent>().setPos.Invoke(n.occupant,gameObject);
                         attacking = false;
                     } 
                     else{
@@ -105,29 +105,11 @@ public class ActionCenter : MonoBehaviour
                     this.gameObject.GetComponentInChildren<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);
                     moving = true;
                 }
-                target = Vector3Int.zero;
+                if(!attacking){
+                    target = Vector3Int.zero;
+                }
             }
         }
-    }
-
-    public void undoTurn(int i){
-        //To-DO: Check what kind of buff undoed 
-        if(!this.gameObject.activeInHierarchy){
-            i--;
-        }
-        if(pastOrigin.ContainsKey(i)){
-            Vector3 ogPos = tileM.GetCellCenterWorld(tileM.WorldToCell(transform.position));
-            transform.position = tileM.GetCellCenterWorld(pastOrigin[i]);
-            if(transform.position != ogPos){
-                tileM.setWalkable(this.gameObject,tileM.WorldToCell(ogPos), true);   
-            }
-            if(!this.gameObject.activeInHierarchy){
-                this.gameObject.SetActive(true);
-                
-            }
-            tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),false);
-        }
-
     }
 
     public void notmoving(){
@@ -155,7 +137,7 @@ public class ActionCenter : MonoBehaviour
         Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
         if (e.type == EventType.MouseUp && e.button  == 1 && n.occupant == gameObject && !moving)
         {
-            gameObject.GetComponentInChildren<PopEvent>().setPos.Invoke(Input.mousePosition,gameObject); 
+            gameObject.GetComponentInChildren<PopEvent>().setPos.Invoke(n.occupant,gameObject); 
         }
         else if(moving){
             moving = false;

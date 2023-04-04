@@ -72,43 +72,53 @@ MonoBehaviour:
     - 14
     - 3
     - 10
-    - 10
+    - 40
     - 1
     - 10
     - 0
     - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 7
+    - 2.3
+    - 1.5
+    - 0.2
+    - 100
+    - 25
     - 1
+    - 6
+    - 34
+    - 3
+    - 2
     - 0
+    - 15
     - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 47
+    - -3
+    - 8
+    - 3
+    - -2
+    - 77
     - 14
     - 0
     - 33
     - 0
-    - 4.5
-    - 18.75
-    - -1.75
+    - 12.5
+    - 20.75
+    - -0.75
     - 0
+    - 77
     - 47
-    - 47
-    - 4
+    - 12
   attributes:
     keys:
     - Type
+    - Armor
+    - Weapon
+    - Mount
+    - Shield
+    - Buckler
     values:
     - Imperial Legionary
+    - Personal Shield MK I
+    - Pike
+    - Pack Horse
+    - Kite Shield
+    - Buckler

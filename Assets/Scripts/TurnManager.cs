@@ -15,13 +15,9 @@ public class TurnManager : MonoBehaviour
     public bool player = true;
     bool Active = false;
     int gamestate = 0;
-    public GameObject currentPlay;
     private int turnElasped;
     private int gameTurn = 1;
-    public UnityEvent start;
-    public UnityEvent end;
-    public UnityEvent during;
-    public UnityEvent undo;
+    public UI ui;
     void Start()
     {
         turnOrder = new List<GameObject>();
@@ -32,53 +28,12 @@ public class TurnManager : MonoBehaviour
             turnOrder2.Add(g);
         currentTurnIndex = 0;
         currentTurnIndex2 = 0;
-        currentPlay = turnOrder[currentTurnIndex];
+        ui.setCurrentPlay(turnOrder[currentTurnIndex]);
+        //currentPlay = turnOrder[currentTurnIndex];
         //reset2();
     }
 
-    void Update()
-    {
-        switch(gamestate){
-            case 0://start
-                start.Invoke();
-                break;
-            case 1://end
-                end.Invoke();
-                break;
-            case 2://during
-                during.Invoke();
-                break;
-        }
-    }
-    public void startEvent(){
-        //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponentInChildren<CharacterEvents>().onStart.Invoke();
-        if(currentPlay.tag == "Player"){        
-            startTurnSavePlayer();
-            startTurnSaveEnemy();
-        }
-        gamestate = 2;
-    }
-    public void endEvent(){
-        //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponentInChildren<CharacterEvents>().onEnd.Invoke(0);
-        gamestate = 0;
-        if(currentPlay.tag == "Player"){
-            gameTurn++;
-        }
-    }
-    public void duringEvent(){
-        if(currentPlay.tag == "Enemy"){
-            Invoke("duringAction",1.5f);
-        }
-        else{
-            duringAction();
-        }
-    }
-    public void duringAction(){
-        currentPlay.GetComponentInChildren<CharacterEvents>().onDuring.Invoke();
-    }
-
+    
     public void updateIndex()
     {
         if (this.player)
@@ -96,7 +51,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
             this.player = false;
-            currentPlay = turnOrder2[currentTurnIndex2];// switch to enemy's turn
+            ui.setCurrentPlay(turnOrder2[currentTurnIndex2]);
         }
         else
         {
@@ -113,23 +68,8 @@ public class TurnManager : MonoBehaviour
                 }
             }
             this.player = true; 
-            currentPlay = turnOrder[currentTurnIndex];// switch to player's turn
+            ui.setCurrentPlay(turnOrder[currentTurnIndex]);
         }
-    }
-    
-    public void currentPlayAttack(){
-        currentPlay.GetComponentInChildren<CharacterEvents>().onSetAttack.Invoke();
-    }
-    public void currentPlayHighlighten(){
-        if(currentPlay.GetComponent<ActionCenter>().isAttacking()){
-            currentPlay.GetComponentInChildren<CharacterEvents>().onHighLight.Invoke();
-        }
-        else{
-        currentPlay.GetComponentInChildren<CharacterEvents>().onUnHighLight.Invoke();
-        }
-    }
-    public void currentPlayClick(){
-        currentPlay.GetComponentInChildren<CharacterEvents>().onClick.Invoke();
     }
     public void startTurnSavePlayer(){
         foreach(GameObject go in turnOrder){
@@ -174,14 +114,17 @@ public class TurnManager : MonoBehaviour
     public void setTurnElasped(int x){
         turnElasped += x;
     }
-    public GameObject getCurrenPlay(){
-        return currentPlay;
+    public int getState(){
+        return gamestate;
     }
     public void setGameState(int gamestate){
         this.gamestate = gamestate;
     }
     public int getGameTurn(){
         return gameTurn;
+    }
+    public void incGameTurn(){
+        gameTurn++;
     }
     public void endTurn(){
         gamestate = 1;
