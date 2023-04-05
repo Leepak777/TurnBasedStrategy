@@ -7,10 +7,14 @@ using UnityEngine.Events;
 public class AbilitiesData : ScriptableObject
 {
     public UnityEvent<TileManager,GameObject> Leadership;
+    public UnityEvent<TileManager,GameObject> charge;
+    int charge_bonus = 0;
     public UnityEvent<TileManager,GameObject> getEvent(string name){
         switch(name){
             case "LeadershipAura": 
             return Leadership;
+            case "Charge":
+            return charge;
         }
         return null;
     }
@@ -28,6 +32,19 @@ public class AbilitiesData : ScriptableObject
                     su.setBonus(-1);
                 }
             }
+        }
+    }
+    public void Charge(TileManager tileM, GameObject play){
+        TurnManager tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        StatUpdate su = play.GetComponent<StatUpdate>();
+        Teleport teleport = play.GetComponent<Teleport>();                         
+        if(tm.getState() == 3){
+            charge_bonus = teleport.gettrailCount();
+            su.setBonus(charge_bonus);
+        }
+        else if(tm.getState() == 1 || tm.getState() == 2){
+            su.setBonus(-charge_bonus);
+            charge_bonus = 0;
         }
     }
 

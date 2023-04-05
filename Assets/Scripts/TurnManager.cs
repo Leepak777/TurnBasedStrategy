@@ -14,7 +14,7 @@ public class TurnManager : MonoBehaviour
     private int currentTurnIndex2;
     public bool player = true;
     bool Active = false;
-    int gamestate = 0;
+    public int gamestate = 0;
     private int turnElasped;
     private int gameTurn = 1;
     public UI ui;

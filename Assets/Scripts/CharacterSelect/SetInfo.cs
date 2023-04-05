@@ -55,10 +55,7 @@ public class SetInfo : MonoBehaviour
                 character.setStats(getAttributeStats(attribute));
             }
         }
-       character.setAbilities(types.getTypeAbilities(character.getAttribute("Type")));
-       foreach(string s in character.getAbilities()){
-            character.addAbCheck(types.getAbilitiesList(s));
-       }
+        character.setAbilities(types.getTypeAbilities(character.getAttribute("Type")));
     }
     
     public void CreateCharacterAsset(string go, UDictionary<string,string> ch) {    

@@ -17,30 +17,18 @@ using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;public class Abilities : MonoBehaviour
 {
     TileManager tileM;
-    public List<UnityEvent<TileManager,GameObject>> StartCheck = new List<UnityEvent<TileManager,GameObject>>();
-    public List<UnityEvent<TileManager,GameObject>> EndCheck = new List<UnityEvent<TileManager,GameObject>>();
-    public List<UnityEvent<TileManager,GameObject>> MoveCheck = new List<UnityEvent<TileManager,GameObject>>();
-    public List<UnityEvent<TileManager,GameObject>> StopCheck = new List<UnityEvent<TileManager,GameObject>>();
+    public List<UnityEvent<TileManager,GameObject>> UniversalCheck = new List<UnityEvent<TileManager,GameObject>>();
+    public List<UnityEvent<TileManager,GameObject>> IndividualCheck = new List<UnityEvent<TileManager,GameObject>>();
     CharacterStat stats;
     AbilitiesData abilitiesData;
     
-    public void GameStartCheck(){
-        foreach(UnityEvent<TileManager,GameObject> e in StartCheck){
+    public void GameCheck(){
+        foreach(UnityEvent<TileManager,GameObject> e in UniversalCheck){
             e.Invoke(tileM,gameObject);
         }
     }
-    public void GameEndCheck(){
-        foreach(UnityEvent<TileManager,GameObject> e in EndCheck){
-            e.Invoke(tileM,gameObject);
-        }
-    }
-    public void GameOnMove(){
-        foreach(UnityEvent<TileManager,GameObject> e in MoveCheck){
-            e.Invoke(tileM,gameObject);
-        }
-    }
-    public void GameOnStop(){
-        foreach(UnityEvent<TileManager,GameObject> e in StopCheck){
+    public void CharacterCheck(){
+        foreach(UnityEvent<TileManager,GameObject> e in IndividualCheck){
             e.Invoke(tileM,gameObject);
         }
     }
@@ -49,16 +37,15 @@ using Random = UnityEngine.Random;public class Abilities : MonoBehaviour
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
         abilitiesData = AssetDatabase.LoadAssetAtPath<AbilitiesData>("Assets/Scripts/Data/AbilitiesData.asset");
-        foreach(KeyValuePair<string,string> ability in stats.getAblst()){
-            Debug.Log(ability);
+        foreach(KeyValuePair<string,string> ability in stats.getAbilities()){
             UnityEvent<TileManager,GameObject> e = abilitiesData.getEvent(ability.Key);
-            if(e != null){
-                switch (ability.Value){
-                case "start":StartCheck.Add(e);break;
-                case "end":EndCheck.Add(e);break;
-                case "move":MoveCheck.Add(e);break;
-                case "stop":StopCheck.Add(e);break;
-                }
+            switch(ability.Value){
+                case"Universal":
+                    UniversalCheck.Add(e);
+                    break;
+                case "Individual":
+                    IndividualCheck.Add(e);
+                    break;
             }
         }
     }

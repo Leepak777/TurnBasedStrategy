@@ -72,45 +72,60 @@ MonoBehaviour:
     - 16
     - 3
     - 13
-    - 10
+    - 45
     - 1
     - 10
     - 0
     - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 9
+    - 1.5
+    - 1.3
     - 1
+    - 100
     - 0
+    - 2
+    - 8
+    - 35
+    - 3
+    - 2
+    - 18
     - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 53
+    - 4
+    - -5
+    - 8
+    - 2
+    - 1
+    - 88
     - 16
     - 0
     - 41
     - 0
-    - 5
-    - 22
-    - -2
+    - 13
+    - 20
+    - 2
     - 0
-    - 53
+    - 88
     - 58
-    - 5
+    - 13
   attributes:
     keys:
     - Type
+    - Armor
+    - Weapon
+    - Mount
+    - Shield
+    - Buckler
     values:
     - Praetorian Guard
+    - Praetorian_Armor
+    - Great Sword
+    - War Horse
+    - Tower Shield
+    - Buckler
   abilities:
-  - LeadershipAura
+    keys:
+    - LeadershipAura
+    - Charge
+    values:
+    - Universal
+    - Individual

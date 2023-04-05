@@ -74,6 +74,7 @@ public class ActionCenter : MonoBehaviour
             return;
         }
         if(GameObject.Find("InfoPanel") == null && GameObject.Find("AttackConfirm")== null){
+            GameObject.Find("TurnManager").GetComponent<TurnManager>().setGameState(2);
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
             if(tileM.WorldToCell(pos) == tileM.WorldToCell(transform.position) 
@@ -81,6 +82,7 @@ public class ActionCenter : MonoBehaviour
             ||(tileM.GetNodeFromWorld(tileM.WorldToCell(pos)).occupant!=null && tileM.IsAdjacent(tileM.WorldToCell(transform.position),tileM.WorldToCell(pos))&& !attacking)){
                 target = Vector3Int.zero;
                 this.gameObject.GetComponentInChildren<CharacterEvents>().onReset.Invoke();
+                this.gameObject.GetComponentInChildren<CharacterEvents>().preMove.Invoke();
                 return;
             }
             if(target != tileM.WorldToCell(pos) && ((!attacking )|| (attacking && !tileM.IsAdjacent(tileM.WorldToCell(pos),tileM.WorldToCell(transform.position))))){
@@ -97,7 +99,9 @@ public class ActionCenter : MonoBehaviour
                         attacking = false;
                     } 
                     else{
-                        this.gameObject.GetComponentInChildren<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition);    
+                        this.gameObject.GetComponentInChildren<CharacterEvents>().onPlayerMove.Invoke(Input.mousePosition); 
+                        moving = true; 
+
                     }               
                 }
                 else if(tileM.WorldToCell(transform.position) != tileM.WorldToCell(pos)){
@@ -163,6 +167,9 @@ public class ActionCenter : MonoBehaviour
     }
     public bool isAttacking(){
         return attacking;
+    }
+    public bool isMoving(){
+        return moving;
     }
     public void setAttacking()
     {

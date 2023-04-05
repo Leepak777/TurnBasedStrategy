@@ -15,28 +15,67 @@ MonoBehaviour:
   characterlst:
     keys:
     - Player1
+    - Player2
     - Enemy1
     values:
     - keys:
       - Type
+      - Armor
+      - Weapon
+      - Mount
+      - Shield
+      - Buckler
       values:
       - Praetorian Guard
+      - Praetorian_Armor
+      - Great Sword
+      - War Horse
+      - Tower Shield
+      - Buckler
     - keys:
       - Type
+      - Armor
+      - Weapon
+      - Mount
+      - Shield
+      - Buckler
       values:
-      - Praetorian Guard
+      - Imperial Legionary
+      - Legionary Armor
+      - Great Sword
+      - War Horse
+      - Tower Shield
+      - Buckler
+    - keys:
+      - Type
+      - Armor
+      - Weapon
+      - Mount
+      - Shield
+      - Buckler
+      values:
+      - Brigand
+      - Synthe Armor
+      - Pike
+      - War Horse
+      - Tower Shield
+      - Buckler
   positions:
     keys:
-    - Enemy1
     - Player1
+    - Player2
+    - Enemy1
     values:
-    - {x: 27, y: 30, z: 0}
-    - {x: 28, y: 29, z: 0}
+    - {x: 48, y: 51, z: 0}
+    - {x: 46, y: 47, z: 0}
+    - {x: 44, y: 52, z: 0}
   sprites:
     keys:
     - Player1
+    - Player2
     - Enemy1
     values:
+    - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
     - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
     - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
   map: Never Gonna Give You Up

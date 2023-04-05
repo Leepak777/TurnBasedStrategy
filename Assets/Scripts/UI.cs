@@ -9,7 +9,9 @@ public class UI : MonoBehaviour
     public GameObject currentPlay;
     public UnityEvent start;
     public UnityEvent end;
-    public UnityEvent during;
+    public bool skip = false;
+    public UnityEvent move;
+    public UnityEvent stop;
     public TurnManager tm;
 
     void Update()
@@ -21,8 +23,11 @@ public class UI : MonoBehaviour
             case 1://end
                 end.Invoke();
                 break;
-            case 2://during
-                during.Invoke();
+            case 2://move
+                move.Invoke();
+                break;
+            case 3://stop
+                stop.Invoke();
                 break;
         }
     }
@@ -44,15 +49,25 @@ public class UI : MonoBehaviour
         }
     }
     public void duringEvent(){
-        if(currentPlay.tag == "Enemy"){
+        if(currentPlay.tag == "Enemy" && !skip){
             Invoke("duringAction",1.5f);
+            skip = true;
         }
-        else{
+        else if (currentPlay.tag != "Enemy"){
             duringAction();
         }
+        
     }
     public void duringAction(){
         currentPlay.GetComponentInChildren<CharacterEvents>().onDuring.Invoke();
+        skip = false;
+        
+    }
+    public void stopEvent(){
+        if(currentPlay.tag == "Enemy"){
+            tm.setGameState(1);
+        }
+        
     }
     public void setCurrentPlay(GameObject go){
         this.currentPlay = go;

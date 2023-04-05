@@ -14,10 +14,10 @@ public class CharacterEvents : MonoBehaviour
     public UnityEvent<GameObject> onPlayerAttack;
     public UnityEvent<GameObject> onAttacking;
     public UnityEvent onEnemyAttack;
+    public UnityEvent preMove;
     public UnityEvent<Vector3> onPlayerMove;
     public UnityEvent onEnemyMove;
     public UnityEvent<int> saveStat;
-    public UnityEvent<int> onUndo;
     public UnityEvent onReset;
     public UnityEvent onMoveStop;
     public UnityEvent onDeath;

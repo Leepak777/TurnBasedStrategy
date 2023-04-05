@@ -128,16 +128,8 @@ public class PopEvent : MonoBehaviour
             }
         }
         goStat.text = "";
-        List<string> lst = new List<string>();
-        if(chStat.abilities.Count > 0){
-            goStat.text = chStat.abilities[0]+"\n";
-            lst.Add(chStat.abilities[0]);
-            for(int i = 1; i < chStat.abilities.Count; i++){
-                if(!lst.Contains(chStat.abilities[i])){
-                    goStat.text += chStat.abilities[i]+"\n";
-                    lst.Add(chStat.abilities[i]);
-                }   
-            }
+        foreach(KeyValuePair<string,string> pair in chStat.getAbilities()){
+            goStat.text += pair.Key+"\n";
         }
         goStat.text += "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";
         goStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";

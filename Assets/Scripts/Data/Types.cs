@@ -65,22 +65,22 @@ public class Types:ScriptableObject
         return null;
     }
 
-    public List<string> Praetorian_Guard_Abilities = new List<string>(){
-        "LeadershipAura"
+    public UDictionary<string,string> Praetorian_Guard_Abilities = new UDictionary<string,string>(){
+        {"LeadershipAura","Universal"},{"Charge","Individual"}
     };
-    public List<string> Imperial_Legionary_Abilities = new List<string>(){
-        "LeadershipAura"
+    public UDictionary<string,string> Imperial_Legionary_Abilities = new UDictionary<string,string>(){
+        {"LeadershipAura","Universal"},{"Charge","Individual"}
     };
-    public List<string> Imperial_Conscript_Abilities = new List<string>(){
-        "LeadershipAura"
+    public UDictionary<string,string> Imperial_Conscript_Abilities = new UDictionary<string,string>(){
+        {"LeadershipAura","Universal"},{"Charge","Individual"}
     };
-    public List<string> Mecenary_Abilities = new List<string>(){
-        "LeadershipAura"
+    public UDictionary<string,string> Mecenary_Abilities = new UDictionary<string,string>(){
+        {"LeadershipAura","Universal"},{"Charge","Individual"}
     };
-    public List<string> Brigand_Abilities = new List<string>(){
-        "LeadershipAura"
+    public UDictionary<string,string> Brigand_Abilities = new UDictionary<string,string>(){
+        {"LeadershipAura","Universal"},{"Charge","Individual"}
     };
-    public List<string> getTypeAbilities(string type){
+    public UDictionary<string,string> getTypeAbilities(string type){
         switch(type){
             case "Praetorian Guard":
                 return Praetorian_Guard_Abilities;
@@ -96,13 +96,5 @@ public class Types:ScriptableObject
         return null;
     }
 
-    public List<KeyValuePair<string,string>> getAbilitiesList(string ability){
-        List<KeyValuePair<string,string>> result = new List<KeyValuePair<string,string>>();
-        switch (ability){
-            case "LeadershipAura":
-                result.AddRange(new[]{new KeyValuePair<string, string>(ability,"start"),new KeyValuePair<string, string>(ability,"end"),new KeyValuePair<string, string>(ability,"move"),new KeyValuePair<string, string>(ability,"stop")});
-                break;
-        }
-        return result;
-    }
+    
 }

@@ -42,6 +42,7 @@ public class Teleport : MonoBehaviour
         //Debug.Log(tileM.WorldToCell(transform.position));
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {   
+            this.gameObject.GetComponentInChildren<CharacterEvents>().preMove.Invoke();
             tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
             tileM.setWalkable(this.gameObject,targetNode,false);
             transform.position = tileM.GetCellCenterWorld(targetNode);
@@ -50,13 +51,13 @@ public class Teleport : MonoBehaviour
         {
             trail.Clear();
         }
-        if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
-            if(outClick){outClick = false;}
-            this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
-        }
+        GameObject.Find("TurnManager").GetComponent<TurnManager>().setGameState(3);
+        this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
     }
     public void EnemyTeleport(){
         if(tileM.EnemyInRange("Player", attackrange, this.gameObject)){
+            GameObject.Find("TurnManager").GetComponent<TurnManager>().setGameState(3);
+            this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
             return;
         }
         KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode,attackrange,tilescheck);
@@ -64,20 +65,20 @@ public class Teleport : MonoBehaviour
               
         targetNode = target.Value;   
         
-
+        this.gameObject.GetComponentInChildren<CharacterEvents>().preMove.Invoke();
         if (pathfinder.GenerateAstarPath(originNode, targetNode, out trail))
         {
             if(tileM.inArea(originNode,targetNode, (int)tilescheck)){
+                
                 tileM.setWalkable(this.gameObject,tileM.WorldToCell(transform.position),true);
                 tileM.setWalkable(this.gameObject,targetNode,false);
                 transform.position = tileM.GetCellCenterWorld(targetNode);
                 
             }
         }
-        if(this.gameObject.GetComponent<ActionCenter>().ifmoved() || outClick){
-            if(outClick){outClick = false;}
-            this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
-        }
+        
+        GameObject.Find("TurnManager").GetComponent<TurnManager>().setGameState(3);
+        this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
     }
     public List<Vector3Int> GetPosTrail(Vector3 mousePosition){
         List<Vector3Int> fuckme = new List<Vector3Int>();
