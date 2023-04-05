@@ -6,7 +6,8 @@ public class CharacterStat : ScriptableObject
 {
     public UDictionary<string,float> stats = new UDictionary<string,float>();
     public UDictionary<string,string> attributes = new UDictionary<string, string>();
-    public List<KeyValuePair<string,string>> abilities = new List<KeyValuePair<string,string>>();
+    public List<string> abilities = new List<string>();
+    public List<KeyValuePair<string,string>> abilities_check = new List<KeyValuePair<string,string>>();
     public void setUp(){
         //Raw stat
         stats.Add("pow",0);//power
@@ -63,10 +64,18 @@ public class CharacterStat : ScriptableObject
             }
         }
     }
-    public void setAbilities(List<KeyValuePair<string,string>> lst){
+    public void setAbilities(List<string> lst){
         abilities = lst;
     }
-
+    public List<KeyValuePair<string,string>> getAblst(){
+        return abilities_check;
+    }
+    public void addAbCheck(List<KeyValuePair<string,string>> lst){
+        abilities_check.AddRange(lst);
+    }
+    public List<string> getAbilities(){
+        return abilities;
+    }
     public void addAttributes(string key, string value){
         attributes.Add(key,value);
     }

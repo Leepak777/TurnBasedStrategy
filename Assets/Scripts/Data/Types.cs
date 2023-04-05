@@ -96,14 +96,12 @@ public class Types:ScriptableObject
         return null;
     }
 
-    public List<KeyValuePair<string,string>> getAbilitiesList(string target){
+    public List<KeyValuePair<string,string>> getAbilitiesList(string ability){
         List<KeyValuePair<string,string>> result = new List<KeyValuePair<string,string>>();
-        foreach(string s in getTypeAbilities(target)){
-            switch (s){
-                case "LeadershipAura":
-                    result.AddRange(new[]{new KeyValuePair<string, string>(s,"start"),new KeyValuePair<string, string>(s,"end"),new KeyValuePair<string, string>(s,"move"),new KeyValuePair<string, string>(s,"stop")});
-                    break;
-            }
+        switch (ability){
+            case "LeadershipAura":
+                result.AddRange(new[]{new KeyValuePair<string, string>(ability,"start"),new KeyValuePair<string, string>(ability,"end"),new KeyValuePair<string, string>(ability,"move"),new KeyValuePair<string, string>(ability,"stop")});
+                break;
         }
         return result;
     }
