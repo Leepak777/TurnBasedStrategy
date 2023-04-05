@@ -848,6 +848,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 368192053179932395}
+        m_TargetAssemblyTypeName: CharacterSelect, Assembly-CSharp
+        m_MethodName: Confirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 11400000, guid: 040f5bf2ceaec6a438b7547ceb70a0e5, type: 2}
         m_TargetAssemblyTypeName: GameEvent, Assembly-CSharp
         m_MethodName: Raise
@@ -2052,8 +2064,8 @@ GameObject:
   - component: {fileID: 368192053179932372}
   - component: {fileID: 368192053179932395}
   - component: {fileID: 2810091061977941578}
-  - component: {fileID: 3754203066793881401}
-  - component: {fileID: 3405284541863249195}
+  - component: {fileID: 1486158482127246829}
+  - component: {fileID: 8505922138351731403}
   m_Layer: 5
   m_Name: PlayerSetup
   m_TagString: CharacterSetup
@@ -2155,7 +2167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2857c083aea8c554681b62a145e85054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3754203066793881401
+  typeset: {fileID: 368192053915357152}
+--- !u!114 &1486158482127246829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2167,13 +2180,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03c1ac7c2395974ca05b18c0591faf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: {fileID: 0}
-  equipment: {fileID: 0}
-  stat: {fileID: 0}
   equipments: {fileID: 11400000, guid: fb17da8d5da0fe848a7d3b69fe58a79f, type: 2}
   types: {fileID: 11400000, guid: a0419dca955bab445a63118ec68c555a, type: 2}
-  info_name: 
---- !u!114 &3405284541863249195
+--- !u!114 &8505922138351731403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2189,7 +2198,7 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3754203066793881401}
+      - m_Target: {fileID: 1486158482127246829}
         m_TargetAssemblyTypeName: SetInfo, Assembly-CSharp
         m_MethodName: GetData
         m_Mode: 1

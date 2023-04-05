@@ -64,4 +64,47 @@ public class Types:ScriptableObject
         }
         return null;
     }
+
+    public List<string> Praetorian_Guard_Abilities = new List<string>(){
+        "LeadershipAura"
+    };
+    public List<string> Imperial_Legionary_Abilities = new List<string>(){
+        "LeadershipAura"
+    };
+    public List<string> Imperial_Conscript_Abilities = new List<string>(){
+        "LeadershipAura"
+    };
+    public List<string> Mecenary_Abilities = new List<string>(){
+        "LeadershipAura"
+    };
+    public List<string> Brigand_Abilities = new List<string>(){
+        "LeadershipAura"
+    };
+    public List<string> getTypeAbilities(string type){
+        switch(type){
+            case "Praetorian Guard":
+                return Praetorian_Guard_Abilities;
+            case "Imperial Legionary":
+                return Imperial_Legionary_Abilities;
+            case "Imperial Conscript":
+                return Imperial_Conscript_Abilities;
+            case "Mecenary":
+                return Mecenary_Abilities;
+            case "Brigand":
+                return Brigand_Abilities;
+        }
+        return null;
+    }
+
+    public List<KeyValuePair<string,string>> getAbilitiesList(string target){
+        List<KeyValuePair<string,string>> result = new List<KeyValuePair<string,string>>();
+        foreach(string s in getTypeAbilities(target)){
+            switch (s){
+                case "LeadershipAura":
+                    result.AddRange(new[]{new KeyValuePair<string, string>(s,"start"),new KeyValuePair<string, string>(s,"end"),new KeyValuePair<string, string>(s,"move"),new KeyValuePair<string, string>(s,"stop")});
+                    break;
+            }
+        }
+        return result;
+    }
 }

@@ -61,60 +61,64 @@ MonoBehaviour:
     - maxStb
     - maxTiles
     values:
-    - 8
-    - 6
     - 7
-    - 4
-    - 3
-    - 15
-    - 9
-    - 16
-    - 16
+    - 5
+    - 6
+    - 2
     - 3
     - 13
+    - 9
+    - 15
+    - 14
+    - 3
+    - 10
     - 45
     - 1
     - 10
     - 0
     - 0
-    - 8
+    - 9
     - 1.5
-    - 1
+    - 1.3
     - 1
     - 100
     - 0
     - 2
-    - 0
-    - 0
+    - 6
+    - 34
     - 3
     - 2
-    - 13
+    - 15
     - 0
-    - 5
-    - 0
+    - 2
+    - -4
     - 9
-    - 6
-    - -2
-    - 88
-    - 16
-    - 0
-    - 41
-    - 0
+    - 3
+    - 3
+    - 82
     - 14
-    - 27
-    - -1
     - 0
-    - 88
-    - 58
-    - 14
+    - 33
+    - 0
+    - 13.5
+    - 15.75
+    - 4.25
+    - 0
+    - 82
+    - 47
+    - 13
   attributes:
     keys:
     - Type
     - Armor
     - Weapon
     - Mount
+    - Shield
+    - Buckler
     values:
-    - Praetorian Guard
-    - Synthe Armor
-    - Power Sword
+    - Imperial Legionary
+    - Legionary Armor
+    - Great Sword
     - War Horse
+    - Kite Shield
+    - Buckler

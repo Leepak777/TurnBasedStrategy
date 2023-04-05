@@ -70,6 +70,9 @@ public class PopEvent : MonoBehaviour
         if(popwindow.name == "AttackConfirm"){
             setAttackConfirmContent();
         }
+        if(popwindow.name =="InfoPanel"){
+            setText();
+        }
         
     
     }
@@ -116,6 +119,7 @@ public class PopEvent : MonoBehaviour
         Text goStat = popwindow.transform.Find("Stats").GetComponent<Text>();
         CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
         goType.text = chStat.getAttribute("Type");
+        goEquipment.text ="";
         if(goEquipment.text == ""){
             foreach(string str in eqlst){
                 if(chStat.getAttribute(str) != null){
@@ -123,7 +127,19 @@ public class PopEvent : MonoBehaviour
                 }
             }
         }
-        goStat.text = "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";
+        goStat.text = "";
+        List<string> lst = new List<string>();
+        if(chStat.abilities.Count > 0){
+            goStat.text = chStat.abilities[0].Key+"\n";
+            lst.Add(chStat.abilities[0].Key);
+            for(int i = 1; i < chStat.abilities.Count; i++){
+                if(!lst.Contains(chStat.abilities[i].Key)){
+                    goStat.text += chStat.abilities[i].Key+"\n";
+                    lst.Add(chStat.abilities[i].Key);
+                }   
+            }
+        }
+        goStat.text += "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";
         goStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";
         goStat.text += "Protection: \n" + chStat.getProtection() + "\n";
     }

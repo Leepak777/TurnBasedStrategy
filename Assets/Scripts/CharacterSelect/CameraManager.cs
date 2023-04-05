@@ -15,8 +15,10 @@ public class CameraManager : MonoBehaviour
     int prev = 0;
     SceneLoader sceneLoader;
     public InGameData data;
-    void Start()
+    void Awake()
     {
+        DeleteAssetsStartingWith("Player");
+        DeleteAssetsStartingWith("Enemy");
         data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         data.positions.Clear();
         data.characterlst.Clear();
@@ -58,5 +60,22 @@ public class CameraManager : MonoBehaviour
             return;
         }
         sceneLoader.LoadScene("MapSelection");
+    }
+    static void DeleteAssetsStartingWith(string startsWith)
+    {
+        string[] assetPaths = AssetDatabase.GetAllAssetPaths(); // Get all asset paths in the project
+        int count = 0;
+
+        foreach (string path in assetPaths)
+        {
+            if (path.EndsWith(".asset") && Path.GetFileNameWithoutExtension(path).StartsWith(startsWith))
+            {
+                AssetDatabase.DeleteAsset(path);
+                count++;
+            }
+        }
+
+        AssetDatabase.Refresh(); // Refresh the asset database to update the project window
+        Debug.Log("Deleted " + count + " .asset files starting with '" + startsWith + "'");
     }
 }

@@ -12,14 +12,12 @@ public class SetInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CharacterStat Data = null;
+        Data = ScriptableObject.CreateInstance<CharacterStat>();
+        AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+gameObject.name+".asset");
     }
-    public GameObject type;
-    public GameObject equipment;
-    public GameObject stat;
     public Equipments equipments;
     public Types types;
-    public string info_name;
-    private string[] eqlst = {"Weapon","Shield","Armor","Buckler","Mount"};
     public CharacterStat GetAsset(string name){
         InGameData data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         if(data.characterlst.ContainsKey(name)){
@@ -37,30 +35,8 @@ public class SetInfo : MonoBehaviour
             CreateCharacterAsset(name, data.characterlst[name]);
         }        
     }
-    public void updateInfo(){
-        settext(info_name);
-    }
-    public void settext(string name){
-        info_name = name;
-        Text goType = type.GetComponent<Text>();
-        Text goEquipment = equipment.GetComponent<Text>();
-        Text goStat = stat.gameObject.GetComponent<Text>();
-        CharacterStat chStat = GetAsset(name);
-        if(chStat == null){
-            return;
-        }
-        goType.text = chStat.getAttribute("Type");
-        if(goEquipment.text == ""){
-            foreach(string str in eqlst){
-                if(chStat.getAttribute(str) != null){
-                    goEquipment.text += str+": \n"+ chStat.getAttribute(str) +"\n"; 
-                }
-            }
-        }
-        goStat.text = "HP: "+chStat.getStat("maxHealth") + "\n";
-        goStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";
-        goStat.text += "Protection: \n" + chStat.getProtection() + "\n";
-    }
+    
+    
     UDictionary<string,float> getAttributeStats(KeyValuePair<string,string> attribute){
         switch(attribute.Key){
             case "Type":    return types.getTypeStat(attribute.Value);
@@ -77,13 +53,15 @@ public class SetInfo : MonoBehaviour
             if(getAttributeStats(attribute)!=null){
                 character.addAttributes(attribute.Key, attribute.Value);
                 character.setStats(getAttributeStats(attribute));
+                if(attribute.Key == "Type"){
+                    character.setAbilities(types.getAbilitiesList(character.getAttribute("Type")));
+                }
             }
         }
        
     }
-
+    
     public void CreateCharacterAsset(string go, UDictionary<string,string> ch) {    
-        DeleteAssets(go);
         string[] result = AssetDatabase.FindAssets("/Data/"+go);
         CharacterStat Data = null;
         if (result.Length > 2)
@@ -129,4 +107,6 @@ public class SetInfo : MonoBehaviour
         AssetDatabase.Refresh(); // Refresh the asset database to update the project window
         //Debug.Log("Deleted " + count + " .asset files with substring '" + targetSubstring + "'");
     }
+    
+
 }

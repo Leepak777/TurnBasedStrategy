@@ -21,7 +21,6 @@ public class ActionCenter : MonoBehaviour
     {
         getTileM();
     }
-
     //update current position of character, just made it incase we need it
     public void updatePos(){
         if(ifmoved()){

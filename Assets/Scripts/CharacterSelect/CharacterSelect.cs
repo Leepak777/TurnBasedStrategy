@@ -75,7 +75,7 @@ public class CharacterSelect : MonoBehaviour
                 }
             }
         }
-        else{
+        else if(attributes != null){
             data.characterlst.Add(gameObject.name, attributes);
         }
         if(data.sprites.ContainsKey(gameObject.name)){
@@ -84,13 +84,18 @@ public class CharacterSelect : MonoBehaviour
         else{
             data.sprites.Add(gameObject.name, img.sprite);
         }
+        data.currentSetCh = gameObject.name;
         EditorUtility.SetDirty(data);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+        gameObject.GetComponent<SetInfo>().GetData();
     }
     public void returnCheck(){
         if(GameObject.Find(gameObject.name+"_info")){
-            GameObject.Find(gameObject.name+"_info").GetComponent<SetInfo>().updateInfo();
+            GameObject.Find(gameObject.name+"_info").GetComponent<setInfoPanel>().updateInfo();
         }
+    }
+    void OnEnable(){
+        returnCheck();
     }
 }

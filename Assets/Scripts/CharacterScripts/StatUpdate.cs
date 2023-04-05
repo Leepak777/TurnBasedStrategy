@@ -22,9 +22,9 @@ public class StatUpdate : MonoBehaviour
     public float currentHealth;
     public float maxHealth = 100f;
     public int Damage = 0;
-    public List<bool> buff =new List<bool>();
     public float bonus = 0;
     TileManager tileM;
+    List< KeyValuePair<string,string>> buffs = new List<KeyValuePair<string,string>>();
     DRN drn;
     Text text;
     Dictionary<int,float> pastHP = new Dictionary<int, float>();
@@ -41,9 +41,6 @@ public class StatUpdate : MonoBehaviour
             text = this.gameObject.transform.Find("DamageIndicator").GetComponentInChildren<Text>();
         }
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        for(int i = 0; i < 18; i++){
-            buff.Add(false);
-        }
         atkSim = new AttackSimulation(drn);
     }
     public bool meleeRoll(GameObject enemy){
@@ -78,13 +75,9 @@ public class StatUpdate : MonoBehaviour
                 drn_check = rangeRoll(targetEnemy);
             }
             if(drn_check){
-                //Debug.Log("Roll Sucess!");
                 Damage = (int)(drn.getDRN() + stats.getBaseDamage() + bonus);
                 attackingFatigue();
                 targetEnemy.GetComponentInChildren<CharacterEvents>().onDamage.Invoke(Damage);
-            }
-            else{
-                //Debug.Log("Roll Fail!");
             }
         }
         
@@ -151,47 +144,20 @@ public class StatUpdate : MonoBehaviour
         return stats.getStat(name);
     }
 
-    public bool getbuff(int i){
-        return buff[i];
-    }
-
-    public void setbuff(int i, bool b){
-        buff[i] = b;
-    }
-
-    public void setDamage(int i){
-        Damage = i;
-    }
-    public void saddDamage(int i){
-        Damage += i;
-    }
-
-    public void setBonus(int i ){
-        bonus += i;
-    }
     public float getBonus(){
         return bonus;
     }
-
-    public bool getTextEnabled(){
-        return text.enabled;
+    public void setBonus(int bonus){
+        this.bonus += bonus;
     }
     public AttackSimulation getAttackSim(){
         return atkSim;
     }
-    public void setTextActive(bool active){
-        text.enabled = active;
-    }
-
     public int getMaxTiles(){
         if(stats == null){
             stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
         }
         return (int)stats.getStat("mov")/4 +1;
-    }
-
-    public void setMaxTiles(int x){
-        stats.setStat("mov", (float)x);
     }
 
     public float getMaxHealth(){
@@ -204,13 +170,30 @@ public class StatUpdate : MonoBehaviour
         maxHealth = x;
     }
     public float getAttackRange(){
-        return 1;//stats.getStat("rng");
+        return stats.getStat("rng");
     }
 
     public void attackingFatigue(){
         stats.modifyStat("fat", stats.getStat("enc"));
     }
-
+    public bool addBuff(string buff, string character){
+        KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
+        if(!buffs.Contains(pair)){
+            buffs.Add(pair);
+            return true;
+        }
+        return false;
+        
+    }
+    public bool removeBuff(string buff, string character){
+        KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
+        if(buffs.Contains(pair)){
+            buffs.Remove(pair);
+            return true;
+        }
+        return false;
+        
+    }
     public void attackedFatigue(){
         stats.modifyStat("fat",1);
     }

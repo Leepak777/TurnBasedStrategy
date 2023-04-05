@@ -22,13 +22,14 @@ public class EquipmentSetup : MonoBehaviour
     public Text txt;
     public Equipments eq;
     public UDictionary<string,string> attributes = new UDictionary<string,string>();
+    CharacterStat chStat;
     void Start()
     {
         
     }
     public void setScene(){
         AssetDatabase.Refresh();
-        data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         attributes.Clear();
         weapon.ClearOptions();
         armor.ClearOptions();
@@ -41,6 +42,7 @@ public class EquipmentSetup : MonoBehaviour
         buckler.AddOptions(eq.buckler);
         mount.AddOptions(eq.mount);
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
+        chStat = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+data.currentSetCh+".asset");
         if(chlst.ContainsKey(data.currentSetCh)){
             UDictionary<string,string> curlst = chlst[data.currentSetCh];
             if(curlst.ContainsKey("Weapon")){
@@ -63,6 +65,10 @@ public class EquipmentSetup : MonoBehaviour
         if(data.sprites.ContainsKey(txt.text)){
             img.sprite = data.sprites[txt.text]; 
         }
+        if(chStat.attributes.ContainsKey("Type")){
+            txt.text += " "+chStat.getAttribute("Type");
+        }
+        
     }
     public void setCharacterWeapon(int option) {
         if(attributes.ContainsKey("Weapon")){
@@ -120,14 +126,11 @@ public class EquipmentSetup : MonoBehaviour
         else{
             data.characterlst.Add(data.currentSetCh, attributes);
         }
+        
         EditorUtility.SetDirty(data);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        returnCheck();
     }
-    public void returnCheck(){
-        if(GameObject.Find(data.currentSetCh+"_info")){
-                GameObject.Find(data.currentSetCh+"_info").GetComponent<SetInfo>().updateInfo();
-        }
-    }
+   
+    
 }

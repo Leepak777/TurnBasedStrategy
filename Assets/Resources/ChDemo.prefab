@@ -592,7 +592,6 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 100
   Damage: 0
-  buff: 
   bonus: 0
 --- !u!1001 &318067221334775011
 PrefabInstance:
