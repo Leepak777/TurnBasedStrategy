@@ -137,7 +137,10 @@ public class Equipments : ScriptableObject
         };    
         Mount_lst = new UDictionary<string, UDictionary<string, float>>(){
             {"Pack Horse",Pack_Horse},{"War Horse",War_Horse}
-        };         
+        };   
+        Shield_lst = new UDictionary<string, UDictionary<string, float>>(){
+            {"Tower Shield", Tower_Shield},{"Kite Shield", Kite_Shield}
+        };      
     }
     UDictionary<string,float> Light_Glaive,Gladius,Power_Sword,Great_Sword,Pike,Mace,Pistol,Rifle = new UDictionary<string,float>();
     UDictionary<string,UDictionary<string,float>> Weapon_lst = new UDictionary<string, UDictionary<string, float>>();    
