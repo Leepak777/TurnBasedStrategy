@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Types", order = 2)]
@@ -24,6 +25,7 @@ public class Types:ScriptableObject
     14. rd
     15. mr
     */
+    public List<string> type_stats = new List<string>(){"pow","dex","tou","acu","mid","base_hp","base_ene","base_mov","base_init","base_enc","ma","ra","sa","md","rd","mr"};
     UDictionary<string,float> Praetorian_Guard,Imperial_Legionary,Imperial_Conscript,Mercenary,Brigand = new UDictionary<string, float>();
     UDictionary<string,UDictionary<string,float>> Type_lst = new UDictionary<string, UDictionary<string, float>>();
     void Awake(){
@@ -39,7 +41,24 @@ public class Types:ScriptableObject
         }
         return null;
     }
-
+    public void changeTypeKey(int index, string name){
+        UDictionary<string,float> data = Type_lst.ElementAt(index-1).Value;
+        removeTypeEntry(Type_lst.ElementAt(index-1).Key);
+        addTypeEntry(name,data);
+    }
+    public void removeTypeEntry(string name){
+        Type_lst.Remove(name);
+        type.Remove(name);
+    }
+    public void addTypeEntry(string name, UDictionary<string,float> stats){
+        if(Type_lst.ContainsKey(name)){
+            Type_lst[name] = stats;
+        }
+        else{
+            type.Add(name);
+            Type_lst.Add(name,stats);
+        }
+    }
     public UDictionary<string,string> Praetorian_Guard_Abilities = new UDictionary<string,string>(){
         {"LeadershipAura","Universal"},{"Charge","Individual"}
     };

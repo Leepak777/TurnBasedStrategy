@@ -22,7 +22,7 @@ MonoBehaviour:
   - Mace
   - Pistol
   - Rifle
-  - pog sword
+  - pog
   armor:
   - none
   - Plate
@@ -35,7 +35,7 @@ MonoBehaviour:
   - Personal Shield MK I
   - Personal Shield MK II
   - Personal Shield MK III
-  - lmao armor
+  - lmao
   shield:
   - none
   - Kite Shield
@@ -98,7 +98,7 @@ MonoBehaviour:
     - Mace
     - Pistol
     - Rifle
-    - pog sword
+    - pog
     values:
     - keys:
       - wd
@@ -294,10 +294,12 @@ MonoBehaviour:
       - 1
     - keys:
       - wd
+      - rng
       - attack_num
       values:
       - 69420
-      - 1
+      - 69420
+      - 69420
   Shield_lst:
     keys:
     - Tower Shield
@@ -376,7 +378,7 @@ MonoBehaviour:
     - Personal Shield MK I
     - Personal Shield MK II
     - Personal Shield MK III
-    - lmao armor
+    - lmao
     values:
     - keys:
       - av
@@ -540,8 +542,12 @@ MonoBehaviour:
       - 2
     - keys:
       - av
+      - enc
+      - mov
       values:
-      - 420
+      - 69420
+      - 69420
+      - 69420
   Mount_lst:
     keys:
     - Pack Horse

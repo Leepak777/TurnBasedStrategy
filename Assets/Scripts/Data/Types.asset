@@ -12,3 +12,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 537666eb9b9ea344fa7d9190414f5e1e, type: 3}
   m_Name: Types
   m_EditorClassIdentifier: 
+  type:
+  - none
+  - Praetorian Guard
+  - Imperial Legionary
+  - Imperial Conscript
+  - Mercenary
+  - Brigand
+  - biggest clown on earth
+  type_stats:
+  - pow
+  - dex
+  - tou
+  - acu
+  - mid
+  - base_hp
+  - base_ene
+  - base_mov
+  - base_init
+  - base_enc
+  - ma
+  - ra
+  - sa
+  - md
+  - rd
+  - mr
+  Praetorian_Guard_Abilities:
+    keys:
+    - LeadershipAura
+    - Charge
+    values:
+    - Universal
+    - Individual
+  Imperial_Legionary_Abilities:
+    keys:
+    - LeadershipAura
+    - Charge
+    values:
+    - Universal
+    - Individual
+  Imperial_Conscript_Abilities:
+    keys:
+    - LeadershipAura
+    - Charge
+    values:
+    - Universal
+    - Individual
+  Mercenary_Abilities:
+    keys:
+    - LeadershipAura
+    - Charge
+    values:
+    - Universal
+    - Individual
+  Brigand_Abilities:
+    keys:
+    - LeadershipAura
+    - Charge
+    values:
+    - Universal
+    - Individual

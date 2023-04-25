@@ -77,6 +77,8 @@ MonoBehaviour:
     - 0
     - 0
     - 0
+    - 69420
+    - 69420
     - 0
     - 0
     - 0
@@ -85,10 +87,8 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-    - 0
-    - 0
-    - 1
-    - 0
+    - 69421
+    - 69420
     - 0
     - 0
     - 0
@@ -108,8 +108,12 @@ MonoBehaviour:
     - 0
     - 0
   attributes:
-    keys: []
-    values: []
+    keys:
+    - Armor
+    - Weapon
+    values:
+    - lmao
+    - pog
   abilities:
     keys: []
     values: []

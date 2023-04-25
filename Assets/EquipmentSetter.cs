@@ -121,11 +121,11 @@ public class EquipmentSetter : MonoBehaviour
         equipment.options[equipment.value].text = name;
         equipment.captionText.text = name;
         switch(eqtype.value){
-            case 1:  eq.changeWeaponKey(equipment.value,name);break;
-            case 3:  eq.changeShieldKey(equipment.value,name);break;
-            case 2:  eq.changeArmorKey(equipment.value,name);break;
-            case 4:  eq.changeBucklerKey(equipment.value,name);break;
-            case 5:  eq.changeMountKey(equipment.value,name);break;
+            case 1:  if(equipment.options.Count == eq.weapon.Count)eq.changeWeaponKey(equipment.value,name);break;
+            case 3:  if(equipment.options.Count == eq.shield.Count)eq.changeShieldKey(equipment.value,name);break;
+            case 2:  if(equipment.options.Count == eq.armor.Count)eq.changeArmorKey(equipment.value,name);break;
+            case 4:  if(equipment.options.Count == eq.buckler.Count)eq.changeBucklerKey(equipment.value,name);break;
+            case 5:  if(equipment.options.Count == eq.mount.Count)eq.changeMountKey(equipment.value,name);break;
         }
         EditorUtility.SetDirty(eq);
         AssetDatabase.SaveAssets();
