@@ -144,6 +144,7 @@ public class StatUpdate : MonoBehaviour
         return stats.getStat(name);
     }
 
+
     public float getBonus(){
         return bonus;
     }

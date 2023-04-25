@@ -13,6 +13,7 @@ public class UI : MonoBehaviour
     public UnityEvent move;
     public UnityEvent stop;
     public TurnManager tm;
+    public AbilitiesData ad; 
 
     void Update()
     {
@@ -47,6 +48,9 @@ public class UI : MonoBehaviour
         if(currentPlay.tag == "Player"){
             tm.incGameTurn();
         }
+    }
+    public void areaEffectCheck(){
+        
     }
     public void duringEvent(){
         if(currentPlay.tag == "Enemy" && !skip){

@@ -14,7 +14,7 @@ public class Node
     public int gridY;
     public GameObject occupant;
     public Tile tile;
-
+    public UDictionary<string,KeyValuePair<GameObject,int>> effectFlag = new UDictionary<string, KeyValuePair<GameObject,int>>();
     public Node(bool _walkable, Vector2 _worldPos, int _gridX, int _gridY,Tile tile)
     {
         this.tile = tile;
