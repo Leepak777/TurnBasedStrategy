@@ -68,6 +68,8 @@ public class TypeSetter : MonoBehaviour
         dd.AddOptions(ty.type_stats);
         dd.value = dd.options.FindIndex(x => x.text == stat.Key);
         player.transform.Find("StatInput").GetComponent<InputField>().text = (stat.Value).ToString();
+        player.GetComponent<BoxFunc>().statslst = ty.type_stats;
+        player.GetComponent<BoxFunc>().setfullname(dd.value);
     }
     public void addBlank(){
         GameObject goParent = GameObject.Find("scrollPanel");

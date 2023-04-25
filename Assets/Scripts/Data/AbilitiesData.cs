@@ -6,8 +6,8 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/AbilitiesData", order = 3)]
 public class AbilitiesData : ScriptableObject
 {
-    public UnityEvent<TileManager,GameObject> Leadership;
-    public UnityEvent<TileManager,GameObject> charge;
+    public UnityEvent<GameObject> Leadership;
+    public UnityEvent<GameObject> charge;
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
@@ -16,7 +16,7 @@ public class AbilitiesData : ScriptableObject
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
     }
-    public UnityEvent<TileManager,GameObject> getEvent(string name){
+    public UnityEvent<GameObject> getEvent(string name){
         switch(name){
             case "LeadershipAura": 
             return Leadership;
@@ -25,7 +25,7 @@ public class AbilitiesData : ScriptableObject
         }
         return null;
     }
-    public void LeadersshipAura(TileManager tileM, GameObject play){
+    public void LeadersshipAura(GameObject play){
         foreach(GameObject go in GameObject.FindGameObjectsWithTag(play.tag)){
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
@@ -41,7 +41,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
-    public void Charge(TileManager tileM, GameObject play){
+    public void Charge(GameObject play){
         TurnManager tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         StatUpdate su = play.GetComponent<StatUpdate>();
         Teleport teleport = play.GetComponent<Teleport>();                         

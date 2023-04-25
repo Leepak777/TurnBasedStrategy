@@ -92,15 +92,18 @@ public class EquipmentSetter : MonoBehaviour
         player.name = stat.Key;
         Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
         dd.ClearOptions();
+        List<string> lst = new List<string>();
         switch(eqtype.value){
-            case 1:  dd.AddOptions(eq.weapon_stats);break;
-            case 3:  dd.AddOptions(eq.shield_stats);break;
-            case 2:  dd.AddOptions(eq.armor_stats);break;
-            case 4:  dd.AddOptions(eq.buckler_stats);break;
-            case 5:  dd.AddOptions(eq.mount_stats);break;
+            case 1:  lst = eq.weapon_stats;dd.AddOptions(eq.weapon_stats);break;
+            case 3:  lst = eq.shield_stats;dd.AddOptions(eq.shield_stats);break;
+            case 2:  lst = eq.armor_stats;dd.AddOptions(eq.armor_stats);break;
+            case 4:  lst = eq.buckler_stats;dd.AddOptions(eq.buckler_stats);break;
+            case 5:  lst = eq.mount_stats;dd.AddOptions(eq.mount_stats);break;
         }
+        player.GetComponent<BoxFunc>().statslst = lst;
         dd.value = dd.options.FindIndex(x => x.text == stat.Key);
         player.transform.Find("StatInput").GetComponent<InputField>().text = (stat.Value).ToString();
+        player.GetComponent<BoxFunc>().setfullname(dd.value);
     }
     public void addBlank(){
         GameObject goParent = GameObject.Find("scrollPanel");
@@ -109,13 +112,15 @@ public class EquipmentSetter : MonoBehaviour
         player.transform.SetParent(goParent.transform);
         Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
         dd.ClearOptions();
+        List<string> lst = new List<string>();
         switch(eqtype.value){
-            case 1:  dd.AddOptions(eq.weapon_stats);break;
-            case 3:  dd.AddOptions(eq.shield_stats);break;
-            case 2:  dd.AddOptions(eq.armor_stats);break;
-            case 4:  dd.AddOptions(eq.buckler_stats);break;
-            case 5:  dd.AddOptions(eq.mount_stats);break;
+            case 1:  lst = eq.weapon_stats;dd.AddOptions(eq.weapon_stats);break;
+            case 3:  lst = eq.shield_stats;dd.AddOptions(eq.shield_stats);break;
+            case 2:  lst = eq.armor_stats;dd.AddOptions(eq.armor_stats);break;
+            case 4:  lst = eq.buckler_stats;dd.AddOptions(eq.buckler_stats);break;
+            case 5:  lst = eq.mount_stats;dd.AddOptions(eq.mount_stats);break;
         }
+        player.GetComponent<BoxFunc>().statslst = lst;
     }
     public void setText(string name){
         equipment.options[equipment.value].text = name;

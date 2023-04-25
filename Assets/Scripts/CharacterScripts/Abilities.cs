@@ -19,19 +19,19 @@ using Random = UnityEngine.Random;
 public class Abilities : MonoBehaviour
 {
     TileManager tileM;
-    public List<UnityEvent<TileManager,GameObject>> UniversalCheck = new List<UnityEvent<TileManager,GameObject>>();
-    public List<UnityEvent<TileManager,GameObject>> IndividualCheck = new List<UnityEvent<TileManager,GameObject>>();
+    public List<UnityEvent<GameObject>> UniversalCheck = new List<UnityEvent<GameObject>>();
+    public List<UnityEvent<GameObject>> IndividualCheck = new List<UnityEvent<GameObject>>();
     CharacterStat stats;
     AbilitiesData abilitiesData;
     
     public void GameCheck(){
-        foreach(UnityEvent<TileManager,GameObject> e in UniversalCheck){
-            e.Invoke(tileM,gameObject);
+        foreach(UnityEvent<GameObject> e in UniversalCheck){
+            e.Invoke(gameObject);
         }
     }
     public void CharacterCheck(){
-        foreach(UnityEvent<TileManager,GameObject> e in IndividualCheck){
-            e.Invoke(tileM,gameObject);
+        foreach(UnityEvent<GameObject> e in IndividualCheck){
+            e.Invoke(gameObject);
         }
     }
     void Start()
@@ -40,7 +40,7 @@ public class Abilities : MonoBehaviour
         stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
         abilitiesData = AssetDatabase.LoadAssetAtPath<AbilitiesData>("Assets/Scripts/Data/AbilitiesData.asset");
         foreach(KeyValuePair<string,string> ability in stats.getAbilities()){
-            UnityEvent<TileManager,GameObject> e = abilitiesData.getEvent(ability.Key);
+            UnityEvent<GameObject> e = abilitiesData.getEvent(ability.Key);
             switch(ability.Value){
                 case"Universal":
                     UniversalCheck.Add(e);
