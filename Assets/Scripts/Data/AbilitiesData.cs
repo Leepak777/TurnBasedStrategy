@@ -8,7 +8,14 @@ public class AbilitiesData : ScriptableObject
 {
     public UnityEvent<TileManager,GameObject> Leadership;
     public UnityEvent<TileManager,GameObject> charge;
+    TileManager tileM;
+    TurnManager turnM;
     int charge_bonus = 0;
+
+    void Awake(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+    }
     public UnityEvent<TileManager,GameObject> getEvent(string name){
         switch(name){
             case "LeadershipAura": 
@@ -46,6 +53,10 @@ public class AbilitiesData : ScriptableObject
             su.setBonus(-charge_bonus);
             charge_bonus = 0;
         }
+    }
+
+    public void AreaAttack(Vector3Int center, int range, int Damage){
+
     }
 
 

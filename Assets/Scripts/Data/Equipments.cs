@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Equipments", order = 1)]
@@ -11,6 +12,7 @@ public class Equipments : ScriptableObject
     public List<string> shield = new List<string>(){"none","Kite Shield","Tower Shield"};
     public List<string> buckler = new List<string>(){"none","Buckler","Buckler2"};
     public List<string> mount = new List<string>(){"none","Pack Horse","War Horse"};
+    
     //Hands
     /*
     0. wd
@@ -26,8 +28,204 @@ public class Equipments : ScriptableObject
     10. #of attacks
     */
     //weapon
-    
+    public List<string> weapon_stats = new List<string>(){"wd","pscal","dscal","ap","sp","rng","acc","mdb","rdb","enc","attack_num"};
+    public List<string> armor_stats = new List<string>(){"av","sv","mdb","rdb","mov","init","enc"};
+    public List<string> shield_stats = new List<string>(){"pr","pv","mdb","rdb","init","enc"};
+    public List<string> buckler_stats = new List<string>(){"pr","pv","acc","mdb","rdb","enc"};
+    public List<string> mount_stats = new List<string>(){"hp","mdr","mov","init","enc"};
     void Awake(){
+        setBaseEq();
+        Weapon_lst = new UDictionary<string, UDictionary<string, float>>(){
+            {"Light Glaive",Light_Glaive},{"Gladius",Gladius},{"Power Sword",Power_Sword},{"Great Sword",Great_Sword},{"Pike",Pike},{"Mace",Mace},{"Pistol",Pistol},{"Rifle",Rifle}
+        };
+        Buckler_lst = new UDictionary<string, UDictionary<string, float>>(){
+            {"Buckler",Buckler},{"Buckler2",Buckler2}
+        };   
+        Armor_lst = new UDictionary<string, UDictionary<string, float>>(){
+            {"Plate",Plate}, {"Half Plate",Half_Plate}, {"Synthe Armor",Synthe_Armor}, {"Legionary Armor",Legionary_Armor}, {"Praetorian Armor",Praetorian_Armor}, {"Flak Suit",Flak_Suit},{"Assault Vest",Assault_Vest}, {"Personal Shield MK I",Personal_Shield_MK_I},{"Personal Shield MK II",Personal_Shield_MK_II},{"Personal Shield MK III",Personal_Shield_MK_III}
+        };    
+        Mount_lst = new UDictionary<string, UDictionary<string, float>>(){
+            {"Pack Horse",Pack_Horse},{"War Horse",War_Horse}
+        };   
+        Shield_lst = new UDictionary<string, UDictionary<string, float>>(){
+            {"Tower Shield", Tower_Shield},{"Kite Shield", Kite_Shield}
+        };      
+    }
+    public void addWeaponEntry(string name, UDictionary<string,float> stats){
+        if(Weapon_lst.ContainsKey(name)){
+            Weapon_lst[name] = stats;
+        }
+        else{
+            weapon.Add(name);
+            Weapon_lst.Add(name,stats);
+        }
+    }
+    public void addBucklerEntry(string name, UDictionary<string,float> stats){
+        if(Buckler_lst.ContainsKey(name)){
+            Buckler_lst[name] = stats;
+        }
+        else{
+            buckler.Add(name);
+        Buckler_lst.Add(name,stats);
+        }
+    }
+    public void addArmorEntry(string name, UDictionary<string,float> stats){
+        if(Armor_lst.ContainsKey(name)){
+            Armor_lst[name] = stats;
+        }
+        else{
+            armor.Add(name);
+        Armor_lst.Add(name,stats);
+        }
+    }
+    public void addMountEntry(string name, UDictionary<string,float> stats){
+        if(Mount_lst.ContainsKey(name)){
+            Mount_lst[name] = stats;
+        }
+        else{
+            mount.Add(name);
+        Mount_lst.Add(name,stats);
+        }
+    }
+    public void addShieldEntry(string name, UDictionary<string,float> stats){
+        if(Shield_lst.ContainsKey(name)){
+            Shield_lst[name] = stats;
+        }
+        else{
+            shield.Add(name);
+        Shield_lst.Add(name,stats);
+        }
+    }
+    public void removeWeaponEntry(string name){
+        Weapon_lst.Remove(name);
+        weapon.Remove(name);
+    }
+    public void removeBucklerEntry(string name){
+        Buckler_lst.Remove(name);
+        buckler.Remove(name);
+    }
+    public void removeArmorEntry(string name){
+        Armor_lst.Remove(name);
+        armor.Remove(name);
+    }
+    public void removeMountEntry(string name){
+        Mount_lst.Remove(name);
+        mount.Remove(name);
+    }
+    public void removeShieldEntry(string name){
+        Shield_lst.Remove(name);
+        shield.Remove(name);
+    }
+    public void changeWeaponKey(int index, string name){
+        UDictionary<string,float> data = Weapon_lst.ElementAt(index-1).Value;
+        removeWeaponEntry(Weapon_lst.ElementAt(index-1).Key);
+        addWeaponEntry(name,data);
+    }
+    public void changeBucklerKey(int index, string name){
+        UDictionary<string,float> data = Buckler_lst.ElementAt(index-1).Value;
+        removeBucklerEntry(Buckler_lst.ElementAt(index-1).Key);
+        addBucklerEntry(name,data);
+    }
+    public void changeShieldKey(int index, string name){
+        UDictionary<string,float> data = Shield_lst.ElementAt(index-1).Value;
+        removeShieldEntry(Shield_lst.ElementAt(index-1).Key);
+        addShieldEntry(name,data);
+    }
+    public void changeArmorKey(int index, string name){
+        UDictionary<string,float> data = Armor_lst.ElementAt(index-1).Value;
+        removeArmorEntry(Armor_lst.ElementAt(index-1).Key);
+        addArmorEntry(name,data);
+    }
+    public void changeMountKey(int index, string name){
+        UDictionary<string,float> data = Mount_lst.ElementAt(index-1).Value;
+        removeMountEntry(Mount_lst.ElementAt(index-1).Key);
+        addMountEntry(name,data);
+    }
+    UDictionary<string,float> Light_Glaive,Gladius,Power_Sword,Great_Sword,Pike,Mace,Pistol,Rifle;
+    public UDictionary<string,UDictionary<string,float>> Weapon_lst = new UDictionary<string, UDictionary<string, float>>();    
+    public UDictionary<string,float> getWeaponStat(string weapon){
+        if(Weapon_lst.ContainsKey(weapon)){
+            return Weapon_lst[weapon];
+        }
+        return null;
+    }
+    //shields
+    /*
+    0. pr
+    1. pv
+    2. mdb
+    3. rdb
+    4. init
+    5. enc
+    */
+    UDictionary<string,float> Kite_Shield,Tower_Shield;
+    public UDictionary<string,UDictionary<string,float>> Shield_lst = new UDictionary<string, UDictionary<string, float>>();    
+    public UDictionary<string,float> getShieldStat(string shield){
+        if(Shield_lst.ContainsKey(shield)){
+            return Shield_lst[shield];
+        }
+        return null;
+
+    }
+    //buckler
+    /*
+    0. pr
+    1. pv
+    2. acc(buckler2)
+    3. mdb
+    4. rdb
+    5. enc
+    */
+    UDictionary<string,float> Buckler,Buckler2;
+    public UDictionary<string,UDictionary<string,float>> Buckler_lst = new UDictionary<string, UDictionary<string, float>>();   
+    public UDictionary<string,float> getBucklerStat(string buckler){    
+        if(Buckler_lst.ContainsKey(buckler)){
+            return Buckler_lst[buckler];
+        }
+        return null;
+
+    }
+
+    //Body
+    /*
+    0. av
+    1. sv
+    2. mdb
+    3. rdb
+    4. mov
+    5. init
+    6. enc
+    */
+    UDictionary<string,float> Plate, Half_Plate, Synthe_Armor, Legionary_Armor, Praetorian_Armor, Flak_Suit,Assault_Vest, Personal_Shield_MK_I,Personal_Shield_MK_II,Personal_Shield_MK_III;
+    public UDictionary<string,UDictionary<string,float>> Armor_lst = new UDictionary<string, UDictionary<string, float>>(); 
+
+    public UDictionary<string,float> getArmorStat(string armor){
+        if(Armor_lst.ContainsKey(armor)){
+            return Armor_lst[armor];
+        }
+        return null;
+
+    }
+
+    //Mount
+    /*
+    0. hp
+    1. mdr
+    2. mov
+    3. init 
+    4. enc
+    */
+    UDictionary<string,float> Pack_Horse,War_Horse;
+    public UDictionary<string,UDictionary<string,float>> Mount_lst = new UDictionary<string, UDictionary<string, float>>();    
+
+    public UDictionary<string,float> getMountStat(string mount){    
+        if(Mount_lst.ContainsKey(mount)){
+            return Mount_lst[mount];
+        }
+        return null;
+    }
+
+    void setBaseEq(){
         Light_Glaive = new UDictionary<string, float>(){
             {"wd",6},{"pscal",1.3f},{"dscal",0.5f},{"ap",10},{"sp",90},
             {"rng",2},{"acc",1},{"mdb",-2},{"rdb",-1},{"w_enc",3},
@@ -126,103 +324,5 @@ public class Equipments : ScriptableObject
         Tower_Shield = new UDictionary<string, float>(){
         {"pr",6},{"pv",16},{"mdb",-2},{"rdb",-2},{"eq_init",-1},{"eq_enc",-3}
         };
-        Weapon_lst = new UDictionary<string, UDictionary<string, float>>(){
-            {"Light Glaive",Light_Glaive},{"Gladius",Gladius},{"Power Sword",Power_Sword},{"Great Sword",Great_Sword},{"Pike",Pike},{"Mace",Mace},{"Pistol",Pistol},{"Rifle",Rifle}
-        };
-        Buckler_lst = new UDictionary<string, UDictionary<string, float>>(){
-            {"Buckler",Buckler},{"Buckler2",Buckler2}
-        };   
-        Armor_lst = new UDictionary<string, UDictionary<string, float>>(){
-            {"Plate",Plate}, {"Half Plate",Half_Plate}, {"Synthe Armor",Synthe_Armor}, {"Legionary Armor",Legionary_Armor}, {"Praetorian Armor",Praetorian_Armor}, {"Flak Suit",Flak_Suit},{"Assault Vest",Assault_Vest}, {"Personal Shield MK I",Personal_Shield_MK_I},{"Personal Shield MK II",Personal_Shield_MK_II},{"Personal Shield MK III",Personal_Shield_MK_III}
-        };    
-        Mount_lst = new UDictionary<string, UDictionary<string, float>>(){
-            {"Pack Horse",Pack_Horse},{"War Horse",War_Horse}
-        };   
-        Shield_lst = new UDictionary<string, UDictionary<string, float>>(){
-            {"Tower Shield", Tower_Shield},{"Kite Shield", Kite_Shield}
-        };      
-    }
-    UDictionary<string,float> Light_Glaive,Gladius,Power_Sword,Great_Sword,Pike,Mace,Pistol,Rifle = new UDictionary<string,float>();
-    UDictionary<string,UDictionary<string,float>> Weapon_lst = new UDictionary<string, UDictionary<string, float>>();    
-    public UDictionary<string,float> getWeaponStat(string weapon){
-        if(Weapon_lst.ContainsKey(weapon)){
-            return Weapon_lst[weapon];
-        }
-        return null;
-    }
-    //shields
-    /*
-    0. pr
-    1. pv
-    2. mdb
-    3. rdb
-    4. init
-    5. enc
-    */
-    UDictionary<string,float> Kite_Shield,Tower_Shield= new UDictionary<string,float>();
-    UDictionary<string,UDictionary<string,float>> Shield_lst = new UDictionary<string, UDictionary<string, float>>();    
-    public UDictionary<string,float> getShieldStat(string shield){
-        if(Shield_lst.ContainsKey(shield)){
-            return Shield_lst[shield];
-        }
-        return null;
-
-    }
-    //buckler
-    /*
-    0. pr
-    1. pv
-    2. acc(buckler2)
-    3. mdb
-    4. rdb
-    5. enc
-    */
-    UDictionary<string,float> Buckler,Buckler2= new UDictionary<string,float>();
-    UDictionary<string,UDictionary<string,float>> Buckler_lst = new UDictionary<string, UDictionary<string, float>>();   
-    public UDictionary<string,float> getBucklerStat(string buckler){    
-        if(Buckler_lst.ContainsKey(buckler)){
-            return Buckler_lst[buckler];
-        }
-        return null;
-
-    }
-
-    //Body
-    /*
-    0. av
-    1. sv
-    2. mdb
-    3. rdb
-    4. mov
-    5. init
-    6. enc
-    */
-    UDictionary<string,float> Plate, Half_Plate, Synthe_Armor, Legionary_Armor, Praetorian_Armor, Flak_Suit,Assault_Vest, Personal_Shield_MK_I,Personal_Shield_MK_II,Personal_Shield_MK_III = new UDictionary<string,float>();
-    UDictionary<string,UDictionary<string,float>> Armor_lst = new UDictionary<string, UDictionary<string, float>>(); 
-
-    public UDictionary<string,float> getArmorStat(string armor){
-        if(Armor_lst.ContainsKey(armor)){
-            return Armor_lst[armor];
-        }
-        return null;
-
-    }
-
-    //Mount
-    /*
-    0. hp
-    1. mdr
-    2. mov
-    3. init 
-    4. enc
-    */
-    UDictionary<string,float> Pack_Horse,War_Horse= new UDictionary<string,float>();
-    UDictionary<string,UDictionary<string,float>> Mount_lst = new UDictionary<string, UDictionary<string, float>>();    
-
-    public UDictionary<string,float> getMountStat(string mount){    
-        if(Mount_lst.ContainsKey(mount)){
-            return Mount_lst[mount];
-        }
-        return null;
     }
 }

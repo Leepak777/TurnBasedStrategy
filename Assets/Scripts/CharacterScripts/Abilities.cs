@@ -14,7 +14,9 @@ using UnityEditorInternal;
 #endif
 
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;public class Abilities : MonoBehaviour
+using Random = UnityEngine.Random;
+
+public class Abilities : MonoBehaviour
 {
     TileManager tileM;
     public List<UnityEvent<TileManager,GameObject>> UniversalCheck = new List<UnityEvent<TileManager,GameObject>>();
