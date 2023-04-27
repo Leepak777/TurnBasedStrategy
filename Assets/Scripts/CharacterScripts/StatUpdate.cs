@@ -93,6 +93,8 @@ public class StatUpdate : MonoBehaviour
         currentHealth = backupHP;
         transform.position = backupLoc; 
         stats.revertStat(backup);
+        gameObject.GetComponentInChildren<HealthBar>().UpdateHealth();
+         gameObject.GetComponentInChildren<CharacterEvents>().unHighLightRechable.Invoke();
     }
     
     public void showText(){

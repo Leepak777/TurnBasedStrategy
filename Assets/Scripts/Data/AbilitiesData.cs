@@ -130,10 +130,15 @@ public class AbilitiesData : ScriptableObject
         }
     }
     public void foresighStart(){
+        turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        Debug.Log("Backed Up!");
+        turnM.BackUpTurn();
         turnM.EnemyBackUP();
         turnM.PlayerBackUP();
     }
     public void foresightEnd(){
+        Debug.Log("Reverted!");
+        turnM.revertTurn();
         turnM.EnemyRevert();
         turnM.PlayerRevert();
     }

@@ -119,19 +119,19 @@ public class Types:ScriptableObject
     }
 
     public List<string> Praetorian_Guard_Skill = new List<string>(){
-        "WhirlWind","ForceBlast","Foresight"
+        "WhirlWind","ForceBlast","ForeSight"
     };
     public List<string> Imperial_Legionary_Skill = new List<string>(){
-        "PsychicStorm","ForceBlast","Foresight"
+        "PsychicStorm","ForceBlast","ForeSight"
     };
     public List<string> Imperial_Conscript_Skill = new List<string>(){
-        "WhirlWind","PsychicStorm","Foresight"
+        "WhirlWind","PsychicStorm","ForeSight"
     };
     public List<string> Mercenary_Skill = new List<string>(){
-        "WhirlWind","PsychicStorm","ForceBlast","Foresight"
+        "WhirlWind","PsychicStorm","ForceBlast","ForeSight"
     };
     public List<string> Brigand_Skill = new List<string>(){
-        "WhirlWind","PsychicStorm","ForceBlast","Foresight"
+        "WhirlWind","PsychicStorm","ForceBlast","ForeSight"
     };
     public List<string> getTypeSkills(string type){
         switch(type){

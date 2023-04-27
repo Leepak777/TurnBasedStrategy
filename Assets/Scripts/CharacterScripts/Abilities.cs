@@ -70,6 +70,7 @@ public class Abilities : MonoBehaviour
         switch(Skillname[choice]){
             case "ForceBlast":
                 radius = 3; CastRange = 3 + (int) stats.getStat("acu")/4; TargetingSkill();break;
+            case "ForeSight":ActivateSkill();break;
         }
     }
 
@@ -77,7 +78,7 @@ public class Abilities : MonoBehaviour
         gameObject.GetComponent<ActionCenter>().setCasting(true);
     }
     public void ActivateSkill(){
-        
+        activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
     }
 
     public void targeting(Vector3Int loc){
@@ -87,6 +88,10 @@ public class Abilities : MonoBehaviour
             gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
             gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
             gameObject.GetComponentInChildren<CharacterEvents>().HighLightArea.Invoke(loc,radius);
+        }
+        else{
+            gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
+            gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
         }
     }
     public void SpellCast(){

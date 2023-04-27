@@ -46,10 +46,10 @@ public class UI : MonoBehaviour
         skillLst.ClearOptions();
         skillLst.AddOptions(currentPlay.GetComponent<Abilities>().getSkillNames());
         currentPlay.GetComponentInChildren<CharacterEvents>().onStart.Invoke();
-        if(currentPlay.tag == "Player"){        
+        /*if(currentPlay.tag == "Player"){        
             tm.PlayerBackUP();
             tm.EnemyBackUP();
-        }
+        }*/
         tm.setGameState(2);
     }
     public void ActivateSkill(int choice){
@@ -96,6 +96,9 @@ public class UI : MonoBehaviour
     }
     public void setForesight(bool activate){
         foresight = activate;
+        if(!foresight){
+            tm.setGameState(0);
+        }
     }
     public void setCurrentPlay(GameObject go){
         this.currentPlay = go;

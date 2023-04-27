@@ -17,6 +17,7 @@ public class TurnManager : MonoBehaviour
     public int gamestate = 0;
     private int turnElasped;
     private int gameTurn = 1;
+    private int BackUpT = 0;
     public UI ui;
     void Start()
     {
@@ -70,6 +71,12 @@ public class TurnManager : MonoBehaviour
             this.player = true; 
             ui.setCurrentPlay(turnOrder[currentTurnIndex]);
         }
+    }
+    public void BackUpTurn(){
+        BackUpT = gameTurn;
+    }
+    public void revertTurn(){
+        gameTurn = BackUpT;
     }
     public void PlayerBackUP(){
         foreach(GameObject go in turnOrder){
