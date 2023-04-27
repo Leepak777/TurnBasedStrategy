@@ -8,6 +8,7 @@ public class CharacterStat : ScriptableObject
     public UDictionary<string,string> attributes = new UDictionary<string, string>();
     public UDictionary<string,string> abilities = new UDictionary<string, string>();
     public List<string> skills = new List<string>();
+    public int AbilitiesCostMul = 1;
     public void setUp(){
         //Raw stat
         stats.Add("pow",0);//power
@@ -63,6 +64,12 @@ public class CharacterStat : ScriptableObject
                 stats[s.Key] += input[s.Key];
             }
         }
+    }
+    public void setCostMul(int num){
+        AbilitiesCostMul = num;
+    }
+    public int getCostMul(){
+        return AbilitiesCostMul;
     }
     public void setAbilities(UDictionary<string,string> lst){
         abilities = lst;

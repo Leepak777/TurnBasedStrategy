@@ -25,7 +25,7 @@ public class StatUpdate : MonoBehaviour
     public float bonus = 0;
     TileManager tileM;
     UDictionary<KeyValuePair<string,string>,int> buffs = new UDictionary<KeyValuePair<string, string>, int>();
-    UDictionary<string, UDictionary<string,int>> effect_Bonus = new UDictionary<string, UDictionary<string, int>>();
+    UDictionary<KeyValuePair<string,string>,UDictionary<string,int>> effect_Bonus = new UDictionary<KeyValuePair<string,string>,UDictionary<string, int>>();
     public UDictionary<string,float> backup = new UDictionary<string,float>();
     DRN drn;
     Text text;
@@ -88,15 +88,15 @@ public class StatUpdate : MonoBehaviour
         for(int i= 0; i<buffs.Count;i++){
             if(buffs.ElementAt(i).Key.Key == "WaterStance"){
                 currentHealth += stats.getStat("acu");
-                stats.modifyStat("ene", Math.Max(10-stats.getStat("mid") , 3));
-                stats.modifyStat("fat", Math.Max(10-stats.getStat("tou") , 3));
-                stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3));
+                stats.modifyStat("ene", Math.Max(10-stats.getStat("mid") , 3)*stats.getCostMul());
+                stats.modifyStat("fat", Math.Max(10-stats.getStat("tou") , 3)*stats.getCostMul());
+                stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3)*stats.getCostMul());
             }
             if(buffs.ElementAt(i).Key.Key == "FireStance"){
                 stats.modifyStat("fat", stats.getStat("acu")) ;
-                stats.modifyStat("ene", Math.Max(10-stats.getStat("mid") , 3));
-                stats.modifyStat("hp", Math.Max(10-stats.getStat("tou") , 3));
-                stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3));
+                stats.modifyStat("ene", Math.Max(10-stats.getStat("mid") , 3)*stats.getCostMul());
+                stats.modifyStat("hp", Math.Max(10-stats.getStat("tou") , 3)*stats.getCostMul());
+                stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3)*stats.getCostMul());
             }
         }
     }
@@ -201,11 +201,13 @@ public class StatUpdate : MonoBehaviour
         return false;
         
     }
-    public void addEffectStat(string name, UDictionary<string,int> dict){
-        effect_Bonus.Add(name,dict);
+    public void addEffectStat(KeyValuePair<string,string> pair, UDictionary<string,int> dict){
+        effect_Bonus.Add(pair,dict);
     }
-    public int getPreBonusStat(string name,string targetStat){
-        return effect_Bonus[name][targetStat];
+    public int getPreBonusStat(KeyValuePair<string,string> name,string targetStat){
+        int PreBonus = effect_Bonus[name][targetStat];
+        effect_Bonus[name].Remove(targetStat);
+        return PreBonus;
     }
     public bool isBuff(string name,string character){
         return buffs.ContainsKey(new KeyValuePair<string,string>(name,character));

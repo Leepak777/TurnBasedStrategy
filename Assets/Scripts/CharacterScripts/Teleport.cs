@@ -10,6 +10,7 @@ public class Teleport : MonoBehaviour
     Pathfinder<Vector3Int> pathfinder;
     List<Vector3Int> trail = new List<Vector3Int>();
     public float tilescheck = 0;
+    public float rangeMultiplier = 1f;
     float attackrange; 
     public bool outClick = false;
     TileManager tileM;
@@ -30,7 +31,7 @@ public class Teleport : MonoBehaviour
     public void PlayerTeleport(Vector3 mousePosition){
         Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
         targetNode = tileM.WorldToCell(target);
-        targetNode = tileM.getCloestTile(targetNode,originNode,attackrange,tilescheck);
+        targetNode = tileM.getCloestTile(targetNode,originNode,attackrange,tilescheck*rangeMultiplier);
         Node n = tileM.GetNodeFromWorld(targetNode);
         if(n.occupant != null && n.occupant.tag == "Enemy"){
             if(tileM.entityInRange(gameObject, n.occupant, gameObject.GetComponent<StatUpdate>().getAttackRange())){
@@ -60,7 +61,7 @@ public class Teleport : MonoBehaviour
             this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
             return;
         }
-        KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode,attackrange,tilescheck);
+        KeyValuePair<GameObject,Vector3Int> target = tileM.getClosestReachablePlayer("Player", originNode,attackrange,tilescheck*rangeMultiplier);
         Vector3Int startNode = tileM.WorldToCell(transform.position);  
               
         targetNode = target.Value;   
@@ -167,7 +168,12 @@ public class Teleport : MonoBehaviour
 
         return neighbours;*/
     }
-
+    public void setRangeMul(float num){
+        rangeMultiplier = num;
+    }
+    public float getRangeMul(){
+        return rangeMultiplier;
+    }
     public int getAttackRange(){
         return (int)attackrange;
     }
@@ -175,7 +181,7 @@ public class Teleport : MonoBehaviour
         return originNode;
     }
     public float getTilesCheck(){
-        return tilescheck;
+        return tilescheck*rangeMultiplier;
     }
     public void setRange(){
         tilescheck = this.gameObject.GetComponent<StatUpdate>().getMaxTiles() ;//+ 0.5f;
