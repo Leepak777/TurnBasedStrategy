@@ -171,6 +171,25 @@ public class AbilitiesData : ScriptableObject
         }
         
     }
+    public void FireStance(GameObject play, Vector3Int target){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        if(!ocstat.isBuff("FireStance", play.name)){
+            ocstat.addBuff("FireStance", play.name,1);
+            ocstat.getStats().modifyStat("ene",-5);
+            ocstat.getStats().modifyStat("stb",-5);
+            ocstat.getStats().modifyStat("hp",-5);
+            ocstat.setBonus((int)ocstat.getDictStats("acu"));
+            ocstat.getStats().modifyStat("acu",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
+            ocstat.addEffectStat("FireStance", new UDictionary<string, int>(){{"bonus damage",(int)ocstat.getDictStats("acu")},{"acu",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
+        }
+        else{
+            ocstat.removeBuff("FireStance", play.name);
+            play.GetComponent<Abilities>().addToCooldDown("FireStance",3);
+            ocstat.setBonus(-(int)ocstat.getPreBonusStat("FireStance","bonus damage"));
+            ocstat.getStats().modifyStat("acu",-ocstat.getPreBonusStat("FireStance","acu"));
+        }
+        
+    }
 
 
 }

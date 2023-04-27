@@ -92,6 +92,12 @@ public class StatUpdate : MonoBehaviour
                 stats.modifyStat("fat", Math.Max(10-stats.getStat("tou") , 3));
                 stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3));
             }
+            if(buffs.ElementAt(i).Key.Key == "FireStance"){
+                stats.modifyStat("fat", stats.getStat("acu")) ;
+                stats.modifyStat("ene", Math.Max(10-stats.getStat("mid") , 3));
+                stats.modifyStat("hp", Math.Max(10-stats.getStat("tou") , 3));
+                stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3));
+            }
         }
     }
     public void saveStat(){

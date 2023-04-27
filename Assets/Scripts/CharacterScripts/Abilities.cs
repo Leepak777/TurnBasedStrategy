@@ -79,6 +79,7 @@ public class Abilities : MonoBehaviour
             case "ForeSight":ActivateSkill(Skillname[choice]);break;
             case "WhirlWind":ActivateSkill(Skillname[choice]);break;
             case "WaterStance":ActivateSkill(Skillname[choice]);break;
+            case "FireStance":ActivateSkill(Skillname[choice]);break;
         }
     }
     public void CheckCoolDown(string name){
