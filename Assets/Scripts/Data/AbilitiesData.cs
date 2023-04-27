@@ -13,6 +13,7 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<GameObject, Vector3Int> PsychiStorm_e;
     public UnityEvent<GameObject, Vector3Int> PsychiStorm_ef;
     public UnityEvent<GameObject, Vector3Int> ForeSight_e;
+    public UnityEvent<GameObject, Vector3Int> WaterStance_e;
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
@@ -59,7 +60,7 @@ public class AbilitiesData : ScriptableObject
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
             if(tileM.inArea(tileM.WorldToCell(play.transform.position),pos,3)){
-                if(su.addBuff("LeadershipAura", play.name)){
+                if(su.addBuff("LeadershipAura", play.name,1)){
                     su.setBonus(1);
                 }
             }
@@ -114,7 +115,6 @@ public class AbilitiesData : ScriptableObject
         AreaDamage(play,target,range,(int)Damage,play.tag);
         ocstat.getStats().modifyStat("ene",-15);
         ocstat.getStats().modifyStat("fat",-20);
-        Debug.Log(Damage);
     }
     public void PsychicStorm(GameObject play, Vector3Int target){
         tileM.GetNodeFromWorld(target).effectFlag.Add("PsychicStorm", new KeyValuePair<GameObject, int>(play, 3));
@@ -152,7 +152,25 @@ public class AbilitiesData : ScriptableObject
         turnM.PlayerRevert();
     }
 
-
+    public void WaterStance(GameObject play, Vector3Int target){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        if(!ocstat.isBuff("WaterStance", play.name)){
+            ocstat.addBuff("WaterStance", play.name,1);
+            ocstat.getStats().modifyStat("ene",-5);
+            ocstat.getStats().modifyStat("stb",-5);
+            ocstat.getStats().modifyStat("fat",-5);
+            ocstat.getStats().modifyStat("pv",ocstat.getDictStats("acu"));
+            ocstat.getStats().modifyStat("pr",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
+            ocstat.addEffectStat("WaterStance", new UDictionary<string, int>(){{"pv",(int)ocstat.getDictStats("acu")},{"pr",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
+        }
+        else{
+            ocstat.removeBuff("WaterStance", play.name);
+            play.GetComponent<Abilities>().addToCooldDown("WaterStance",3);
+            ocstat.getStats().modifyStat("pv",-ocstat.getPreBonusStat("WaterStance","pv"));
+            ocstat.getStats().modifyStat("pr",-ocstat.getPreBonusStat("WaterStance","pr"));
+        }
+        
+    }
 
 
 }

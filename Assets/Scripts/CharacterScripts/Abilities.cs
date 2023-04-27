@@ -76,8 +76,9 @@ public class Abilities : MonoBehaviour
                 CheckCoolDown(Skillname[choice]);break;
             case "PsychicStorm":
                 CheckCoolDown(Skillname[choice]);break;
-            case "ForeSight":ActivateSkill();break;
-            case "WhirlWind":ActivateSkill();break;
+            case "ForeSight":ActivateSkill(Skillname[choice]);break;
+            case "WhirlWind":ActivateSkill(Skillname[choice]);break;
+            case "WaterStance":ActivateSkill(Skillname[choice]);break;
         }
     }
     public void CheckCoolDown(string name){
@@ -106,6 +107,9 @@ public class Abilities : MonoBehaviour
             break;
         }
     }
+    public void addToCooldDown(string name,int turns){
+        CoolDown.Add(name,turns);
+    }
     public void DecCoolDown(){
         for(int i = 0; i < CoolDown.Count; i++){
             CoolDown[CoolDown.ElementAt(i).Key]--;
@@ -117,8 +121,10 @@ public class Abilities : MonoBehaviour
     public void TargetingSkill(){
         gameObject.GetComponent<ActionCenter>().setCasting(true);
     }
-    public void ActivateSkill(){
-        activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+    public void ActivateSkill(string name){
+        if(!CoolDown.ContainsKey(name)){
+            activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+        }
     }
 
     public void targeting(Vector3Int loc){

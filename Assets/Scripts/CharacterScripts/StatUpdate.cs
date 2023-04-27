@@ -25,6 +25,7 @@ public class StatUpdate : MonoBehaviour
     public float bonus = 0;
     TileManager tileM;
     UDictionary<KeyValuePair<string,string>,int> buffs = new UDictionary<KeyValuePair<string, string>, int>();
+    UDictionary<string, UDictionary<string,int>> effect_Bonus = new UDictionary<string, UDictionary<string, int>>();
     public UDictionary<string,float> backup = new UDictionary<string,float>();
     DRN drn;
     Text text;
@@ -83,7 +84,16 @@ public class StatUpdate : MonoBehaviour
         }
         
     }
-
+    public void BuffMaintainCheck(){
+        for(int i= 0; i<buffs.Count;i++){
+            if(buffs.ElementAt(i).Key.Key == "WaterStance"){
+                currentHealth += stats.getStat("acu");
+                stats.modifyStat("ene", Math.Max(10-stats.getStat("mid") , 3));
+                stats.modifyStat("fat", Math.Max(10-stats.getStat("tou") , 3));
+                stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3));
+            }
+        }
+    }
     public void saveStat(){
         backupHP = currentHealth;
         backupLoc = transform.position;
@@ -167,10 +177,10 @@ public class StatUpdate : MonoBehaviour
     public void attackingFatigue(){
         stats.modifyStat("fat", stats.getStat("enc"));
     }
-    public bool addBuff(string buff, string character){
+    public bool addBuff(string buff, string character, int duration){
         KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
         if(!buffs.ContainsKey(pair)){
-            buffs.Add(pair,1);
+            buffs.Add(pair,duration);
             return true;
         }
         return false;
@@ -184,6 +194,15 @@ public class StatUpdate : MonoBehaviour
         }
         return false;
         
+    }
+    public void addEffectStat(string name, UDictionary<string,int> dict){
+        effect_Bonus.Add(name,dict);
+    }
+    public int getPreBonusStat(string name,string targetStat){
+        return effect_Bonus[name][targetStat];
+    }
+    public bool isBuff(string name,string character){
+        return buffs.ContainsKey(new KeyValuePair<string,string>(name,character));
     }
     public void attackedFatigue(){
         stats.modifyStat("fat",1);
