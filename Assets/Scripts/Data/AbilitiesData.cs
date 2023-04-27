@@ -8,10 +8,16 @@ public class AbilitiesData : ScriptableObject
 {
     public UnityEvent<GameObject> Leadership;
     public UnityEvent<GameObject> charge;
+    public UnityEvent<GameObject, Vector3Int> WhirlWind_e;
+    public UnityEvent<GameObject, Vector3Int> ForceBlast_e;
+    public UnityEvent<GameObject, Vector3Int> PsychiStorm_e;
+    public UnityEvent<GameObject, Vector3Int> ForeSight_e;
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
-
+    void setTileM(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+    }
     void Awake(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -25,7 +31,22 @@ public class AbilitiesData : ScriptableObject
         }
         return null;
     }
+
+    public UnityEvent<GameObject, Vector3Int> getActiveSkill(string name){
+        switch(name){
+            case "WhirlWind": 
+            return WhirlWind_e;
+            case "ForceBlast":
+            return ForceBlast_e;
+            case "PsychicStorm":
+            return PsychiStorm_e;
+            case "ForeSight":
+            return ForeSight_e;
+        }
+        return null;
+    }
     public void LeadersshipAura(GameObject play){
+        setTileM();
         foreach(GameObject go in GameObject.FindGameObjectsWithTag(play.tag)){
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
@@ -42,6 +63,7 @@ public class AbilitiesData : ScriptableObject
         }
     }
     public void Charge(GameObject play){
+        setTileM();
         TurnManager tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         StatUpdate su = play.GetComponent<StatUpdate>();
         Teleport teleport = play.GetComponent<Teleport>();                         
@@ -79,11 +101,12 @@ public class AbilitiesData : ScriptableObject
     }
     public void ForceBlast(GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        float Damage = 10 + ocstat.getStats()["mid"]*2;
-        int range = 3 + ocstat.getStats["acu"]/4;
+        float Damage = 10 + ocstat.getDictStats("mid")*2;
+        int range = 3 + (int)ocstat.getDictStats("acu")/4;
         AreaDamage(play,target,range,(int)Damage,play.tag);
         ocstat.getStats().modifyStat("ene",-15);
         ocstat.getStats().modifyStat("fat",-20);
+        Debug.Log(Damage);
     }
     public void PsychicStorm(GameObject play, Vector3Int target){
         tileM.GetNodeFromWorld(target).effectFlag.Add("PsychicStorm", new KeyValuePair<GameObject, int>(play, 3));
@@ -94,7 +117,25 @@ public class AbilitiesData : ScriptableObject
 
     public void PsychicStormEffect(GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        AreaDamage(play, target, 3, 20+ocstat.getStats()["mid"]-3, play.tag);
+        AreaDamage(play, target, 3, (int)(20+ocstat.getDictStats("mid")-3), play.tag);
+    }
+    public void Foresight(){
+        if(!turnM.getUI().inForesight()){
+            foresighStart();
+            turnM.getUI().setForesight((true));
+        }
+        else{
+            foresightEnd();
+            turnM.getUI().setForesight((false));
+        }
+    }
+    public void foresighStart(){
+        turnM.EnemyBackUP();
+        turnM.PlayerBackUP();
+    }
+    public void foresightEnd(){
+        turnM.EnemyRevert();
+        turnM.PlayerRevert();
     }
 
 

@@ -11,6 +11,7 @@ public class HighlightReachableTiles : MonoBehaviour
     private List<Vector3Int> reachableTiles = new List<Vector3Int>();
     private List<Vector3Int> test = new List<Vector3Int>();
     private List<Vector3Int> EnemyTiles = new List<Vector3Int>();
+    private List<Vector3Int> TargetArea = new List<Vector3Int>();
     public TileManager tileM;
     void Start(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
@@ -43,6 +44,19 @@ public class HighlightReachableTiles : MonoBehaviour
                     //}
                 }
         }
+    }
+    public void HighLightTargetArea(Vector3Int target, int range){
+        foreach(Node n in tileM.GetTilesInArea(target,range)){
+            Vector3Int t = new Vector3Int(n.gridX,n.gridY,target.z);
+            highlight(t);
+            TargetArea.Add(t);
+        }
+    }
+    public void unHighLightTargetArea(){
+        foreach(Vector3Int v in TargetArea){
+            unhighlight(v);
+        }
+        TargetArea.Clear();
     }
     //highlight tile
     public void highlight(Vector3Int tile){

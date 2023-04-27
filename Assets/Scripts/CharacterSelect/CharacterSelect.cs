@@ -27,6 +27,19 @@ public class CharacterSelect : MonoBehaviour
             //Debug.Log(s.name);
             Daemons.Add(s.name,s);
         }
+        GameObject goParent = transform.parent.gameObject;
+        int count = 0;
+        for(int i = 0; i < goParent.transform.childCount; i++){
+            if(goParent.transform.GetChild(i).tag == "CharacterSetup"){
+                count++;
+            }
+        }
+        if(goParent.name =="scrollPanel"){
+            gameObject.name = "Player" + (count);
+        }
+        else{
+            gameObject.name = "Enemy" + (count);
+        }
         dropdown.ClearOptions();
         dropdown.AddOptions(types);
     }

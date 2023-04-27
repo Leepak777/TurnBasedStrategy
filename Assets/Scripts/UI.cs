@@ -1,9 +1,15 @@
+
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
-
+using System.IO;
+using System.Linq;
+using UnityEngine.Tilemaps;
+using Random = System.Random;
+using UnityEditor;
+using UnityEngine.UI;
 public class UI : MonoBehaviour
 {
     public GameObject currentPlay;
@@ -14,6 +20,9 @@ public class UI : MonoBehaviour
     public UnityEvent stop;
     public TurnManager tm;
     public AbilitiesData ad; 
+    public bool foresight = false;
+    public Dropdown skillLst;
+    public bool Casting = false;
 
     void Update()
     {
@@ -34,12 +43,20 @@ public class UI : MonoBehaviour
     }
     public void startEvent(){
         //To-DO: Added skill check for skills that update each game turn
+        skillLst.ClearOptions();
+        skillLst.AddOptions(currentPlay.GetComponent<Abilities>().getSkillNames());
         currentPlay.GetComponentInChildren<CharacterEvents>().onStart.Invoke();
         if(currentPlay.tag == "Player"){        
-            tm.startTurnSavePlayer();
-            tm.startTurnSaveEnemy();
+            tm.PlayerBackUP();
+            tm.EnemyBackUP();
         }
         tm.setGameState(2);
+    }
+    public void ActivateSkill(int choice){
+        currentPlay.GetComponent<Abilities>().ActiveSkillCheck(choice);
+    }
+    public void CastSkill(){
+        currentPlay.GetComponent<Abilities>().SpellCast();
     }
     public void endEvent(){
         //To-DO: Added skill check for skills that update each game turn
@@ -72,6 +89,13 @@ public class UI : MonoBehaviour
             tm.setGameState(1);
         }
         
+    }
+
+    public bool inForesight(){
+        return foresight;
+    }
+    public void setForesight(bool activate){
+        foresight = activate;
     }
     public void setCurrentPlay(GameObject go){
         this.currentPlay = go;

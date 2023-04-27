@@ -17,6 +17,7 @@ public class ActionCenter : MonoBehaviour
     Vector3 worldPos;
     bool attacking = false;
     bool moving = false;
+    bool Casting = false;
     void Awake()
     {
         getTileM();
@@ -73,7 +74,7 @@ public class ActionCenter : MonoBehaviour
         if(GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton()){
             return;
         }
-        if(GameObject.Find("InfoPanel") == null && GameObject.Find("AttackConfirm")== null){
+        if(GameObject.Find("InfoPanel") == null && GameObject.Find("AttackConfirm")== null && !Casting){
             GameObject.Find("TurnManager").GetComponent<TurnManager>().setGameState(2);
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Node n = tileM.GetNodeFromWorld(tileM.WorldToCell(pos));
@@ -113,6 +114,10 @@ public class ActionCenter : MonoBehaviour
                 }
             }
         }
+        if(Casting){
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            gameObject.GetComponent<Abilities>().targeting(tileM.WorldToCell(pos));
+        }
     }
 
     public void notmoving(){
@@ -149,7 +154,12 @@ public class ActionCenter : MonoBehaviour
     public void getTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
-    
+    public void setCasting(bool cast){
+        Casting = cast;
+    }
+    public bool isCasting(){
+        return Casting;
+    }
     public void setTilesFat(int tilesfat){
         this.tilesfat = tilesfat;
     }

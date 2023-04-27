@@ -71,14 +71,24 @@ public class TurnManager : MonoBehaviour
             ui.setCurrentPlay(turnOrder[currentTurnIndex]);
         }
     }
-    public void startTurnSavePlayer(){
+    public void PlayerBackUP(){
         foreach(GameObject go in turnOrder){
             go.GetComponentInChildren<CharacterEvents>().saveStat.Invoke(gameTurn);
         }
     }
-    public void startTurnSaveEnemy(){
+    public void EnemyBackUP(){
         foreach(GameObject go in turnOrder2){
             go.GetComponentInChildren<CharacterEvents>().saveStat.Invoke(gameTurn);
+        }  
+    }
+    public void PlayerRevert(){
+        foreach(GameObject go in turnOrder){
+            go.GetComponentInChildren<CharacterEvents>().revertStat.Invoke(gameTurn);
+        }
+    }
+    public void EnemyRevert(){
+        foreach(GameObject go in turnOrder2){
+            go.GetComponentInChildren<CharacterEvents>().revertStat.Invoke(gameTurn);
         }  
     }
     public void gameEndCheck(){
@@ -107,7 +117,9 @@ public class TurnManager : MonoBehaviour
     public bool getActive(){
         return Active;
     }
-
+    public UI getUI(){
+        return ui;
+    }
     public int getTurnElasped(){
         return turnElasped;
     }

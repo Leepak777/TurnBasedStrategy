@@ -24,11 +24,12 @@ public class StatUpdate : MonoBehaviour
     public int Damage = 0;
     public float bonus = 0;
     TileManager tileM;
-    List< KeyValuePair<string,string>> buffs = new List<KeyValuePair<string,string>>();
+    UDictionary<KeyValuePair<string,string>,int> buffs = new UDictionary<KeyValuePair<string, string>, int>();
+    public UDictionary<string,float> backup = new UDictionary<string,float>();
     DRN drn;
     Text text;
-    Dictionary<int,float> pastHP = new Dictionary<int, float>();
-    Dictionary<int,float> pastFat = new Dictionary<int, float>();
+    float backupHP = 0;
+    Vector3 backupLoc = new Vector3();
     CharacterStat stats;
     AttackSimulation atkSim;
     void Start()
@@ -83,29 +84,17 @@ public class StatUpdate : MonoBehaviour
         
     }
 
-    public void startSaveStat(int gameTurn){
-        if(stats == null){
-            stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
-        }
-        if(pastFat.ContainsKey(gameTurn) && pastHP.ContainsKey(gameTurn)){
-            pastFat[gameTurn] = stats.getStat("fat");
-            pastHP[gameTurn] = currentHealth;
-        }
-        else{
-            pastFat.Add(gameTurn, stats.getStat("fat"));
-            pastHP.Add(gameTurn, currentHealth);
-        }
+    public void saveStat(){
+        backupHP = currentHealth;
+        backupLoc = transform.position;
+        backup = stats.getStatLst();
     }
-    public void revertStat(int i){
-        if(pastFat.ContainsKey(i)){
-            if(pastHP.Count > 0){
-                currentHealth = pastHP[i];
-                //pastHP.Remove(i);
-            }
-            stats.setStat("fat", pastFat[i]);
-        }
-        //pastFat.Remove(i);
+    public void revert(){
+        currentHealth = backupHP;
+        transform.position = backupLoc; 
+        stats.revertStat(backup);
     }
+    
     public void showText(){
         text.enabled = true;
         Invoke("disableText",2f);
@@ -116,10 +105,9 @@ public class StatUpdate : MonoBehaviour
     public void TakeDamage(int damageReceived)
     {
         int protection = drn.getDRN() + stats.getProtection();
-
-        
+        Debug.Log("Damage:"+damageReceived+"Protection: " +protection);
         damageReceived -= protection;
-
+        
         if(damageReceived <= 0){
             damageReceived = 0;
         }
@@ -179,8 +167,8 @@ public class StatUpdate : MonoBehaviour
     }
     public bool addBuff(string buff, string character){
         KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
-        if(!buffs.Contains(pair)){
-            buffs.Add(pair);
+        if(!buffs.ContainsKey(pair)){
+            buffs.Add(pair,1);
             return true;
         }
         return false;
@@ -188,7 +176,7 @@ public class StatUpdate : MonoBehaviour
     }
     public bool removeBuff(string buff, string character){
         KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
-        if(buffs.Contains(pair)){
+        if(buffs.ContainsKey(pair)){
             buffs.Remove(pair);
             return true;
         }

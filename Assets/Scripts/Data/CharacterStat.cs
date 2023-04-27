@@ -7,6 +7,7 @@ public class CharacterStat : ScriptableObject
     public UDictionary<string,float> stats = new UDictionary<string,float>();
     public UDictionary<string,string> attributes = new UDictionary<string, string>();
     public UDictionary<string,string> abilities = new UDictionary<string, string>();
+    public List<string> skills = new List<string>();
     public void setUp(){
         //Raw stat
         stats.Add("pow",0);//power
@@ -69,10 +70,18 @@ public class CharacterStat : ScriptableObject
     public UDictionary<string,string> getAbilities(){
         return abilities;
     }
+    public List<string> getSkills(){
+        return skills;
+    }
+    public void setSkills(List<string> lst){
+        skills = lst;
+    }
     public void addAttributes(string key, string value){
         attributes.Add(key,value);
     }
-
+    public void revertStat(UDictionary<string,float> backup){
+        stats = backup;
+    }
     public void setCalStat(){
         stats["hp"] = stats["tou"]*5 + stats["pow"] + stats["base_hp"];
         stats["maxHealth"] = stats["hp"];
@@ -85,7 +94,9 @@ public class CharacterStat : ScriptableObject
         stats["enc"] = stats["w_enc"] + stats["eq_enc"] + stats["base_enc"] - stats["pow"]/4;
         stats["bite"] = stats["base_init"] + stats["dex"] + stats["acu"] + stats["eq_init"] - stats["enc"];
     }
-
+    public UDictionary<string,float> getStatLst(){
+        return stats;
+    }
     public float getStat(string s){
         return stats[s];
     }

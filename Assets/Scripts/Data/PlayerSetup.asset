@@ -13,107 +13,12 @@ MonoBehaviour:
   m_Name: PlayerSetup
   m_EditorClassIdentifier: 
   stats:
-    keys:
-    - pow
-    - dex
-    - tou
-    - acu
-    - mid
-    - ma
-    - ra
-    - md
-    - rd
-    - sa
-    - mr
-    - base_hp
-    - base_mov
-    - base_init
-    - base_enc
-    - base_ene
-    - wd
-    - rng
-    - pscal
-    - dscal
-    - sp
-    - ap
-    - acc
-    - pr
-    - pv
-    - w_enc
-    - attack_num
-    - av
-    - sv
-    - mdb
-    - rdb
-    - eq_mov
-    - eq_init
-    - eq_enc
-    - hp
-    - ene
-    - fat
-    - stb
-    - maxstb
-    - mov
-    - bite
-    - enc
-    - size
-    - maxHealth
-    - maxStb
-    - maxTiles
-    values:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 69420
-    - 69420
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 69421
-    - 69420
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    keys: []
+    values: []
   attributes:
-    keys:
-    - Armor
-    - Weapon
-    values:
-    - lmao
-    - pog
+    keys: []
+    values: []
   abilities:
     keys: []
     values: []
+  skills: []

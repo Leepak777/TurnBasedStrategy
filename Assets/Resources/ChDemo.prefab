@@ -593,6 +593,9 @@ MonoBehaviour:
   maxHealth: 100
   Damage: 0
   bonus: 0
+  backup:
+    keys: []
+    values: []
 --- !u!1001 &318067221334775011
 PrefabInstance:
   m_ObjectHideFlags: 0

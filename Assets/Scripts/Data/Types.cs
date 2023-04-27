@@ -28,11 +28,21 @@ public class Types:ScriptableObject
     public List<string> type_stats = new List<string>(){"pow","dex","tou","acu","mid","base_hp","base_ene","base_mov","base_init","base_enc","ma","ra","sa","md","rd","mr"};
     UDictionary<string,float> Praetorian_Guard,Imperial_Legionary,Imperial_Conscript,Mercenary,Brigand = new UDictionary<string, float>();
     UDictionary<string,UDictionary<string,float>> Type_lst = new UDictionary<string, UDictionary<string, float>>();
+    UDictionary<string,UDictionary<string,string>> Types_Abil = new UDictionary<string, UDictionary<string, string>>();
+    UDictionary<string,List<string>> Types_Skil = new UDictionary<string, List<string>>();
     void Awake(){
         setBaseTy();
         Type_lst = new UDictionary<string, UDictionary<string, float>>(){
         {"Praetorian Guard", Praetorian_Guard}, {"Imperial Legionary", Imperial_Legionary},{"Imperial Conscript",Imperial_Conscript}
         ,{"Mercenary",Mercenary},{"Brigand",Brigand}
+        };
+        Types_Abil = new UDictionary<string, UDictionary<string,string>>(){
+        {"Praetorian Guard", Praetorian_Guard_Abilities}, {"Imperial Legionary", Imperial_Legionary_Abilities},{"Imperial Conscript",Imperial_Conscript_Abilities}
+        ,{"Mercenary",Mercenary_Abilities},{"Brigand",Brigand_Abilities}
+        };
+        Types_Skil = new UDictionary<string, List<string>>(){
+        {"Praetorian Guard", Praetorian_Guard_Skill}, {"Imperial Legionary", Imperial_Legionary_Skill},{"Imperial Conscript",Imperial_Conscript_Skill}
+        ,{"Mercenary",Mercenary_Skill},{"Brigand",Brigand_Skill}
         };
     }
     public UDictionary<string,float> getTypeStat(string type){
@@ -94,6 +104,49 @@ public class Types:ScriptableObject
     }
     public void removeEntry(string name){
         Type_lst.Remove(name);
+    }
+    public void addAbilEntry(string name, UDictionary<string,string> stats){
+        Types_Abil.Add(name,stats);
+    }
+    public void removeAbilEntry(string name){
+        Types_Abil.Remove(name);
+    }
+    public void addSkillEntry(string name, List<string> stats){
+        Types_Skil.Add(name,stats);
+    }
+    public void removeSkillEntry(string name){
+        Types_Skil.Remove(name);
+    }
+
+    public List<string> Praetorian_Guard_Skill = new List<string>(){
+        "WhirlWind","ForceBlast","Foresight"
+    };
+    public List<string> Imperial_Legionary_Skill = new List<string>(){
+        "PsychicStorm","ForceBlast","Foresight"
+    };
+    public List<string> Imperial_Conscript_Skill = new List<string>(){
+        "WhirlWind","PsychicStorm","Foresight"
+    };
+    public List<string> Mercenary_Skill = new List<string>(){
+        "WhirlWind","PsychicStorm","ForceBlast","Foresight"
+    };
+    public List<string> Brigand_Skill = new List<string>(){
+        "WhirlWind","PsychicStorm","ForceBlast","Foresight"
+    };
+    public List<string> getTypeSkills(string type){
+        switch(type){
+            case "Praetorian Guard":
+                return Praetorian_Guard_Skill;
+            case "Imperial Legionary":
+                return Imperial_Legionary_Skill;
+            case "Imperial Conscript":
+                return Imperial_Conscript_Skill;
+            case "Mercenary":
+                return Mercenary_Skill;
+            case "Brigand":
+                return Brigand_Skill;
+        }
+        return null;
     }
     void setBaseTy(){
         Praetorian_Guard = new UDictionary<string, float>(){

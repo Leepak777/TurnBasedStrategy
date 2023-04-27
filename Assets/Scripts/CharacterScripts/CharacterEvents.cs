@@ -18,11 +18,16 @@ public class CharacterEvents : MonoBehaviour
     public UnityEvent<Vector3> onPlayerMove;
     public UnityEvent onEnemyMove;
     public UnityEvent<int> saveStat;
+    public UnityEvent<int> revertStat;
+    public UnityEvent<Vector3Int, int> HighLightArea;
+    public UnityEvent unHighLightArea;
     public UnityEvent onReset;
     public UnityEvent onMoveStop;
     public UnityEvent onDeath;
     public UnityEvent onHighLight;
     public UnityEvent onUnHighLight;
+    public UnityEvent HighLightReachable;
+    public UnityEvent unHighLightRechable;
     public UnityEvent onClick;
     public UnityEvent<Vector3> setTargetTile;
     
