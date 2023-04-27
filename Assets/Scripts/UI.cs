@@ -44,12 +44,14 @@ public class UI : MonoBehaviour
     public void startEvent(){
         //To-DO: Added skill check for skills that update each game turn
         skillLst.ClearOptions();
+        skillLst.AddOptions(new List<string>(){"Skills"});
         skillLst.AddOptions(currentPlay.GetComponent<Abilities>().getSkillNames());
         currentPlay.GetComponentInChildren<CharacterEvents>().onStart.Invoke();
         /*if(currentPlay.tag == "Player"){        
             tm.PlayerBackUP();
             tm.EnemyBackUP();
         }*/
+        areaEffectCheck();
         tm.setGameState(2);
     }
     public void ActivateSkill(int choice){
@@ -67,7 +69,16 @@ public class UI : MonoBehaviour
         }
     }
     public void areaEffectCheck(){
-        
+        List<Node> lst = GameObject.Find("Tilemanager").GetComponent<TileManager>().getEffectlst();
+        for(int i = 0; i < lst.Count; i++){
+            UDictionary<string,KeyValuePair<GameObject,int>> effectlst = lst[i].effectFlag;
+            Debug.Log(lst[i]);
+            for(int j = 0; j < effectlst.Count; j++){
+                lst[i].decEffectDuration(effectlst.ElementAt(j).Key);
+                ad.getAreaEffect(effectlst.ElementAt(j).Key).Invoke(effectlst.ElementAt(j).Value.Key, new Vector3Int(lst[j].gridX,lst[j].gridY,lst[j].gridX));
+                
+            }
+        }
     }
     public void duringEvent(){
         if(currentPlay.tag == "Enemy" && !skip){

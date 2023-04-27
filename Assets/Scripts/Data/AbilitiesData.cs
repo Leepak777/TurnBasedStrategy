@@ -11,6 +11,7 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<GameObject, Vector3Int> WhirlWind_e;
     public UnityEvent<GameObject, Vector3Int> ForceBlast_e;
     public UnityEvent<GameObject, Vector3Int> PsychiStorm_e;
+    public UnityEvent<GameObject, Vector3Int> PsychiStorm_ef;
     public UnityEvent<GameObject, Vector3Int> ForeSight_e;
     TileManager tileM;
     TurnManager turnM;
@@ -42,6 +43,13 @@ public class AbilitiesData : ScriptableObject
             return PsychiStorm_e;
             case "ForeSight":
             return ForeSight_e;
+        }
+        return null;
+    }
+    public UnityEvent<GameObject, Vector3Int> getAreaEffect(string name){
+        switch(name){
+            case "PsychicStorm":
+            return PsychiStorm_ef;
         }
         return null;
     }
@@ -95,7 +103,7 @@ public class AbilitiesData : ScriptableObject
     }
     public void WhirlWind(GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        AreaAttack(play, target,3,play.tag);
+        AreaAttack(play, tileM.WorldToCell(play.transform.position),3,play.tag);
         ocstat.getStats().modifyStat("ene",-7);
         ocstat.getStats().modifyStat("stb",-15);
     }
@@ -110,6 +118,7 @@ public class AbilitiesData : ScriptableObject
     }
     public void PsychicStorm(GameObject play, Vector3Int target){
         tileM.GetNodeFromWorld(target).effectFlag.Add("PsychicStorm", new KeyValuePair<GameObject, int>(play, 3));
+        tileM.AddEffectLst(tileM.GetNodeFromWorld(target));
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         ocstat.getStats().modifyStat("ene",-25);
         ocstat.getStats().modifyStat("stb",-30);

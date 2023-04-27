@@ -57,7 +57,9 @@ public class Abilities : MonoBehaviour
                     break;
             }
         }
+        Skillname.Add("Skill");
         Skillname = stats.getSkills();
+        activeSkill.Add(new UnityEvent<GameObject,Vector3Int>());
         foreach(string name in stats.getSkills()){
             activeSkill.Add(abilitiesData.getActiveSkill(name));
         }
@@ -72,7 +74,10 @@ public class Abilities : MonoBehaviour
         switch(Skillname[choice]){
             case "ForceBlast":
                 CheckCoolDown(Skillname[choice]);break;
+            case "PsychicStorm":
+                CheckCoolDown(Skillname[choice]);break;
             case "ForeSight":ActivateSkill();break;
+            case "WhirlWind":ActivateSkill();break;
         }
     }
     public void CheckCoolDown(string name){
@@ -87,7 +92,18 @@ public class Abilities : MonoBehaviour
                 else{
                     Debug.Log("In CoolDown");
                 }
-                break;
+            break;
+            case "PsychicStorm":
+                if(!CoolDown.ContainsKey("PsychicStorm")){
+                    radius = 3; 
+                    CastRange = 5 + (int) stats.getStat("acu")/4; 
+                    TargetingSkill();
+                    CoolDown.Add(name,7);    
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
         }
     }
     public void DecCoolDown(){

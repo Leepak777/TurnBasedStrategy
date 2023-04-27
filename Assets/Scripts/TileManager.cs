@@ -23,6 +23,12 @@ public class Node
         gridX = _gridX;
         gridY = _gridY;
     }
+    public void decEffectDuration(string name){
+        effectFlag[name] = new KeyValuePair<GameObject,int>(effectFlag[name].Key,effectFlag[name].Value-1);
+        if(effectFlag[name].Value <=0){
+            effectFlag.Remove(name);
+        }
+    }
 }
 
 public class TileManager : MonoBehaviour
@@ -35,6 +41,7 @@ public class TileManager : MonoBehaviour
     private Vector3Int gridSize;
     public Vector3Int GridSize { get { return gridSize; } }
     private List<Node> reachableTiles;
+    List<Node> tileWithWffwct = new List<Node>();
     Dictionary<string,Tile> tiles = new Dictionary<string,Tile>();
     Dictionary<string,Tile> UI = new Dictionary<string,Tile>();
     Dictionary<string,Tile> Water = new Dictionary<string,Tile>();
@@ -159,6 +166,12 @@ public class TileManager : MonoBehaviour
         return reachableTiles;
     }
 
+    public void AddEffectLst(Node n){
+        tileWithWffwct.Add(n);
+    }
+    public List<Node> getEffectlst(){
+        return tileWithWffwct;
+    }
 
     public List<Node> GetTilesInArea(Vector3Int center, float range) {
         List<Node> area = new List<Node>();
