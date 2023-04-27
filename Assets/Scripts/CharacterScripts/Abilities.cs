@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
+using System.Linq;
 using System.IO;
 using UnityEngine.AI;
 
@@ -23,6 +24,7 @@ public class Abilities : MonoBehaviour
     public List<UnityEvent<GameObject>> IndividualCheck = new List<UnityEvent<GameObject>>();
     public List<UnityEvent<GameObject,Vector3Int>> activeSkill = new List<UnityEvent<GameObject,Vector3Int>>();
     public List<string> Skillname = new List<string>();
+    UDictionary<string,int> CoolDown = new UDictionary<string, int>();
     CharacterStat stats;
     AbilitiesData abilitiesData;
     int choice = 0;
@@ -69,11 +71,33 @@ public class Abilities : MonoBehaviour
         this.choice = choice;
         switch(Skillname[choice]){
             case "ForceBlast":
-                radius = 3; CastRange = 3 + (int) stats.getStat("acu")/4; TargetingSkill();break;
+                CheckCoolDown(Skillname[choice]);break;
             case "ForeSight":ActivateSkill();break;
         }
     }
-
+    public void CheckCoolDown(string name){
+        switch(name){
+            case "ForceBlast":
+                if(!CoolDown.ContainsKey("ForceBlast")){
+                    radius = 3; 
+                    CastRange = 3 + (int) stats.getStat("acu")/4; 
+                    TargetingSkill();
+                    CoolDown.Add(name,5);    
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+                break;
+        }
+    }
+    public void DecCoolDown(){
+        for(int i = 0; i < CoolDown.Count; i++){
+            CoolDown[CoolDown.ElementAt(i).Key]--;
+            if(CoolDown.ElementAt(i).Value <= 0){
+                CoolDown.Remove(CoolDown.ElementAt(i));
+            }
+        }
+    }
     public void TargetingSkill(){
         gameObject.GetComponent<ActionCenter>().setCasting(true);
     }
