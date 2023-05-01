@@ -25,12 +25,18 @@ public class Abilities : MonoBehaviour
     public List<UnityEvent<GameObject,Vector3Int>> activeSkill = new List<UnityEvent<GameObject,Vector3Int>>();
     public List<string> Skillname = new List<string>();
     UDictionary<string,int> CoolDown = new UDictionary<string, int>();
+    UDictionary<KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>, int> castList = new UDictionary<KeyValuePair<int, KeyValuePair<GameObject, Vector3Int>>, int>();
     CharacterStat stats;
     AbilitiesData abilitiesData;
     int choice = 0;
     int radius = 0;
     int CastRange = 0;
+    int targetNum = 1;
+    int targets = 0;
+    int CastTime = 0;
     Vector3Int targetLoc;
+    bool characterTarget = false;
+    List<Vector3Int> targetV = new List<Vector3Int>();
     public void GameCheck(){
         foreach(UnityEvent<GameObject> e in UniversalCheck){
             e.Invoke(gameObject);
@@ -57,7 +63,7 @@ public class Abilities : MonoBehaviour
                     break;
             }
         }
-        Skillname.Add("Skill");
+        
         Skillname = stats.getSkills();
         activeSkill.Add(new UnityEvent<GameObject,Vector3Int>());
         foreach(string name in stats.getSkills()){
@@ -70,44 +76,21 @@ public class Abilities : MonoBehaviour
     }
 
     public void ActiveSkillCheck(int choice){
+        choice--;
         this.choice = choice;
+        Debug.Log(Skillname[choice]);
         switch(Skillname[choice]){
             case "ForceBlast":
                 CheckCoolDown(Skillname[choice]);break;
             case "PsychicStorm":
                 CheckCoolDown(Skillname[choice]);break;
-            case "ForeSight":ActivateSkill(Skillname[choice]);break;
-            case "WhirlWind":ActivateSkill(Skillname[choice]);break;
-            case "WaterStance":ActivateSkill(Skillname[choice]);break;
-            case "FireStance":ActivateSkill(Skillname[choice]);break;
+            case "ForeSight":CheckCoolDown(Skillname[choice]);break;
+            case "WhirlWind":CheckCoolDown(Skillname[choice]);break;
+            case "WaterStance":CheckCoolDown(Skillname[choice]);break;
+            case "FireStance":CheckCoolDown(Skillname[choice]);break;
         }
     }
-    public void CheckCoolDown(string name){
-        switch(name){
-            case "ForceBlast":
-                if(!CoolDown.ContainsKey("ForceBlast")){
-                    radius = 3; 
-                    CastRange = 3 + (int) stats.getStat("acu")/4; 
-                    TargetingSkill();
-                    CoolDown.Add(name,5);    
-                }
-                else{
-                    Debug.Log("In CoolDown");
-                }
-            break;
-            case "PsychicStorm":
-                if(!CoolDown.ContainsKey("PsychicStorm")){
-                    radius = 3; 
-                    CastRange = 5 + (int) stats.getStat("acu")/4; 
-                    TargetingSkill();
-                    CoolDown.Add(name,7);    
-                }
-                else{
-                    Debug.Log("In CoolDown");
-                }
-            break;
-        }
-    }
+    
     public void addToCooldDown(string name,int turns){
         CoolDown.Add(name,turns);
     }
@@ -127,26 +110,132 @@ public class Abilities : MonoBehaviour
             activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
         }
     }
-
+    public void resetTargeting(){
+        targetV.Clear();
+        targets = 0;
+        gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
+        gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
+    }
     public void targeting(Vector3Int loc){
         Vector3Int playLoc = tileM.WorldToCell(transform.position);
-        if(tileM.GetDistance(playLoc,loc) <= CastRange){
+        if(tileM.GetDistance(playLoc,loc) <= CastRange && targets < targetNum){
             targetLoc = loc;
-            gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
-            gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
+            //gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
+            //gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
+            targetV.Add(loc);
             gameObject.GetComponentInChildren<CharacterEvents>().HighLightArea.Invoke(loc,radius);
+            targets++;
+            if(characterTarget && tileM.GetNodeFromWorld(targetV[0]).occupant == null){
+                resetTargeting();
+            }
         }
         else{
-            gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
-            gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
+            resetTargeting();
+        }
+    }
+    public void updateCasttime(){
+        for(int i = 0; i < castList.Count; i++){
+            //KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>, int
+            KeyValuePair<KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>, int> pair = castList.ElementAt(i);
+            KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>> k = pair.Key;
+            int dec = pair.Value-1;
+            castList.Remove(k);
+            if(dec <= 0){
+                activeSkill[pair.Key.Key].Invoke(pair.Key.Value.Key,pair.Key.Value.Value);
+            }
+            else{
+                castList.Add(k,dec);
+            }
         }
     }
     public void SpellCast(){
         if(gameObject.GetComponent<ActionCenter>().isCasting()){
             gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
             gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
-            activeSkill[choice].Invoke(gameObject, targetLoc);
+            if(targetV.Count == 1){
+                //activeSkill[choice].Invoke(gameObject, targetLoc);
+                castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, targetLoc)),CastTime);
+                }
+            else if(characterTarget){
+                //activeSkill[choice].Invoke(tileM.GetNodeFromWorld(targetV[0]).occupant, targetV[1]);
+                castList.Add(
+                    new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, 
+                    new KeyValuePair<GameObject, Vector3Int>(tileM.GetNodeFromWorld(targetV[0]).occupant, targetV[1])),CastTime);
+                }
+            characterTarget = false;
             gameObject.GetComponent<ActionCenter>().setCasting(false);
+            targets = 0;
+        }
+    }
+
+    public void CheckCoolDown(string name){
+        switch(name){
+            case "ForceBlast":
+                if(!CoolDown.ContainsKey("ForceBlast")){
+                    radius = 3; 
+                    CastRange = 3 + (int) stats.getStat("acu")/4; 
+                    TargetingSkill();
+                    targetNum = 1;
+                    CastTime = 0;
+                    CoolDown.Add(name,5);    
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "PsychicStorm":
+                if(!CoolDown.ContainsKey("PsychicStorm")){
+                    radius = 3; 
+                    CastRange = 5 + (int) stats.getStat("acu")/4; 
+                    TargetingSkill();
+                    targetNum = 1;
+                    CastTime = 2;
+                    CoolDown.Add(name,7);    
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "ForeSight":
+                if(!CoolDown.ContainsKey("ForeSight")){
+                    CastTime = 0;
+                    CoolDown.Add(name,Math.Max((int)(5 - stats.getStat("acu")/2),0));    
+                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "WhirldWind":
+                if(!CoolDown.ContainsKey("WhirldWind")){
+                    CastTime = 1;
+                    CoolDown.Add(name,3);    
+                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "WaterStance":
+                if(!CoolDown.ContainsKey("WaterStance")){
+                    CastTime = 0;
+                    CoolDown.Add(name,3);
+                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "FireStance":
+                if(!CoolDown.ContainsKey("FireStance")){
+                    CastTime = 0;
+                    CoolDown.Add(name,3);
+                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
         }
     }
 }

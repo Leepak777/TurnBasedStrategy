@@ -96,9 +96,9 @@ MonoBehaviour:
     - 4
     - -2
     - 82
-    - 14
+    - -216
     - 0
-    - 33
+    - -117
     - 0
     - 13.5
     - 21.75
@@ -132,4 +132,5 @@ MonoBehaviour:
   skills:
   - PsychicStorm
   - ForceBlast
-  - Foresight
+  - ForeSight
+  AbilitiesCostMul: 1

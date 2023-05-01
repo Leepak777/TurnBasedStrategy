@@ -25,7 +25,7 @@ public class AbilitiesData : ScriptableObject
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
     void Awake(){
-        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        setTileM();
         turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
     }
     public UnityEvent<GameObject> getEvent(string name){
@@ -133,7 +133,7 @@ public class AbilitiesData : ScriptableObject
                     su.getStats().modifyStat("md",-(int)Math.Min(su.getDictStats("mid")/2,2));
                     su.getStats().modifyStat("ra",-(int)Math.Min(su.getDictStats("mid")/2,2));
                     su.getStats().modifyStat("rd",-(int)Math.Min(su.getDictStats("mid")/2,2));
-                    play.GetComponent<Teleport>().setRangeMul(0.5);
+                    play.GetComponent<Teleport>().setRangeMul(0.5f);
                     su.addEffectStat(pair, new UDictionary<string, int>(){
                         {"ma",-(int)Math.Min(su.getDictStats("mid")/2,2)},{"rd",-(int)Math.Min(su.getDictStats("mid")/2,2)}
                         ,{"md",-(int)Math.Min(su.getDictStats("mid")/2,2)},{"ra",-(int)Math.Min(su.getDictStats("mid")/2,2)}});
@@ -270,6 +270,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
+    
     public void WhirlWind(GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         AreaAttack(play, tileM.WorldToCell(play.transform.position),3,play.tag);
@@ -295,6 +296,9 @@ public class AbilitiesData : ScriptableObject
     public void PsychicStormEffect(GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         AreaDamage(play, target, 3, (int)(20+ocstat.getDictStats("mid")-3), play.tag);
+    }
+    public void GenericSummon(GameObject play, Vector3Int target){
+        //instantiate GameObject at target
     }
     public void Foresight(){
         if(!turnM.getUI().inForesight()){
@@ -359,6 +363,9 @@ public class AbilitiesData : ScriptableObject
         }
         
     }
-
+    
+    public void Teleport(GameObject target, Vector3Int Loc){
+        target.transform.position = tileM.GetCellCenterWorld(Loc);
+    }
 
 }

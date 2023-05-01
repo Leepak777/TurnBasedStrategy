@@ -97,7 +97,7 @@ MonoBehaviour:
     - 3
     - 60
     - 9
-    - 0
+    - 1
     - 23
     - 0
     - 10.5
@@ -132,4 +132,5 @@ MonoBehaviour:
   skills:
   - WhirlWind
   - PsychicStorm
-  - Foresight
+  - ForeSight
+  AbilitiesCostMul: 1

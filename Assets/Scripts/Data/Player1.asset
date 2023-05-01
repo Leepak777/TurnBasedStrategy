@@ -96,7 +96,7 @@ MonoBehaviour:
     - 4
     - -1
     - 88
-    - 16
+    - -14
     - 0
     - 41
     - 0
@@ -130,4 +130,5 @@ MonoBehaviour:
   skills:
   - WhirlWind
   - ForceBlast
-  - Foresight
+  - ForeSight
+  AbilitiesCostMul: 1
