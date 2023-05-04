@@ -169,6 +169,7 @@ public class Abilities : MonoBehaviour
     }
 
     public void CheckCoolDown(string name){
+        abilitiesData.computeCost(gameObject, name);
         switch(name){
             case "ForceBlast":
                 if(!CoolDown.ContainsKey("ForceBlast")){

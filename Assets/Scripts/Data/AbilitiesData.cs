@@ -274,23 +274,23 @@ public class AbilitiesData : ScriptableObject
     public void WhirlWind(GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         AreaAttack(play, tileM.WorldToCell(play.transform.position),3,play.tag);
-        ocstat.getStats().modifyStat("ene",-7*ocstat.getStats().getCostMul());
-        ocstat.getStats().modifyStat("stb",-15*ocstat.getStats().getCostMul());
+        //ocstat.getStats().modifyStat("ene",-7*ocstat.getStats().getCostMul());
+        //ocstat.getStats().modifyStat("stb",-15*ocstat.getStats().getCostMul());
     }
     public void ForceBlast(GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         float Damage = 10 + ocstat.getDictStats("mid")*2;
         int range = 3 + (int)ocstat.getDictStats("acu")/4;
         AreaDamage(play,target,range,(int)Damage,play.tag);
-        ocstat.getStats().modifyStat("ene",-15*ocstat.getStats().getCostMul());
-        ocstat.getStats().modifyStat("fat",-20*ocstat.getStats().getCostMul());
+        //ocstat.getStats().modifyStat("ene",-15*ocstat.getStats().getCostMul());
+        //ocstat.getStats().modifyStat("fat",-20*ocstat.getStats().getCostMul());
     }
     public void PsychicStorm(GameObject play, Vector3Int target){
         tileM.GetNodeFromWorld(target).effectFlag.Add("PsychicStorm", new KeyValuePair<GameObject, int>(play, 3));
         tileM.AddEffectLst(tileM.GetNodeFromWorld(target));
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        ocstat.getStats().modifyStat("ene",-25*ocstat.getStats().getCostMul());
-        ocstat.getStats().modifyStat("stb",-30*ocstat.getStats().getCostMul());
+        /*ocstat.getStats().modifyStat("ene",-25*ocstat.getStats().getCostMul());
+        ocstat.getStats().modifyStat("stb",-30*ocstat.getStats().getCostMul());*/
     }
 
     public void PsychicStormEffect(GameObject play, Vector3Int target){
@@ -328,13 +328,13 @@ public class AbilitiesData : ScriptableObject
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         if(!ocstat.isBuff("WaterStance", play.name)){
             ocstat.addBuff("WaterStance", play.name,1);
-            ocstat.getStats().modifyStat("ene",-5);
+            /*ocstat.getStats().modifyStat("ene",-5);
             ocstat.getStats().modifyStat("stb",-5);
             ocstat.getStats().modifyStat("fat",-5);
             ocstat.getStats().modifyStat("pv",ocstat.getDictStats("acu"));
             ocstat.getStats().modifyStat("pr",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
             ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"Water"), new UDictionary<string, int>(){{"pv",(int)ocstat.getDictStats("acu")},{"pr",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
-        }
+        */}
         else{
             ocstat.removeBuff("WaterStance", play.name);
             play.GetComponent<Abilities>().addToCooldDown("WaterStance",3);
@@ -347,14 +347,14 @@ public class AbilitiesData : ScriptableObject
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         if(!ocstat.isBuff("FireStance", play.name)){
             ocstat.addBuff("FireStance", play.name,1);
-            ocstat.getStats().modifyStat("ene",-5);
+            /*ocstat.getStats().modifyStat("ene",-5);
             ocstat.getStats().modifyStat("stb",-5);
             ocstat.getStats().modifyStat("hp",-5);
             ocstat.setBonus((int)ocstat.getDictStats("acu"));
             ocstat.getStats().modifyStat("acu",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
             ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"FireStance"), new UDictionary<string, int>(){
                 {"bonus damage",(int)ocstat.getDictStats("acu")},{"acu",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
-        }
+        */}
         else{
             ocstat.removeBuff("FireStance", play.name);
             play.GetComponent<Abilities>().addToCooldDown("FireStance",3);
@@ -368,4 +368,39 @@ public class AbilitiesData : ScriptableObject
         target.transform.position = tileM.GetCellCenterWorld(Loc);
     }
 
+    public void computeCost(GameObject play, string name){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        switch(name){
+            case "WhirlWind":
+                ocstat.getStats().modifyStat("ene",-7*ocstat.getStats().getCostMul());
+                ocstat.getStats().modifyStat("stb",-15*ocstat.getStats().getCostMul());
+                break;
+            case "ForceBlast":
+                ocstat.getStats().modifyStat("ene",-15*ocstat.getStats().getCostMul());
+                ocstat.getStats().modifyStat("fat",-20*ocstat.getStats().getCostMul());
+                break;
+            case "PsychicStorm":
+                ocstat.getStats().modifyStat("ene",-25*ocstat.getStats().getCostMul());
+                ocstat.getStats().modifyStat("stb",-30*ocstat.getStats().getCostMul());
+                break;
+            case "WaterStance":
+               ocstat.getStats().modifyStat("ene",-5);
+                ocstat.getStats().modifyStat("stb",-5);
+                ocstat.getStats().modifyStat("fat",-5);
+                ocstat.getStats().modifyStat("pv",ocstat.getDictStats("acu"));
+                ocstat.getStats().modifyStat("pr",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
+                ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"Water"), new UDictionary<string, int>(){{"pv",(int)ocstat.getDictStats("acu")},{"pr",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
+                break;
+            case "FireStance":
+                ocstat.addBuff("FireStance", play.name,1);
+                ocstat.getStats().modifyStat("ene",-5);
+                ocstat.getStats().modifyStat("stb",-5);
+                ocstat.getStats().modifyStat("hp",-5);
+                ocstat.setBonus((int)ocstat.getDictStats("acu"));
+                ocstat.getStats().modifyStat("acu",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
+                ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"FireStance"), new UDictionary<string, int>(){
+                    {"bonus damage",(int)ocstat.getDictStats("acu")},{"acu",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
+                break;
+        }
+    }
 }

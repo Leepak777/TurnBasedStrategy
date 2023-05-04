@@ -20,55 +20,25 @@ MonoBehaviour:
     values:
     - keys:
       - Type
-      - Armor
-      - Weapon
-      - Mount
-      - Shield
-      - Buckler
       values:
       - Praetorian Guard
-      - Praetorian_Armor
-      - Power Sword
-      - War Horse
-      - Kite Shield
-      - Buckler
     - keys:
       - Type
-      - Armor
-      - Weapon
-      - Mount
-      - Shield
-      - Buckler
-      values:
-      - Imperial Legionary
-      - Legionary Armor
-      - Power Sword
-      - War Horse
-      - Tower Shield
-      - Buckler
-    - keys:
-      - Type
-      - Armor
-      - Weapon
-      - Mount
-      - Shield
-      - Buckler
       values:
       - Imperial Conscript
-      - Plate
-      - Pike
-      - Pack Horse
-      - Kite Shield
-      - Buckler
+    - keys:
+      - Type
+      values:
+      - Imperial Legionary
   positions:
     keys:
     - Player1
     - Player2
     - Enemy1
     values:
-    - {x: 38, y: 42, z: 0}
-    - {x: 35, y: 39, z: 0}
-    - {x: 34, y: 42, z: 0}
+    - {x: 34, y: 48, z: 0}
+    - {x: 30, y: 48, z: 0}
+    - {x: 33, y: 44, z: 0}
   sprites:
     keys:
     - Player1
