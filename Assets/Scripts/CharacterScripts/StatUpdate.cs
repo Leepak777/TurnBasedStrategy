@@ -68,7 +68,7 @@ public class StatUpdate : MonoBehaviour
     public void attackEn(GameObject targetEnemy){
         Vector3Int enpos = tileM.WorldToCell(targetEnemy.transform.position);
         Vector3Int playerpos = tileM.WorldToCell(transform.position);
-        for(int i = 0; i < stats.getStat("attack_num"); i++){
+       
             bool drn_check;
             if(tileM.IsAdjacent(enpos,playerpos)){
                 drn_check = meleeRoll(targetEnemy);
@@ -81,7 +81,7 @@ public class StatUpdate : MonoBehaviour
                 attackingFatigue();
                 targetEnemy.GetComponentInChildren<CharacterEvents>().onDamage.Invoke(Damage);
             }
-        }
+        
         
     }
     public void BuffMaintainCheck(){

@@ -23,6 +23,8 @@ public class UI : MonoBehaviour
     public bool foresight = false;
     public Dropdown skillLst;
     public bool Casting = false;
+    public int attackTime = 0;
+    public StatUpdate statupdate;
 
     void Update()
     {
@@ -47,6 +49,8 @@ public class UI : MonoBehaviour
         skillLst.AddOptions(new List<string>(){"Skills"});
         skillLst.AddOptions(currentPlay.GetComponent<Abilities>().getSkillNames());
         currentPlay.GetComponentInChildren<CharacterEvents>().onStart.Invoke();
+        statupdate = currentPlay.GetComponent<StatUpdate>();
+        attackTime = 0;
         /*if(currentPlay.tag == "Player"){        
             tm.PlayerBackUP();
             tm.EnemyBackUP();
@@ -116,7 +120,10 @@ public class UI : MonoBehaviour
     }
 
     public void currentPlayAttack(){
-        currentPlay.GetComponentInChildren<CharacterEvents>().onSetAttack.Invoke();
+        if(attackTime < statupdate.getDictStats("attack_num")){
+            currentPlay.GetComponentInChildren<CharacterEvents>().onSetAttack.Invoke();
+            attackTime++;
+        }
     }
     public void currentPlayHighlighten(){
         if(currentPlay.GetComponent<ActionCenter>().isAttacking()){
