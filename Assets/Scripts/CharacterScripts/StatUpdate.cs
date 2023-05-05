@@ -107,10 +107,11 @@ public class StatUpdate : MonoBehaviour
     }
     public void revert(){
         currentHealth = backupHP;
+        tileM.setWalkable(gameObject, tileM.WorldToCell(transform.position),true);
         transform.position = backupLoc; 
         stats.revertStat(backup);
         gameObject.GetComponentInChildren<HealthBar>().UpdateHealth();
-         gameObject.GetComponentInChildren<CharacterEvents>().unHighLightRechable.Invoke();
+        gameObject.GetComponentInChildren<CharacterEvents>().unHighLightRechable.Invoke();
     }
     
     public void showText(){

@@ -20,6 +20,7 @@ public class TurnManager : MonoBehaviour
     private int BackUpT = 0;
     public UI ui;
     public UnityEvent setup;
+    public GameObject backupGO;
     void Start()
     {
         turnOrder = new List<GameObject>();
@@ -76,9 +77,11 @@ public class TurnManager : MonoBehaviour
     }
     public void BackUpTurn(){
         BackUpT = gameTurn;
+        backupGO = ui.getCurrentPlay();
     }
     public void revertTurn(){
         gameTurn = BackUpT;
+        ui.setCurrentPlay(backupGO);
     }
     public void PlayerBackUP(){
         foreach(GameObject go in turnOrder){

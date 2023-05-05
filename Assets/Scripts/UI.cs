@@ -66,11 +66,19 @@ public class UI : MonoBehaviour
     }
     public void endEvent(){
         //To-DO: Added skill check for skills that update each game turn
-        currentPlay.GetComponentInChildren<CharacterEvents>().onEnd.Invoke(0);
-        tm.setGameState(0);
-        if(currentPlay.tag == "Player"){
-            tm.incGameTurn();
+        if(foresight){
+            ad.ForeSight_e.Invoke(currentPlay, Vector3Int.zero);
+            tm.setGameState(0);
+            return;
         }
+        else{
+            currentPlay.GetComponentInChildren<CharacterEvents>().onEnd.Invoke(0);
+            tm.setGameState(0);
+            if(currentPlay.tag == "Player"){
+                tm.incGameTurn();
+            }
+        }
+        
     }
     public void areaEffectCheck(){
         List<Node> lst = GameObject.Find("Tilemanager").GetComponent<TileManager>().getEffectlst();

@@ -275,12 +275,14 @@ public class AbilitiesData : ScriptableObject
     }
     
     public void WhirlWind(GameObject play, Vector3Int target){
+        Debug.Log("WhirlWind");
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         AreaAttack(play, tileM.WorldToCell(play.transform.position),3,play.tag);
         //ocstat.getStats().modifyStat("ene",-7*ocstat.getStats().getCostMul());
         //ocstat.getStats().modifyStat("stb",-15*ocstat.getStats().getCostMul());
     }
     public void ForceBlast(GameObject play, Vector3Int target){
+        Debug.Log("ForceBlast");
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         float Damage = 10 + ocstat.getDictStats("mid")*2;
         int range = 3 + (int)ocstat.getDictStats("acu")/4;

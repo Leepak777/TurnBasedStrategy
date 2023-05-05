@@ -1063,6 +1063,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8906131547528253649}
+        m_TargetAssemblyTypeName: HealthBar, Assembly-CSharp
+        m_MethodName: UpdateHealth
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   HighLightArea:
     m_PersistentCalls:
       m_Calls:
@@ -1670,6 +1682,7 @@ MonoBehaviour:
   IndividualCheck: []
   activeSkill: []
   Skillname: []
+  choice: 0
 --- !u!1 &8951542586426555525
 GameObject:
   m_ObjectHideFlags: 0

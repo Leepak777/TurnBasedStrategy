@@ -28,7 +28,7 @@ public class Abilities : MonoBehaviour
     UDictionary<KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>, int> castList = new UDictionary<KeyValuePair<int, KeyValuePair<GameObject, Vector3Int>>, int>();
     CharacterStat stats;
     AbilitiesData abilitiesData;
-    int choice = 0;
+    public int choice = 0;
     int radius = 0;
     int CastRange = 0;
     int targetNum = 1;
@@ -69,7 +69,7 @@ public class Abilities : MonoBehaviour
         }
         
         Skillname = stats.getSkills();
-        activeSkill.Add(new UnityEvent<GameObject,Vector3Int>());
+        //activeSkill.Add(new UnityEvent<GameObject,Vector3Int>());
         foreach(string name in stats.getSkills()){
             activeSkill.Add(abilitiesData.getActiveSkill(name));
         }
@@ -81,7 +81,8 @@ public class Abilities : MonoBehaviour
     }
 
     public void ActiveSkillCheck(int choice){
-        choice--;
+        if(choice>0){
+        choice--;}
         this.choice = choice;
         Debug.Log(Skillname[choice]);
         switch(Skillname[choice]){
@@ -95,7 +96,6 @@ public class Abilities : MonoBehaviour
             case "FireStance":CheckCoolDown(Skillname[choice]);break;
             case "Skills": return;
         }
-        //skillDrop.value = 0;
     }
     
     public void addToCooldDown(string name,int turns){
@@ -160,19 +160,37 @@ public class Abilities : MonoBehaviour
             gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
             gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
             if(targetV.Count == 1){
-                //activeSkill[choice].Invoke(gameObject, targetLoc);
-                castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, targetLoc)),CastTime);
+                if(CastTime == 0){
+                    activeSkill[choice].Invoke(gameObject, targetLoc);
+                }
+                else{
+                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, targetLoc)),CastTime);
+                    }
                 }
             else if(characterTarget){
                 //activeSkill[choice].Invoke(tileM.GetNodeFromWorld(targetV[0]).occupant, targetV[1]);
+                if(CastTime == 0){
+                    activeSkill[choice].Invoke(tileM.GetNodeFromWorld(targetV[0]).occupant, targetV[1]);
+                }
+                else{
                 castList.Add(
                     new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, 
                     new KeyValuePair<GameObject, Vector3Int>(tileM.GetNodeFromWorld(targetV[0]).occupant, targetV[1])),CastTime);
                 }
+            }
+            else{
+                if(CastTime == 0){
+                    activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else{
+                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
+                }
+            }
             characterTarget = false;
             gameObject.GetComponent<ActionCenter>().setCasting(false);
             targets = 0;
         }
+        skillDrop.value = 0;
     }
 
     public void CheckCoolDown(string name){
@@ -205,10 +223,15 @@ public class Abilities : MonoBehaviour
                 }
             break;
             case "ForeSight":
-                if(!CoolDown.ContainsKey("ForeSight")){
+                if(!CoolDown.ContainsKey("ForeSight") && !GameObject.Find("UICanvas").GetComponent<UI>().inForesight()){
                     CastTime = 0;
-                    CoolDown.Add(name,Math.Max((int)(5 - stats.getStat("acu")/2),0));    
-                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
+                    CoolDown.Add(name,Math.Max((int)(5 - stats.getStat("acu")/2),0));   
+                    TargetingSkill(); 
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else if(CoolDown.ContainsKey("ForeSight") && GameObject.Find("UICanvas").GetComponent<UI>().inForesight()){
+                    CastTime = 0;
+                    TargetingSkill();
                 }
                 else{
                     Debug.Log("In CoolDown");
@@ -218,7 +241,6 @@ public class Abilities : MonoBehaviour
                 if(!CoolDown.ContainsKey("WhirldWind")){
                     CastTime = 1;
                     CoolDown.Add(name,3);    
-                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
                 }
                 else{
                     Debug.Log("In CoolDown");
@@ -228,7 +250,8 @@ public class Abilities : MonoBehaviour
                 if(!CoolDown.ContainsKey("WaterStance")){
                     CastTime = 0;
                     CoolDown.Add(name,3);
-                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
+                    TargetingSkill();
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
                 }
                 else{
                     Debug.Log("In CoolDown");
@@ -238,7 +261,8 @@ public class Abilities : MonoBehaviour
                 if(!CoolDown.ContainsKey("FireStance")){
                     CastTime = 0;
                     CoolDown.Add(name,3);
-                    castList.Add(new KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>(choice, new KeyValuePair<GameObject, Vector3Int>(gameObject, Vector3Int.zero)),CastTime);
+                    TargetingSkill();
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
                 }
                 else{
                     Debug.Log("In CoolDown");
