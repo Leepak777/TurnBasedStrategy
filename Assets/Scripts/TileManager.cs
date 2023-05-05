@@ -46,6 +46,8 @@ public class TileManager : MonoBehaviour
     Dictionary<string,Tile> UI = new Dictionary<string,Tile>();
     Dictionary<string,Tile> Water = new Dictionary<string,Tile>();
     Dictionary<string,Tile> House = new Dictionary<string,Tile>();
+    public UnityEvent setup;
+
     void Start()
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
@@ -64,7 +66,7 @@ public class TileManager : MonoBehaviour
             GameObject.Find("HighLight").GetComponentInChildren<HighlightReachableTiles>().tileM = this;
             highlightMap();
         }
-        
+        setup.Invoke();
     }
     
     void CreateGrid()

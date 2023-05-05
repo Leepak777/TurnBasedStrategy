@@ -19,6 +19,7 @@ public class TurnManager : MonoBehaviour
     private int gameTurn = 1;
     private int BackUpT = 0;
     public UI ui;
+    public UnityEvent setup;
     void Start()
     {
         turnOrder = new List<GameObject>();
@@ -32,6 +33,7 @@ public class TurnManager : MonoBehaviour
         ui.setCurrentPlay(turnOrder[currentTurnIndex]);
         //currentPlay = turnOrder[currentTurnIndex];
         //reset2();
+        //setup.Invoke();
     }
 
     

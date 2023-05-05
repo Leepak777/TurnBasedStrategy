@@ -37,6 +37,7 @@ public class Abilities : MonoBehaviour
     Vector3Int targetLoc;
     bool characterTarget = false;
     List<Vector3Int> targetV = new List<Vector3Int>();
+    Dropdown skillDrop;
     public void GameCheck(){
         foreach(UnityEvent<GameObject> e in UniversalCheck){
             e.Invoke(gameObject);
@@ -46,6 +47,9 @@ public class Abilities : MonoBehaviour
         foreach(UnityEvent<GameObject> e in IndividualCheck){
             e.Invoke(gameObject);
         }
+    }
+    public void getManagers(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
     void Start()
     {
@@ -69,6 +73,7 @@ public class Abilities : MonoBehaviour
         foreach(string name in stats.getSkills()){
             activeSkill.Add(abilitiesData.getActiveSkill(name));
         }
+        skillDrop = GameObject.Find("ActiveSkill").GetComponent<Dropdown>();
     }
 
     public List<string> getSkillNames(){
@@ -88,7 +93,9 @@ public class Abilities : MonoBehaviour
             case "WhirlWind":CheckCoolDown(Skillname[choice]);break;
             case "WaterStance":CheckCoolDown(Skillname[choice]);break;
             case "FireStance":CheckCoolDown(Skillname[choice]);break;
+            case "Skills": return;
         }
+        //skillDrop.value = 0;
     }
     
     public void addToCooldDown(string name,int turns){

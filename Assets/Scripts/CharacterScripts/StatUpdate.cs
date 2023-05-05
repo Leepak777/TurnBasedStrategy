@@ -259,5 +259,7 @@ public class StatUpdate : MonoBehaviour
 
     }
 
-
+    public void getTileM(){
+        tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+    }
 }

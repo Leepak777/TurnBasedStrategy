@@ -21,12 +21,15 @@ public class AbilitiesData : ScriptableObject
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
-    void setTileM(){
+    public void setTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+        turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
     }
     void Awake(){
         setTileM();
-        turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+    }
+    void Start(){
+        
     }
     public UnityEvent<GameObject> getEvent(string name){
         switch(name){

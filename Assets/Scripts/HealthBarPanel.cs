@@ -1,42 +1,36 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class HealthBarPanel : MonoBehaviour
 {
     public RawImage healthBar;
     public float maxHealth;
     private float currentHealth;
     public float barWidth;
-
+    public GameObject currentGO;
+    public Text indicator;
     public RawImage healthDiff;
     public RawImage healthLoss;
-
+    public Vector2 loc;
     void Start()
     {
-        maxHealth = this.gameObject.GetComponentInParent<StatUpdate>().getMaxHealth();;
-        currentHealth = maxHealth;
         healthBar = this.gameObject.GetComponent<RawImage>();
         barWidth = healthBar.rectTransform.rect.width;
-
-        // Find HealthDiff and HealthLoss children
-        Transform healthDiffTransform = transform.Find("HealthDiff");
-        Transform healthLossTransform = transform.Find("HealthLoss");
-
-        // Get RawImage components
-        healthDiff = healthDiffTransform.GetComponent<RawImage>();
-        healthLoss = healthLossTransform.GetComponent<RawImage>();
-
+        loc = healthBar.rectTransform.localPosition;
+    }
+    public void setCharacter(GameObject go){
+        currentGO = go;
+        maxHealth = go.GetComponent<StatUpdate>().getMaxHealth();;
+        currentHealth = maxHealth;
         UpdateHealth();
     }
 
     public void UpdateHealth()
     {
         float oldCurrentHealth = currentHealth;
-        if(this.gameObject.GetComponentInParent<StatUpdate>() != null){
-            currentHealth  = this.gameObject.GetComponentInParent<StatUpdate>().currentHealth;
-            maxHealth = this.gameObject.GetComponentInParent<StatUpdate>().getMaxHealth();
-
-            
+        if(currentGO.GetComponentInParent<StatUpdate>() != null){
+            currentHealth  = currentGO.GetComponentInParent<StatUpdate>().currentHealth;
+            maxHealth = currentGO.GetComponentInParent<StatUpdate>().getMaxHealth();
         }
         else{
             currentHealth = 0;
@@ -60,10 +54,11 @@ public class HealthBar : MonoBehaviour
         healthLoss.rectTransform.localPosition = new Vector2(currentWidth+healthLossWidth/2, 0f);
         healthDiff.rectTransform.localPosition = new Vector2(currentWidth+healthLossWidth/2, 0f);
         healthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, currentWidth);
-
+        healthBar.rectTransform.localPosition = loc;
         Color color = Color.Lerp(Color.red, Color.green, fillAmount);
         healthBar.color = color;
         healthDiff.color = Color.blue;
         healthLoss.color = Color.red;
+        indicator.text = currentHealth + " / " + maxHealth;
     }
 }

@@ -61,57 +61,65 @@ MonoBehaviour:
     - maxStb
     - maxTiles
     values:
-    - 7
     - 5
-    - 6
+    - 5
+    - 5
+    - 1
     - 2
-    - 3
-    - 13
-    - 9
-    - 15
-    - 14
-    - 3
+    - 10
+    - 7
     - 10
     - 10
+    - 3
+    - 10
+    - 30
     - 1
     - 10
     - 0
     - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    - 7
+    - 2.3
+    - 1.5
+    - 0.2
+    - 100
+    - 25
     - 1
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 47
-    - 14
-    - 0
-    - 33
-    - 0
-    - 4.5
-    - 18.75
-    - -1.75
-    - 0
-    - 47
-    - 47
     - 4
+    - 15
+    - 3
+    - 2
+    - 16
+    - 0
+    - -2
+    - -5
+    - 7
+    - 0
+    - 2
+    - 60
+    - 9
+    - 0
+    - 23
+    - 0
+    - 10.5
+    - 12.25
+    - 3.75
+    - 0
+    - 60
+    - 33
+    - 10
   attributes:
     keys:
     - Type
+    - Armor
+    - Weapon
+    - Mount
+    - Shield
     values:
-    - Imperial Legionary
+    - Imperial Conscript
+    - Plate
+    - Pike
+    - Pack Horse
+    - Kite Shield
   abilities:
     keys:
     - LeadershipAura
@@ -120,7 +128,7 @@ MonoBehaviour:
     - Universal
     - Individual
   skills:
+  - WhirlWind
   - PsychicStorm
-  - ForceBlast
   - ForeSight
   AbilitiesCostMul: 1
