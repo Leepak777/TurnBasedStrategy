@@ -46,7 +46,6 @@ public class UI : MonoBehaviour
     public void startEvent(){
         //To-DO: Added skill check for skills that update each game turn
         skillLst.ClearOptions();
-        skillLst.AddOptions(new List<string>(){"Skills"});
         skillLst.AddOptions(currentPlay.GetComponent<Abilities>().getSkillNames());
         currentPlay.GetComponentInChildren<CharacterEvents>().onStart.Invoke();
         statupdate = currentPlay.GetComponent<StatUpdate>();

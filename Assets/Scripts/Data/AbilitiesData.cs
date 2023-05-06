@@ -306,6 +306,7 @@ public class AbilitiesData : ScriptableObject
         //instantiate GameObject at target
     }
     public void Foresight(){
+        Debug.Log("ForeSight");
         if(!turnM.getUI().inForesight()){
             foresighStart();
             turnM.getUI().setForesight((true));

@@ -81,8 +81,7 @@ public class Abilities : MonoBehaviour
     }
 
     public void ActiveSkillCheck(int choice){
-        if(choice>0){
-        choice--;}
+        Debug.Log("Choice: " + choice);
         this.choice = choice;
         Debug.Log(Skillname[choice]);
         switch(Skillname[choice]){
@@ -94,7 +93,7 @@ public class Abilities : MonoBehaviour
             case "WhirlWind":CheckCoolDown(Skillname[choice]);break;
             case "WaterStance":CheckCoolDown(Skillname[choice]);break;
             case "FireStance":CheckCoolDown(Skillname[choice]);break;
-            case "Skills": return;
+            case "Skills":unTargetSkill(); return;
         }
     }
     
@@ -111,6 +110,11 @@ public class Abilities : MonoBehaviour
     }
     public void TargetingSkill(){
         gameObject.GetComponent<ActionCenter>().setCasting(true);
+    }
+    public void unTargetSkill(){
+        gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
+        gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
+        gameObject.GetComponent<ActionCenter>().setCasting(false);
     }
     public void ActivateSkill(string name){
         if(!CoolDown.ContainsKey(name)){
