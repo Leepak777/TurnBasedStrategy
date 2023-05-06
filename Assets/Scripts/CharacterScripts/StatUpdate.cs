@@ -109,9 +109,13 @@ public class StatUpdate : MonoBehaviour
         currentHealth = backupHP;
         tileM.setWalkable(gameObject, tileM.WorldToCell(transform.position),true);
         transform.position = backupLoc; 
+        tileM.setWalkable(gameObject, tileM.WorldToCell(transform.position),false);
         stats.revertStat(backup);
         gameObject.GetComponentInChildren<HealthBar>().UpdateHealth();
         gameObject.GetComponentInChildren<CharacterEvents>().unHighLightRechable.Invoke();
+        if(currentHealth > 0 && !gameObject.activeInHierarchy){
+            gameObject.SetActive(true);
+        }
     }
     
     public void showText(){

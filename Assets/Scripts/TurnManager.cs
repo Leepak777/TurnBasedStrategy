@@ -82,6 +82,7 @@ public class TurnManager : MonoBehaviour
     public void revertTurn(){
         gameTurn = BackUpT;
         ui.setCurrentPlay(backupGO);
+        gamestate = 2;
     }
     public void PlayerBackUP(){
         foreach(GameObject go in turnOrder){
@@ -103,6 +104,12 @@ public class TurnManager : MonoBehaviour
             go.GetComponentInChildren<CharacterEvents>().revertStat.Invoke(gameTurn);
         }  
     }
+    public void CurrentSaveOrigin(){
+        ui.getCurrentPlay().GetComponent<Teleport>().setBackup();
+    }
+    public void CurrentRevertOrigin(){
+        ui.getCurrentPlay().GetComponent<Teleport>().ReverOrigin();
+    }
     public void gameEndCheck(){
         bool PlayerDied = true;
         bool EnemyDied = true;
@@ -116,7 +123,7 @@ public class TurnManager : MonoBehaviour
                 EnemyDied = false;
             }
         }
-        if(PlayerDied || EnemyDied){
+        if((PlayerDied || EnemyDied) && !ui.inForesight()){
            #if UNITY_EDITOR
            UnityEditor.EditorApplication.isPlaying = false;
            #elif UNITY_WEBPLAYER
@@ -151,6 +158,12 @@ public class TurnManager : MonoBehaviour
         gameTurn++;
     }
     public void endTurn(){
-        gamestate = 1;
+        if(ui.inForesight()){
+            gamestate = 2;
+            ui.EndForeSight();
+        }
+        else{
+            gamestate = 1;
+        }
     }
 }

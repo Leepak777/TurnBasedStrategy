@@ -321,12 +321,14 @@ public class AbilitiesData : ScriptableObject
         turnM.BackUpTurn();
         turnM.EnemyBackUP();
         turnM.PlayerBackUP();
+        turnM.CurrentSaveOrigin();
     }
     public void foresightEnd(){
         Debug.Log("Reverted!");
         turnM.revertTurn();
         turnM.EnemyRevert();
         turnM.PlayerRevert();
+        turnM.CurrentRevertOrigin();
     }
 
     public void WaterStance(GameObject play, Vector3Int target){

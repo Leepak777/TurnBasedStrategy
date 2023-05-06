@@ -16,6 +16,7 @@ public class Teleport : MonoBehaviour
     TileManager tileM;
     Vector3Int originNode;
     Vector3Int targetNode;
+    Vector3Int backUpOrigin;
     private void Start()
     {
         // Get the tileM component from the scene
@@ -188,7 +189,15 @@ public class Teleport : MonoBehaviour
     }
 
     public void setOrigin(){
-        originNode = tileM.WorldToCell(this.gameObject.transform.position);
+        if(!GameObject.Find("UICanvas").GetComponent<UI>().inForesight()){
+            originNode = tileM.WorldToCell(this.gameObject.transform.position);
+        }
+    }
+    public void setBackup(){
+        backUpOrigin = originNode;
+    }
+    public void ReverOrigin(){
+        originNode = backUpOrigin;
     }
     void AIreturn(){
         outClick = true;

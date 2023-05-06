@@ -67,9 +67,9 @@ public class Abilities : MonoBehaviour
                     break;
             }
         }
-        
-        Skillname = stats.getSkills();
-        //activeSkill.Add(new UnityEvent<GameObject,Vector3Int>());
+        Skillname.Add("Skills");
+        Skillname.AddRange(stats.getSkills());
+        activeSkill.Add(new UnityEvent<GameObject,Vector3Int>());
         foreach(string name in stats.getSkills()){
             activeSkill.Add(abilitiesData.getActiveSkill(name));
         }

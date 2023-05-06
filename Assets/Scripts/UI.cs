@@ -66,19 +66,13 @@ public class UI : MonoBehaviour
     }
     public void endEvent(){
         //To-DO: Added skill check for skills that update each game turn
-        if(foresight){
-            ad.ForeSight_e.Invoke(currentPlay, Vector3Int.zero);
-            tm.setGameState(0);
-            return;
-        }
-        else{
+        if(!foresight){
             currentPlay.GetComponentInChildren<CharacterEvents>().onEnd.Invoke(0);
             tm.setGameState(0);
             if(currentPlay.tag == "Player"){
                 tm.incGameTurn();
             }
         }
-        
     }
     public void areaEffectCheck(){
         List<Node> lst = GameObject.Find("Tilemanager").GetComponent<TileManager>().getEffectlst();
@@ -113,14 +107,18 @@ public class UI : MonoBehaviour
         }
         
     }
-
+    public void EndForeSight(){
+        ad.ForeSight_e.Invoke(currentPlay, Vector3Int.zero);
+    }
     public bool inForesight(){
         return foresight;
     }
     public void setForesight(bool activate){
         foresight = activate;
         if(!foresight){
-            tm.setGameState(0);
+            tm.setGameState(2);
+            currentPlay.GetComponentInChildren<CharacterEvents>().unHighLightRechable.Invoke();
+            currentPlay.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
         }
     }
     public void setCurrentPlay(GameObject go){
