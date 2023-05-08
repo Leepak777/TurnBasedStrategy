@@ -42,7 +42,7 @@ public class EquipmentSetup : MonoBehaviour
         buckler.AddOptions(eq.buckler);
         mount.AddOptions(eq.mount);
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
-        chStat = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+data.currentSetCh+".asset");
+        chStat = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+data.currentSetCh+"(base).asset");
         if(chlst.ContainsKey(data.currentSetCh)){
             UDictionary<string,string> curlst = chlst[data.currentSetCh];
             if(curlst.ContainsKey("Weapon")){

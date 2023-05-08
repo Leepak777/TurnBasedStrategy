@@ -1612,6 +1612,7 @@ MonoBehaviour:
   backup:
     keys: []
     values: []
+  stats: {fileID: 0}
 --- !u!114 &5925291172722692194
 MonoBehaviour:
   m_ObjectHideFlags: 0

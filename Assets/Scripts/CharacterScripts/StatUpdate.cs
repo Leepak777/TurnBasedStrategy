@@ -31,11 +31,17 @@ public class StatUpdate : MonoBehaviour
     Text text;
     float backupHP = 0;
     Vector3 backupLoc = new Vector3();
-    CharacterStat stats;
+    public CharacterStat stats;
     AttackSimulation atkSim;
     void Start()
     {   
-        stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
+        DeleteAssets(gameObject.name);
+        //stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
+        CharacterStat baseData = (AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+"(base).asset"));
+        //if(baseData!=null){Debug.Log("pog");stats.fetchBase(baseData);}
+        stats = Instantiate(baseData);
+        AssetDatabase.CreateAsset(stats, "Assets/Scripts/Data/"+gameObject.name+".asset");
+        AssetDatabase.SaveAssets();
         maxHealth = stats.getStat("maxHealth");
         currentHealth = maxHealth;
         drn = DRN.getInstance();
@@ -266,5 +272,25 @@ public class StatUpdate : MonoBehaviour
 
     public void getTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
+    }
+
+    static void DeleteAssets(string name)
+    {
+        string targetSubstring = name; // Change this to your desired substring
+
+        string[] assetPaths = AssetDatabase.GetAllAssetPaths(); // Get all asset paths in the project
+        int count = 0;
+
+        foreach (string path in assetPaths)
+        {
+            if (!path.EndsWith("(base).asset") && path.Contains(targetSubstring))
+            {
+                AssetDatabase.DeleteAsset(path);
+                count++;
+            }
+        }
+
+        AssetDatabase.Refresh(); // Refresh the asset database to update the project window
+        //Debug.Log("Deleted " + count + " .asset files with substring '" + targetSubstring + "'");
     }
 }

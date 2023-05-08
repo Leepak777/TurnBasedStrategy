@@ -596,6 +596,7 @@ MonoBehaviour:
   backup:
     keys: []
     values: []
+  stats: {fileID: 0}
 --- !u!1001 &318067221334775011
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class addPanel : MonoBehaviour
 {
     public Dropdown typeset;
     public void toggle(){
-        if(AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset") == null){
+        if(AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+"(base).asset") == null){
             return;
         }
         if(GameObject.Find(gameObject.name+"_info") == null){

@@ -58,6 +58,13 @@ public class CharacterStat : ScriptableObject
         stats.Add("enc",0);//encumbrance
         stats.Add("size",0);//size
     }
+    public void fetchBase(CharacterStat baseData){
+        stats = baseData.stats;
+        attributes = baseData.attributes;
+        abilities = baseData.abilities;
+        skills = baseData.skills;
+        AbilitiesCostMul = baseData.AbilitiesCostMul;
+    }
     public void setStats(UDictionary<string,float> input){
         foreach(KeyValuePair<string,float> s in input){
             if(stats.ContainsKey(s.Key)){

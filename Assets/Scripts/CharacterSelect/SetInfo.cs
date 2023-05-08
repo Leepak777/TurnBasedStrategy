@@ -12,9 +12,12 @@ public class SetInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CharacterStat Data = null;
-        Data = ScriptableObject.CreateInstance<CharacterStat>();
-        AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+gameObject.name+".asset");
+        //CharacterStat Data = null;
+        CharacterStat Data_Base = null;
+        //Data = ScriptableObject.CreateInstance<CharacterStat>();
+        Data_Base = ScriptableObject.CreateInstance<CharacterStat>();
+        //AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+gameObject.name+".asset");
+        AssetDatabase.CreateAsset(Data_Base, @"Assets/Scripts/Data/"+gameObject.name+"(base).asset");
     }
     public Equipments equipments;
     public Types types;
@@ -63,6 +66,7 @@ public class SetInfo : MonoBehaviour
     public void CreateCharacterAsset(string go, UDictionary<string,string> ch) {    
         string[] result = AssetDatabase.FindAssets("/Data/"+go);
         CharacterStat Data = null;
+        CharacterStat Data_Base = null;
         if (result.Length > 2)
         {
             Debug.LogError("More than 1 Asset founded");
@@ -72,7 +76,9 @@ public class SetInfo : MonoBehaviour
         {
             //Debug.Log("Create new Asset");
             Data = ScriptableObject.CreateInstance<CharacterStat>();
-            AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go+".asset");
+            Data_Base = ScriptableObject.CreateInstance<CharacterStat>();
+            //AssetDatabase.CreateAsset(Data, @"Assets/Scripts/Data/"+go+".asset");
+            AssetDatabase.CreateAsset(Data_Base, @"Assets/Scripts/Data/"+go+"(base).asset");
         }
         else
         {
@@ -80,10 +86,14 @@ public class SetInfo : MonoBehaviour
             Data= (CharacterStat )AssetDatabase.LoadAssetAtPath(path, typeof(CharacterStat ));
             Debug.Log("Found Asset File !!!");
         }
-        Data.setUp();
-        setDataStats(Data,ch);
-        Data.setCalStat();
-        EditorUtility.SetDirty(Data);
+        //Data.setUp();
+        //setDataStats(Data,ch);
+        //Data.setCalStat();
+        //EditorUtility.SetDirty(Data);
+        Data_Base.setUp();
+        setDataStats(Data_Base,ch);
+        Data_Base.setCalStat();
+        EditorUtility.SetDirty(Data_Base);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

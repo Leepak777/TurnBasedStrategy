@@ -26,10 +26,10 @@ public class AbilitiesData : ScriptableObject
         turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
     }
     void Awake(){
-        setTileM();
+        //setTileM();
     }
     void Start(){
-        
+        setTileM();
     }
     public UnityEvent<GameObject> getEvent(string name){
         switch(name){
