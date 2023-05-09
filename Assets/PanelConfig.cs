@@ -22,7 +22,7 @@ public class PanelConfig : MonoBehaviour
 
     public void setTxt(){
         StatUpdate stats = currentGO.GetComponent<StatUpdate>();
-        string info = "Energy: "+stats.getDictStats("ene") + "\nFatigue: " + stats.getDictStats("fat") + "/100\nStability" + stats.getDictStats("stb");
+        string info = "Energy: "+stats.getDictStats("ene") + " \t Fatigue: " + stats.getDictStats("fat") + "/100\nStability: " + stats.getDictStats("stb");
         txt.text = info;
     }
     // Update is called once per frame

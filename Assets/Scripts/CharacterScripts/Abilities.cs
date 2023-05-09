@@ -193,12 +193,12 @@ public class Abilities : MonoBehaviour
             characterTarget = false;
             gameObject.GetComponent<ActionCenter>().setCasting(false);
             targets = 0;
+            abilitiesData.computeCost(gameObject, Skillname[choice]);
         }
         skillDrop.value = 0;
     }
 
     public void CheckCoolDown(string name){
-        abilitiesData.computeCost(gameObject, name);
         switch(name){
             case "ForceBlast":
                 if(!CoolDown.ContainsKey("ForceBlast")){
