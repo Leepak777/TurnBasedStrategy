@@ -19,7 +19,7 @@ MonoBehaviour:
   - Imperial Conscript
   - Mercenary
   - Brigand
-  - biggest clown on earth
+  - Joe mama
   type_stats:
   - pow
   - dex
@@ -37,6 +37,234 @@ MonoBehaviour:
   - md
   - rd
   - mr
+  Type_lst:
+    keys:
+    - Praetorian Guard
+    - Imperial Legionary
+    - Imperial Conscript
+    - Mercenary
+    - Brigand
+    - Joe mama
+    values:
+    - keys:
+      - pow
+      - dex
+      - tou
+      - acu
+      - mid
+      - base_hp
+      - base_ene
+      - base_mov
+      - base_init
+      - base_enc
+      - ma
+      - ra
+      - sa
+      - md
+      - rd
+      - mr
+      values:
+      - 8
+      - 6
+      - 7
+      - 4
+      - 3
+      - 10
+      - 0
+      - 1
+      - 10
+      - 0
+      - 15
+      - 9
+      - 3
+      - 16
+      - 16
+      - 13
+    - keys:
+      - pow
+      - dex
+      - tou
+      - acu
+      - mid
+      - base_hp
+      - base_ene
+      - base_mov
+      - base_init
+      - base_enc
+      - ma
+      - ra
+      - sa
+      - md
+      - rd
+      - mr
+      values:
+      - 7
+      - 5
+      - 6
+      - 2
+      - 3
+      - 10
+      - 0
+      - 1
+      - 10
+      - 0
+      - 13
+      - 9
+      - 3
+      - 15
+      - 14
+      - 10
+    - keys:
+      - pow
+      - dex
+      - tou
+      - acu
+      - mid
+      - base_hp
+      - base_ene
+      - base_mov
+      - base_init
+      - base_enc
+      - ma
+      - ra
+      - sa
+      - md
+      - rd
+      - mr
+      values:
+      - 5
+      - 5
+      - 5
+      - 1
+      - 2
+      - 0
+      - 0
+      - 1
+      - 10
+      - 0
+      - 10
+      - 7
+      - 3
+      - 10
+      - 10
+      - 10
+    - keys:
+      - pow
+      - dex
+      - tou
+      - acu
+      - mid
+      - base_hp
+      - base_ene
+      - base_mov
+      - base_init
+      - base_enc
+      - ma
+      - ra
+      - sa
+      - md
+      - rd
+      - mr
+      values:
+      - 6
+      - 6
+      - 5
+      - 2
+      - 2
+      - 5
+      - 0
+      - 1
+      - 11
+      - 0
+      - 12
+      - 11
+      - 3
+      - 13
+      - 12
+      - 10
+    - keys:
+      - pow
+      - dex
+      - tou
+      - acu
+      - mid
+      - base_hp
+      - base_ene
+      - base_mov
+      - base_init
+      - base_enc
+      - ma
+      - ra
+      - sa
+      - md
+      - rd
+      - mr
+      values:
+      - 4
+      - 5
+      - 4
+      - 1
+      - 2
+      - 0
+      - 0
+      - 2
+      - 10
+      - 0
+      - 9
+      - 11
+      - 3
+      - 9
+      - 9
+      - 10
+    - keys:
+      - pow
+      - dex
+      values:
+      - 69
+      - 420
+  Types_Abil:
+    keys:
+    - Praetorian Guard
+    - Imperial Legionary
+    - Imperial Conscript
+    - Mercenary
+    - Brigand
+    - Joe mama
+    values:
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
+    - keys:
+      - LeaderShipAura
+      values:
+      - Universal
   Praetorian_Guard_Abilities:
     keys:
     - LeadershipAura
@@ -72,3 +300,25 @@ MonoBehaviour:
     values:
     - Universal
     - Individual
+  Praetorian_Guard_Skill:
+  - WhirlWind
+  - ForceBlast
+  - ForeSight
+  Imperial_Legionary_Skill:
+  - PsychicStorm
+  - ForceBlast
+  - ForeSight
+  Imperial_Conscript_Skill:
+  - WhirlWind
+  - PsychicStorm
+  - ForeSight
+  Mercenary_Skill:
+  - WhirlWind
+  - PsychicStorm
+  - ForceBlast
+  - ForeSight
+  Brigand_Skill:
+  - WhirlWind
+  - PsychicStorm
+  - ForceBlast
+  - ForeSight

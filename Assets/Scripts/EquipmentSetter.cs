@@ -103,7 +103,7 @@ public class EquipmentSetter : MonoBehaviour
         player.GetComponent<BoxFunc>().statslst = lst;
         dd.value = dd.options.FindIndex(x => x.text == stat.Key);
         player.transform.Find("StatInput").GetComponent<InputField>().text = (stat.Value).ToString();
-        player.GetComponent<BoxFunc>().setfullname(dd.value);
+        player.GetComponent<BoxFunc>().setfullname(stat.Key);
     }
     public void addBlank(){
         GameObject goParent = GameObject.Find("scrollPanel");

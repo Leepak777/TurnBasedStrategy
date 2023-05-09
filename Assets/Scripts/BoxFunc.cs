@@ -15,13 +15,17 @@ public class BoxFunc : MonoBehaviour
 
     public string stattype;
     public List<string> statslst;
+    public Dropdown dd;
     public void RemoveBox(){
        Destroy(gameObject);
     }
 
-    public void setfullname(int i){
+    public void updateText(int i){
+        setfullname(dd.options[i].text);
+    }
+    public void setfullname(string i){
         string full = "none";
-        switch(statslst[i]){
+        switch(i){
             case "wd": full = "Weapon Damage";break;
             case "pow": full = "Power";break;
             case "dex": full = "Dexterity";break;
@@ -57,8 +61,9 @@ public class BoxFunc : MonoBehaviour
             case "base_ene": full = "Base Energy";break;
             case "base_mov": full = "Base Movement range";break;
             case "base_init": full = "Base Initiative";break;
-            case "basde_enc": full = "Base Encumbrance";break;
+            case "base_enc": full = "Base Encumbrance";break;
             case "attack_num": full = "Attack times";break;
+            default: full = "none";break;
         }
         fullname.text = full;
     }

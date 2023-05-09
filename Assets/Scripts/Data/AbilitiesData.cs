@@ -21,6 +21,8 @@ public class AbilitiesData : ScriptableObject
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
+    public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance"};
+    public List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura"};
     public void setTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -60,6 +62,17 @@ public class AbilitiesData : ScriptableObject
             return PsychiStorm_ef;
         }
         return null;
+    }
+    public string getAbilType(string name){
+        switch(name){
+            case "LeaderShipAura": return "Universal";
+            case "CorruptionAura": return "Universal";
+            case "ColdAura": return "Universal";
+            case "DeathAura": return "Universal";
+            case "AssaultAura": return "Universal";
+            case "Charge": return "Individual";
+        }
+        return "Null";
     }
     public void LeadersshipAura(GameObject play){
         setTileM();
@@ -385,7 +398,7 @@ public class AbilitiesData : ScriptableObject
                 break;
             case "ForceBlast":
                 ocstat.getStats().modifyStat("ene",-15*ocstat.getStats().getCostMul());
-                ocstat.getStats().modifyStat("fat",-20*ocstat.getStats().getCostMul());
+                ocstat.getStats().modifyStat("fat",20*ocstat.getStats().getCostMul());
                 break;
             case "PsychicStorm":
                 ocstat.getStats().modifyStat("ene",-25*ocstat.getStats().getCostMul());
@@ -394,7 +407,7 @@ public class AbilitiesData : ScriptableObject
             case "WaterStance":
                ocstat.getStats().modifyStat("ene",-5);
                 ocstat.getStats().modifyStat("stb",-5);
-                ocstat.getStats().modifyStat("fat",-5);
+                ocstat.getStats().modifyStat("fat",5);
                 ocstat.getStats().modifyStat("pv",ocstat.getDictStats("acu"));
                 ocstat.getStats().modifyStat("pr",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
                 ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"Water"), new UDictionary<string, int>(){{"pv",(int)ocstat.getDictStats("acu")},{"pr",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});

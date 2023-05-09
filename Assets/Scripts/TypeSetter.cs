@@ -17,9 +17,11 @@ public class TypeSetter : MonoBehaviour
     public KeyValuePair<string, UDictionary<string, float>> Entry  = new KeyValuePair<string, UDictionary<string, float>>();
     public UDictionary<string, float> ChangeData = new UDictionary<string, float>();
     public Types ty;
+    public AbilitiesData ad;
     
     void Awake(){
         type.ClearOptions();
+        //type.AddOptions(new List<string>(){"none"});
         type.AddOptions(ty.type);
         ChangeData = new UDictionary<string, float>();
         Entry  = new KeyValuePair<string, UDictionary<string, float>>();
@@ -46,8 +48,20 @@ public class TypeSetter : MonoBehaviour
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("statbox")){
             Destroy(go);
         }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("Skillbox")){
+            Destroy(go);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("Abilitiesbox")){
+            Destroy(go);
+        }
         if(stats != null){
             AddStatBoxes(stats);
+        }
+        if(ty.getTypeSkills(input.text) != null){
+            AddSkillBoxes(ty.getTypeSkills(input.text));
+        }
+        if(ty.getTypeAbilities(input.text) != null){
+            AddAbilitiesBoxes(ty.getTypeAbilities(input.text));
         }
         ChangeData = stats;
     }
@@ -55,6 +69,18 @@ public class TypeSetter : MonoBehaviour
         
         for(int i = 0; i < stats.Count; i++){
             addInfo(stats.ElementAt(i));
+        }
+    }
+    void AddSkillBoxes(List<string> stats){
+        
+        for(int i = 0; i < stats.Count; i++){
+            addSkill(input.text,stats.ElementAt(i));
+        }
+    }
+    void AddAbilitiesBoxes(UDictionary<string,string> stats){
+        
+        for(int i = 0; i < stats.Count; i++){
+            addAbility(input.text,stats.ElementAt(i).Key);
         }
     }
     public void addInfo(KeyValuePair<string,float> stat){
@@ -66,10 +92,15 @@ public class TypeSetter : MonoBehaviour
         Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
         dd.ClearOptions();
         dd.AddOptions(ty.type_stats);
-        dd.value = dd.options.FindIndex(x => x.text == stat.Key);
+        for(int i = 0; i < ty.type_stats.Count; i++){
+            if(ty.type_stats.ElementAt(i)!= null && ty.type_stats.ElementAt(i) == stat.Key){
+                dd.value = i;
+            }
+        }
+        //dd.value = dd.options.FindIndex(x => x.text == stat.Key);
         player.transform.Find("StatInput").GetComponent<InputField>().text = (stat.Value).ToString();
         player.GetComponent<BoxFunc>().statslst = ty.type_stats;
-        player.GetComponent<BoxFunc>().setfullname(dd.value);
+        player.GetComponent<BoxFunc>().setfullname(stat.Key);
     }
     public void addBlank(){
         GameObject goParent = GameObject.Find("scrollPanel");
@@ -80,6 +111,48 @@ public class TypeSetter : MonoBehaviour
         dd.ClearOptions();
         dd.AddOptions(ty.type_stats);
     }
+
+    public void addSkill(string name, string skill){
+        GameObject goParent = GameObject.Find("scrollPanel_Skill");
+        GameObject prefab = Resources.Load<GameObject>("SkillBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.name = skill;
+        Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
+        dd.ClearOptions();
+        dd.AddOptions(ad.SkillLst);
+        dd.value = dd.options.FindIndex(x => x.text == skill);
+    }
+    public void addBlankSkill(){
+        GameObject goParent = GameObject.Find("scrollPanel_Skill");
+        GameObject prefab = Resources.Load<GameObject>("SkillBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
+        dd.ClearOptions();
+        dd.AddOptions(ad.SkillLst);
+    }
+    public void addAbility(string name, string skill){
+        GameObject goParent = GameObject.Find("scrollPanel_Abil");
+        GameObject prefab = Resources.Load<GameObject>("AbilitiesBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.name = skill;
+        Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
+        dd.ClearOptions();
+        dd.AddOptions(ad.AbilitiesLst);
+        dd.value = dd.options.FindIndex(x => x.text == skill);
+    }
+    public void addBlankAbilite(){
+        GameObject goParent = GameObject.Find("scrollPanel_Abil");
+        GameObject prefab = Resources.Load<GameObject>("AbilitiesBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
+        dd.ClearOptions();
+        dd.AddOptions(ad.AbilitiesLst);
+    }
+
     public void setText(string name){
         type.options[type.value].text = name;
         type.captionText.text = name;
@@ -103,8 +176,28 @@ public class TypeSetter : MonoBehaviour
                 newData.Add(new KeyValuePair<string,float>(name, float.Parse(value)));
             }
         }
+        List<string> Skills = new List<string>();
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("Skillbox")){
+            Dropdown dd = go.transform.Find("Statname").GetComponent<Dropdown>();
+            string name = dd.options[dd.value].text;
+            if(!Skills.Contains(name)){
+                Skills.Add(name);
+            }
+        }
+        UDictionary<string,string> Abilities = new UDictionary<string,string>();
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("Abilitiesbox")){
+            Dropdown dd = go.transform.Find("Statname").GetComponent<Dropdown>();
+            string name = dd.options[dd.value].text;
+            if(!Abilities.ContainsKey(name)){
+                Abilities.Add(name,ad.getAbilType(name));
+            }
+        }
+
         ChangeData = newData;
         ty.addTypeEntry(type.captionText.text,ChangeData);
+        ty.addTypeAbilities(type.captionText.text,Abilities);
+        ty.addTypeSkill(type.captionText.text,Skills);
+        
         EditorUtility.SetDirty(ty);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

@@ -38,6 +38,7 @@ public class Abilities : MonoBehaviour
     bool characterTarget = false;
     List<Vector3Int> targetV = new List<Vector3Int>();
     Dropdown skillDrop;
+    
     public void GameCheck(){
         foreach(UnityEvent<GameObject> e in UniversalCheck){
             e.Invoke(gameObject);

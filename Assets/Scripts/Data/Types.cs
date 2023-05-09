@@ -27,10 +27,10 @@ public class Types:ScriptableObject
     */
     public List<string> type_stats = new List<string>(){"pow","dex","tou","acu","mid","base_hp","base_ene","base_mov","base_init","base_enc","ma","ra","sa","md","rd","mr"};
     UDictionary<string,float> Praetorian_Guard,Imperial_Legionary,Imperial_Conscript,Mercenary,Brigand = new UDictionary<string, float>();
-    UDictionary<string,UDictionary<string,float>> Type_lst = new UDictionary<string, UDictionary<string, float>>();
-    UDictionary<string,UDictionary<string,string>> Types_Abil = new UDictionary<string, UDictionary<string, string>>();
-    UDictionary<string,List<string>> Types_Skil = new UDictionary<string, List<string>>();
-    void Awake(){
+    public UDictionary<string,UDictionary<string,float>> Type_lst = new UDictionary<string, UDictionary<string, float>>();
+    public UDictionary<string,UDictionary<string,string>> Types_Abil = new UDictionary<string, UDictionary<string, string>>();
+    public Dictionary<string,List<string>> Types_Skil = new Dictionary<string, List<string>>();
+    /*public void Awake(){
         setBaseTy();
         Type_lst = new UDictionary<string, UDictionary<string, float>>(){
         {"Praetorian Guard", Praetorian_Guard}, {"Imperial Legionary", Imperial_Legionary},{"Imperial Conscript",Imperial_Conscript}
@@ -40,7 +40,22 @@ public class Types:ScriptableObject
         {"Praetorian Guard", Praetorian_Guard_Abilities}, {"Imperial Legionary", Imperial_Legionary_Abilities},{"Imperial Conscript",Imperial_Conscript_Abilities}
         ,{"Mercenary",Mercenary_Abilities},{"Brigand",Brigand_Abilities}
         };
-        Types_Skil = new UDictionary<string, List<string>>(){
+        Types_Skil = new Dictionary<string, List<string>>(){
+        {"Praetorian Guard", Praetorian_Guard_Skill}, {"Imperial Legionary", Imperial_Legionary_Skill},{"Imperial Conscript",Imperial_Conscript_Skill}
+        ,{"Mercenary",Mercenary_Skill},{"Brigand",Brigand_Skill}
+        };
+    }*/
+     public void reset(){
+        setBaseTy();
+        Type_lst = new UDictionary<string, UDictionary<string, float>>(){
+        {"Praetorian Guard", Praetorian_Guard}, {"Imperial Legionary", Imperial_Legionary},{"Imperial Conscript",Imperial_Conscript}
+        ,{"Mercenary",Mercenary},{"Brigand",Brigand}
+        };
+        Types_Abil = new UDictionary<string, UDictionary<string,string>>(){
+        {"Praetorian Guard", Praetorian_Guard_Abilities}, {"Imperial Legionary", Imperial_Legionary_Abilities},{"Imperial Conscript",Imperial_Conscript_Abilities}
+        ,{"Mercenary",Mercenary_Abilities},{"Brigand",Brigand_Abilities}
+        };
+        Types_Skil = new Dictionary<string, List<string>>(){
         {"Praetorian Guard", Praetorian_Guard_Skill}, {"Imperial Legionary", Imperial_Legionary_Skill},{"Imperial Conscript",Imperial_Conscript_Skill}
         ,{"Mercenary",Mercenary_Skill},{"Brigand",Brigand_Skill}
         };
@@ -53,8 +68,14 @@ public class Types:ScriptableObject
     }
     public void changeTypeKey(int index, string name){
         UDictionary<string,float> data = Type_lst.ElementAt(index-1).Value;
+        List<string> skills = Types_Skil.ElementAt(index-1).Value;
+        UDictionary<string,string> abilities = Types_Abil.ElementAt(index-1).Value; 
         removeTypeEntry(Type_lst.ElementAt(index-1).Key);
+        removeSkillEntry(Type_lst.ElementAt(index-1).Key);
+        removeAbilEntry(Type_lst.ElementAt(index-1).Key);
         addTypeEntry(name,data);
+        addSkillEntry(name,skills);
+        addAbilEntry(name,abilities);
     }
     public void removeTypeEntry(string name){
         Type_lst.Remove(name);
@@ -67,6 +88,30 @@ public class Types:ScriptableObject
         else{
             type.Add(name);
             Type_lst.Add(name,stats);
+        }
+    }
+    public void addTypeSkill(string name, List<string> stats){
+       
+        if(Types_Skil.ContainsKey(name)){
+            Types_Skil[name] = stats;
+        }
+        else{
+            Types_Skil.Add(name,stats);
+        }
+        
+        foreach(string s in Types_Skil[name] ){
+            Debug.Log(s);
+        }
+    }
+    public void addTypeAbilities(string name, UDictionary<string,string> stats){
+        if(Types_Abil.ContainsKey(name)){
+            Types_Abil[name] = stats;
+        }
+        else{
+            Types_Abil.Add(name,stats);
+        }
+        foreach(KeyValuePair<string,string> s in Types_Abil[name] ){
+            Debug.Log(s.Key);
         }
     }
     public UDictionary<string,string> Praetorian_Guard_Abilities = new UDictionary<string,string>(){
