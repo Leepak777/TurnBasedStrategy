@@ -130,7 +130,9 @@ public class Types:ScriptableObject
         {"LeadershipAura","Universal"},{"Charge","Individual"}
     };
     public UDictionary<string,string> getTypeAbilities(string type){
-        switch(type){
+
+if(Type_Abil.ContainsKey(type)){return Type_Abil[type];}
+        /*switch(type){
             case "Praetorian Guard":
                 return Praetorian_Guard_Abilities;
             case "Imperial Legionary":
@@ -141,7 +143,7 @@ public class Types:ScriptableObject
                 return Mercenary_Abilities;
             case "Brigand":
                 return Brigand_Abilities;
-        }
+        }*/
         return null;
     }
     public void addEntry(string name, UDictionary<string,float> stats){
@@ -179,7 +181,8 @@ public class Types:ScriptableObject
         "WhirlWind","PsychicStorm","ForceBlast","ForeSight"
     };
     public List<string> getTypeSkills(string type){
-        switch(type){
+if(Type_Skil.ContainsKey(type)){return Type_Skil[type];}
+        /*switch(type){
             case "Praetorian Guard":
                 return Praetorian_Guard_Skill;
             case "Imperial Legionary":
@@ -190,7 +193,7 @@ public class Types:ScriptableObject
                 return Mercenary_Skill;
             case "Brigand":
                 return Brigand_Skill;
-        }
+        }*/
         return null;
     }
     void setBaseTy(){
