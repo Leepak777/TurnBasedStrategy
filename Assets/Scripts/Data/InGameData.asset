@@ -17,6 +17,7 @@ MonoBehaviour:
     - Player1
     - Player2
     - Enemy1
+    - Enemy2
     values:
     - keys:
       - Type
@@ -31,7 +32,7 @@ MonoBehaviour:
       - Great Sword
       - War Horse
       - Tower Shield
-      - Buckler2
+      - Buckler
     - keys:
       - Type
       - Armor
@@ -42,7 +43,7 @@ MonoBehaviour:
       values:
       - Imperial Legionary
       - Legionary Armor
-      - Great Sword
+      - Power Sword
       - War Horse
       - Kite Shield
       - Buckler
@@ -51,30 +52,42 @@ MonoBehaviour:
       - Armor
       - Weapon
       - Mount
-      - Shield
       values:
       - Imperial Conscript
-      - Legionary Armor
-      - Power Sword
+      - Flak Suit
+      - Pike
       - Pack Horse
-      - Kite Shield
+    - keys:
+      - Type
+      - Armor
+      - Weapon
+      - Mount
+      values:
+      - Mercenary
+      - Praetorian_Armor
+      - Great Sword
+      - Pack Horse
   positions:
     keys:
     - Player1
     - Player2
     - Enemy1
+    - Enemy2
     values:
-    - {x: 35, y: 42, z: 0}
-    - {x: 32, y: 39, z: 0}
-    - {x: 32, y: 43, z: 0}
+    - {x: 31, y: 31, z: 0}
+    - {x: 29, y: 26, z: 0}
+    - {x: 27, y: 34, z: 0}
+    - {x: 25, y: 30, z: 0}
   sprites:
     keys:
     - Player1
     - Player2
     - Enemy1
+    - Enemy2
     values:
     - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
     - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
     - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
+    - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
   map: Never Gonna Give You Up
-  currentSetCh: Enemy1
+  currentSetCh: Enemy2

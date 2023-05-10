@@ -21,11 +21,13 @@ public class SetInfo : MonoBehaviour
     }
     public Equipments equipments;
     public Types types;
+    public TypesSkills TYS;
+
     public CharacterStat GetAsset(string name){
         InGameData data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         if(data.characterlst.ContainsKey(name)){
             CreateCharacterAsset(name, data.characterlst[name]);
-            return AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+name+".asset");
+            return AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+name+"(base).asset");
         }
         else{
             return null;
@@ -58,9 +60,9 @@ public class SetInfo : MonoBehaviour
                 character.setStats(getAttributeStats(attribute));
             }
         }
-        character.setAbilities(types.getTypeAbilities(character.getAttribute("Type")));
+        character.setAbilities(TYS.getTypeAbilities(character.getAttribute("Type")));
 
-        character.setSkills(types.getTypeSkills(character.getAttribute("Type")));
+        character.setSkills(TYS.getTypeSkills(character.getAttribute("Type")));
     }
     
     public void CreateCharacterAsset(string go, UDictionary<string,string> ch) {    

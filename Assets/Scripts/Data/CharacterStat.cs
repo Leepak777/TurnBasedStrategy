@@ -7,7 +7,7 @@ public class CharacterStat : ScriptableObject
     public UDictionary<string,float> stats = new UDictionary<string,float>();
     public UDictionary<string,string> attributes = new UDictionary<string, string>();
     public UDictionary<string,string> abilities = new UDictionary<string, string>();
-    public List<string> skills = new List<string>();
+    public UDictionary<string,int> skills = new UDictionary<string, int>();
     public int AbilitiesCostMul = 1;
     public void setUp(){
         //Raw stat
@@ -84,10 +84,10 @@ public class CharacterStat : ScriptableObject
     public UDictionary<string,string> getAbilities(){
         return abilities;
     }
-    public List<string> getSkills(){
+    public UDictionary<string,int> getSkills(){
         return skills;
     }
-    public void setSkills(List<string> lst){
+    public void setSkills(UDictionary<string,int> lst){
         skills = lst;
     }
     public void addAttributes(string key, string value){

@@ -41,12 +41,16 @@ public class Abilities : MonoBehaviour
     
     public void GameCheck(){
         foreach(UnityEvent<GameObject> e in UniversalCheck){
-            e.Invoke(gameObject);
+            if(e != null){
+                e.Invoke(gameObject);
+            }
         }
     }
     public void CharacterCheck(){
         foreach(UnityEvent<GameObject> e in IndividualCheck){
-            e.Invoke(gameObject);
+            if(e != null){
+                e.Invoke(gameObject);
+            }
         }
     }
     public void getManagers(){
@@ -69,10 +73,11 @@ public class Abilities : MonoBehaviour
             }
         }
         Skillname.Add("Skills");
-        Skillname.AddRange(stats.getSkills());
+        
         activeSkill.Add(new UnityEvent<GameObject,Vector3Int>());
-        foreach(string name in stats.getSkills()){
-            activeSkill.Add(abilitiesData.getActiveSkill(name));
+        foreach(KeyValuePair<string,int> name in stats.getSkills()){
+            Skillname.Add(name.Key);
+            activeSkill.Add(abilitiesData.getActiveSkill(name.Key));
         }
         skillDrop = GameObject.Find("ActiveSkill").GetComponent<Dropdown>();
     }

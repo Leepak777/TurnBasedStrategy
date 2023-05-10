@@ -15,11 +15,15 @@ public class setInfoPanel : MonoBehaviour
     public GameObject stat;
     public Equipments equipments;
     public Types types;
+    public TypesSkills tys;
     public string info_name;
     private string[] eqlst = {"Weapon","Shield","Armor","Buckler","Mount"};
     SetInfo setter;
     void Start(){
-
+        string name =gameObject.name.Remove((gameObject.name.Length-5));
+        info_name = name;
+        Debug.Log(info_name);
+        settext(info_name);
     }
     public void updateInfo(){
         settext(info_name);

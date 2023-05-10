@@ -17,6 +17,7 @@ public class TypeSetter : MonoBehaviour
     public KeyValuePair<string, UDictionary<string, float>> Entry  = new KeyValuePair<string, UDictionary<string, float>>();
     public UDictionary<string, float> ChangeData = new UDictionary<string, float>();
     public Types ty;
+    public TypesSkills TYS;
     public AbilitiesData ad;
     
     void Awake(){
@@ -25,6 +26,10 @@ public class TypeSetter : MonoBehaviour
         type.AddOptions(ty.type);
         ChangeData = new UDictionary<string, float>();
         Entry  = new KeyValuePair<string, UDictionary<string, float>>();
+        EditorUtility.SetDirty(ty);
+        EditorUtility.SetDirty(TYS);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
     public void neweq(){
@@ -37,10 +42,12 @@ public class TypeSetter : MonoBehaviour
         type.value = 0;
         setInput(type.value);
         EditorUtility.SetDirty(ty);
+        EditorUtility.SetDirty(TYS);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
     public void setInput(int option){
+        
         input.text = type.options[option].text;
         UDictionary<string, float> stats = new UDictionary<string, float>();
         stats = ty.getTypeStat(input.text); 
@@ -57,11 +64,12 @@ public class TypeSetter : MonoBehaviour
         if(stats != null){
             AddStatBoxes(stats);
         }
-        if(ty.getTypeSkills(input.text) != null){
-            AddSkillBoxes(ty.getTypeSkills(input.text));
+        
+        if(TYS.getTypeSkills(input.text) != null){
+            AddSkillBoxes(TYS.getTypeSkills(input.text));
         }
-        if(ty.getTypeAbilities(input.text) != null){
-            AddAbilitiesBoxes(ty.getTypeAbilities(input.text));
+        if(TYS.getTypeAbilities(input.text) != null){
+            AddAbilitiesBoxes(TYS.getTypeAbilities(input.text));
         }
         ChangeData = stats;
     }
@@ -71,10 +79,10 @@ public class TypeSetter : MonoBehaviour
             addInfo(stats.ElementAt(i));
         }
     }
-    void AddSkillBoxes(List<string> stats){
+    void AddSkillBoxes(UDictionary<string,int> stats){
         
         for(int i = 0; i < stats.Count; i++){
-            addSkill(input.text,stats.ElementAt(i));
+            addSkill(input.text,stats.ElementAt(i).Key);
         }
     }
     void AddAbilitiesBoxes(UDictionary<string,string> stats){
@@ -110,6 +118,7 @@ public class TypeSetter : MonoBehaviour
         Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
         dd.ClearOptions();
         dd.AddOptions(ty.type_stats);
+        player.GetComponent<BoxFunc>().updateBox();
     }
 
     public void addSkill(string name, string skill){
@@ -158,8 +167,10 @@ public class TypeSetter : MonoBehaviour
         type.captionText.text = name;
         if(type.options.Count == ty.type.Count){
             ty.changeTypeKey(type.value,name);
+            TYS.changeTypeKey(type.value,name);
         }
         EditorUtility.SetDirty(ty);
+        EditorUtility.SetDirty(TYS);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -176,12 +187,12 @@ public class TypeSetter : MonoBehaviour
                 newData.Add(new KeyValuePair<string,float>(name, float.Parse(value)));
             }
         }
-        List<string> Skills = new List<string>();
+        UDictionary<string,int> Skills = new UDictionary<string,int>();
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("Skillbox")){
             Dropdown dd = go.transform.Find("Statname").GetComponent<Dropdown>();
             string name = dd.options[dd.value].text;
-            if(!Skills.Contains(name)){
-                Skills.Add(name);
+            if(!Skills.ContainsKey(name)){
+                Skills.Add(name,0);
             }
         }
         UDictionary<string,string> Abilities = new UDictionary<string,string>();
@@ -195,10 +206,13 @@ public class TypeSetter : MonoBehaviour
 
         ChangeData = newData;
         ty.addTypeEntry(type.captionText.text,ChangeData);
-        ty.addTypeAbilities(type.captionText.text,Abilities);
-        ty.addTypeSkill(type.captionText.text,Skills);
+        TYS.addTypeAbilities(type.captionText.text,Abilities);
+        TYS.addTypeSkill(type.captionText.text,Skills);
         
         EditorUtility.SetDirty(ty);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        EditorUtility.SetDirty(TYS);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

@@ -42,6 +42,36 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  corruption:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000}
+        m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+        m_MethodName: CorruptionAura
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  cold:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000}
+        m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+        m_MethodName: ColdAura
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   WhirlWind_e:
     m_PersistentCalls:
       m_Calls:
@@ -123,3 +153,17 @@ MonoBehaviour:
   FireStance_e:
     m_PersistentCalls:
       m_Calls: []
+  SkillLst:
+  - ForceBlast
+  - PsychicStorm
+  - ForeSight
+  - WhirlWind
+  - WaterStance
+  - FireStance
+  AbilitiesLst:
+  - LeaderShipAura
+  - Charge
+  - CorruptionAura
+  - ColdAura
+  - DeathAura
+  - AssaultAura

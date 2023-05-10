@@ -404,7 +404,7 @@ public class UDictionary<TKey, TValue> : UDictionary, IDictionary<TKey, TValue>
 
     public bool ContainsKey(TKey key) => Dictionary.ContainsKey(key);
     public bool Contains(KeyValuePair<TKey, TValue> item) => ContainsKey(item.Key);
-
+    public TValue GetValue(TKey key) {return Dictionary[key]; }
     public void Add(TKey key, TValue value)
     {
         keys.Add(key);

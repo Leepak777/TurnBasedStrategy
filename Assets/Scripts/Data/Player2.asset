@@ -77,9 +77,9 @@ MonoBehaviour:
     - 10
     - 0
     - 0
-    - 9
+    - 8
     - 1.5
-    - 1.3
+    - 1
     - 1
     - 100
     - 0
@@ -118,7 +118,7 @@ MonoBehaviour:
     values:
     - Imperial Legionary
     - Legionary Armor
-    - Great Sword
+    - Power Sword
     - War Horse
     - Kite Shield
     - Buckler
@@ -130,7 +130,9 @@ MonoBehaviour:
     - Universal
     - Individual
   skills:
-  - PsychicStorm
-  - ForceBlast
-  - ForeSight
+    keys:
+    - PsychicStorm
+    - ForceBlast
+    - ForeSight
+    values: 000000000000000000000000
   AbilitiesCostMul: 1

@@ -16,10 +16,14 @@ public class BoxFunc : MonoBehaviour
     public string stattype;
     public List<string> statslst;
     public Dropdown dd;
+    void Start(){
+    }
     public void RemoveBox(){
        Destroy(gameObject);
     }
-
+    public void updateBox(){
+        setfullname(dd.options[dd.value].text);
+    }
     public void updateText(int i){
         setfullname(dd.options[i].text);
     }

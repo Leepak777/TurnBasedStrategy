@@ -11,6 +11,8 @@ public class AbilitiesData : ScriptableObject
 {
     public UnityEvent<GameObject> Leadership;
     public UnityEvent<GameObject> charge;
+     public UnityEvent<GameObject> corruption;
+    public UnityEvent<GameObject> cold;
     public UnityEvent<GameObject, Vector3Int> WhirlWind_e;
     public UnityEvent<GameObject, Vector3Int> ForceBlast_e;
     public UnityEvent<GameObject, Vector3Int> PsychiStorm_e;
@@ -39,6 +41,10 @@ public class AbilitiesData : ScriptableObject
             return Leadership;
             case "Charge":
             return charge;
+            case "CorruptionAura":
+            return corruption;
+            case "ColdAura":
+            return cold;
         }
         return null;
     }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 303c7bef3757f304f89e5278f3b35103, type: 3}
-  m_Name: Player2(base)
+  m_Name: Enemy2
   m_EditorClassIdentifier: 
   stats:
     keys:
@@ -61,67 +61,61 @@ MonoBehaviour:
     - maxStb
     - maxTiles
     values:
-    - 7
-    - 5
     - 6
+    - 6
+    - 5
     - 2
-    - 3
+    - 2
+    - 12
+    - 11
     - 13
-    - 9
-    - 15
-    - 14
+    - 12
     - 3
     - 10
-    - 45
+    - 35
     - 1
-    - 10
+    - 11
     - 0
     - 0
-    - 8
+    - 9
     - 1.5
-    - 1
+    - 1.3
     - 1
     - 100
     - 0
     - 2
-    - 6
-    - 34
+    - 0
+    - 0
     - 3
     - 2
-    - 15
     - 0
-    - 2
-    - -4
-    - 9
-    - 3
-    - 3
-    - 82
-    - 14
     - 0
-    - 33
+    - 4
     - 0
-    - 13.5
-    - 15.75
-    - 4.25
+    - 8
+    - 5
+    - -6
+    - 66
+    - 10
     - 0
-    - 82
-    - 47
-    - 13
+    - 26
+    - 0
+    - 12
+    - 28.5
+    - -4.5
+    - 0
+    - 66
+    - 37
+    - 12
   attributes:
     keys:
     - Type
-    - Armor
     - Weapon
     - Mount
-    - Shield
-    - Buckler
     values:
-    - Imperial Legionary
-    - Legionary Armor
-    - Power Sword
-    - War Horse
-    - Kite Shield
-    - Buckler
+    - Mercenary
+    - Great Sword
+    - Pack Horse
   abilities:
     keys:
     - LeadershipAura
@@ -131,8 +125,9 @@ MonoBehaviour:
     - Individual
   skills:
     keys:
+    - WhirlWind
     - PsychicStorm
     - ForceBlast
     - ForeSight
-    values: 000000000000000000000000
+    values: 00000000000000000000000000000000
   AbilitiesCostMul: 1

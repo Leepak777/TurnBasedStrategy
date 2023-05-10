@@ -4759,8 +4759,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 730450478564792287, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
       propertyPath: m_Name
-      value: PlayerSetup
+      value: Player1
       objectReference: {fileID: 0}
+    - target: {fileID: 1486158482127246829, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
+      propertyPath: TYS
+      value: 
+      objectReference: {fileID: 11400000, guid: 525bb6b611ce15c40b8c5b331e837745, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32272566fc217d341b7754ef9c54fbb8, type: 3}
 --- !u!1 &903723796

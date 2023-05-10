@@ -55,6 +55,7 @@ MonoBehaviour:
   stat: {fileID: 8878933981293522140}
   equipments: {fileID: 11400000, guid: fb17da8d5da0fe848a7d3b69fe58a79f, type: 2}
   types: {fileID: 11400000, guid: a0419dca955bab445a63118ec68c555a, type: 2}
+  tys: {fileID: 11400000, guid: 525bb6b611ce15c40b8c5b331e837745, type: 2}
   info_name: 
 --- !u!1 &4195147570684321117
 GameObject:

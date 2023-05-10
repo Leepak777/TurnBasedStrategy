@@ -28,12 +28,12 @@ public class addPanel : MonoBehaviour
         }
         GameObject prefab = Resources.Load<GameObject>("character_Info") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
-        player.GetComponent<setInfoPanel>().settext(this.gameObject.name);
+        //player.GetComponent<setInfoPanel>().settext(this.gameObject.name);
         player.name = gameObject.name+"_info";
         player.transform.SetParent(goParent.transform);
         player.transform.localScale = new Vector3(1, 1, 1);
         player.transform.SetSiblingIndex(gameObject.transform.GetSiblingIndex()+1);
-        
+        //player.GetComponent<setInfoPanel>().updateInfo();
     }
     public void removeInfo(){
        string name = gameObject.name+"_info";
