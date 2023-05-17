@@ -13,6 +13,7 @@ public class Attack : MonoBehaviour
     }
     //Enemy Attack cloest Player, call after Enemy moved
     public void EnemyAttack(){
+        Debug.Log("pog");
         GameObject targetPlayer = tileM.getClosestPlayer("Player", transform.position);
         Vector3Int targetNode = tileM.WorldToCell(targetPlayer.transform.position);
         //tileM.flagEnemyArea(targetPlayer,"Player",attackArea);

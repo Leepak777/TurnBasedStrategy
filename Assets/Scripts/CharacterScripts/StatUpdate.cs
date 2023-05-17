@@ -213,12 +213,19 @@ public class StatUpdate : MonoBehaviour
         
     }
     public void addEffectStat(KeyValuePair<string,string> pair, UDictionary<string,int> dict){
-        effect_Bonus.Add(pair,dict);
+        if(!effect_Bonus.ContainsKey(pair)){
+            effect_Bonus.Add(pair,dict);
+        }
     }
     public int getPreBonusStat(KeyValuePair<string,string> name,string targetStat){
-        int PreBonus = effect_Bonus[name][targetStat];
-        effect_Bonus[name].Remove(targetStat);
-        return PreBonus;
+        if(effect_Bonus[name].ContainsKey(targetStat)){
+            int PreBonus = effect_Bonus[name][targetStat];
+            effect_Bonus[name].Remove(targetStat);
+            return PreBonus;
+        }
+        else{
+            return 0;
+        }
     }
     public bool isBuff(string name,string character){
         return buffs.ContainsKey(new KeyValuePair<string,string>(name,character));

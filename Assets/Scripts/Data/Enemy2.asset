@@ -120,8 +120,10 @@ MonoBehaviour:
     keys:
     - LeadershipAura
     - Charge
+    - Psychometry
     values:
     - Universal
+    - Individual
     - Individual
   skills:
     keys:

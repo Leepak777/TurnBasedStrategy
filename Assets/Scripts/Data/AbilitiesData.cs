@@ -24,7 +24,7 @@ public class AbilitiesData : ScriptableObject
     TurnManager turnM;
     int charge_bonus = 0;
     public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance"};
-    public List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura"};
+    public List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
     public void setTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
@@ -71,7 +71,7 @@ public class AbilitiesData : ScriptableObject
     }
     public string getAbilType(string name){
         switch(name){
-            case "LeaderShipAura": return "Universal";
+            case "LeadershipAura": return "Universal";
             case "CorruptionAura": return "Universal";
             case "ColdAura": return "Universal";
             case "DeathAura": return "Universal";
@@ -329,6 +329,7 @@ public class AbilitiesData : ScriptableObject
         if(!turnM.getUI().inForesight()){
             foresighStart();
             turnM.getUI().setForesight((true));
+            turnM.getUI().preattack = turnM.getUI().attackTime;
         }
         else{
             foresightEnd();

@@ -54,11 +54,7 @@ public class ActionCenter : MonoBehaviour
     // takes int bc reset and undo ends the current play turn before going to the previous character, can removeit not that we don't use undo
     public void endingTurn(int i){
         //To-DO: Added skill check for skills that update each Character turn
-        if(i == 0){
-            if(this.gameObject.tag == "Enemy"){
-                this.gameObject.GetComponentInChildren<CharacterEvents>().onEnemyAttack.Invoke();
-            }
-        }
+        
 
     }
     

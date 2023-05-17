@@ -125,9 +125,11 @@ MonoBehaviour:
     - LeaderShipAura
     - Charge
     - CorruptionAura
+    - Psychometry
     values:
     - Universal
     - Individual
+    - Universal
     - Universal
   skills:
     keys:

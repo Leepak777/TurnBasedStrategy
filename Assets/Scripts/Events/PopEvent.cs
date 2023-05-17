@@ -4,8 +4,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+using System.Linq;
+using System.IO;
+using UnityEngine.AI;
+using Random = System.Random;
 
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditorInternal;
+#endif
 
+using Object = UnityEngine.Object;
 public class PopEvent : MonoBehaviour
 {
     public UnityEvent<GameObject, GameObject> setPos;
@@ -17,8 +27,11 @@ public class PopEvent : MonoBehaviour
     public GameObject stat;
     public GameObject target;
     TileManager tileM;
+    public UI ui;
+    Random rnd;
 
     void Start(){
+        rnd = new Random((int)Time.time*1000);
         if(popwindow==null){
             popwindow = FindInActiveObjectByName("InfoPanel");
             popwindow.SetActive(false);
@@ -42,9 +55,11 @@ public class PopEvent : MonoBehaviour
     }
     public void togglePanel(GameObject pos, GameObject go){
         if(popwindow.activeInHierarchy){
-            popwindow.SetActive(false);
+            //popwindow.SetActive(false);
+            //DeleteStat();
         }
         else{
+            DeleteStat();
             popwindow.SetActive(true);
         }
     }
@@ -71,6 +86,7 @@ public class PopEvent : MonoBehaviour
             setAttackConfirmContent();
         }
         if(popwindow.name =="InfoPanel"){
+            DeleteStat();
             setText();
         }
         
@@ -113,10 +129,10 @@ public class PopEvent : MonoBehaviour
         
     }
 
-    public void setText(){
+    public void self(){
         Text goType = popwindow.transform.Find("Type").GetComponent<Text>();
         Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
-        Text goStat = popwindow.transform.Find("Stats").GetComponent<Text>();
+        Text goStat = popwindow.transform.Find("ScrollStats").GetComponentInChildren<Text>();
         CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
         goType.text = chStat.getAttribute("Type");
         goEquipment.text ="";
@@ -135,4 +151,128 @@ public class PopEvent : MonoBehaviour
         goStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";
         goStat.text += "Protection: \n" + chStat.getProtection() + "\n";
     }
+    public void addInfo(string stat, string value){
+        GameObject goParent = GameObject.Find("StatPanel");
+        GameObject prefab = Resources.Load<GameObject>("Stat") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.name = stat;
+        player.GetComponentInChildren<Text>().text = stat +": "+value;
+    }
+    public void DeleteStat(){
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("Stat")){
+            Destroy(go);
+        }
+    }
+    public void setText(){
+        //
+        if(ui == null){ui = GameObject.Find("UICanvas").GetComponent<UI>();}
+        GameObject current = ui.getCurrentPlay();
+        Debug.Log(current.name +","+target.name);
+        Text goType = popwindow.transform.Find("Type").GetComponent<Text>();
+        Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
+        //Text goStat = popwindow.transform.Find("ScrollStat").GetComponentInChildren<Text>();
+        //current: currentplay, target: target object
+        
+        StatUpdate currentSU = current.GetComponent<StatUpdate>();
+        StatUpdate targetSU= target.GetComponent<StatUpdate>();
+
+        CharacterStat currentStat = currentSU.getStats();
+        CharacterStat targetStat = targetSU.getStats();
+        if(current.name == target.name){
+            self();
+        }
+        else if(!currentStat.getAbilities().ContainsKey("Psychometry")){
+            goType.text = "Access Denied";
+            goEquipment.text = "";
+            //goStat.text = "";
+        }
+        else{
+            float diff = currentStat.stats["acu"] - targetStat.stats["acu"];
+            //Debug.Log(currentStat.stats["acu"] + " - " + targetStat.stats["acu"]+"="+diff);
+            if(diff < -5){
+             //goStat.text = 
+             getInfo(targetStat,currentStat,-1);
+            }
+            else if(diff >= -5 && diff <= -3){
+             //goStat.text = 
+             getInfo(targetStat,currentStat,2);
+            }
+            else if(diff >= -2 && diff <= -1){
+                goType.text = "Access Denied";
+                goEquipment.text = "";
+                //goStat.text = "";
+            }
+            else if(diff == 0){
+                //whether >50% attack sucess, stats higher or lower, hp > or <  50%
+                //goStat.text = 
+                getInfo(targetStat,currentStat,0);
+            }
+            else if(diff <= 2 && diff >= 1){
+                //goStat.text = 
+                getInfo(targetStat,currentStat,20);
+            }
+            else if(diff <= 4 && diff >= 3){
+                //goStat.text = 
+                getInfo(targetStat,currentStat,10);
+            }
+            else if(diff >= 5 && diff <= 6){
+                //goStat.text = 
+                getInfo(targetStat,currentStat,5);
+            }
+            else if(diff > 6){
+             //goStat.text = 
+             getInfo(targetStat,currentStat,1);
+            }
+
+        }
+    }
+
+    
+    void getInfo(CharacterStat targetStat, CharacterStat currentStat, int x){
+        string lst = "";
+        foreach(KeyValuePair<string, float> pair in targetStat.stats){
+            string showValue = pair.Value * x +"\n";
+            if(x == 5){
+                showValue = getPercent(pair.Value, currentStat.stats[pair.Key], 0.05f, -0.95f)+"\n";
+            }
+            if(x == 10){
+                showValue = getPercent(pair.Value, currentStat.stats[pair.Key], 0.1f, -0.9f)+"\n";
+            }
+            if(x == 20){
+                showValue = getPercent(pair.Value, currentStat.stats[pair.Key], 0.20f, -0.80f)+"\n";
+            }
+            if(x == 2){
+                showValue = rnd.Next(0, (int)Math.Max(pair.Value, currentStat.stats[pair.Key]))+"\n";
+            }
+            if(x == 0){
+                showValue = getPercent(pair.Value, currentStat.stats[pair.Key], 1f, 0f)+"\n";
+            }
+            //lst += pair.Key + " : " + showValue;
+            //Debug.Log(pair.Key+":"+showValue);
+            addInfo(pair.Key,showValue);
+        }
+        //return lst;
+
+    }
+
+    string getPercent(float targetV, float currentV, float percent, float start){
+        float diff = currentV - targetV;
+        start = 0;
+        while(start < 100){
+            //Debug.Log(Math.Abs(diff/currentV)*100 + ","+start +","+(start+(percent*100)));
+            if(Math.Abs(diff/currentV)*100 >= start && Math.Abs(diff/currentV)*100 <= start+(percent*100)){
+                if(diff <0){
+                    return "<"+start+"-"+(start+(percent*100));
+                }
+                else{
+                    return ">" + start+"-"+(start+(percent*100));
+                }
+            }
+                start += (percent*100);
+        }        
+        return null;
+    }
+    
+
 }

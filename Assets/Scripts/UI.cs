@@ -24,6 +24,7 @@ public class UI : MonoBehaviour
     public Dropdown skillLst;
     public bool Casting = false;
     public int attackTime = 0;
+    public int preattack = 0;
     public StatUpdate statupdate;
 
     void Update()
@@ -102,7 +103,14 @@ public class UI : MonoBehaviour
     }
     public void stopEvent(){
         if(currentPlay.tag == "Enemy"){
-            tm.setGameState(1);
+            if(attackTime < statupdate.getDictStats("attack_num")){
+                currentPlay.GetComponentInChildren<CharacterEvents>().onEnemyAttack.Invoke();
+                attackTime++;
+                tm.setGameState(2);
+            }
+            else{
+                tm.setGameState(1);
+            }
         }
         
     }
@@ -118,6 +126,7 @@ public class UI : MonoBehaviour
             tm.setGameState(2);
             currentPlay.GetComponentInChildren<CharacterEvents>().unHighLightRechable.Invoke();
             currentPlay.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
+            attackTime = preattack;
         }
     }
     public void setCurrentPlay(GameObject go){
