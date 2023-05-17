@@ -130,9 +130,9 @@ public class PopEvent : MonoBehaviour
     }
 
     public void self(){
-        Text goType = popwindow.transform.Find("Type").GetComponent<Text>();
+        Text goType = popwindow.transform.Find("TypeI").GetComponentInChildren<Text>();
         Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
-        Text goStat = popwindow.transform.Find("ScrollStats").GetComponentInChildren<Text>();
+        //Text goStat = popwindow.transform.Find("Stats").GetComponent<Text>();
         CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
         goType.text = chStat.getAttribute("Type");
         goEquipment.text ="";
@@ -143,13 +143,26 @@ public class PopEvent : MonoBehaviour
                 }
             }
         }
-        goStat.text = "";
+       /* goStat.text = "";
         foreach(KeyValuePair<string,string> pair in chStat.getAbilities()){
             goStat.text += pair.Key+"\n";
         }
         goStat.text += "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";
         goStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";
-        goStat.text += "Protection: \n" + chStat.getProtection() + "\n";
+        goStat.text += "Protection: \n" + chStat.getProtection() + "\n";*/
+    }
+    public void setTypeEQText(CharacterStat chStat){
+        Text goType = popwindow.transform.Find("TypeI").GetComponentInChildren<Text>();
+        Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
+        goType.text = chStat.getAttribute("Type");
+        goEquipment.text ="";
+        if(goEquipment.text == ""){
+            foreach(string str in eqlst){
+                if(chStat.getAttribute(str) != null){
+                    goEquipment.text += str+": \n"+ chStat.getAttribute(str) +"\n"; 
+                }
+            }
+        }
     }
     public void addInfo(string stat, string value){
         GameObject goParent = GameObject.Find("StatPanel");
@@ -169,7 +182,7 @@ public class PopEvent : MonoBehaviour
         if(ui == null){ui = GameObject.Find("UICanvas").GetComponent<UI>();}
         GameObject current = ui.getCurrentPlay();
         Debug.Log(current.name +","+target.name);
-        Text goType = popwindow.transform.Find("Type").GetComponent<Text>();
+        Text goType = popwindow.transform.Find("TypeI").GetComponentInChildren<Text>();
         Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
         //Text goStat = popwindow.transform.Find("ScrollStat").GetComponentInChildren<Text>();
         //current: currentplay, target: target object
@@ -181,6 +194,7 @@ public class PopEvent : MonoBehaviour
         CharacterStat targetStat = targetSU.getStats();
         if(current.name == target.name){
             self();
+            getInfo(targetStat,currentStat,1);
         }
         else if(!currentStat.getAbilities().ContainsKey("Psychometry")){
             goType.text = "Access Denied";
@@ -192,10 +206,12 @@ public class PopEvent : MonoBehaviour
             //Debug.Log(currentStat.stats["acu"] + " - " + targetStat.stats["acu"]+"="+diff);
             if(diff < -5){
              //goStat.text = 
+             setTypeEQText(targetStat);
              getInfo(targetStat,currentStat,-1);
             }
             else if(diff >= -5 && diff <= -3){
              //goStat.text = 
+             setTypeEQText(targetStat);
              getInfo(targetStat,currentStat,2);
             }
             else if(diff >= -2 && diff <= -1){
@@ -206,23 +222,28 @@ public class PopEvent : MonoBehaviour
             else if(diff == 0){
                 //whether >50% attack sucess, stats higher or lower, hp > or <  50%
                 //goStat.text = 
+                setTypeEQText(targetStat);
                 getInfo(targetStat,currentStat,0);
             }
             else if(diff <= 2 && diff >= 1){
                 //goStat.text = 
+                setTypeEQText(targetStat);
                 getInfo(targetStat,currentStat,20);
             }
             else if(diff <= 4 && diff >= 3){
                 //goStat.text = 
+                setTypeEQText(targetStat);
                 getInfo(targetStat,currentStat,10);
             }
             else if(diff >= 5 && diff <= 6){
                 //goStat.text = 
+                setTypeEQText(targetStat);
                 getInfo(targetStat,currentStat,5);
             }
             else if(diff > 6){
              //goStat.text = 
-             getInfo(targetStat,currentStat,1);
+                setTypeEQText(targetStat);
+                getInfo(targetStat,currentStat,1);
             }
 
         }
@@ -260,7 +281,11 @@ public class PopEvent : MonoBehaviour
         float diff = currentV - targetV;
         start = 0;
         while(start < 100){
-            //Debug.Log(Math.Abs(diff/currentV)*100 + ","+start +","+(start+(percent*100)));
+            //Debug.Log(Math.Abs(diff/currentV)*100 + ","+","+currentV+","+start +","+(start+(percent*100)));
+            if(currentV == 0){
+                if(diff<0){return "Less";}
+                else{return "More";}
+            }
             if(Math.Abs(diff/currentV)*100 >= start && Math.Abs(diff/currentV)*100 <= start+(percent*100)){
                 if(diff <0){
                     return "<"+start+"-"+(start+(percent*100));
