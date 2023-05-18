@@ -133,6 +133,21 @@ public class StatUpdate : MonoBehaviour
     }
     public void TakeDamage(int damageReceived)
     {
+        BubbleBar Bubble = gameObject.GetComponentInChildren<BubbleBar>();
+        
+        int remainindamage = 0;
+        if( Bubble != null){
+            remainindamage = damageReceived - (int)Bubble.currentHealth;
+            Bubble.currentHealth -= (float)damageReceived;
+            Bubble.UpdateHealth();
+            if(remainindamage <=0 ){
+                damageReceived = 0;
+            }
+            else{
+                damageReceived = remainindamage;
+            }
+        }
+        
         int protection = drn.getDRN() + stats.getProtection();
         Debug.Log("Damage:"+damageReceived+"Protection: " +protection);
         damageReceived -= protection;

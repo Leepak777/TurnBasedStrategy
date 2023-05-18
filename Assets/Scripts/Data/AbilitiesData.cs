@@ -395,6 +395,12 @@ public class AbilitiesData : ScriptableObject
     public void Teleport(GameObject target, Vector3Int Loc){
         target.transform.position = tileM.GetCellCenterWorld(Loc);
     }
+    public void Bubble(GameObject target, Vector3Int Loc){
+        GameObject prefab = Resources.Load<GameObject>("Bubble") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(target.transform);
+        player.name = target.name+"_Bubble";
+    }
 
     public void computeCost(GameObject play, string name){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
@@ -428,6 +434,9 @@ public class AbilitiesData : ScriptableObject
                 ocstat.getStats().modifyStat("acu",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
                 ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"FireStance"), new UDictionary<string, int>(){
                     {"bonus damage",(int)ocstat.getDictStats("acu")},{"acu",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
+                break;
+            case "Bubble":
+                ocstat.getStats().modifyStat("ene",-10);
                 break;
         }
     }

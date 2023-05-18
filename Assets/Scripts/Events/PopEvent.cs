@@ -99,20 +99,20 @@ public class PopEvent : MonoBehaviour
             CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
             CharacterStat enStat = enemy.GetComponent<StatUpdate>().getStats();
             PlayerStat.text = chStat.getAttribute("Type")+"\n";
-            PlayerStat.text += "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";
+            /*PlayerStat.text += "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";
             PlayerStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";
-            PlayerStat.text += "Protection: \n" + chStat.getProtection() + "\n";
+            PlayerStat.text += "Protection: \n" + chStat.getProtection() + "\n";*/
             EnemyStat.text = enStat.getAttribute("Type")+"\n";
-            EnemyStat.text += "HP: "+enemy.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ enStat.getStat("maxHealth") + "\n";
+            /*EnemyStat.text += "HP: "+enemy.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ enStat.getStat("maxHealth") + "\n";
             EnemyStat.text += "Damage: \n" + enStat.getBaseDamage() + "\n";
-            EnemyStat.text += "Protection: \n" + enStat.getProtection() + "\n";
+            EnemyStat.text += "Protection: \n" + enStat.getProtection() + "\n";*/
             Image PlayerImage = popwindow.transform.Find("PlayerImage").GetComponent<Image>();
             Image EnemyImage = popwindow.transform.Find("EnemyImage").GetComponent<Image>();
             PlayerImage.sprite = go.GetComponent<SpriteRenderer>().sprite;
             EnemyImage.sprite = enemy.GetComponent<SpriteRenderer>().sprite;
-            KeyValuePair<float,float> predict = go.GetComponent<StatUpdate>().getAttackSim().atkPossibility(go,enemy);
+            /*KeyValuePair<float,float> predict = go.GetComponent<StatUpdate>().getAttackSim().atkPossibility(go,enemy);
             Text prediction = popwindow.transform.Find("Prediction").GetComponent<Text>();
-            prediction.text = "Sucess rate: " +predict.Key + ", Damage: " + predict.Value;
+            prediction.text = "Sucess rate: " +predict.Key + ", Damage: " + predict.Value;*/
     }
     public void setLocMenu(){
         if(tileM == null){
@@ -192,8 +192,14 @@ public class PopEvent : MonoBehaviour
 
         CharacterStat currentStat = currentSU.getStats();
         CharacterStat targetStat = targetSU.getStats();
+        KeyValuePair<float,float> predict = go.GetComponent<StatUpdate>().getAttackSim().atkPossibility(current,target);
+        string prediction = "" +predict.Key;
         if(current.name == target.name){
             self();
+            getInfo(targetStat,currentStat,1);
+        }
+        else if(current.tag == target.tag){
+            setTypeEQText(targetStat);
             getInfo(targetStat,currentStat,1);
         }
         else if(!currentStat.getAbilities().ContainsKey("Psychometry")){
@@ -223,26 +229,38 @@ public class PopEvent : MonoBehaviour
                 //whether >50% attack sucess, stats higher or lower, hp > or <  50%
                 //goStat.text = 
                 setTypeEQText(targetStat);
+                if(predict.Key > 50){prediction = ">50%";}
+                else{prediction = "<50%";}
+                addInfo("Sucess Rate",prediction);
                 getInfo(targetStat,currentStat,0);
             }
             else if(diff <= 2 && diff >= 1){
                 //goStat.text = 
                 setTypeEQText(targetStat);
+                if(predict.Key < 20){prediction = "very unlikely";}
+                else if(predict.Key >= 20 && predict.Key <40){prediction = "unlikely";}
+                else if(predict.Key >= 40 && predict.Key <60){prediction = "even";}
+                else if(predict.Key >= 60 && predict.Key <80){prediction = "likely";}
+                else if(predict.Key >= 80 && predict.Key <100){prediction = "very likely";}
+                addInfo("Sucess Rate",prediction);
                 getInfo(targetStat,currentStat,20);
             }
             else if(diff <= 4 && diff >= 3){
                 //goStat.text = 
                 setTypeEQText(targetStat);
+                addInfo("Sucess Rate",gethitChance(predict.Key, 10));
                 getInfo(targetStat,currentStat,10);
             }
             else if(diff >= 5 && diff <= 6){
                 //goStat.text = 
                 setTypeEQText(targetStat);
+                addInfo("Sucess Rate",gethitChance(predict.Key, 5));
                 getInfo(targetStat,currentStat,5);
             }
             else if(diff > 6){
              //goStat.text = 
                 setTypeEQText(targetStat);
+                addInfo("Sucess Rate",prediction);
                 getInfo(targetStat,currentStat,1);
             }
 
@@ -267,16 +285,29 @@ public class PopEvent : MonoBehaviour
                 showValue = rnd.Next(0, (int)Math.Max(pair.Value, currentStat.stats[pair.Key]))+"\n";
             }
             if(x == 0){
-                showValue = getPercent(pair.Value, currentStat.stats[pair.Key], 1f, 0f)+"\n";
+                if(pair.Value< currentStat.stats[pair.Key]){
+                    showValue = "Less"+"\n";
+                }
+                else{
+                    showValue = "More"+"\n";
+                }
+                //showValue = /*getPercent(pair.Value, currentStat.stats[pair.Key], 1f, 0f)*/+"\n";
             }
             //lst += pair.Key + " : " + showValue;
             //Debug.Log(pair.Key+":"+showValue);
-            addInfo(pair.Key,showValue);
+            addInfo(getfullname(pair.Key),showValue);
         }
         //return lst;
 
     }
-
+    string gethitChance(float chance, float percent){
+        for(float i = 0; i < 100; i+=percent){
+            if(chance >= i && chance < i+percent){
+                return "~"+i+"-"+(i+percent)+"%";
+            }
+        }
+        return null;
+    }
     string getPercent(float targetV, float currentV, float percent, float start){
         float diff = currentV - targetV;
         start = 0;
@@ -297,6 +328,50 @@ public class PopEvent : MonoBehaviour
                 start += (percent*100);
         }        
         return null;
+    }
+    public string getfullname(string i){
+        string full = "none";
+        switch(i){
+            case "wd": full = "Weapon Damage";break;
+            case "pow": full = "Power";break;
+            case "dex": full = "Dexterity";break;
+            case "tou": full = "Toughness";break;
+            case "acu": full = "Acuity";break;
+            case "mid": full = "Mind";break;
+            case "hp": full = "Hit Point";break;
+            case "ene": full = "Energy";break;
+            case "enc": full = "Encumbrance";break;
+            case "fat": full = "Fatigue";break;
+            case "stb": full = "Stability";break;
+            case "ma": full = "Melee Attack";break;
+            case "ra": full = "Range Attack";break;
+            case "md": full = "Melee Defence";break;
+            case "rd": full = "Ranged Defence";break;
+            case "sa": full = "Spell Attack";break;
+            case "mr": full = "Magic Resistance";break;
+            case "rng": full = "Range";break;
+            case "pscal": full = "Pow Scaling";break;
+            case "dscal": full = "Dex Scaling";break;
+            case "sp": full = "Shield Piercing";break;
+            case "ap": full = "Armor Piercing";break;
+            case "acc": full = "Accuracy Bonus";break;
+            case "av": full = "Armor Value";break;
+            case "sv": full = "Shield Value";break;
+            case "mdb": full = "Melee Defence Bonus";break;
+            case "rdb": full = "Ranged Defence Bonus";break;
+            case "pr": full = "Parry Rating";break;
+            case "pv": full = "Parry Value";break;
+            case "mov": full = "Movement range";break;
+            case "bit": full = "Base Initiative";break;
+            case "base_hp": full = "Base HP";break;
+            case "base_ene": full = "Base Energy";break;
+            case "base_mov": full = "Base Movement range";break;
+            case "base_init": full = "Base Initiative";break;
+            case "base_enc": full = "Base Encumbrance";break;
+            case "attack_num": full = "Attack times";break;
+            default: full = "none";break;
+        }
+        return full;
     }
     
 
