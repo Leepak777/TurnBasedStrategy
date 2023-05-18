@@ -24,7 +24,7 @@ public class Abilities : MonoBehaviour
     public List<UnityEvent<GameObject>> IndividualCheck = new List<UnityEvent<GameObject>>();
     public List<UnityEvent<GameObject,Vector3Int>> activeSkill = new List<UnityEvent<GameObject,Vector3Int>>();
     public List<string> Skillname = new List<string>();
-    UDictionary<string,int> CoolDown = new UDictionary<string, int>();
+    public UDictionary<string,int> CoolDown = new UDictionary<string, int>();
     UDictionary<KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>, int> castList = new UDictionary<KeyValuePair<int, KeyValuePair<GameObject, Vector3Int>>, int>();
     CharacterStat stats;
     AbilitiesData abilitiesData;
@@ -99,6 +99,7 @@ public class Abilities : MonoBehaviour
             case "WhirlWind":CheckCoolDown(Skillname[choice]);break;
             case "WaterStance":CheckCoolDown(Skillname[choice]);break;
             case "FireStance":CheckCoolDown(Skillname[choice]);break;
+            case "Bubble":CheckCoolDown(Skillname[choice]);break;
             case "Skills":unTargetSkill(); return;
         }
     }
@@ -271,6 +272,20 @@ public class Abilities : MonoBehaviour
                 if(!CoolDown.ContainsKey("FireStance")){
                     CastTime = 0;
                     CoolDown.Add(name,3);
+                    TargetingSkill();
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "Bubble":
+                if(!CoolDown.ContainsKey("Bubble")){
+                    CastTime = 0;
+                    characterTarget = true;
+                    targetNum = 1;
+                    radius = 0;
+                    CastRange = 9999;
                     TargetingSkill();
                     //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
                 }

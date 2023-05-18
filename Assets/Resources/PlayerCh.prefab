@@ -1720,6 +1720,9 @@ MonoBehaviour:
   IndividualCheck: []
   activeSkill: []
   Skillname: []
+  CoolDown:
+    keys: []
+    values: 
   choice: 0
 --- !u!1 &8951542586426555525
 GameObject:

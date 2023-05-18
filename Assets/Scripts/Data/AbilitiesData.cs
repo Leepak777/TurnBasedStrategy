@@ -20,10 +20,11 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<GameObject, Vector3Int> ForeSight_e;
     public UnityEvent<GameObject, Vector3Int> WaterStance_e;
     public UnityEvent<GameObject, Vector3Int> FireStance_e;
+    public UnityEvent<GameObject, Vector3Int> Bubble_e;
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
-    public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance"};
+    public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble"};
     public List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
     public void setTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
@@ -59,6 +60,8 @@ public class AbilitiesData : ScriptableObject
             return PsychiStorm_e;
             case "ForeSight":
             return ForeSight_e;
+            case "Bubble":
+            return Bubble_e;
         }
         return null;
     }
@@ -396,10 +399,16 @@ public class AbilitiesData : ScriptableObject
         target.transform.position = tileM.GetCellCenterWorld(Loc);
     }
     public void Bubble(GameObject target, Vector3Int Loc){
-        GameObject prefab = Resources.Load<GameObject>("Bubble") as GameObject;
-        GameObject player = Instantiate(prefab) as GameObject;
-        player.transform.SetParent(target.transform);
-        player.name = target.name+"_Bubble";
+        Node n = tileM.GetNodeFromWorld(Loc);
+        StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
+        if(ocstat.addBuff("Bubble", target.name,1)){  
+            ocstat.bubbleGiver = target.name;
+            GameObject prefab = Resources.Load<GameObject>("Bubble") as GameObject;
+            GameObject player = Instantiate(prefab) as GameObject;
+            player.transform.SetParent(n.occupant.transform);
+            player.name = n.occupant.name+"_Bubble";
+        }
+        
     }
 
     public void computeCost(GameObject play, string name){

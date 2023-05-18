@@ -73,6 +73,7 @@ public class UI : MonoBehaviour
                 tm.incGameTurn();
             }
         }
+        tm.BubbleCheck();
     }
     public void areaEffectCheck(){
         List<Node> lst = GameObject.Find("Tilemanager").GetComponent<TileManager>().getEffectlst();

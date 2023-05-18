@@ -33,6 +33,7 @@ public class StatUpdate : MonoBehaviour
     Vector3 backupLoc = new Vector3();
     public CharacterStat stats;
     AttackSimulation atkSim;
+    public string bubbleGiver;
     void Start()
     {   
         DeleteAssets(gameObject.name);
@@ -104,6 +105,9 @@ public class StatUpdate : MonoBehaviour
                 stats.modifyStat("hp", Math.Max(10-stats.getStat("tou") , 3)*stats.getCostMul());
                 stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3)*stats.getCostMul());
             }
+            if(buffs.ElementAt(i).Key.Key == "Bubble"){
+                stats.modifyStat("ene", -4) ;
+            }
         }
     }
     public void saveStat(){
@@ -144,6 +148,9 @@ public class StatUpdate : MonoBehaviour
                 damageReceived = 0;
             }
             else{
+                Destroy(GameObject.Find(gameObject.name+"_Bubble"));
+                removeBuff("Bubble",bubbleGiver);
+                gameObject.GetComponent<Abilities>().CoolDown.Add(name,5);
                 damageReceived = remainindamage;
             }
         }

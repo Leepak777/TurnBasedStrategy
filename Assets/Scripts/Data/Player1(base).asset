@@ -137,5 +137,6 @@ MonoBehaviour:
     - ForceBlast
     - ForeSight
     - FireStance
-    values: 00000000000000000000000000000000
+    - Bubble
+    values: 0000000000000000000000000000000000000000
   AbilitiesCostMul: 1

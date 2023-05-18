@@ -84,6 +84,16 @@ public class TurnManager : MonoBehaviour
         ui.setCurrentPlay(backupGO);
         gamestate = 2;
     }
+    public void BubbleCheck(){
+        foreach(GameObject go in turnOrder){
+            BubbleBar bubble = go.GetComponentInChildren<BubbleBar>();
+            if(bubble!= null){bubble.restore();}
+        }
+         foreach(GameObject go in turnOrder2){
+            BubbleBar bubble = go.GetComponentInChildren<BubbleBar>();
+            if(bubble!= null){bubble.restore();}
+        }
+    }
     public void PlayerBackUP(){
         foreach(GameObject go in turnOrder){
             go.GetComponentInChildren<CharacterEvents>().saveStat.Invoke(gameTurn);
