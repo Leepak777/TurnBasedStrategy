@@ -485,6 +485,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  setup:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &383634636
 Transform:
   m_ObjectHideFlags: 0
@@ -794,7 +797,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 100
   canvas: {fileID: 1703902258}
-  tilemap: {fileID: 0}
   tileM: {fileID: 0}
 --- !u!1 &751855761
 GameObject:
@@ -1549,7 +1551,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1963071317
 RectTransform:
   m_ObjectHideFlags: 0

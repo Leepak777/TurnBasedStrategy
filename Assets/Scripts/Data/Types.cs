@@ -26,7 +26,9 @@ public class Types:ScriptableObject
     15. mr
     */
     public List<string> type_stats = new List<string>(){"pow","dex","tou","acu","mid","base_hp","base_ene","base_mov","base_init","base_enc","ma","ra","sa","md","rd","mr"};
+    [SerializeField]
     UDictionary<string,float> Praetorian_Guard,Imperial_Legionary,Imperial_Conscript,Mercenary,Brigand = new UDictionary<string, float>();
+    [SerializeField]
     UDictionary<string,UDictionary<string,float>> Type_lst = new UDictionary<string, UDictionary<string, float>>();
     public void reset(){
         setBaseTy();

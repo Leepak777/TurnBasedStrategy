@@ -12,6 +12,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45dc4dd8b8bdf74a9b7ec03e9728d2c, type: 3}
   m_Name: TypesSkills
   m_EditorClassIdentifier: 
+  Types_Abil:
+    keys:
+    - Praetorian Guard
+    - Imperial Legionary
+    - Imperial Conscript
+    - Mercenary
+    - Brigand
+    values:
+    - keys:
+      - LeaderShipAura
+      - Charge
+      - CorruptionAura
+      values:
+      - Null
+      - Individual
+      - Universal
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
+    - keys:
+      - LeadershipAura
+      - Charge
+      values:
+      - Universal
+      - Individual
   Types_Skil:
     keys:
     - Praetorian Guard
@@ -19,13 +59,12 @@ MonoBehaviour:
     - Imperial Conscript
     - Mercenary
     - Brigand
-    - Joe mama
     values:
     - keys:
       - WhirlWind
       - ForceBlast
       - ForeSight
-      - WaterStance
+      - FireStance
       values: 00000000000000000000000000000000
     - keys:
       - PsychicStorm
@@ -49,9 +88,6 @@ MonoBehaviour:
       - ForceBlast
       - ForeSight
       values: 00000000000000000000000000000000
-    - keys:
-      - ForceBlast
-      values: 00000000
   Praetorian_Guard_Abilities:
     keys:
     - LeadershipAura

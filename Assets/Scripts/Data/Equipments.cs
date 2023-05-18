@@ -33,7 +33,7 @@ public class Equipments : ScriptableObject
     public List<string> shield_stats = new List<string>(){"pr","pv","mdb","rdb","init","enc"};
     public List<string> buckler_stats = new List<string>(){"pr","pv","acc","mdb","rdb","enc"};
     public List<string> mount_stats = new List<string>(){"hp","mdr","mov","init","enc"};
-    void Awake(){
+    public void reset(){
         setBaseEq();
         Weapon_lst = new UDictionary<string, UDictionary<string, float>>(){
             {"Light Glaive",Light_Glaive},{"Gladius",Gladius},{"Power Sword",Power_Sword},{"Great Sword",Great_Sword},{"Pike",Pike},{"Mace",Mace},{"Pistol",Pistol},{"Rifle",Rifle}
@@ -141,8 +141,10 @@ public class Equipments : ScriptableObject
         removeMountEntry(Mount_lst.ElementAt(index-1).Key);
         addMountEntry(name,data);
     }
+    [SerializeField]
     UDictionary<string,float> Light_Glaive,Gladius,Power_Sword,Great_Sword,Pike,Mace,Pistol,Rifle;
-    public UDictionary<string,UDictionary<string,float>> Weapon_lst = new UDictionary<string, UDictionary<string, float>>();    
+    [SerializeField]
+    UDictionary<string,UDictionary<string,float>> Weapon_lst = new UDictionary<string, UDictionary<string, float>>();    
     public UDictionary<string,float> getWeaponStat(string weapon){
         if(Weapon_lst.ContainsKey(weapon)){
             return Weapon_lst[weapon];
@@ -159,7 +161,8 @@ public class Equipments : ScriptableObject
     5. enc
     */
     UDictionary<string,float> Kite_Shield,Tower_Shield;
-    public UDictionary<string,UDictionary<string,float>> Shield_lst = new UDictionary<string, UDictionary<string, float>>();    
+    [SerializeField]
+    UDictionary<string,UDictionary<string,float>> Shield_lst = new UDictionary<string, UDictionary<string, float>>();    
     public UDictionary<string,float> getShieldStat(string shield){
         if(Shield_lst.ContainsKey(shield)){
             return Shield_lst[shield];
@@ -177,7 +180,8 @@ public class Equipments : ScriptableObject
     5. enc
     */
     UDictionary<string,float> Buckler,Buckler2;
-    public UDictionary<string,UDictionary<string,float>> Buckler_lst = new UDictionary<string, UDictionary<string, float>>();   
+    [SerializeField]
+    UDictionary<string,UDictionary<string,float>> Buckler_lst = new UDictionary<string, UDictionary<string, float>>();   
     public UDictionary<string,float> getBucklerStat(string buckler){    
         if(Buckler_lst.ContainsKey(buckler)){
             return Buckler_lst[buckler];
@@ -197,7 +201,8 @@ public class Equipments : ScriptableObject
     6. enc
     */
     UDictionary<string,float> Plate, Half_Plate, Synthe_Armor, Legionary_Armor, Praetorian_Armor, Flak_Suit,Assault_Vest, Personal_Shield_MK_I,Personal_Shield_MK_II,Personal_Shield_MK_III;
-    public UDictionary<string,UDictionary<string,float>> Armor_lst = new UDictionary<string, UDictionary<string, float>>(); 
+    [SerializeField]
+    UDictionary<string,UDictionary<string,float>> Armor_lst = new UDictionary<string, UDictionary<string, float>>(); 
 
     public UDictionary<string,float> getArmorStat(string armor){
         if(Armor_lst.ContainsKey(armor)){
@@ -216,7 +221,8 @@ public class Equipments : ScriptableObject
     4. enc
     */
     UDictionary<string,float> Pack_Horse,War_Horse;
-    public UDictionary<string,UDictionary<string,float>> Mount_lst = new UDictionary<string, UDictionary<string, float>>();    
+    [SerializeField]
+    UDictionary<string,UDictionary<string,float>> Mount_lst = new UDictionary<string, UDictionary<string, float>>();    
 
     public UDictionary<string,float> getMountStat(string mount){    
         if(Mount_lst.ContainsKey(mount)){

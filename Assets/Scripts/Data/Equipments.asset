@@ -23,7 +23,7 @@ MonoBehaviour:
   - Pistol
   - Rifle
   - pog
-  - yo
+  - pog
   armor:
   - none
   - Plate
@@ -89,6 +89,30 @@ MonoBehaviour:
   - mov
   - init
   - enc
+  Light_Glaive:
+    keys: []
+    values: []
+  Gladius:
+    keys: []
+    values: []
+  Power_Sword:
+    keys: []
+    values: []
+  Great_Sword:
+    keys: []
+    values: []
+  Pike:
+    keys: []
+    values: []
+  Mace:
+    keys: []
+    values: []
+  Pistol:
+    keys: []
+    values: []
+  Rifle:
+    keys: []
+    values: []
   Weapon_lst:
     keys:
     - Light Glaive
@@ -99,7 +123,7 @@ MonoBehaviour:
     - Mace
     - Pistol
     - Rifle
-    - yo
+    - pog
     values:
     - keys:
       - wd
@@ -295,14 +319,12 @@ MonoBehaviour:
       - 1
     - keys:
       - wd
-      - ap
-      - attack_num
       - rng
+      - pscal
       values:
       - 69
-      - 69
-      - 69
-      - 69
+      - 2
+      - 420
   Shield_lst:
     keys:
     - Tower Shield

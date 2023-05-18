@@ -71,24 +71,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 9177659189259090023}
-        m_TargetAssemblyTypeName: PopEvent, Assembly-CSharp
-        m_MethodName: setText
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   go: {fileID: 8316715853530580724}
   popwindow: {fileID: 0}
   type: {fileID: 0}
   equipment: {fileID: 0}
   stat: {fileID: 0}
   target: {fileID: 0}
+  ui: {fileID: 0}
 --- !u!1 &4372121814336086656
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +376,7 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 9177659189259090023}
           m_TargetAssemblyTypeName: PopEvent, Assembly-CSharp
-          m_MethodName: setText
+          m_MethodName: mapSelectInfo
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

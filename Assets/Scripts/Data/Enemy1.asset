@@ -84,48 +84,48 @@ MonoBehaviour:
     - 100
     - 25
     - 1
-    - 0
-    - 0
+    - 4
+    - 15
     - 3
     - 2
-    - 13
+    - 16
     - 0
-    - 1
-    - -1
-    - 8
-    - 5
-    - -4
+    - -2
+    - -5
+    - 7
+    - 0
+    - 2
     - 60
     - 9
     - 0
     - 23
     - 0
-    - 11.5
-    - 23.25
-    - -2.25
+    - 10.5
+    - 12.25
+    - 3.75
     - 0
     - 60
     - 33
-    - 11
+    - 10
   attributes:
     keys:
     - Type
     - Armor
     - Weapon
     - Mount
+    - Shield
     values:
     - Imperial Conscript
-    - Flak Suit
+    - Plate
     - Pike
     - Pack Horse
+    - Kite Shield
   abilities:
     keys:
     - LeadershipAura
     - Charge
-    - Psychometry
     values:
     - Universal
-    - Individual
     - Individual
   skills:
     keys:

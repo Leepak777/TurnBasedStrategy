@@ -151,6 +151,29 @@ public class PopEvent : MonoBehaviour
         goStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";
         goStat.text += "Protection: \n" + chStat.getProtection() + "\n";*/
     }
+    public void mapSelectInfo(){
+        go = this.transform.parent.gameObject;
+        Text goType = popwindow.transform.Find("Type").GetComponent<Text>();
+        Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
+        Text goStat = popwindow.transform.Find("Stats").GetComponent<Text>();
+        CharacterStat chStat = go.GetComponent<StatUpdate>().getStats();
+        goType.text = chStat.getAttribute("Type");
+        goEquipment.text ="";
+        if(goEquipment.text == ""){
+            foreach(string str in eqlst){
+                if(chStat.getAttribute(str) != null){
+                    goEquipment.text += str+": \n"+ chStat.getAttribute(str) +"\n"; 
+                }
+            }
+        }
+       goStat.text = "";
+        foreach(KeyValuePair<string,string> pair in chStat.getAbilities()){
+            goStat.text += pair.Key+"\n";
+        }
+        goStat.text += "HP: "+go.GetComponent<StatUpdate>().getCurrentHealth() + " / "+ chStat.getStat("maxHealth") + "\n";
+        goStat.text += "Damage: \n" + chStat.getBaseDamage() + "\n";
+        goStat.text += "Protection: \n" + chStat.getProtection() + "\n";
+    }
     public void setTypeEQText(CharacterStat chStat){
         Text goType = popwindow.transform.Find("TypeI").GetComponentInChildren<Text>();
         Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
@@ -295,7 +318,12 @@ public class PopEvent : MonoBehaviour
             }
             //lst += pair.Key + " : " + showValue;
             //Debug.Log(pair.Key+":"+showValue);
-            addInfo(getfullname(pair.Key),showValue);
+            if(getfullname(pair.Key) != "none"){
+                addInfo(getfullname(pair.Key),showValue);
+            }
+            else{
+                addInfo(pair.Key,showValue);
+            }
         }
         //return lst;
 

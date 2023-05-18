@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/TypesSkills", order = 2)]
 public class TypesSkills:ScriptableObject
 {
-   
+   [SerializeField]
     UDictionary<string,UDictionary<string,string>> Types_Abil = new UDictionary<string, UDictionary<string, string>>();
     [SerializeField]
     UDictionary<string,UDictionary<string,int>> Types_Skil = new UDictionary<string, UDictionary<string,int>>();
