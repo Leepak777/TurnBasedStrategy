@@ -10,6 +10,7 @@ public class BubbleBar : MonoBehaviour
     StatUpdate chStat;
     float sv;
     float av;
+    public string bubbleGiver;
 
     void Start()
     {
@@ -24,23 +25,13 @@ public class BubbleBar : MonoBehaviour
     }
     public void restore(){
         currentHealth +=  chStat.getDictStats("mid");
+        if(currentHealth > maxHealth){
+            currentHealth = maxHealth;
+        }
     }
 
     public void UpdateHealth()
     {
-        float oldCurrentHealth = currentHealth;
-        if(this.gameObject.GetComponentInParent<StatUpdate>() != null){
-            currentHealth  = this.gameObject.GetComponentInParent<StatUpdate>().currentHealth;
-            maxHealth = this.gameObject.GetComponentInParent<StatUpdate>().getMaxHealth();
-
-            
-        }
-        else{
-            currentHealth = 0;
-            maxHealth = 1;
-        }
-
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         float fillAmount = currentHealth / maxHealth;
         float currentWidth = barWidth * fillAmount;

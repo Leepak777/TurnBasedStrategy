@@ -33,7 +33,6 @@ public class StatUpdate : MonoBehaviour
     Vector3 backupLoc = new Vector3();
     public CharacterStat stats;
     AttackSimulation atkSim;
-    public string bubbleGiver;
     void Start()
     {   
         DeleteAssets(gameObject.name);
@@ -83,6 +82,7 @@ public class StatUpdate : MonoBehaviour
             else{
                 drn_check = rangeRoll(targetEnemy);
             }
+            //drn_check = true;
             if(drn_check){
                 Damage = (int)(drn.getDRN() + stats.getBaseDamage() + bonus);
                 attackingFatigue();
@@ -108,6 +108,28 @@ public class StatUpdate : MonoBehaviour
             if(buffs.ElementAt(i).Key.Key == "Bubble"){
                 stats.modifyStat("ene", -4) ;
             }
+        }
+    }
+    public void buffDuration(){
+        Dictionary<KeyValuePair<string,string>,int> toAdd = new Dictionary<KeyValuePair<string, string>,int>();
+        List<KeyValuePair<string,string>> toRemove = new List<KeyValuePair<string, string>>();
+        for(int i= 0; i<buffs.Count;i++){
+            KeyValuePair<KeyValuePair<string,string>,int> pair =buffs.ElementAt(i);
+            KeyValuePair<string,string> keypair = pair.Key;
+            int value = pair.Value-1;
+            if(pair.Value > 0){
+                toAdd.Add(keypair,value);
+            }
+            if(pair.Value == 0){
+                toRemove.Add(keypair);
+            }
+        }
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in toAdd){
+            buffs.Remove(pair.Key);
+            buffs.Add(pair);
+        }
+        foreach(KeyValuePair<string,string> pair in toRemove){
+            buffs.Remove(pair);
         }
     }
     public void saveStat(){
@@ -142,15 +164,16 @@ public class StatUpdate : MonoBehaviour
         int remainindamage = 0;
         if( Bubble != null){
             remainindamage = damageReceived - (int)Bubble.currentHealth;
+            //Debug.Log(Bubble.currentHealth +"-"+damageReceived);
             Bubble.currentHealth -= (float)damageReceived;
             Bubble.UpdateHealth();
             if(remainindamage <=0 ){
                 damageReceived = 0;
             }
             else{
+                removeBuff("Bubble",Bubble.bubbleGiver);
+                GameObject.Find(Bubble.bubbleGiver).GetComponent<Abilities>().CoolDown.Add("Bubble",5);
                 Destroy(GameObject.Find(gameObject.name+"_Bubble"));
-                removeBuff("Bubble",bubbleGiver);
-                gameObject.GetComponent<Abilities>().CoolDown.Add(name,5);
                 damageReceived = remainindamage;
             }
         }

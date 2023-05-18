@@ -94,6 +94,14 @@ public class TurnManager : MonoBehaviour
             if(bubble!= null){bubble.restore();}
         }
     }
+    public void EffectDurationCheck(){
+        foreach(GameObject go in turnOrder){
+            go.GetComponentInChildren<StatUpdate>().buffDuration();
+        }
+         foreach(GameObject go in turnOrder2){
+            go.GetComponentInChildren<StatUpdate>().buffDuration();
+        }
+    }
     public void PlayerBackUP(){
         foreach(GameObject go in turnOrder){
             go.GetComponentInChildren<CharacterEvents>().saveStat.Invoke(gameTurn);

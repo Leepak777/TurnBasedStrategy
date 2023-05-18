@@ -36,6 +36,7 @@ public class Abilities : MonoBehaviour
     int CastTime = 0;
     Vector3Int targetLoc;
     bool characterTarget = false;
+    bool sameTag = false;
     List<Vector3Int> targetV = new List<Vector3Int>();
     Dropdown skillDrop;
     
@@ -144,6 +145,9 @@ public class Abilities : MonoBehaviour
             gameObject.GetComponentInChildren<CharacterEvents>().HighLightArea.Invoke(loc,radius);
             targets++;
             if(characterTarget && tileM.GetNodeFromWorld(targetV[0]).occupant == null){
+                resetTargeting();
+            }
+            if(sameTag && tileM.GetNodeFromWorld(targetV[0]).occupant.tag != gameObject.tag){
                 resetTargeting();
             }
         }
@@ -283,6 +287,7 @@ public class Abilities : MonoBehaviour
                 if(!CoolDown.ContainsKey("Bubble")){
                     CastTime = 0;
                     characterTarget = true;
+                    sameTag = true;
                     targetNum = 1;
                     radius = 0;
                     CastRange = 9999;

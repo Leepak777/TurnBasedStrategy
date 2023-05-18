@@ -74,6 +74,7 @@ public class UI : MonoBehaviour
             }
         }
         tm.BubbleCheck();
+        tm.EffectDurationCheck();
     }
     public void areaEffectCheck(){
         List<Node> lst = GameObject.Find("Tilemanager").GetComponent<TileManager>().getEffectlst();
