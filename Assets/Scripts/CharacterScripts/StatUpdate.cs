@@ -24,12 +24,14 @@ public class StatUpdate : MonoBehaviour
     public int Damage = 0;
     public float bonus = 0;
     TileManager tileM;
-    UDictionary<KeyValuePair<string,string>,int> buffs = new UDictionary<KeyValuePair<string, string>, int>();
+    UDictionary<KeyValuePair<string,string>,int> endbuffs = new UDictionary<KeyValuePair<string, string>, int>();
+    UDictionary<KeyValuePair<string,string>,int> startbuffs = new UDictionary<KeyValuePair<string, string>, int>();
     UDictionary<KeyValuePair<string,string>,UDictionary<string,int>> effect_Bonus = new UDictionary<KeyValuePair<string,string>,UDictionary<string, int>>();
     public UDictionary<string,float> backup = new UDictionary<string,float>();
     DRN drn;
     Text text;
     float backupHP = 0;
+    bool skip = false;
     Vector3 backupLoc = new Vector3();
     public CharacterStat stats;
     AttackSimulation atkSim;
@@ -83,7 +85,7 @@ public class StatUpdate : MonoBehaviour
                 drn_check = rangeRoll(targetEnemy);
             }
             //drn_check = true;
-            if(drn_check){
+            if(drn_check && !targetEnemy.GetComponent<StatUpdate>().isTimeStop()){
                 Damage = (int)(drn.getDRN() + stats.getBaseDamage() + bonus);
                 attackingFatigue();
                 targetEnemy.GetComponentInChildren<CharacterEvents>().onDamage.Invoke(Damage);
@@ -91,45 +93,87 @@ public class StatUpdate : MonoBehaviour
         
         
     }
-    public void BuffMaintainCheck(){
-        for(int i= 0; i<buffs.Count;i++){
-            if(buffs.ElementAt(i).Key.Key == "WaterStance"){
+    
+    public void BuffMaintainCheck(KeyValuePair<KeyValuePair<string,string>,int> pair){
+        switch(pair.Key.Key){
+            case "WaterStance":
                 currentHealth += stats.getStat("acu");
                 stats.modifyStat("ene", Math.Max(10-stats.getStat("mid") , 3)*stats.getCostMul());
                 stats.modifyStat("fat", Math.Max(10-stats.getStat("tou") , 3)*stats.getCostMul());
                 stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3)*stats.getCostMul());
-            }
-            if(buffs.ElementAt(i).Key.Key == "FireStance"){
+                break;
+            case "FireStance":
                 stats.modifyStat("fat", stats.getStat("acu")) ;
                 stats.modifyStat("ene", Math.Max(10-stats.getStat("mid") , 3)*stats.getCostMul());
                 stats.modifyStat("hp", Math.Max(10-stats.getStat("tou") , 3)*stats.getCostMul());
                 stats.modifyStat("stb", Math.Max(10-stats.getStat("acu") , 3)*stats.getCostMul());
-            }
-            if(buffs.ElementAt(i).Key.Key == "Bubble"){
+                break;
+            case "Bubble":
                 stats.modifyStat("ene", -4) ;
-            }
+                break;
         }
     }
-    public void buffDuration(){
+    public void EndbuffDuration(){
         Dictionary<KeyValuePair<string,string>,int> toAdd = new Dictionary<KeyValuePair<string, string>,int>();
         List<KeyValuePair<string,string>> toRemove = new List<KeyValuePair<string, string>>();
-        for(int i= 0; i<buffs.Count;i++){
-            KeyValuePair<KeyValuePair<string,string>,int> pair =buffs.ElementAt(i);
+        if(!skip){
+        for(int i= 0; i<endbuffs.Count;i++){
+            KeyValuePair<KeyValuePair<string,string>,int> pair =endbuffs.ElementAt(i);
             KeyValuePair<string,string> keypair = pair.Key;
             int value = pair.Value-1;
-            if(pair.Value > 0){
+            if(value > 0){
                 toAdd.Add(keypair,value);
+                BuffMaintainCheck(pair);
+            }
+            if(value == 0){
+                toRemove.Add(keypair);
+            }
+            
+        }}
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in toAdd){
+            endbuffs.Remove(pair.Key);
+            endbuffs.Add(pair);
+        }
+        foreach(KeyValuePair<string,string> pair in toRemove){
+            endbuffs.Remove(pair);
+        }
+    }
+    public void StartbuffDuration(){
+        skip = false;
+        Dictionary<KeyValuePair<string,string>,int> toAdd = new Dictionary<KeyValuePair<string, string>,int>();
+        List<KeyValuePair<string,string>> toRemove = new List<KeyValuePair<string, string>>();
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in startbuffs){
+            if(pair.Key.Key == "TimeStop"){
+                int value = pair.Value-1;
+                if(value > 0){
+                    toAdd.Add(keypair,value);
+                }
+                if(value == 0){
+                    toRemove.Add(keypair);
+                }
+                skip = true;
+            }
+        }
+        if(!skip){
+        for(int i= 0; i<startbuffs.Count;i++){
+            KeyValuePair<KeyValuePair<string,string>,int> pair =startbuffs.ElementAt(i);
+            KeyValuePair<string,string> keypair = pair.Key;
+            int value = pair.Value-1;
+            if(value > 0){
+                toAdd.Add(keypair,value);
+                BuffMaintainCheck(pair);
             }
             if(pair.Value == 0){
                 toRemove.Add(keypair);
             }
-        }
+            
+        }}
         foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in toAdd){
-            buffs.Remove(pair.Key);
-            buffs.Add(pair);
+            startbuffs.Remove(pair.Key);
+            startbuffs.Add(pair);
         }
         foreach(KeyValuePair<string,string> pair in toRemove){
-            buffs.Remove(pair);
+            startbuffs.Remove(pair);
         }
     }
     public void saveStat(){
@@ -222,7 +266,14 @@ public class StatUpdate : MonoBehaviour
         }
         return (int)stats.getStat("mov")/4 +1;
     }
-
+    public bool isTimeStop(){
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in startbuffs){
+            if(pair.Key.Key == "TimeStop"){
+                return true;
+            }
+        }
+        return false;
+    }
     public float getMaxHealth(){
         return maxHealth;
     }
@@ -241,8 +292,8 @@ public class StatUpdate : MonoBehaviour
     }
     public bool addBuff(string buff, string character, int duration){
         KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
-        if(!buffs.ContainsKey(pair)){
-            buffs.Add(pair,duration);
+        if(!endbuffs.ContainsKey(pair)){
+            endbuffs.Add(pair,duration);
             return true;
         }
         return false;
@@ -250,8 +301,26 @@ public class StatUpdate : MonoBehaviour
     }
     public bool removeBuff(string buff, string character){
         KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
-        if(buffs.ContainsKey(pair)){
-            buffs.Remove(pair);
+        if(endbuffs.ContainsKey(pair)){
+            endbuffs.Remove(pair);
+            return true;
+        }
+        return false;
+        
+    }
+    public bool addStartBuff(string buff, string character, int duration){
+        KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
+        if(!startbuffs.ContainsKey(pair)){
+            startbuffs.Add(pair,duration);
+            return true;
+        }
+        return false;
+        
+    }
+    public bool removeStartBuff(string buff, string character){
+        KeyValuePair<string,string> pair = new KeyValuePair<string,string>(buff,character);
+        if(startbuffs.ContainsKey(pair)){
+            startbuffs.Remove(pair);
             return true;
         }
         return false;
@@ -273,7 +342,7 @@ public class StatUpdate : MonoBehaviour
         }
     }
     public bool isBuff(string name,string character){
-        return buffs.ContainsKey(new KeyValuePair<string,string>(name,character));
+        return endbuffs.ContainsKey(new KeyValuePair<string,string>(name,character)) || startbuffs.ContainsKey(new KeyValuePair<string,string>(name,character)) ;
     }
     public void attackedFatigue(){
         stats.modifyStat("fat",1);

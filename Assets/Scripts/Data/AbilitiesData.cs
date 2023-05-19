@@ -1,10 +1,22 @@
-using System;
-using System.IO;
-using System.Linq;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine.Events;
+using System;
+using System.Linq;
+using System.IO;
+using UnityEngine.AI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditorInternal;
+#endif
+
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/AbilitiesData", order = 3)]
 public class AbilitiesData : ScriptableObject
@@ -91,7 +103,7 @@ public class AbilitiesData : ScriptableObject
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
             if(tileM.inArea(tileM.WorldToCell(play.transform.position),pos,2)){
-                if(su.addBuff("LeadershipAura", play.name,-1)){
+                if(!su.isTimeStop()&& su.addBuff("LeadershipAura", play.name,-1)){
                     su.getStats().modifyStat("ma",(int)Math.Min(su.getDictStats("mid")/3,1));
                     su.getStats().modifyStat("md",(int)Math.Min(su.getDictStats("mid")/3,1));
                     su.getStats().modifyStat("ra",(int)Math.Min(su.getDictStats("mid")/3,1));
@@ -105,7 +117,7 @@ public class AbilitiesData : ScriptableObject
                 }
             }
             else{
-                if(su.removeBuff("LeadershipAura", play.name)){
+                if(!su.isTimeStop()&&su.removeBuff("LeadershipAura", play.name)){
                     su.getStats().modifyStat("ma",-su.getPreBonusStat(pair,"ma"));
                     su.getStats().modifyStat("md",-su.getPreBonusStat(pair,"md"));
                     su.getStats().modifyStat("ra",-su.getPreBonusStat(pair,"ra"));
@@ -124,7 +136,7 @@ public class AbilitiesData : ScriptableObject
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
             if(tileM.inArea(tileM.WorldToCell(play.transform.position),pos,2)){
-                if(su.addBuff("CorruptionAura", play.name,-1)){
+                if(!su.isTimeStop()&&su.addBuff("CorruptionAura", play.name,-1)){
                     su.getStats().modifyStat("ene",-(int)Math.Min(su.getDictStats("mid")/2,2));
                     su.getStats().modifyStat("mr",-(int)Math.Min(su.getDictStats("mid")/2,2));
                     su.getStats().modifyStat("stb",-(int)Math.Min(su.getDictStats("mid")/2,2));
@@ -136,7 +148,7 @@ public class AbilitiesData : ScriptableObject
                 }
             }
             else{
-                if(su.removeBuff("CorruptionAura", play.name)){
+                if(!su.isTimeStop()&&su.removeBuff("CorruptionAura", play.name)){
                     su.getStats().modifyStat("ene",-su.getPreBonusStat(pair,"ene"));
                     su.getStats().modifyStat("mr",-su.getPreBonusStat(pair,"mr"));
                     su.getStats().modifyStat("stb",-su.getPreBonusStat(pair,"stb"));
@@ -154,7 +166,7 @@ public class AbilitiesData : ScriptableObject
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
             if(tileM.inArea(tileM.WorldToCell(play.transform.position),pos,2)){
-                if(su.addBuff("ColdAura", play.name,-1)){
+                if(!su.isTimeStop()&&su.addBuff("ColdAura", play.name,-1)){
                     su.getStats().modifyStat("ma",-(int)Math.Min(su.getDictStats("mid")/2,2));
                     su.getStats().modifyStat("md",-(int)Math.Min(su.getDictStats("mid")/2,2));
                     su.getStats().modifyStat("ra",-(int)Math.Min(su.getDictStats("mid")/2,2));
@@ -167,7 +179,7 @@ public class AbilitiesData : ScriptableObject
                 }
             }
             else{
-                if(su.removeBuff("ColdAura", play.name)){
+                if(!su.isTimeStop()&&su.removeBuff("ColdAura", play.name)){
                     su.getStats().modifyStat("ma",-su.getPreBonusStat(pair,"ma"));
                     su.getStats().modifyStat("md",-su.getPreBonusStat(pair,"md"));
                     su.getStats().modifyStat("ra",-su.getPreBonusStat(pair,"ra"));
@@ -184,14 +196,14 @@ public class AbilitiesData : ScriptableObject
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
             if(tileM.inArea(tileM.WorldToCell(play.transform.position),pos,2)){
-                if(su.addBuff("DeathAura", play.name,-1)){
+                if(!su.isTimeStop()&&su.addBuff("DeathAura", play.name,-1)){
                     su.setBonus((int)Math.Min(su.getDictStats("mid")/3,1));
                     su.addEffectStat(pair, new UDictionary<string, int>(){{"bonus damage",(int)Math.Min(su.getDictStats("mid")/3,1)}});
 
                 }
             }
             else{
-                if(su.removeBuff("DeathAura", play.name)){
+                if(!su.isTimeStop()&&su.removeBuff("DeathAura", play.name)){
                     su.setBonus(-su.getPreBonusStat(pair,"bonus damage"));
                 }
             }
@@ -202,7 +214,7 @@ public class AbilitiesData : ScriptableObject
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
             if(tileM.inArea(tileM.WorldToCell(play.transform.position),pos,3)){
-                if(su.addBuff("DeathAura", play.name,-1)){
+                if(!su.isTimeStop()&&su.addBuff("DeathAura", play.name,-1)){
                     su.getStats().modifyStat("fat",(int)Math.Min(su.getDictStats("mid")/3,1));
                     su.getStats().modifyStat("hp",-(int)Math.Min(su.getDictStats("mid")/3,1));
                     su.getStats().modifyStat("ene",-(int)Math.Min(su.getDictStats("mid")/3,1));
@@ -214,7 +226,7 @@ public class AbilitiesData : ScriptableObject
                 }
             }
             else{
-                if(su.removeBuff("DeathAura", play.name)){
+                if(!su.isTimeStop()&&su.removeBuff("DeathAura", play.name)){
                     su.getStats().modifyStat("hp",-su.getPreBonusStat(pair,"hp"));
                     su.getStats().modifyStat("ene",-su.getPreBonusStat(pair,"ene"));
                     su.getStats().modifyStat("stb",-su.getPreBonusStat(pair,"stb"));
@@ -229,7 +241,7 @@ public class AbilitiesData : ScriptableObject
             StatUpdate su = go.GetComponent<StatUpdate>();
             Vector3Int pos = tileM.WorldToCell(go.transform.position);
             if(tileM.inArea(tileM.WorldToCell(play.transform.position),pos,2)){
-                if(su.addBuff("AssaultAura", play.name,-1)){
+                if(!su.isTimeStop()&&su.addBuff("AssaultAura", play.name,-1)){
                     su.getStats().modifyStat("av",(int)Math.Min(su.getDictStats("mid")/3,1));
                     su.getStats().modifyStat("sv",(int)Math.Min(su.getDictStats("mid")/3,1));
                     su.addEffectStat(pair, new UDictionary<string, int>(){{"av",(int)Math.Min(su.getDictStats("mid")/3,1)},{"sv",(int)Math.Min(su.getDictStats("mid")/3,1)}});
@@ -237,7 +249,7 @@ public class AbilitiesData : ScriptableObject
                 }
             }
             else{
-                if(su.removeBuff("AssaultAura", play.name)){
+                if(!su.isTimeStop()&&su.removeBuff("AssaultAura", play.name)){
                     su.getStats().modifyStat("av",-su.getPreBonusStat(pair,"av"));
                     su.getStats().modifyStat("sv",-su.getPreBonusStat(pair,"sv"));
                 }
@@ -265,7 +277,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     } 
-    void Charge(GameObject play){
+    public void Charge(GameObject play){
         setTileM();
         TurnManager tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         StatUpdate su = play.GetComponent<StatUpdate>();
@@ -284,7 +296,9 @@ public class AbilitiesData : ScriptableObject
         foreach(Node n in tileM.GetTilesInArea(center,range)){
             if(n.occupant != null && n.occupant.tag != tag){
                 StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
-                ocstat.TakeDamage(Damage);
+                if(!ocstat.isTimeStop()){
+                    ocstat.TakeDamage(Damage);
+                }
             }
         }
     }
@@ -301,8 +315,6 @@ public class AbilitiesData : ScriptableObject
         Debug.Log("WhirlWind");
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         AreaAttack(play, tileM.WorldToCell(play.transform.position),3,play.tag);
-        //ocstat.getStats().modifyStat("ene",-7*ocstat.getStats().getCostMul());
-        //ocstat.getStats().modifyStat("stb",-15*ocstat.getStats().getCostMul());
     }
     public void ForceBlast(GameObject play, Vector3Int target){
         Debug.Log("ForceBlast");
@@ -310,15 +322,11 @@ public class AbilitiesData : ScriptableObject
         float Damage = 10 + ocstat.getDictStats("mid")*2;
         int range = 3 + (int)ocstat.getDictStats("acu")/4;
         AreaDamage(play,target,range,(int)Damage,play.tag);
-        //ocstat.getStats().modifyStat("ene",-15*ocstat.getStats().getCostMul());
-        //ocstat.getStats().modifyStat("fat",-20*ocstat.getStats().getCostMul());
     }
     public void PsychicStorm(GameObject play, Vector3Int target){
         tileM.GetNodeFromWorld(target).effectFlag.Add("PsychicStorm", new KeyValuePair<GameObject, int>(play, 3));
         tileM.AddEffectLst(tileM.GetNodeFromWorld(target));
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        /*ocstat.getStats().modifyStat("ene",-25*ocstat.getStats().getCostMul());
-        ocstat.getStats().modifyStat("stb",-30*ocstat.getStats().getCostMul());*/
     }
 
     public void PsychicStormEffect(GameObject play, Vector3Int target){
@@ -354,19 +362,14 @@ public class AbilitiesData : ScriptableObject
         turnM.EnemyRevert();
         turnM.PlayerRevert();
         turnM.CurrentRevertOrigin();
+        GameObject.Find("ActiveSkill").GetComponent<Dropdown>().value = 0;
     }
 
     public void WaterStance(GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         if(!ocstat.isBuff("WaterStance", play.name)){
             ocstat.addBuff("WaterStance", play.name,-1);
-            /*ocstat.getStats().modifyStat("ene",-5);
-            ocstat.getStats().modifyStat("stb",-5);
-            ocstat.getStats().modifyStat("fat",-5);
-            ocstat.getStats().modifyStat("pv",ocstat.getDictStats("acu"));
-            ocstat.getStats().modifyStat("pr",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
-            ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"Water"), new UDictionary<string, int>(){{"pv",(int)ocstat.getDictStats("acu")},{"pr",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
-        */}
+            }
         else{
             ocstat.removeBuff("WaterStance", play.name);
             play.GetComponent<Abilities>().addToCooldDown("WaterStance",3);
@@ -379,14 +382,7 @@ public class AbilitiesData : ScriptableObject
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         if(!ocstat.isBuff("FireStance", play.name)){
             ocstat.addBuff("FireStance", play.name,-1);
-            /*ocstat.getStats().modifyStat("ene",-5);
-            ocstat.getStats().modifyStat("stb",-5);
-            ocstat.getStats().modifyStat("hp",-5);
-            ocstat.setBonus((int)ocstat.getDictStats("acu"));
-            ocstat.getStats().modifyStat("acu",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
-            ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"FireStance"), new UDictionary<string, int>(){
-                {"bonus damage",(int)ocstat.getDictStats("acu")},{"acu",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
-        */}
+            }
         else{
             ocstat.removeBuff("FireStance", play.name);
             play.GetComponent<Abilities>().addToCooldDown("FireStance",3);
@@ -402,7 +398,7 @@ public class AbilitiesData : ScriptableObject
     public void Bubble(GameObject target, Vector3Int Loc){
         Node n = tileM.GetNodeFromWorld(Loc);
         StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
-        if(ocstat.addBuff("Bubble", target.name,-1)){  
+        if(!ocstat.isTimeStop()&&ocstat.addBuff("Bubble", target.name,-1)){  
             GameObject prefab = Resources.Load<GameObject>("Bubble") as GameObject;
             GameObject player = Instantiate(prefab) as GameObject;
             player.transform.SetParent(n.occupant.transform);
@@ -412,35 +408,91 @@ public class AbilitiesData : ScriptableObject
         
     }
 
-    public void computeCost(GameObject play, string name){
-        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+    public void Restrict(GameObject target, Vector3Int Loc){
+
+    }
+
+    public UDictionary<string,float> getSkillsFloats(string name, CharacterStat stats){
         switch(name){
-            case "WhirlWind":
-                ocstat.getStats().modifyStat("ene",-7*ocstat.getStats().getCostMul());
-                ocstat.getStats().modifyStat("stb",-15*ocstat.getStats().getCostMul());
-                break;
             case "ForceBlast":
-                ocstat.getStats().modifyStat("ene",-15*ocstat.getStats().getCostMul());
-                ocstat.getStats().modifyStat("fat",20*ocstat.getStats().getCostMul());
+                return new UDictionary<string, float>(){{"Radius",3},{"CastRange",3 + (int) stats.getStat("acu")/4},{"TargetNum",1},{"CastTime",0}};
                 break;
             case "PsychicStorm":
-                ocstat.getStats().modifyStat("ene",-25*ocstat.getStats().getCostMul());
-                ocstat.getStats().modifyStat("stb",-30*ocstat.getStats().getCostMul());
+                return new UDictionary<string, float>(){{"Radius",3},{"CastRange",5 + (int) stats.getStat("acu")/4},{"TargetNum",1},{"CastTime",2}};
+                break;
+            case "WhirlWind":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",1}};
                 break;
             case "WaterStance":
-               ocstat.getStats().modifyStat("ene",-5);
-                ocstat.getStats().modifyStat("stb",-5);
-                ocstat.getStats().modifyStat("fat",5);
-                ocstat.getStats().modifyStat("pv",ocstat.getDictStats("acu"));
-                ocstat.getStats().modifyStat("pr",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
+               return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
+                break;
+            case "FireStance":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
+                break;
+            case "Bubble":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",9999},{"TargetNum",1},{"CastTime",0}};
+            case "ForeSight":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",9999},{"TargetNum",1},{"CastTime",0}};
+                break;
+        }
+        return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
+    }
+    public UDictionary<string,bool> getSkillBool(string name,CharacterStat chstsat){
+        switch(name){
+            case "ForceBlast":
+                return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+                break;
+            case "PsychicStorm":
+                return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+                break;
+            case "WhirlWind":
+                return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+                break;
+            case "WaterStance":
+               return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+                break;
+            case "FireStance":
+                return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+                break;
+            case "ForeSight":
+                return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+                break;
+            case "Bubble":
+                return new UDictionary<string, bool>(){{"characterTarget",true},{"sameTag",true}};
+                break;
+        }
+        return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+    }
+    public void computeCost(GameObject play, string name){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        CharacterStat chStat = ocstat.getStats();
+        switch(name){
+            case "WhirlWind":
+                chStat.modifyStat("ene",-7*ocstat.getStats().getCostMul());
+                chStat.modifyStat("stb",-15*ocstat.getStats().getCostMul());
+                break;
+            case "ForceBlast":
+                chStat.modifyStat("ene",-15*ocstat.getStats().getCostMul());
+                chStat.modifyStat("fat",20*ocstat.getStats().getCostMul());
+                break;
+            case "PsychicStorm":
+                chStat.modifyStat("ene",-25*ocstat.getStats().getCostMul());
+                chStat.modifyStat("stb",-30*ocstat.getStats().getCostMul());
+                break;
+            case "WaterStance":
+                chStat.modifyStat("ene",-5);
+                chStat.modifyStat("stb",-5);
+                chStat.modifyStat("fat",5);
+                chStat.modifyStat("pv",ocstat.getDictStats("acu"));
+                chStat.modifyStat("pr",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
                 ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"Water"), new UDictionary<string, int>(){{"pv",(int)ocstat.getDictStats("acu")},{"pr",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
                 break;
             case "FireStance":
-                ocstat.getStats().modifyStat("ene",-5);
-                ocstat.getStats().modifyStat("stb",-5);
-                ocstat.getStats().modifyStat("hp",-5);
+                chStat.modifyStat("ene",-5);
+                chStat.modifyStat("stb",-5);
+                chStat.modifyStat("hp",-5);
                 ocstat.setBonus((int)ocstat.getDictStats("acu"));
-                ocstat.getStats().modifyStat("acu",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
+                chStat.modifyStat("acu",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
                 ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"FireStance"), new UDictionary<string, int>(){
                     {"bonus damage",(int)ocstat.getDictStats("acu")},{"acu",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
                 break;

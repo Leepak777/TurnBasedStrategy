@@ -55,6 +55,7 @@ public class UI : MonoBehaviour
             tm.PlayerBackUP();
             tm.EnemyBackUP();
         }*/
+        tm.EndEffectDurationCheck();
         areaEffectCheck();
         tm.setGameState(2);
     }
@@ -74,7 +75,7 @@ public class UI : MonoBehaviour
             }
         }
         tm.BubbleCheck();
-        tm.EffectDurationCheck();
+        tm.EndEffectDurationCheck();
     }
     public void areaEffectCheck(){
         List<Node> lst = GameObject.Find("Tilemanager").GetComponent<TileManager>().getEffectlst();
