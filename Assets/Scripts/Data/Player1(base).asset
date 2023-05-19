@@ -125,15 +125,16 @@ MonoBehaviour:
     - LeaderShipAura
     - Charge
     - CorruptionAura
+    - Psychometry
     values:
     - Null
     - Individual
+    - Universal
     - Universal
   skills:
     keys:
     - WhirlWind
     - ForceBlast
     - ForeSight
-    - FireStance
-    values: 00000000000000000000000000000000
+    values: 000000000000000000000000
   AbilitiesCostMul: 1

@@ -77,58 +77,56 @@ MonoBehaviour:
     - 11
     - 0
     - 0
-    - 12
-    - 8
-    - 0
-    - 1
+    - 10
+    - 1.5
+    - 2
     - 0
     - 50
+    - 50
     - 2
-    - 6
-    - 34
+    - 0
+    - 0
     - 4
     - 2
-    - 14
+    - 13
     - 0
     - 0
-    - -3
-    - 7
-    - 2
-    - 1
+    - -1
+    - 8
+    - 5
+    - -4
     - 66
     - 10
     - 0
     - 26
     - 0
-    - 11
-    - 17.5
-    - 3.5
+    - 12
+    - 25.5
+    - -1.5
     - 0
     - 66
     - 37
-    - 11
+    - 12
   attributes:
     keys:
     - Type
     - Armor
-    - Weapon
     - Mount
-    - Shield
-    - Buckler
+    - Weapon
     values:
     - Mercenary
-    - Half Plate
-    - Pistol
+    - Flak Suit
     - Pack Horse
-    - Kite Shield
-    - Buckler
+    - Mace
   abilities:
     keys:
-    - LeadershipAura
+    - LeaderShipAura
     - Charge
+    - Psychometry
     values:
-    - Universal
+    - Null
     - Individual
+    - Universal
   skills:
     keys:
     - WhirlWind

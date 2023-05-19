@@ -24,28 +24,36 @@ MonoBehaviour:
       - LeaderShipAura
       - Charge
       - CorruptionAura
+      - Psychometry
+      values:
+      - Null
+      - Individual
+      - Universal
+      - Universal
+    - keys:
+      - LeaderShipAura
+      - Charge
+      - Psychometry
       values:
       - Null
       - Individual
       - Universal
     - keys:
-      - LeadershipAura
+      - LeaderShipAura
       - Charge
+      - Psychometry
       values:
-      - Universal
+      - Null
       - Individual
+      - Universal
     - keys:
-      - LeadershipAura
+      - LeaderShipAura
       - Charge
+      - Psychometry
       values:
-      - Universal
+      - Null
       - Individual
-    - keys:
-      - LeadershipAura
-      - Charge
-      values:
       - Universal
-      - Individual
     - keys:
       - LeadershipAura
       - Charge
@@ -64,8 +72,7 @@ MonoBehaviour:
       - WhirlWind
       - ForceBlast
       - ForeSight
-      - FireStance
-      values: 00000000000000000000000000000000
+      values: 000000000000000000000000
     - keys:
       - PsychicStorm
       - ForceBlast

@@ -118,13 +118,13 @@ public class PopEvent : MonoBehaviour
         if(tileM == null){
             tileM = GameObject.Find("Tilemanager").GetComponentInChildren<TileManager>();
         }
-        Vector3 newpos = tileM.GetCellCenterWorld(tileM.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+        /*Vector3 newpos = tileM.GetCellCenterWorld(tileM.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
         Vector3 modpos = new Vector3(0,128,0);
         if(popwindow.name == "Panel"){
             modpos.x *= 2;
         }
 
-        popwindow.transform.position = newpos + modpos;
+        popwindow.transform.position = newpos + modpos;*/
         
         
     }
@@ -207,9 +207,16 @@ public class PopEvent : MonoBehaviour
         Debug.Log(current.name +","+target.name);
         Text goType = popwindow.transform.Find("TypeI").GetComponentInChildren<Text>();
         Text goEquipment = popwindow.transform.Find("Equipment").GetComponent<Text>();
+        Text goHit = popwindow.transform.Find("HitChance").GetComponent<Text>();
+        Text goAtt = popwindow.transform.Find("Attributes").GetComponent<Text>();
+        Image img = popwindow.transform.Find("Icon").GetComponent<Image>();
+        goAtt.text = "";
+        goHit.text = "";
+        goType.text = "";
+        goEquipment.text = "";
         //Text goStat = popwindow.transform.Find("ScrollStat").GetComponentInChildren<Text>();
         //current: currentplay, target: target object
-        
+        img.sprite = target.GetComponent<SpriteRenderer>().sprite;
         StatUpdate currentSU = current.GetComponent<StatUpdate>();
         StatUpdate targetSU= target.GetComponent<StatUpdate>();
 
@@ -217,6 +224,7 @@ public class PopEvent : MonoBehaviour
         CharacterStat targetStat = targetSU.getStats();
         KeyValuePair<float,float> predict = go.GetComponent<StatUpdate>().getAttackSim().atkPossibility(current,target);
         string prediction = "" +predict.Key;
+        getAttributes(goAtt,targetStat);
         if(current.name == target.name){
             self();
             getInfo(targetStat,currentStat,1);
@@ -254,7 +262,7 @@ public class PopEvent : MonoBehaviour
                 setTypeEQText(targetStat);
                 if(predict.Key > 50){prediction = ">50%";}
                 else{prediction = "<50%";}
-                addInfo("Sucess Rate",prediction);
+                goHit.text = "Sucess Rate: "+prediction;
                 getInfo(targetStat,currentStat,0);
             }
             else if(diff <= 2 && diff >= 1){
@@ -271,25 +279,32 @@ public class PopEvent : MonoBehaviour
             else if(diff <= 4 && diff >= 3){
                 //goStat.text = 
                 setTypeEQText(targetStat);
-                addInfo("Sucess Rate",gethitChance(predict.Key, 10));
+                goHit.text = "Sucess Rate: "+gethitChance(predict.Key, 10);
                 getInfo(targetStat,currentStat,10);
             }
             else if(diff >= 5 && diff <= 6){
                 //goStat.text = 
                 setTypeEQText(targetStat);
-                addInfo("Sucess Rate",gethitChance(predict.Key, 5));
+                goHit.text = "Sucess Rate: "+gethitChance(predict.Key, 5);
                 getInfo(targetStat,currentStat,5);
             }
             else if(diff > 6){
              //goStat.text = 
                 setTypeEQText(targetStat);
-                addInfo("Sucess Rate",prediction);
+                goHit.text = "Sucess Rate: "+prediction;
                 getInfo(targetStat,currentStat,1);
             }
 
         }
     }
-
+    void getAttributes(Text txt, CharacterStat chStat){
+        foreach(KeyValuePair<string,string> pair in chStat.getAbilities()){
+            txt.text += pair.Key +"\n";
+        }
+        foreach(KeyValuePair<string,int> pair in chStat.getSkills()){
+            txt.text += pair.Key +"\n";
+        }
+    }
     
     void getInfo(CharacterStat targetStat, CharacterStat currentStat, int x){
         string lst = "";

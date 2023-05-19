@@ -80,6 +80,7 @@ public class AbilitiesData : ScriptableObject
             case "DeathAura": return "Universal";
             case "AssaultAura": return "Universal";
             case "Charge": return "Individual";
+            case "Psychometry": return "Universal";
         }
         return "Null";
     }

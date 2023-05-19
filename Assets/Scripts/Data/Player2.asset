@@ -124,11 +124,13 @@ MonoBehaviour:
     - Buckler
   abilities:
     keys:
-    - LeadershipAura
+    - LeaderShipAura
     - Charge
+    - Psychometry
     values:
-    - Universal
+    - Null
     - Individual
+    - Universal
   skills:
     keys:
     - PsychicStorm

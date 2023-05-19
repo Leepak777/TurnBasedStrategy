@@ -199,6 +199,7 @@ MonoBehaviour:
   - WhirlWind
   - WaterStance
   - FireStance
+  - Bubble
   AbilitiesLst:
   - LeaderShipAura
   - Charge
@@ -206,3 +207,4 @@ MonoBehaviour:
   - ColdAura
   - DeathAura
   - AssaultAura
+  - Psychometry

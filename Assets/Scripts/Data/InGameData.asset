@@ -55,24 +55,20 @@ MonoBehaviour:
       - Shield
       values:
       - Imperial Conscript
-      - Plate
-      - Pike
+      - Half Plate
+      - Pistol
       - Pack Horse
       - Kite Shield
     - keys:
       - Type
       - Armor
-      - Weapon
       - Mount
-      - Shield
-      - Buckler
+      - Weapon
       values:
       - Mercenary
-      - Half Plate
-      - Pistol
+      - Flak Suit
       - Pack Horse
-      - Kite Shield
-      - Buckler
+      - Mace
   positions:
     keys:
     - Player1
@@ -80,10 +76,10 @@ MonoBehaviour:
     - Enemy1
     - Enemy2
     values:
-    - {x: 32, y: 33, z: 0}
-    - {x: 31, y: 28, z: 0}
-    - {x: 27, y: 30, z: 0}
-    - {x: 28, y: 35, z: 0}
+    - {x: 29, y: 29, z: 0}
+    - {x: 26, y: 23, z: 0}
+    - {x: 23, y: 27, z: 0}
+    - {x: 26, y: 30, z: 0}
   sprites:
     keys:
     - Player1
