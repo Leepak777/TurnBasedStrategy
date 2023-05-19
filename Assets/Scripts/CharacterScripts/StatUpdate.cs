@@ -146,10 +146,10 @@ public class StatUpdate : MonoBehaviour
             if(pair.Key.Key == "TimeStop"){
                 int value = pair.Value-1;
                 if(value > 0){
-                    toAdd.Add(keypair,value);
+                    toAdd.Add(pair.Key,value);
                 }
                 if(value == 0){
-                    toRemove.Add(keypair);
+                    toRemove.Add(pair.Key);
                 }
                 skip = true;
             }

@@ -70,6 +70,9 @@ public class ActionCenter : MonoBehaviour
         if(GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton()){
             return;
         }
+        if(gameObject.GetComponent<StatUpdate>().isTimeStop()){
+            return;
+        }
         if(GameObject.Find("InfoPanel") == null && GameObject.Find("AttackConfirm")== null && !Casting){
             GameObject.Find("TurnManager").GetComponent<TurnManager>().setGameState(2);
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

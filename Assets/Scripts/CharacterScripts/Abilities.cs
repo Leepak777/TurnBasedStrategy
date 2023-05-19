@@ -88,7 +88,7 @@ public class Abilities : MonoBehaviour
         Debug.Log("Choice: " + choice);
         this.choice = choice;
         Debug.Log(Skillname[choice]);
-        if(!stgameObject.GetComponent<StatUpdate>().isTimeStop()){
+        if(!gameObject.GetComponent<StatUpdate>().isTimeStop()){
             switch(Skillname[choice]){
                 case "ForceBlast":
                     CheckCoolDown(Skillname[choice]);break;
@@ -108,10 +108,12 @@ public class Abilities : MonoBehaviour
         CoolDown.Add(name,turns);
     }
     public void DecCoolDown(){
-        for(int i = 0; i < CoolDown.Count; i++){
-            CoolDown[CoolDown.ElementAt(i).Key]--;
-            if(CoolDown.ElementAt(i).Value <= 0){
-                CoolDown.Remove(CoolDown.ElementAt(i));
+        if(!gameObject.GetComponent<StatUpdate>().isTimeStop()){
+            for(int i = 0; i < CoolDown.Count; i++){
+                CoolDown[CoolDown.ElementAt(i).Key]--;
+                if(CoolDown.ElementAt(i).Value <= 0){
+                    CoolDown.Remove(CoolDown.ElementAt(i));
+                }
             }
         }
     }

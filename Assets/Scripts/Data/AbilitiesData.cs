@@ -408,8 +408,13 @@ public class AbilitiesData : ScriptableObject
         
     }
 
-    public void Restrict(GameObject target, Vector3Int Loc){
-
+    public void TimeStop(GameObject target, Vector3Int Loc){
+        foreach(Node n in tileM.GetTilesInArea(Loc,3)){
+            if(n.occupant != null){
+                StatUpdate nstat = n.occupant.GetComponent<StatUpdate>();
+                nstat.addStartBuff("TimeStop",target.name,2);
+            }
+        }
     }
 
     public UDictionary<string,float> getSkillsFloats(string name, CharacterStat stats){
@@ -433,6 +438,9 @@ public class AbilitiesData : ScriptableObject
                 return new UDictionary<string, float>(){{"Radius",0},{"CastRange",9999},{"TargetNum",1},{"CastTime",0}};
             case "ForeSight":
                 return new UDictionary<string, float>(){{"Radius",0},{"CastRange",9999},{"TargetNum",1},{"CastTime",0}};
+                break;
+            case "TimeStop":
+                return new UDictionary<string, float>(){{"Radius",3},{"CastRange",7+(int)stats.getStat("acu")},{"TargetNum",1},{"CastTime",0}};
                 break;
         }
         return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
@@ -459,6 +467,9 @@ public class AbilitiesData : ScriptableObject
                 break;
             case "Bubble":
                 return new UDictionary<string, bool>(){{"characterTarget",true},{"sameTag",true}};
+                break;
+            case "TimeStop":
+                return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
                 break;
         }
         return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
