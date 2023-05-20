@@ -139,6 +139,7 @@ public class StatUpdate : MonoBehaviour
             endbuffs.Add(pair);
         }
         foreach(KeyValuePair<string,string> pair in toRemove){
+            RevertEffect(pair);
             endbuffs.Remove(pair);
         }
     }
@@ -179,7 +180,20 @@ public class StatUpdate : MonoBehaviour
             startbuffs.Add(pair);
         }
         foreach(KeyValuePair<string,string> pair in toRemove){
+            RevertEffect(pair);
             startbuffs.Remove(pair);
+        }
+    }
+    public void RevertEffect(KeyValuePair<string,string> pair){
+        KeyValuePair<string,string> newpair = new KeyValuePair<string, string>(pair.Value,pair.Key);
+        if(pair.Key == "BorrowedTime"){
+            addStartBuff("TimeStop",gameObject.name,2);
+        }
+        if(effect_Bonus.ContainsKey(newpair)){
+            foreach(KeyValuePair<string, int> p in effect_Bonus[newpair]){
+                stats.modifyStat(p.Key,-p.Value);
+            }
+            effect_Bonus.Remove(newpair);
         }
     }
     public void saveStat(){

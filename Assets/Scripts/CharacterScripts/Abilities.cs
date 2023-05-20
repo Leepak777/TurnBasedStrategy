@@ -110,11 +110,13 @@ public class Abilities : MonoBehaviour
         CoolDown.Add(name,turns);
     }
     public void DecCoolDown(){
-        if(!statU.isTimeStop()){
-            for(int i = 0; i < CoolDown.Count; i++){
-                CoolDown[CoolDown.ElementAt(i).Key]--;
-                if(CoolDown.ElementAt(i).Value <= 0){
-                    CoolDown.Remove(CoolDown.ElementAt(i));
+        for(int j = 0; j < statU.getDictStats("cooldowndec"); j++){
+            if(!statU.isTimeStop()){
+                for(int i = 0; i < CoolDown.Count; i++){
+                    CoolDown[CoolDown.ElementAt(i).Key]--;
+                    if(CoolDown.ElementAt(i).Value <= 0){
+                        CoolDown.Remove(CoolDown.ElementAt(i));
+                    }
                 }
             }
         }
@@ -348,6 +350,30 @@ public class Abilities : MonoBehaviour
                     skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
                     CoolDown.Add("CalmMind",3);
+                    TargetingSkill();
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "Accelerate":
+                if(!CoolDown.ContainsKey("Accelerate")){
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
+                    skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
+                    CoolDown.Add("Accelerate",5);
+                    TargetingSkill();
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "BorrowedTime":
+                if(!CoolDown.ContainsKey("BorrowedTime")){
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
+                    skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
+                    CoolDown.Add("BorrowedTime",10);
                     TargetingSkill();
                     //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
                 }

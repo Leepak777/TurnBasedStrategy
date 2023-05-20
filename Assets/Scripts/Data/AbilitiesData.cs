@@ -39,10 +39,12 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<GameObject, Vector3Int> Ripple_e;
     public UnityEvent<GameObject, Vector3Int> Meditate_e;
     public UnityEvent<GameObject, Vector3Int> CalmMind_e;
+    public UnityEvent<GameObject, Vector3Int> Accelerate_e;
+    public UnityEvent<GameObject, Vector3Int> BorrowedTime_e;
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
-    public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple"};
+    public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple","Accelerate","BorrowedTime"};
     public List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
     public void setTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
@@ -84,6 +86,10 @@ public class AbilitiesData : ScriptableObject
             return TimeStop_e;
             case "Restrict":
             return Restrict_e;
+            case "Accelerate":
+            return Accelerate_e;
+            case "BorrowedTime":
+            return BorrowedTime_e;
         }
         return null;
     }
@@ -490,6 +496,36 @@ public class AbilitiesData : ScriptableObject
             Meditate(n.occupant, Vector3Int.zero);
         }
     }
+
+    public void Accelerate(GameObject play, Vector3Int Loc){
+        Node n = tileM.GetNodeFromWorld(Loc);
+        StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
+        CharacterStat chStat = ocstat.getStats();
+        KeyValuePair<string,string> pair = new KeyValuePair<string, string>(play.name,"Accelerate");
+        if(ocstat.addBuff("Accelerate", play.name, 2)){
+            chStat.modifyStat("attack_num",1);
+            chStat.modifyStat("mov",chStat.getStat("base_mov"));
+            ocstat.addEffectStat(pair, new UDictionary<string, int>(){{"attack_num",1},{"mov",(int)chStat.getStat("base_mov")}});
+        }
+    }
+
+    public void BorrowedTime(GameObject play, Vector3Int Loc){
+        Node n = tileM.GetNodeFromWorld(Loc);
+        if(n.occupant!=null){
+            Abilities ab = n.occupant.GetComponent<Abilities>();
+            StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
+            CharacterStat chStat = ocstat.getStats();
+            KeyValuePair<string,string> pair = new KeyValuePair<string, string>(play.name,"BorrowedTime");
+            if(ocstat.addBuff("BorrowedTIme", play.name, 3)){
+                chStat.modifyStat("cooldowndec",1);
+                chStat.modifyStat("costmul",1);
+                ocstat.addEffectStat(pair, new UDictionary<string, int>(){{"cooldowndec",1},{"costmul",1}});
+                ab.DecCoolDown();
+                ab.updateCasttime();
+            }
+        }
+    }
+
     public UDictionary<string,float> getSkillsFloats(string name, StatUpdate statU){
         CharacterStat stats = statU.getStats();
         int hastenCast = statU.isHasten();
@@ -533,6 +569,12 @@ public class AbilitiesData : ScriptableObject
             case "CalmMind":
                 return new UDictionary<string, float>(){{"Radius",0},{"CastRange",(int)stats.getStat("acu")},{"TargetNum",0},{"CastTime",1-hastenCast}};
                 break;
+            case "Accelerate":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",7},{"TargetNum",0},{"CastTime",0}};
+                break;
+            case "BorrowedTime":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
+                break;
         }
         return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
     }
@@ -564,6 +606,12 @@ public class AbilitiesData : ScriptableObject
                 break;
             case "Restrict":
                 return new UDictionary<string, bool>(){{"characterTarget",true},{"sameTag",false}};
+                break;
+            case "Accelerate":
+                return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+                break;
+            case "BorrowedTime":
+                return new UDictionary<string, bool>(){{"characterTarget",true},{"sameTag",true}};
                 break;
         }
         return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
@@ -627,6 +675,13 @@ public class AbilitiesData : ScriptableObject
                 break;
             case "CalmMind":
                 ocstat.getStats().modifyStat("ene",-10);
+                break;
+            case "Accelerate":
+                ocstat.getStats().modifyStat("ene",-10);
+                ocstat.getStats().modifyStat("stb",-5);
+                break;
+            case "BorrowedTime":
+                ocstat.getStats().modifyStat("ene",-5);
                 break;
         }
     }
