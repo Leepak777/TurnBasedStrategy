@@ -111,7 +111,7 @@ public class StatUpdate : MonoBehaviour
             case "Bubble":
                 stats.modifyStat("ene", -4) ;
                 break;
-            case "Restrict": 
+            case "Restrict":
                 stats.modifyStat("ene",-4);
                 stats.modifyStat("stb",-2);
                 break;
@@ -165,7 +165,9 @@ public class StatUpdate : MonoBehaviour
             int value = pair.Value-1;
             if(value > 0){
                 toAdd.Add(keypair,value);
-                BuffMaintainCheck(pair);
+                if(pair.Key.Key != "Restrict"){
+                    BuffMaintainCheck(pair);
+                }
             }
             if(pair.Value == 0){
                 toRemove.Add(keypair);
@@ -284,6 +286,19 @@ public class StatUpdate : MonoBehaviour
             }
         }
         return false;
+    }
+    public void RestrictRemoveCheck(){
+        List<KeyValuePair<string,string>> toRemove = new List<KeyValuePair<string, string>>();
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in startbuffs){
+            if(pair.Key.Key == "Restrict"){
+                if(stats.getSpellCR() > 13){
+                    toRemove.Add(pair.Key);
+                }
+            }
+        }
+        foreach(KeyValuePair<string,string> pair in toRemove){
+            startbuffs.Remove(pair);
+        }
     }
     public KeyValuePair<string,bool> usingRestrict(){
         foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in endbuffs){

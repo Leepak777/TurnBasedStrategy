@@ -141,6 +141,9 @@ public class CharacterStat : ScriptableObject
     public float getRangeDefenceRoll(){
         return  stats["rd"]+ stats["rdb"] + stats["dex"]/2 + stats["acu"]/2;
     }
+    public float getSpellCR(){
+        return stats["sa"]+stats["acu"]+stats["mid"];
+    }
     public int getBaseDamage(){
         return (int)(stats["wd"] + stats["pscal"] * stats["pow"] + stats["dscal"]*stats["dex"]);
     }

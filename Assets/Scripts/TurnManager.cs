@@ -110,6 +110,14 @@ public class TurnManager : MonoBehaviour
             go.GetComponentInChildren<StatUpdate>().StartbuffDuration();
         }
     }
+    public void RestrictCheck(){
+        foreach(GameObject go in turnOrder){
+            go.GetComponentInChildren<StatUpdate>().RestrictRemoveCheck();
+        }
+         foreach(GameObject go in turnOrder2){
+            go.GetComponentInChildren<StatUpdate>().RestrictRemoveCheck();
+        }
+    }
     public void PlayerBackUP(){
         foreach(GameObject go in turnOrder){
             go.GetComponentInChildren<CharacterEvents>().saveStat.Invoke(gameTurn);

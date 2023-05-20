@@ -35,10 +35,14 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<GameObject, Vector3Int> Bubble_e;
     public UnityEvent<GameObject, Vector3Int> TimeStop_e;
     public UnityEvent<GameObject, Vector3Int> Restrict_e;
+    public UnityEvent<GameObject, Vector3Int> Armageddon_e;
+    public UnityEvent<GameObject, Vector3Int> Ripple_e;
+    public UnityEvent<GameObject, Vector3Int> Meditate_e;
+    public UnityEvent<GameObject, Vector3Int> CalmMind_e;
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
-    public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble"};
+    public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple"};
     public List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
     public void setTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
@@ -316,6 +320,27 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
+    public void AreaAllAttack(GameObject play, Vector3Int center, int range, string tag){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        foreach(Node n in tileM.GetTilesInArea(center,range)){
+            if(n.occupant != null && n.occupant != play){
+                ocstat.attackEn(n.occupant);
+            }
+        }
+    }
+    public void AreaAllDamage(GameObject play, Vector3Int center, int range, int Damage, string effect,int duration){
+        foreach(Node n in tileM.GetTilesInArea(center,range)){
+            if(n.occupant != null && n.occupant != play){
+                StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
+                if(!ocstat.isTimeStop()){
+                    ocstat.TakeDamage(Damage);
+                    if(effect != ""){
+                        ocstat.addStartBuff(effect, play.name,1);
+                    }
+                }
+            }
+        }
+    }
     
     public void WhirlWind(GameObject play, Vector3Int target){
         Debug.Log("WhirlWind");
@@ -441,7 +466,30 @@ public class AbilitiesData : ScriptableObject
         }
     }
 
+    public void Ripple(GameObject play, Vector3Int Loc){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        AreaAllDamage(play, tileM.WorldToCell(play.transform.position),5,20+(int)ocstat.getDictStats("mid"),"Restrict",1);
+    }
+    public void Armageddon(GameObject play, Vector3Int Loc){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        AreaAllDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"",0);
+        AreaAllDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"",0);
+        AreaAllDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"",0);
+    }
 
+    public void Meditate(GameObject play, Vector3Int Loc){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        CharacterStat chStat = ocstat.getStats();
+        chStat.modifyStat("ene",10);
+        chStat.modifyStat("stb",10);
+        chStat.modifyStat("fat",-10);
+    }
+    public void CalmMind(GameObject play, Vector3Int Loc){
+        Node n = tileM.GetNodeFromWorld(Loc);
+        if(n.occupant != null){
+            Meditate(n.occupant, Vector3Int.zero);
+        }
+    }
     public UDictionary<string,float> getSkillsFloats(string name, StatUpdate statU){
         CharacterStat stats = statU.getStats();
         int hastenCast = statU.isHasten();
@@ -472,6 +520,18 @@ public class AbilitiesData : ScriptableObject
                 break;
             case "Restrict":
                 return new UDictionary<string, float>(){{"Radius",0},{"CastRange",5},{"TargetNum",1},{"CastTime",1-hastenCast}};
+                break;
+            case "Armageddon":
+                return new UDictionary<string, float>(){{"Radius",7},{"CastRange",7+(int)stats.getStat("acu")},{"TargetNum",1},{"CastTime",3-hastenCast}};
+                break;
+            case "Ripple":
+                return new UDictionary<string, float>(){{"Radius",5},{"CastRange",0},{"TargetNum",0},{"CastTime",2-hastenCast}};
+                break;
+            case "Meditate":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",1-hastenCast}};
+                break;
+            case "CalmMind":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",(int)stats.getStat("acu")},{"TargetNum",0},{"CastTime",1-hastenCast}};
                 break;
         }
         return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
@@ -551,6 +611,22 @@ public class AbilitiesData : ScriptableObject
             case "Restrict":
                 ocstat.getStats().modifyStat("ene",-10);
                 ocstat.getStats().modifyStat("stb",-5);
+                break;
+            case "Hasten":
+                ocstat.getStats().modifyStat("ene",-5);
+                ocstat.getStats().modifyStat("stb",-5);
+                break;
+            case "Armageddon":
+                ocstat.getStats().modifyStat("ene",-50);
+                ocstat.getStats().modifyStat("stb",-100);
+                ocstat.getStats().modifyStat("fat",100);
+                break;
+            case "Ripple":
+                ocstat.getStats().modifyStat("ene",-20);
+                ocstat.getStats().modifyStat("stb",-30);
+                break;
+            case "CalmMind":
+                ocstat.getStats().modifyStat("ene",-10);
                 break;
         }
     }

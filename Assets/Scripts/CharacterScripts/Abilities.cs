@@ -331,6 +331,30 @@ public class Abilities : MonoBehaviour
                     Debug.Log("In CoolDown");
                 }
             break;
+            case "Meditate":
+                if(!CoolDown.ContainsKey("Meditate")){
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
+                    skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
+                    CoolDown.Add("Meditate",3);
+                    TargetingSkill();
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "CalmMind":
+                if(!CoolDown.ContainsKey("CalmMind")){
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
+                    skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
+                    CoolDown.Add("CalmMind",3);
+                    TargetingSkill();
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
         }
     }
 }
