@@ -43,32 +43,30 @@ MonoBehaviour:
       values:
       - Imperial Legionary
       - Legionary Armor
-      - Power Sword
+      - Great Sword
       - War Horse
-      - Tower Shield
+      - Kite Shield
       - Buckler
     - keys:
       - Type
       - Armor
       - Weapon
       - Mount
-      - Shield
       values:
       - Imperial Conscript
       - Half Plate
-      - Pistol
+      - Pike
       - Pack Horse
-      - Kite Shield
     - keys:
       - Type
       - Armor
-      - Mount
       - Weapon
+      - Mount
       values:
       - Mercenary
       - Flak Suit
-      - Pack Horse
       - Mace
+      - Pack Horse
   positions:
     keys:
     - Player1
@@ -76,10 +74,10 @@ MonoBehaviour:
     - Enemy1
     - Enemy2
     values:
-    - {x: 29, y: 29, z: 0}
-    - {x: 26, y: 23, z: 0}
-    - {x: 23, y: 27, z: 0}
-    - {x: 26, y: 30, z: 0}
+    - {x: 35, y: 44, z: 0}
+    - {x: 32, y: 41, z: 0}
+    - {x: 33, y: 46, z: 0}
+    - {x: 30, y: 43, z: 0}
   sprites:
     keys:
     - Player1
@@ -88,8 +86,8 @@ MonoBehaviour:
     - Enemy2
     values:
     - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
-    - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
-    - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
-    - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
+    - {fileID: 2506328554285755566, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -5383051665984936242, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -5733468891144105869, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
   map: Never Gonna Give You Up
   currentSetCh: Enemy2

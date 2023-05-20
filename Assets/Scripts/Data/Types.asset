@@ -19,7 +19,6 @@ MonoBehaviour:
   - Imperial Conscript
   - Mercenary
   - Brigand
-  - Joe mama
   type_stats:
   - pow
   - dex
@@ -37,6 +36,8 @@ MonoBehaviour:
   - md
   - rd
   - mr
+  - cooldowndec
+  - costmul
   Praetorian_Guard:
     keys:
     - pow
@@ -55,6 +56,8 @@ MonoBehaviour:
     - md
     - rd
     - mr
+    - costmul
+    - cooldowndec
     values:
     - 8
     - 6
@@ -72,6 +75,8 @@ MonoBehaviour:
     - 16
     - 16
     - 13
+    - 1
+    - 1
   Imperial_Legionary:
     keys:
     - pow
@@ -90,6 +95,8 @@ MonoBehaviour:
     - md
     - rd
     - mr
+    - costmul
+    - cooldowndec
     values:
     - 7
     - 5
@@ -107,6 +114,8 @@ MonoBehaviour:
     - 15
     - 14
     - 10
+    - 1
+    - 1
   Imperial_Conscript:
     keys:
     - pow
@@ -125,6 +134,8 @@ MonoBehaviour:
     - md
     - rd
     - mr
+    - costmul
+    - cooldowndec
     values:
     - 5
     - 5
@@ -142,6 +153,8 @@ MonoBehaviour:
     - 10
     - 10
     - 10
+    - 1
+    - 1
   Mercenary:
     keys:
     - pow
@@ -160,6 +173,8 @@ MonoBehaviour:
     - md
     - rd
     - mr
+    - costmul
+    - cooldowndec
     values:
     - 6
     - 6
@@ -177,6 +192,8 @@ MonoBehaviour:
     - 13
     - 12
     - 10
+    - 1
+    - 1
   Brigand:
     keys:
     - pow
@@ -195,6 +212,8 @@ MonoBehaviour:
     - md
     - rd
     - mr
+    - costmul
+    - cooldowndec
     values:
     - 4
     - 5
@@ -212,6 +231,8 @@ MonoBehaviour:
     - 9
     - 9
     - 10
+    - 1
+    - 1
   Type_lst:
     keys:
     - Praetorian Guard
@@ -237,6 +258,8 @@ MonoBehaviour:
       - md
       - rd
       - mr
+      - costmul
+      - cooldowndec
       values:
       - 8
       - 6
@@ -254,6 +277,8 @@ MonoBehaviour:
       - 16
       - 16
       - 13
+      - 1
+      - 1
     - keys:
       - pow
       - dex
@@ -271,6 +296,8 @@ MonoBehaviour:
       - md
       - rd
       - mr
+      - costmul
+      - cooldowndec
       values:
       - 7
       - 5
@@ -288,6 +315,8 @@ MonoBehaviour:
       - 15
       - 14
       - 10
+      - 1
+      - 1
     - keys:
       - pow
       - dex
@@ -305,6 +334,8 @@ MonoBehaviour:
       - md
       - rd
       - mr
+      - costmul
+      - cooldowndec
       values:
       - 5
       - 5
@@ -322,6 +353,8 @@ MonoBehaviour:
       - 10
       - 10
       - 10
+      - 1
+      - 1
     - keys:
       - pow
       - dex
@@ -339,6 +372,8 @@ MonoBehaviour:
       - md
       - rd
       - mr
+      - costmul
+      - cooldowndec
       values:
       - 6
       - 6
@@ -356,6 +391,8 @@ MonoBehaviour:
       - 13
       - 12
       - 10
+      - 1
+      - 1
     - keys:
       - pow
       - dex
@@ -373,6 +410,8 @@ MonoBehaviour:
       - md
       - rd
       - mr
+      - costmul
+      - cooldowndec
       values:
       - 4
       - 5
@@ -390,3 +429,19 @@ MonoBehaviour:
       - 9
       - 9
       - 10
+      - 1
+      - 1
+  Type_Sprite:
+    keys:
+    - Praetorian Guard
+    - Imperial Legionary
+    - Imperial Conscript
+    - Mercenary
+    - Brigand
+    values:
+    - {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}
+    - {fileID: 2506328554285755566, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -5383051665984936242, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: -5733468891144105869, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}
+    - {fileID: 0}
+  DefaultSprite: {fileID: 0}

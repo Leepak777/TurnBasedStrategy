@@ -41,6 +41,8 @@ MonoBehaviour:
     - pv
     - w_enc
     - attack_num
+    - cooldowndec
+    - costmul
     - av
     - sv
     - mdb
@@ -77,32 +79,34 @@ MonoBehaviour:
     - 10
     - 0
     - 0
-    - 8
+    - 9
     - 1.5
-    - 1
+    - 1.3
     - 1
     - 100
     - 0
     - 2
-    - 8
-    - 35
+    - 6
+    - 34
     - 3
     - 2
+    - 1
+    - 1
     - 15
     - 0
     - 2
     - -4
     - 9
-    - 4
-    - -2
+    - 3
+    - 3
     - 82
     - 14
     - 0
     - 33
     - 0
     - 13.5
-    - 21.75
-    - -0.75
+    - 15.75
+    - 4.25
     - 0
     - 82
     - 47
@@ -118,9 +122,9 @@ MonoBehaviour:
     values:
     - Imperial Legionary
     - Legionary Armor
-    - Power Sword
+    - Great Sword
     - War Horse
-    - Tower Shield
+    - Kite Shield
     - Buckler
   abilities:
     keys:
@@ -137,4 +141,4 @@ MonoBehaviour:
     - ForceBlast
     - ForeSight
     values: 000000000000000000000000
-  AbilitiesCostMul: 1
+  sprite: {fileID: 2506328554285755566, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}

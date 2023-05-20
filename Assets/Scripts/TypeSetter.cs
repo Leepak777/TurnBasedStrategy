@@ -19,8 +19,20 @@ public class TypeSetter : MonoBehaviour
     public Types ty;
     public TypesSkills TYS;
     public AbilitiesData ad;
-    
+    [SerializeField]
+    UDictionary<string,Sprite> sprites = new UDictionary<string,Sprite>();
+    Sprite selected;
     void Awake(){
+        Sprite[] allsprites = Resources.LoadAll<Sprite>("CharacterSprites/Crystal_Knight");
+        foreach(Sprite s in allsprites){
+            //Debug.Log(s.name);
+            sprites.Add(s.name,s);
+        }
+        allsprites = Resources.LoadAll<Sprite>("CharacterSprites/Daemons");
+        foreach(Sprite s in allsprites){
+            //Debug.Log(s.name);
+            sprites.Add(s.name,s);
+        }
         type.ClearOptions();
         //type.AddOptions(new List<string>(){"none"});
         type.AddOptions(ty.type);
@@ -61,6 +73,9 @@ public class TypeSetter : MonoBehaviour
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("Abilitiesbox")){
             Destroy(go);
         }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SpriteBox")){
+            Destroy(go);
+        }
         if(stats != null){
             AddStatBoxes(stats);
         }
@@ -71,6 +86,7 @@ public class TypeSetter : MonoBehaviour
         if(TYS.getTypeAbilities(input.text) != null){
             AddAbilitiesBoxes(TYS.getTypeAbilities(input.text));
         }
+        addSprite();
         ChangeData = stats;
     }
     void AddStatBoxes(UDictionary<string, float> stats){
@@ -89,6 +105,21 @@ public class TypeSetter : MonoBehaviour
         
         for(int i = 0; i < stats.Count; i++){
             addAbility(input.text,stats.ElementAt(i).Key);
+        }
+    }
+
+    public void addSprite(){
+        foreach(KeyValuePair<string,Sprite> pair in sprites){
+            GameObject goParent = GameObject.Find("SpritePanel");
+            GameObject prefab = Resources.Load<GameObject>("ChSprites") as GameObject;
+            GameObject player = Instantiate(prefab) as GameObject;
+            player.transform.SetParent(goParent.transform);
+            player.GetComponent<Image>().sprite = pair.Value;
+            player.name = pair.Key;
+            if(input.text == player.name){
+                player.GetComponent<Selectable>().Select();
+                player.GetComponent<BoxFunc>().setSprite();
+            }
         }
     }
     public void addInfo(KeyValuePair<string,float> stat){
@@ -129,7 +160,7 @@ public class TypeSetter : MonoBehaviour
         player.name = skill;
         Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
         dd.ClearOptions();
-        dd.AddOptions(ad.SkillLst);
+        dd.AddOptions(ad.getSkillList());
         dd.value = dd.options.FindIndex(x => x.text == skill);
     }
     public void addBlankSkill(){
@@ -139,7 +170,7 @@ public class TypeSetter : MonoBehaviour
         player.transform.SetParent(goParent.transform);
         Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
         dd.ClearOptions();
-        dd.AddOptions(ad.SkillLst);
+        dd.AddOptions(ad.getSkillList());
     }
     public void addAbility(string name, string skill){
         GameObject goParent = GameObject.Find("scrollPanel_Abil");
@@ -149,7 +180,7 @@ public class TypeSetter : MonoBehaviour
         player.name = skill;
         Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
         dd.ClearOptions();
-        dd.AddOptions(ad.AbilitiesLst);
+        dd.AddOptions(ad.getAbilList());
         dd.value = dd.options.FindIndex(x => x.text == skill);
     }
     public void addBlankAbilite(){
@@ -159,7 +190,7 @@ public class TypeSetter : MonoBehaviour
         player.transform.SetParent(goParent.transform);
         Dropdown dd = player.transform.Find("Statname").GetComponent<Dropdown>();
         dd.ClearOptions();
-        dd.AddOptions(ad.AbilitiesLst);
+        dd.AddOptions(ad.getAbilList());
     }
 
     public void setText(string name){
@@ -173,6 +204,9 @@ public class TypeSetter : MonoBehaviour
         EditorUtility.SetDirty(TYS);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+    }
+    public void SetSprite(Sprite s){
+        selected = s;
     }
     public void changedata(){
         UDictionary<string,float> newData = new UDictionary<string, float>();
@@ -208,7 +242,7 @@ public class TypeSetter : MonoBehaviour
         ty.addTypeEntry(type.captionText.text,ChangeData);
         TYS.addTypeAbilities(type.captionText.text,Abilities);
         TYS.addTypeSkill(type.captionText.text,Skills);
-        
+        ty.setTypeSprite(type.captionText.text, selected);
         EditorUtility.SetDirty(ty);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

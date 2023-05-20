@@ -44,6 +44,7 @@ public class StatUpdate : MonoBehaviour
         stats = Instantiate(baseData);
         AssetDatabase.CreateAsset(stats, "Assets/Scripts/Data/"+gameObject.name+".asset");
         AssetDatabase.SaveAssets();
+        gameObject.GetComponent<SpriteRenderer>().sprite = stats.sprite;
         maxHealth = stats.getStat("maxHealth");
         currentHealth = maxHealth;
         drn = DRN.getInstance();

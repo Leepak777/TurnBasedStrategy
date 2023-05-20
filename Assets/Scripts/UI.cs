@@ -91,6 +91,8 @@ public class UI : MonoBehaviour
         }
     }
     public void duringEvent(){
+        skillLst.ClearOptions();
+        skillLst.AddOptions(currentPlay.GetComponent<Abilities>().getSkillNames());
         if(currentPlay.tag == "Enemy" && !skip){
             Invoke("duringAction",1.5f);
             skip = true;

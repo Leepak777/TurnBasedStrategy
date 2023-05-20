@@ -25,6 +25,8 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<GameObject> charge;
      public UnityEvent<GameObject> corruption;
     public UnityEvent<GameObject> cold;
+    public UnityEvent<GameObject> assault;
+    public UnityEvent<GameObject> death;
     public UnityEvent<GameObject, Vector3Int> WhirlWind_e;
     public UnityEvent<GameObject, Vector3Int> ForceBlast_e;
     public UnityEvent<GameObject, Vector3Int> PsychiStorm_e;
@@ -44,20 +46,70 @@ public class AbilitiesData : ScriptableObject
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
-    public List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple","Accelerate","BorrowedTime"};
-    public List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
+    List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple","Accelerate","BorrowedTime"};
+    List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
+    [SerializeField]
+    UDictionary<string, UnityEvent<GameObject,Vector3Int>> Skills = new UDictionary<string, UnityEvent<GameObject, Vector3Int>>();
+    [SerializeField]
+    UDictionary<string, UnityEvent<GameObject,Vector3Int>> SkillEffects = new UDictionary<string, UnityEvent<GameObject, Vector3Int>>();
+    [SerializeField]
+    UDictionary<string, UnityEvent<GameObject>> Abilities = new UDictionary<string, UnityEvent<GameObject>>();
+
     public void setTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
     }
     void Awake(){
+        reset();
         //setTileM();
     }
     void Start(){
         setTileM();
     }
+    public void reset(){
+        ForceBlast_e.AddListener(ForceBlast);
+        PsychiStorm_e.AddListener(PsychicStorm);
+        WhirlWind_e.AddListener(WhirlWind);
+        ForeSight_e.AddListener(Foresight);
+        Bubble_e.AddListener(Bubble);
+        TimeStop_e.AddListener(TimeStop);
+        Restrict_e.AddListener(Restrict);
+        Accelerate_e.AddListener(Accelerate);
+        BorrowedTime_e.AddListener(BorrowedTime);
+        Armageddon_e.AddListener(Armageddon);
+        FireStance_e.AddListener(FireStance);
+        WaterStance_e.AddListener(WaterStance);
+        Ripple_e.AddListener(Ripple);
+        PsychiStorm_ef.AddListener(PsychicStorm);
+        Leadership.AddListener(LeadersshipAura);
+        charge.AddListener(Charge);
+        corruption.AddListener(CorruptionAura);
+        cold.AddListener(ColdAura);
+        assault.AddListener(AssaultAura);
+        death.AddListener(DeathAura);
+        SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple","Accelerate","BorrowedTime"};
+        AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
+        Skills = new UDictionary<string, UnityEvent<GameObject, Vector3Int>>(){
+            {"ForceBlast",ForceBlast_e},{"PsychicStorm",PsychiStorm_e},{"WhirlWind",WhirlWind_e},{"ForeSight",ForeSight_e},{"Bubble",Bubble_e},{"WaterStance",WaterStance_e},{"FireStance",FireStance_e}
+            ,{"TimeStop",TimeStop_e},{"Restrict",Restrict_e},{"Accelerate",Accelerate_e},{"BorrowedTime",BorrowedTime_e},{"Armageddon",Armageddon_e},{"Ripple",Ripple_e}};
+        SkillEffects = new UDictionary<string, UnityEvent<GameObject, Vector3Int>>(){
+            {"PsychicStorm",PsychiStorm_ef}
+        };
+        Abilities = new UDictionary<string, UnityEvent<GameObject>>(){
+            {"LeadershipAura",Leadership},{"Charge",charge},{"CorruptionAura",corruption},{"ColdAura",cold},{"AssaultAura",assault},{"DeathAura",death}
+        };
+    }
+    public List<string> getSkillList(){
+        return SkillLst;
+    }
+    public List<string> getAbilList(){
+        return AbilitiesLst;
+    }
     public UnityEvent<GameObject> getEvent(string name){
-        switch(name){
+        if(Abilities.ContainsKey(name)){
+            return Abilities[name];
+        }
+        /*switch(name){
             case "LeadershipAura": 
             return Leadership;
             case "Charge":
@@ -66,12 +118,15 @@ public class AbilitiesData : ScriptableObject
             return corruption;
             case "ColdAura":
             return cold;
-        }
+        }*/
         return null;
     }
 
     public UnityEvent<GameObject, Vector3Int> getActiveSkill(string name){
-        switch(name){
+        if(Skills.ContainsKey(name)){
+            return Skills[name];
+        }
+        /*switch(name){
             case "WhirlWind": 
             return WhirlWind_e;
             case "ForceBlast":
@@ -90,14 +145,17 @@ public class AbilitiesData : ScriptableObject
             return Accelerate_e;
             case "BorrowedTime":
             return BorrowedTime_e;
-        }
+        }*/
         return null;
     }
     public UnityEvent<GameObject, Vector3Int> getAreaEffect(string name){
-        switch(name){
+        if(SkillEffects.ContainsKey(name)){
+            return SkillEffects[name];
+        }
+        /*switch(name){
             case "PsychicStorm":
             return PsychiStorm_ef;
-        }
+        }*/
         return null;
     }
     public string getAbilType(string name){
@@ -373,7 +431,7 @@ public class AbilitiesData : ScriptableObject
     public void GenericSummon(GameObject play, Vector3Int target){
         //instantiate GameObject at target
     }
-    public void Foresight(){
+    public void Foresight(GameObject go, Vector3Int v){
         Debug.Log("ForeSight");
         if(!turnM.getUI().inForesight()){
             foresighStart();

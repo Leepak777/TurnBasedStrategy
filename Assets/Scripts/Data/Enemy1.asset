@@ -41,6 +41,8 @@ MonoBehaviour:
     - pv
     - w_enc
     - attack_num
+    - cooldowndec
+    - costmul
     - av
     - sv
     - mdb
@@ -77,32 +79,34 @@ MonoBehaviour:
     - 10
     - 0
     - 0
-    - 12
-    - 8
-    - 0
+    - 7
+    - 2.3
+    - 1.5
+    - 0.2
+    - 100
+    - 25
     - 1
     - 0
-    - 50
+    - 0
+    - 3
     - 2
-    - 4
-    - 15
-    - 4
-    - 2
+    - 1
+    - 1
     - 14
     - 0
-    - 0
-    - -3
+    - 1
+    - -2
     - 7
-    - 2
-    - 0
+    - 4
+    - -2
     - 60
     - 9
     - 0
     - 23
     - 0
     - 10.5
-    - 15.25
-    - 2.75
+    - 20.25
+    - -0.25
     - 0
     - 60
     - 33
@@ -113,13 +117,11 @@ MonoBehaviour:
     - Armor
     - Weapon
     - Mount
-    - Shield
     values:
     - Imperial Conscript
     - Half Plate
-    - Pistol
+    - Pike
     - Pack Horse
-    - Kite Shield
   abilities:
     keys:
     - LeaderShipAura
@@ -135,4 +137,4 @@ MonoBehaviour:
     - PsychicStorm
     - ForeSight
     values: 000000000000000000000000
-  AbilitiesCostMul: 1
+  sprite: {fileID: -5383051665984936242, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}

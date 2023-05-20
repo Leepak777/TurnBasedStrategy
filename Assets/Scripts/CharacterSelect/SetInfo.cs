@@ -93,6 +93,7 @@ public class SetInfo : MonoBehaviour
         //Data.setCalStat();
         //EditorUtility.SetDirty(Data);
         Data_Base.setUp();
+        Data_Base.sprite = types.getTypeSprite(ch["Type"]);
         setDataStats(Data_Base,ch);
         Data_Base.setCalStat();
         EditorUtility.SetDirty(Data_Base);

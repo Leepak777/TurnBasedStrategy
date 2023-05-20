@@ -23,12 +23,10 @@ MonoBehaviour:
     - keys:
       - LeaderShipAura
       - Charge
-      - CorruptionAura
       - Psychometry
       values:
       - Null
       - Individual
-      - Universal
       - Universal
     - keys:
       - LeaderShipAura

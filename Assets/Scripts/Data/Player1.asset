@@ -41,6 +41,8 @@ MonoBehaviour:
     - pv
     - w_enc
     - attack_num
+    - cooldowndec
+    - costmul
     - av
     - sv
     - mdb
@@ -88,6 +90,8 @@ MonoBehaviour:
     - 35
     - 3
     - 2
+    - 1
+    - 1
     - 0
     - 0
     - 3
@@ -124,12 +128,10 @@ MonoBehaviour:
     keys:
     - LeaderShipAura
     - Charge
-    - CorruptionAura
     - Psychometry
     values:
     - Null
     - Individual
-    - Universal
     - Universal
   skills:
     keys:
@@ -137,4 +139,4 @@ MonoBehaviour:
     - ForceBlast
     - ForeSight
     values: 000000000000000000000000
-  AbilitiesCostMul: 1
+  sprite: {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}

@@ -8,6 +8,7 @@ public class CharacterStat : ScriptableObject
     public UDictionary<string,string> attributes = new UDictionary<string, string>();
     public UDictionary<string,string> abilities = new UDictionary<string, string>();
     public UDictionary<string,int> skills = new UDictionary<string, int>();
+    public Sprite sprite;
     public void setUp(){
         //Raw stat
         stats.Add("pow",0);//power
@@ -38,8 +39,8 @@ public class CharacterStat : ScriptableObject
         stats.Add("pv",0);//parry value
         stats.Add("w_enc",0);
         stats.Add("attack_num",1);
-        stats.Add("cooldowndec",1);
-        stats.Add("costmul",1);
+        stats.Add("cooldowndec",0);
+        stats.Add("costmul",0);
         //armor
         stats.Add("av",0);//armor value
         stats.Add("sv",0);//shield value

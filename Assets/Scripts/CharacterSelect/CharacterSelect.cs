@@ -22,7 +22,7 @@ public class CharacterSelect : MonoBehaviour
     {
         types = type.type;
         data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
-        Sprite[] allsprites = Resources.LoadAll<Sprite>("Crystal_Knight");
+        Sprite[] allsprites = Resources.LoadAll<Sprite>("CharacterSprites/Crystal_Knight");
         foreach(Sprite s in allsprites){
             //Debug.Log(s.name);
             Daemons.Add(s.name,s);
@@ -47,7 +47,7 @@ public class CharacterSelect : MonoBehaviour
         return Daemons.ElementAt(rnd.Next(0,Daemons.Count)).Value;
     }
     public void setCharacterType(int option) {
-        img.sprite = getRandomSprite();
+        img.sprite = type.getTypeSprite(types[option]);
         if(attributes.ContainsKey("Type")){
             attributes["Type"] = types[option];
         }

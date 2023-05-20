@@ -41,6 +41,8 @@ MonoBehaviour:
     - pv
     - w_enc
     - attack_num
+    - cooldowndec
+    - costmul
     - av
     - sv
     - mdb
@@ -88,6 +90,8 @@ MonoBehaviour:
     - 0
     - 4
     - 2
+    - 1
+    - 1
     - 13
     - 0
     - 0
@@ -111,13 +115,13 @@ MonoBehaviour:
     keys:
     - Type
     - Armor
-    - Mount
     - Weapon
+    - Mount
     values:
     - Mercenary
     - Flak Suit
-    - Pack Horse
     - Mace
+    - Pack Horse
   abilities:
     keys:
     - LeaderShipAura
@@ -134,4 +138,4 @@ MonoBehaviour:
     - ForceBlast
     - ForeSight
     values: 00000000000000000000000000000000
-  AbilitiesCostMul: 1
+  sprite: {fileID: -5733468891144105869, guid: d12da0214ee2c0c4da9c25e809ea74c9, type: 3}

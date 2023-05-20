@@ -16,8 +16,13 @@ public class BoxFunc : MonoBehaviour
     public string stattype;
     public List<string> statslst;
     public Dropdown dd;
+    public Image img;
     void Start(){
     }
+    public void setSprite(){
+        GameObject.Find("Canvas").GetComponent<TypeSetter>().SetSprite(img.sprite);
+    }
+
     public void RemoveBox(){
        Destroy(gameObject);
     }
@@ -67,6 +72,8 @@ public class BoxFunc : MonoBehaviour
             case "base_init": full = "Base Initiative";break;
             case "base_enc": full = "Base Encumbrance";break;
             case "attack_num": full = "Attack times";break;
+            case "costmul":full = "Cost Multiplier";break;
+            case "cooldowndec": full = "CoolDown times";break;
             default: full = "none";break;
         }
         fullname.text = full;
