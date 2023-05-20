@@ -412,6 +412,13 @@ public class PopEvent : MonoBehaviour
             case "base_init": full = "Base Initiative";break;
             case "base_enc": full = "Base Encumbrance";break;
             case "attack_num": full = "Attack times";break;
+            case "costmul": full = "Cost Multiplier";break;
+            case "cooldowndec": full = "CoolDown Time";break;
+            case "w_enc": full = "Weapon Encumbrance";break;
+            case "maxstb": full = "Max Stability";break;
+            case "eq_mov": full = "Equipment movement";break;
+            case "eq_init": full = "Equipment initiative";break;
+            case "eq_enc": full = "Equipment Encumbrance";break;
             default: full = "none";break;
         }
         return full;

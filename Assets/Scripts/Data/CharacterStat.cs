@@ -103,7 +103,7 @@ public class CharacterStat : ScriptableObject
         stats["ene"] = stats["mid"] * 4 + stats["acu"] + stats["base_ene"];
         stats["fat"] = 0;
         stats["stb"] = stats["mid"]*5 +stats["acu"]*3 + stats["tou"] *2;
-        stats["maxStb"] = stats["mid"] * 7 + stats["acu"] * 4 + stats["tou"] * 3;
+        stats["maxstb"] = stats["mid"] * 7 + stats["acu"] * 4 + stats["tou"] * 3;
         stats["mov"] = stats["base_mov"] + stats["pow"]/2 + stats["eq_mov"];
         stats["maxTiles"] = (int)stats["mov"];
         stats["enc"] = stats["w_enc"] + stats["eq_enc"] + stats["base_enc"] - stats["pow"]/4;
