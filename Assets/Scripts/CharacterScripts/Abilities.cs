@@ -32,6 +32,7 @@ public class Abilities : MonoBehaviour
     AbilitiesData abilitiesData;
     public int choice = 0;
     int targets = 0;
+    StatUpdate statU;
     Vector3Int targetLoc;
     List<Vector3Int> targetV = new List<Vector3Int>();
     Dropdown skillDrop;
@@ -55,6 +56,7 @@ public class Abilities : MonoBehaviour
     }
     void Start()
     {
+        statU =gameObject.GetComponent<StatUpdate>();
         ui = GameObject.Find("UICanvas").GetComponent<UI>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
@@ -88,7 +90,7 @@ public class Abilities : MonoBehaviour
         Debug.Log("Choice: " + choice);
         this.choice = choice;
         Debug.Log(Skillname[choice]);
-        if(!gameObject.GetComponent<StatUpdate>().isTimeStop()){
+        if(!statU.isTimeStop()){
             switch(Skillname[choice]){
                 case "ForceBlast":
                     CheckCoolDown(Skillname[choice]);break;
@@ -108,7 +110,7 @@ public class Abilities : MonoBehaviour
         CoolDown.Add(name,turns);
     }
     public void DecCoolDown(){
-        if(!gameObject.GetComponent<StatUpdate>().isTimeStop()){
+        if(!statU.isTimeStop()){
             for(int i = 0; i < CoolDown.Count; i++){
                 CoolDown[CoolDown.ElementAt(i).Key]--;
                 if(CoolDown.ElementAt(i).Value <= 0){
@@ -176,7 +178,7 @@ public class Abilities : MonoBehaviour
             gameObject.GetComponentInChildren<CharacterEvents>().unHighLightArea.Invoke();
             gameObject.GetComponentInChildren<CharacterEvents>().HighLightReachable.Invoke();
             if(targetV.Count == 1){
-                if((int)skillAttributesFloat["CastTime"] == 0){
+                if((int)skillAttributesFloat["CastTime"] <= 0){
                     activeSkill[choice].Invoke(gameObject, targetLoc);
                 }
                 else{
@@ -185,7 +187,7 @@ public class Abilities : MonoBehaviour
                 }
             else if(skillAttributesBool["characterTarget"]){
                 //activeSkill[choice].Invoke(tileM.GetNodeFromWorld(targetV[0]).occupant, targetV[1]);
-                if((int)skillAttributesFloat["CastTime"] == 0){
+                if((int)skillAttributesFloat["CastTime"] <= 0){
                     activeSkill[choice].Invoke(tileM.GetNodeFromWorld(targetV[0]).occupant, targetV[1]);
                 }
                 else{
@@ -195,7 +197,7 @@ public class Abilities : MonoBehaviour
                 }
             }
             else{
-                if((int)skillAttributesFloat["CastTime"] == 0){
+                if((int)skillAttributesFloat["CastTime"] <= 0){
                     activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
                 }
                 else{
@@ -216,7 +218,7 @@ public class Abilities : MonoBehaviour
         switch(name){
             case "ForceBlast":
                 if(!CoolDown.ContainsKey("ForceBlast")){
-                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,stats); 
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
                     TargetingSkill();
                     CoolDown.Add(name,5);    
@@ -227,7 +229,7 @@ public class Abilities : MonoBehaviour
             break;
             case "PsychicStorm":
                 if(!CoolDown.ContainsKey("PsychicStorm")){
-                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,stats); 
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
                     TargetingSkill();
                     CoolDown.Add(name,7);    
@@ -238,14 +240,14 @@ public class Abilities : MonoBehaviour
             break;
             case "ForeSight":
                 if(!CoolDown.ContainsKey("ForeSight") && !GameObject.Find("UICanvas").GetComponent<UI>().inForesight()){
-                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,stats); 
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
                     CoolDown.Add(name,Math.Max((int)(5 - stats.getStat("acu")/2),0));   
                     TargetingSkill(); 
                     //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
                 }
                 else if(CoolDown.ContainsKey("ForeSight") && GameObject.Find("UICanvas").GetComponent<UI>().inForesight()){
-                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,stats); 
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
                     TargetingSkill();
                 }
@@ -255,7 +257,7 @@ public class Abilities : MonoBehaviour
             break;
             case "WhirldWind":
                 if(!CoolDown.ContainsKey("WhirldWind")){
-                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,stats); 
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
                     CoolDown.Add(name,3);    
                 }
@@ -265,7 +267,7 @@ public class Abilities : MonoBehaviour
             break;
             case "WaterStance":
                 if(!CoolDown.ContainsKey("WaterStance")){
-                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,stats); 
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
                     CoolDown.Add(name,3);
                     TargetingSkill();
@@ -277,7 +279,7 @@ public class Abilities : MonoBehaviour
             break;
             case "FireStance":
                 if(!CoolDown.ContainsKey("FireStance")){
-                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,stats); 
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
                     CoolDown.Add(name,3);
                     TargetingSkill();
@@ -289,8 +291,39 @@ public class Abilities : MonoBehaviour
             break;
             case "Bubble":
                 if(!CoolDown.ContainsKey("Bubble")){
-                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,stats); 
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
                     skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
+                    TargetingSkill();
+                    CoolDown.Add("Bubble",5);
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "Restrict":
+                if(!CoolDown.ContainsKey("Restrict")){
+                    KeyValuePair<string,bool> pair = statU.usingRestrict(); 
+                    if(!pair.Value){
+                        skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
+                        skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
+                        TargetingSkill();
+                    }
+                    else{
+                        GameObject.Find(pair.Key).GetComponent<StatUpdate>().removeStartBuff("Restrict",gameObject.name);
+                        CoolDown.Add("Restrict",3);
+                    }
+                    //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
+                }
+                else{
+                    Debug.Log("In CoolDown");
+                }
+            break;
+            case "Hasten":
+                if(!CoolDown.ContainsKey("Hasten")){
+                    skillAttributesFloat = abilitiesData.getSkillsFloats(name,statU); 
+                    skillAttributesBool = abilitiesData.getSkillBool(name,stats); 
+                    CoolDown.Add("Hasten",5);
                     TargetingSkill();
                     //activeSkill[choice].Invoke(gameObject, Vector3Int.zero);
                 }

@@ -18,8 +18,10 @@ public class ActionCenter : MonoBehaviour
     bool attacking = false;
     bool moving = false;
     bool Casting = false;
+    StatUpdate statU;
     void Awake()
     {
+        statU = gameObject.GetComponent<StatUpdate>();
         getTileM();
     }
     //update current position of character, just made it incase we need it
@@ -70,7 +72,7 @@ public class ActionCenter : MonoBehaviour
         if(GameObject.Find("Canvas").GetComponent<EventTrig>().checkOnButton()){
             return;
         }
-        if(gameObject.GetComponent<StatUpdate>().isTimeStop()){
+        if(statU.isTimeStop() || statU.isRestrict()){
             return;
         }
         if(GameObject.Find("InfoPanel") == null && GameObject.Find("AttackConfirm")== null && !Casting){

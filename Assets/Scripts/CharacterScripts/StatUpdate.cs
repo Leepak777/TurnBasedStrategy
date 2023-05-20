@@ -111,6 +111,10 @@ public class StatUpdate : MonoBehaviour
             case "Bubble":
                 stats.modifyStat("ene", -4) ;
                 break;
+            case "Restrict": 
+                stats.modifyStat("ene",-4);
+                stats.modifyStat("stb",-2);
+                break;
         }
     }
     public void EndbuffDuration(){
@@ -216,7 +220,6 @@ public class StatUpdate : MonoBehaviour
             }
             else{
                 removeBuff("Bubble",Bubble.bubbleGiver);
-                GameObject.Find(Bubble.bubbleGiver).GetComponent<Abilities>().CoolDown.Add("Bubble",5);
                 Destroy(GameObject.Find(gameObject.name+"_Bubble"));
                 damageReceived = remainindamage;
             }
@@ -273,6 +276,36 @@ public class StatUpdate : MonoBehaviour
             }
         }
         return false;
+    }
+    public bool isRestrict(){
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in startbuffs){
+            if(pair.Key.Key == "Restrict"){
+                return true;
+            }
+        }
+        return false;
+    }
+    public KeyValuePair<string,bool> usingRestrict(){
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in endbuffs){
+            if(pair.Key.Key == "Restrict"){
+                return new KeyValuePair<string, bool>(pair.Key.Value, true);
+            }
+        }
+        return new KeyValuePair<string, bool>("",false);
+    }
+    public int isHasten(){
+        int num = 0;
+        UDictionary<KeyValuePair<string,string>,int> toremove = new UDictionary<KeyValuePair<string, string>, int>();
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in startbuffs){
+            if(pair.Key.Key == "Hasten"){
+                num++;
+                toremove.Add(pair);
+            }
+        }
+        foreach(KeyValuePair<KeyValuePair<string,string>,int> pair in toremove){
+            startbuffs.Remove(pair);
+        }
+        return num;
     }
     public float getMaxHealth(){
         return maxHealth;

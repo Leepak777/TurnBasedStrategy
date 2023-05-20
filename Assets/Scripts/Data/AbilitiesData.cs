@@ -33,6 +33,8 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<GameObject, Vector3Int> WaterStance_e;
     public UnityEvent<GameObject, Vector3Int> FireStance_e;
     public UnityEvent<GameObject, Vector3Int> Bubble_e;
+    public UnityEvent<GameObject, Vector3Int> TimeStop_e;
+    public UnityEvent<GameObject, Vector3Int> Restrict_e;
     TileManager tileM;
     TurnManager turnM;
     int charge_bonus = 0;
@@ -74,6 +76,10 @@ public class AbilitiesData : ScriptableObject
             return ForeSight_e;
             case "Bubble":
             return Bubble_e;
+            case "TimeStop":
+            return TimeStop_e;
+            case "Restrict":
+            return Restrict_e;
         }
         return null;
     }
@@ -416,17 +422,39 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
+    public void Hasten(GameObject user, Vector3Int Loc){
+        Node n = tileM.GetNodeFromWorld(Loc);
+        if(!n.occupant == null){
+            n.occupant.GetComponent<Abilities>().DecCoolDown();
+            StatUpdate nstat = n.occupant.GetComponent<StatUpdate>();
+            nstat.addStartBuff("Hasten",user.name,-1);
+        }
+    }
 
-    public UDictionary<string,float> getSkillsFloats(string name, CharacterStat stats){
+    public void Restrict(GameObject user, Vector3Int Loc){
+        Node n = tileM.GetNodeFromWorld(Loc);
+        if(!n.occupant == null){
+            n.occupant.GetComponent<Abilities>().DecCoolDown();
+            StatUpdate nstat = n.occupant.GetComponent<StatUpdate>();
+            nstat.addStartBuff("Restrict",user.name,-1);
+            user.GetComponent<StatUpdate>().addBuff("Restrict",n.occupant.name,-1);
+        }
+    }
+
+
+    public UDictionary<string,float> getSkillsFloats(string name, StatUpdate statU){
+        CharacterStat stats = statU.getStats();
+        int hastenCast = statU.isHasten();
+        
         switch(name){
             case "ForceBlast":
                 return new UDictionary<string, float>(){{"Radius",3},{"CastRange",3 + (int) stats.getStat("acu")/4},{"TargetNum",1},{"CastTime",0}};
                 break;
             case "PsychicStorm":
-                return new UDictionary<string, float>(){{"Radius",3},{"CastRange",5 + (int) stats.getStat("acu")/4},{"TargetNum",1},{"CastTime",2}};
+                return new UDictionary<string, float>(){{"Radius",3},{"CastRange",5 + (int) stats.getStat("acu")/4},{"TargetNum",1},{"CastTime",2-hastenCast}};
                 break;
             case "WhirlWind":
-                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",1}};
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",1-hastenCast}};
                 break;
             case "WaterStance":
                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
@@ -441,6 +469,9 @@ public class AbilitiesData : ScriptableObject
                 break;
             case "TimeStop":
                 return new UDictionary<string, float>(){{"Radius",3},{"CastRange",7+(int)stats.getStat("acu")},{"TargetNum",1},{"CastTime",0}};
+                break;
+            case "Restrict":
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",5},{"TargetNum",1},{"CastTime",1-hastenCast}};
                 break;
         }
         return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
@@ -470,6 +501,9 @@ public class AbilitiesData : ScriptableObject
                 break;
             case "TimeStop":
                 return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
+                break;
+            case "Restrict":
+                return new UDictionary<string, bool>(){{"characterTarget",true},{"sameTag",false}};
                 break;
         }
         return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
@@ -509,6 +543,14 @@ public class AbilitiesData : ScriptableObject
                 break;
             case "Bubble":
                 ocstat.getStats().modifyStat("ene",-10);
+                break;
+            case "TimeStop":
+                ocstat.getStats().modifyStat("ene",-10);
+                ocstat.getStats().modifyStat("stb",-10);
+                break;
+            case "Restrict":
+                ocstat.getStats().modifyStat("ene",-10);
+                ocstat.getStats().modifyStat("stb",-5);
                 break;
         }
     }
