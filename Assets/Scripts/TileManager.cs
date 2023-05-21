@@ -178,6 +178,10 @@ public class TileManager : MonoBehaviour
     public List<Node> GetTilesInArea(Vector3Int center, float range) {
         List<Node> area = new List<Node>();
         Vector3Int centerCube = OffsetToCube(center);
+        if(range == 0){
+            area.Add(GetNodeFromWorld(center));
+            return area;
+        }
         for (int x = -Mathf.FloorToInt(range); x <= Mathf.FloorToInt(range); x++) {
             for (int y = -Mathf.FloorToInt(range); y <= Mathf.FloorToInt(range); y++) {
                 Vector3Int target = CubeToOffset(centerCube + new Vector3Int(x, -x-y, y));

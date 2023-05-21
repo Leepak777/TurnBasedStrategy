@@ -31,6 +31,10 @@ public class TitleScreen : MonoBehaviour
     {
         sceneLoader.LoadScene("TypeEditor");
     }
+    public void ToGameScene()
+    {
+        sceneLoader.LoadScene("GameScene");
+    }
     public void ToEquipmentEditor()
     {
         sceneLoader.LoadScene("EquipmentEditor");

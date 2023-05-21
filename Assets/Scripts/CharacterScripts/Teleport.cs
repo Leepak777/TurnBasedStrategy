@@ -55,6 +55,7 @@ public class Teleport : MonoBehaviour
         }
         GameObject.Find("TurnManager").GetComponent<TurnManager>().setGameState(3);
         this.gameObject.GetComponentInChildren<CharacterEvents>().onMoveStop.Invoke();
+        
     }
     public void EnemyTeleport(){
         if(tileM.EnemyInRange("Player", attackrange, this.gameObject)){

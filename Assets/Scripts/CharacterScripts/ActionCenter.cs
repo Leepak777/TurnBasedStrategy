@@ -37,6 +37,8 @@ public class ActionCenter : MonoBehaviour
             /*Debug.Log("tileM Position"+nodePos);
             Debug.Log("TileManager Node"+tmNode);
             Debug.Log("World Position"+worldPos);*/
+            
+            
         }
     }
     //check if character moved after click or movement, if not can skip some checks
