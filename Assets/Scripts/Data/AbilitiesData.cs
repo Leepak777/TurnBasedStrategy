@@ -21,43 +21,53 @@ using Random = UnityEngine.Random;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/AbilitiesData", order = 3)]
 public class AbilitiesData : ScriptableObject
 {
-    public UnityEvent<GameObject> Leadership;
-    public UnityEvent<GameObject> charge;
-     public UnityEvent<GameObject> corruption;
-    public UnityEvent<GameObject> cold;
-    public UnityEvent<GameObject> assault;
-    public UnityEvent<GameObject> death;
-    public UnityEvent<GameObject, Vector3Int> WhirlWind_e;
-    public UnityEvent<GameObject, Vector3Int> ForceBlast_e;
-    public UnityEvent<GameObject, Vector3Int> PsychiStorm_e;
-    public UnityEvent<GameObject, Vector3Int> PsychiStorm_ef;
-    public UnityEvent<GameObject, Vector3Int> ForeSight_e;
-    public UnityEvent<GameObject, Vector3Int> WaterStance_e;
-    public UnityEvent<GameObject, Vector3Int> FireStance_e;
-    public UnityEvent<GameObject, Vector3Int> Bubble_e;
-    public UnityEvent<GameObject, Vector3Int> TimeStop_e;
-    public UnityEvent<GameObject, Vector3Int> Restrict_e;
-    public UnityEvent<GameObject, Vector3Int> Armageddon_e;
-    public UnityEvent<GameObject, Vector3Int> Ripple_e;
-    public UnityEvent<GameObject, Vector3Int> Meditate_e;
-    public UnityEvent<GameObject, Vector3Int> CalmMind_e;
-    public UnityEvent<GameObject, Vector3Int> Accelerate_e;
-    public UnityEvent<GameObject, Vector3Int> BorrowedTime_e;
+    public UnityEvent<string, GameObject> Leadership;
+    public UnityEvent<string, GameObject> charge;
+     public UnityEvent<string, GameObject> corruption;
+    public UnityEvent<string, GameObject> cold;
+    public UnityEvent<string, GameObject> assault;
+    public UnityEvent<string, GameObject> death;
+    public UnityEvent<string, GameObject, Vector3Int> WhirlWind_e;
+    public UnityEvent<string, GameObject, Vector3Int> ForceBlast_e;
+    public UnityEvent<string, GameObject, Vector3Int> PsychiStorm_e;
+    public UnityEvent<string,GameObject, Vector3Int> PsychiStorm_ef;
+    public UnityEvent<string, GameObject, Vector3Int> ForeSight_e;
+    public UnityEvent<string, GameObject, Vector3Int> WaterStance_e;
+    public UnityEvent<string, GameObject, Vector3Int> FireStance_e;
+    public UnityEvent<string, GameObject, Vector3Int> Bubble_e;
+    public UnityEvent<string, GameObject, Vector3Int> TimeStop_e;
+    public UnityEvent<string, GameObject, Vector3Int> Restrict_e;
+    public UnityEvent<string, GameObject, Vector3Int> Armageddon_e;
+    public UnityEvent<string, GameObject, Vector3Int> Ripple_e;
+    public UnityEvent<string, GameObject, Vector3Int> Meditate_e;
+    public UnityEvent<string, GameObject, Vector3Int> CalmMind_e;
+    public UnityEvent<string, GameObject, Vector3Int> Accelerate_e;
+    public UnityEvent<string, GameObject, Vector3Int> BorrowedTime_e;
     TileManager tileM;
     TurnManager turnM;
+    UI ui;
     int charge_bonus = 0;
     List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple","Accelerate","BorrowedTime"};
     List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
     [SerializeField]
-    UDictionary<string, UnityEvent<GameObject,Vector3Int>> Skills = new UDictionary<string, UnityEvent<GameObject, Vector3Int>>();
+    UDictionary<string, UnityEvent<string, GameObject,Vector3Int>> Skills = new UDictionary<string, UnityEvent<string, GameObject, Vector3Int>>();
     [SerializeField]
-    UDictionary<string, UnityEvent<GameObject,Vector3Int>> SkillEffects = new UDictionary<string, UnityEvent<GameObject, Vector3Int>>();
+    UDictionary<string, UnityEvent<string, GameObject,Vector3Int>> SkillEffects = new UDictionary<string, UnityEvent<string, GameObject, Vector3Int>>();
     [SerializeField]
-    UDictionary<string, UnityEvent<GameObject>> Abilities = new UDictionary<string, UnityEvent<GameObject>>();
+    UDictionary<string, UnityEvent<string, GameObject>> Abilities = new UDictionary<string, UnityEvent<string, GameObject>>();
 
+    [SerializeField]
+    UDictionary<string, UDictionary<string,float>> SkillAttributes = new UDictionary<string, UDictionary<string, float>>();
+    [SerializeField]
+    UDictionary<string, UDictionary<string,bool>> SkillBools = new UDictionary<string, UDictionary<string, bool>>();
+    [SerializeField]
+    UDictionary<string, UDictionary<string,float>> SkillCost = new UDictionary<string, UDictionary<string,float>>();
+    [SerializeField]
+    UDictionary<string, UDictionary<string,int>> SkillStats = new UDictionary<string, UDictionary<string,int>>();
     public void setTileM(){
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
         turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        ui =  GameObject.Find("UICanvas").GetComponent<UI>();
     }
     void Awake(){
         reset();
@@ -80,7 +90,7 @@ public class AbilitiesData : ScriptableObject
         FireStance_e.AddListener(FireStance);
         WaterStance_e.AddListener(WaterStance);
         Ripple_e.AddListener(Ripple);
-        PsychiStorm_ef.AddListener(PsychicStorm);
+        PsychiStorm_ef.AddListener(PsychicStormEffect);
         Leadership.AddListener(LeadersshipAura);
         charge.AddListener(Charge);
         corruption.AddListener(CorruptionAura);
@@ -89,13 +99,13 @@ public class AbilitiesData : ScriptableObject
         death.AddListener(DeathAura);
         SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple","Accelerate","BorrowedTime"};
         AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
-        Skills = new UDictionary<string, UnityEvent<GameObject, Vector3Int>>(){
+        Skills = new UDictionary<string, UnityEvent<string, GameObject, Vector3Int>>(){
             {"ForceBlast",ForceBlast_e},{"PsychicStorm",PsychiStorm_e},{"WhirlWind",WhirlWind_e},{"ForeSight",ForeSight_e},{"Bubble",Bubble_e},{"WaterStance",WaterStance_e},{"FireStance",FireStance_e}
             ,{"TimeStop",TimeStop_e},{"Restrict",Restrict_e},{"Accelerate",Accelerate_e},{"BorrowedTime",BorrowedTime_e},{"Armageddon",Armageddon_e},{"Ripple",Ripple_e}};
-        SkillEffects = new UDictionary<string, UnityEvent<GameObject, Vector3Int>>(){
+        SkillEffects = new UDictionary<string, UnityEvent<string, GameObject, Vector3Int>>(){
             {"PsychicStorm",PsychiStorm_ef}
         };
-        Abilities = new UDictionary<string, UnityEvent<GameObject>>(){
+        Abilities = new UDictionary<string, UnityEvent<string, GameObject>>(){
             {"LeadershipAura",Leadership},{"Charge",charge},{"CorruptionAura",corruption},{"ColdAura",cold},{"AssaultAura",assault},{"DeathAura",death}
         };
     }
@@ -105,59 +115,48 @@ public class AbilitiesData : ScriptableObject
     public List<string> getAbilList(){
         return AbilitiesLst;
     }
-    public UnityEvent<GameObject> getEvent(string name){
+    public UnityEvent<string,GameObject> getEvent(string name){
         if(Abilities.ContainsKey(name)){
             return Abilities[name];
         }
-        /*switch(name){
-            case "LeadershipAura": 
-            return Leadership;
-            case "Charge":
-            return charge;
-            case "CorruptionAura":
-            return corruption;
-            case "ColdAura":
-            return cold;
-        }*/
+        
         return null;
     }
 
-    public UnityEvent<GameObject, Vector3Int> getActiveSkill(string name){
+    public UnityEvent<string, GameObject, Vector3Int> getActiveSkill(string name){
         if(Skills.ContainsKey(name)){
             return Skills[name];
         }
-        /*switch(name){
-            case "WhirlWind": 
-            return WhirlWind_e;
-            case "ForceBlast":
-            return ForceBlast_e;
-            case "PsychicStorm":
-            return PsychiStorm_e;
-            case "ForeSight":
-            return ForeSight_e;
-            case "Bubble":
-            return Bubble_e;
-            case "TimeStop":
-            return TimeStop_e;
-            case "Restrict":
-            return Restrict_e;
-            case "Accelerate":
-            return Accelerate_e;
-            case "BorrowedTime":
-            return BorrowedTime_e;
-        }*/
+        
         return null;
     }
-    public UnityEvent<GameObject, Vector3Int> getAreaEffect(string name){
+    public UnityEvent<string, GameObject, Vector3Int> getAreaEffect(string name){
         if(SkillEffects.ContainsKey(name)){
             return SkillEffects[name];
         }
-        /*switch(name){
-            case "PsychicStorm":
-            return PsychiStorm_ef;
-        }*/
         return null;
     }
+    public UDictionary<string,float> getSkillAtt(string name){
+        if(SkillAttributes.ContainsKey(name)){
+        return SkillAttributes[name];}
+        return null;
+    }
+     public UDictionary<string,int> getSkillStat(string name){
+        if(SkillStats.ContainsKey(name)){
+        return SkillStats[name];}
+        return null;
+    }
+     public UDictionary<string,float> getSkillCost(string name){
+        if(SkillCost.ContainsKey(name)){
+        return SkillCost[name];}
+        return null;
+    }
+    public UDictionary<string,bool> getSkillBool(string name){
+        if(SkillCost.ContainsKey(name)){
+        return SkillBools[name];}
+        return null;
+    }
+    
     public string getAbilType(string name){
         switch(name){
             case "LeadershipAura": return "Universal";
@@ -170,7 +169,7 @@ public class AbilitiesData : ScriptableObject
         }
         return "Null";
     }
-    public void LeadersshipAura(GameObject play){
+    public void LeadersshipAura(string name, GameObject play){
         setTileM();
         KeyValuePair<string,string> pair = new KeyValuePair<string, string>(play.name,"LeadershipAura");
         foreach(GameObject go in GameObject.FindGameObjectsWithTag(play.tag)){
@@ -201,7 +200,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
-    public void CorruptionAura(GameObject play){
+    public void CorruptionAura(string name,GameObject play){
         setTileM();
         KeyValuePair<string,string> pair = new KeyValuePair<string, string>(play.name,"CorruptionAura");
         string enemy_tag = "Enemy";
@@ -231,7 +230,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
-    public void ColdAura(GameObject play){
+    public void ColdAura(string name,GameObject play){
         setTileM();
         KeyValuePair<string,string> pair = new KeyValuePair<string, string>(play.name,"ColdAura");
         string enemy_tag = "Enemy";
@@ -263,7 +262,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
-    public void DeathAura(GameObject play){
+    public void DeathAura(string name,GameObject play){
         setTileM();
         KeyValuePair<string,string> pair = new KeyValuePair<string, string>(play.name,"DeathAura");
         foreach(GameObject go in GameObject.FindGameObjectsWithTag(play.tag)){
@@ -308,7 +307,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     } 
-    public void AssaultAura(GameObject play){
+    public void AssaultAura(string name,GameObject play){
         setTileM();
         KeyValuePair<string,string> pair = new KeyValuePair<string, string>(play.name,"AssaultAura");
         foreach(GameObject go in GameObject.FindGameObjectsWithTag(play.tag)){
@@ -351,7 +350,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     } 
-    public void Charge(GameObject play){
+    public void Charge(string name,GameObject play){
         setTileM();
         TurnManager tm = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         StatUpdate su = play.GetComponent<StatUpdate>();
@@ -365,73 +364,32 @@ public class AbilitiesData : ScriptableObject
             charge_bonus = 0;
         }
     }
-
-    public void AreaDamage(GameObject play, Vector3Int center, int range, int Damage, string tag){
-        foreach(Node n in tileM.GetTilesInArea(center,range)){
-            if(n.occupant != null && n.occupant.tag != tag){
-                StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
-                if(!ocstat.isTimeStop()){
-                    ocstat.TakeDamage(Damage);
-                }
-            }
-        }
-    }
-    public void AreaAttack(GameObject play, Vector3Int center, int range, string tag){
-        StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        foreach(Node n in tileM.GetTilesInArea(center,range)){
-            if(n.occupant != null && n.occupant.tag != tag){
-                ocstat.attackEn(n.occupant);
-            }
-        }
-    }
-    public void AreaAllAttack(GameObject play, Vector3Int center, int range, string tag){
-        StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        foreach(Node n in tileM.GetTilesInArea(center,range)){
-            if(n.occupant != null && n.occupant != play){
-                ocstat.attackEn(n.occupant);
-            }
-        }
-    }
-    public void AreaAllDamage(GameObject play, Vector3Int center, int range, int Damage, string effect,int duration){
-        foreach(Node n in tileM.GetTilesInArea(center,range)){
-            if(n.occupant != null && n.occupant != play){
-                StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
-                if(!ocstat.isTimeStop()){
-                    ocstat.TakeDamage(Damage);
-                    if(effect != ""){
-                        ocstat.addStartBuff(effect, play.name,1);
-                    }
-                }
-            }
-        }
-    }
-    
-    public void WhirlWind(GameObject play, Vector3Int target){
+    public void WhirlWind(string name, GameObject play, Vector3Int target){
         Debug.Log("WhirlWind");
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        AreaAttack(play, tileM.WorldToCell(play.transform.position),3,play.tag);
+        AreaAttack(play, tileM.WorldToCell(play.transform.position),3,"WhirlWind","",0);
     }
-    public void ForceBlast(GameObject play, Vector3Int target){
+    public void ForceBlast(string name, GameObject play, Vector3Int target){
         Debug.Log("ForceBlast");
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         float Damage = 10 + ocstat.getDictStats("mid")*2;
         int range = 3 + (int)ocstat.getDictStats("acu")/4;
-        AreaDamage(play,target,range,(int)Damage,play.tag);
+        AreaDamage(play,target,range,(int)Damage,"ForceBlast","",0);
     }
-    public void PsychicStorm(GameObject play, Vector3Int target){
+    public void PsychicStorm(string name, GameObject play, Vector3Int target){
         tileM.GetNodeFromWorld(target).effectFlag.Add("PsychicStorm", new KeyValuePair<GameObject, int>(play, 3));
         tileM.AddEffectLst(tileM.GetNodeFromWorld(target));
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
     }
 
-    public void PsychicStormEffect(GameObject play, Vector3Int target){
+    public void PsychicStormEffect(string name, GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        AreaDamage(play, target, 3, (int)(20+ocstat.getDictStats("mid")-3), play.tag);
+        AreaDamage(play, target, 3, (int)(20+ocstat.getDictStats("mid")-3),"PsychicStorm", "",0);
     }
-    public void GenericSummon(GameObject play, Vector3Int target){
+    public void GenericSummon(string name, GameObject play, Vector3Int target){
         //instantiate GameObject at target
     }
-    public void Foresight(GameObject go, Vector3Int v){
+    public void Foresight(string name, GameObject go, Vector3Int v){
         Debug.Log("ForeSight");
         if(!turnM.getUI().inForesight()){
             foresighStart();
@@ -460,7 +418,7 @@ public class AbilitiesData : ScriptableObject
         GameObject.Find("ActiveSkill").GetComponent<Dropdown>().value = 0;
     }
 
-    public void WaterStance(GameObject play, Vector3Int target){
+    public void WaterStance(string name, GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         if(!ocstat.isBuff("WaterStance", play.name)){
             ocstat.addBuff("WaterStance", play.name,-1);
@@ -473,7 +431,7 @@ public class AbilitiesData : ScriptableObject
         }
         
     }
-    public void FireStance(GameObject play, Vector3Int target){
+    public void FireStance(string name, GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         if(!ocstat.isBuff("FireStance", play.name)){
             ocstat.addBuff("FireStance", play.name,-1);
@@ -487,10 +445,10 @@ public class AbilitiesData : ScriptableObject
         
     }
     
-    public void Teleport(GameObject target, Vector3Int Loc){
+    public void Teleport(string name, GameObject target, Vector3Int Loc){
         target.transform.position = tileM.GetCellCenterWorld(Loc);
     }
-    public void Bubble(GameObject target, Vector3Int Loc){
+    public void Bubble(string name, GameObject target, Vector3Int Loc){
         Node n = tileM.GetNodeFromWorld(Loc);
         StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
         if(!ocstat.isTimeStop()&&ocstat.addBuff("Bubble", target.name,-1)){  
@@ -503,7 +461,7 @@ public class AbilitiesData : ScriptableObject
         
     }
 
-    public void TimeStop(GameObject target, Vector3Int Loc){
+    public void TimeStop(string name, GameObject target, Vector3Int Loc){
         foreach(Node n in tileM.GetTilesInArea(Loc,3)){
             if(n.occupant != null){
                 StatUpdate nstat = n.occupant.GetComponent<StatUpdate>();
@@ -511,7 +469,7 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
-    public void Hasten(GameObject user, Vector3Int Loc){
+    public void Hasten(string name, GameObject user, Vector3Int Loc){
         Node n = tileM.GetNodeFromWorld(Loc);
         if(!n.occupant == null){
             n.occupant.GetComponent<Abilities>().DecCoolDown();
@@ -520,7 +478,7 @@ public class AbilitiesData : ScriptableObject
         }
     }
 
-    public void Restrict(GameObject user, Vector3Int Loc){
+    public void Restrict(string name, GameObject user, Vector3Int Loc){
         Node n = tileM.GetNodeFromWorld(Loc);
         if(!n.occupant == null){
             n.occupant.GetComponent<Abilities>().DecCoolDown();
@@ -530,32 +488,32 @@ public class AbilitiesData : ScriptableObject
         }
     }
 
-    public void Ripple(GameObject play, Vector3Int Loc){
+    public void Ripple(string name, GameObject play, Vector3Int Loc){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        AreaAllDamage(play, tileM.WorldToCell(play.transform.position),5,20+(int)ocstat.getDictStats("mid"),"Restrict",1);
+        AreaDamage(play, tileM.WorldToCell(play.transform.position),5,20+(int)ocstat.getDictStats("mid"),"Ripple","Restrict",1);
     }
-    public void Armageddon(GameObject play, Vector3Int Loc){
+    public void Armageddon(string name, GameObject play, Vector3Int Loc){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        AreaAllDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"",0);
-        AreaAllDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"",0);
-        AreaAllDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"",0);
+        AreaDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"Armageddon","",0);
+        AreaDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"Armageddon","",0);
+        AreaDamage(play, Loc,7,30+(int)ocstat.getDictStats("mid"),"Armageddon","",0);
     }
 
-    public void Meditate(GameObject play, Vector3Int Loc){
+    public void Meditate(string name, GameObject play, Vector3Int Loc){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         CharacterStat chStat = ocstat.getStats();
         chStat.modifyStat("ene",10);
         chStat.modifyStat("stb",10);
         chStat.modifyStat("fat",-10);
     }
-    public void CalmMind(GameObject play, Vector3Int Loc){
+    public void CalmMind(string name, GameObject play, Vector3Int Loc){
         Node n = tileM.GetNodeFromWorld(Loc);
         if(n.occupant != null){
-            Meditate(n.occupant, Vector3Int.zero);
+            Meditate(name, n.occupant, Vector3Int.zero);
         }
     }
 
-    public void Accelerate(GameObject play, Vector3Int Loc){
+    public void Accelerate(string name, GameObject play, Vector3Int Loc){
         Node n = tileM.GetNodeFromWorld(Loc);
         StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
         CharacterStat chStat = ocstat.getStats();
@@ -567,7 +525,7 @@ public class AbilitiesData : ScriptableObject
         }
     }
 
-    public void BorrowedTime(GameObject play, Vector3Int Loc){
+    public void BorrowedTime(string name, GameObject play, Vector3Int Loc){
         Node n = tileM.GetNodeFromWorld(Loc);
         if(n.occupant!=null){
             Abilities ab = n.occupant.GetComponent<Abilities>();
@@ -743,4 +701,212 @@ public class AbilitiesData : ScriptableObject
                 break;
         }
     }
+    public void AreaDamage(GameObject play, Vector3Int center, int range, int Damage, string name,string effect,int duration){
+        string tag = "";
+        if(SkillAttributes.ContainsKey(name)){
+            if(SkillAttributes[name]["All"] == 1){
+                tag = play.tag;
+            }
+        }
+        if(tag == ""){
+            foreach(Node n in tileM.GetTilesInArea(center,range)){
+                if(n.occupant != null && n.occupant != play){
+                    StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
+                    if(!ocstat.isTimeStop()){
+                        ocstat.TakeDamage(Damage);
+                        if(effect !=""){
+                        ocstat.addStartBuff(effect, play.name,duration);
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            foreach(Node n in tileM.GetTilesInArea(center,range)){
+                if(n.occupant != null && n.occupant.tag != tag){
+                    StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
+                    if(!ocstat.isTimeStop()){
+                        ocstat.TakeDamage(Damage);
+                        if(effect !=""){
+                        ocstat.addStartBuff(effect, play.name,duration);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void AreaAttack(GameObject play, Vector3Int center, int range, string name,string effect,int duration){
+        string tag = "";
+        if(SkillAttributes.ContainsKey(name)){
+            if(SkillAttributes[name]["All"] == 1){
+                tag = play.tag;
+            }
+        }
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        if(tag == ""){
+            foreach(Node n in tileM.GetTilesInArea(center,range)){
+                if(n.occupant != null && n.occupant != play){
+                    StatUpdate targetstat = n.occupant.GetComponent<StatUpdate>();
+                    if(!targetstat.isTimeStop()){
+                        ocstat.attackEn(n.occupant);
+                        if(effect !=""){
+                            targetstat.addStartBuff(effect, play.name,duration);
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            foreach(Node n in tileM.GetTilesInArea(center,range)){
+                if(n.occupant != null && n.occupant.tag != tag){
+                    StatUpdate targetstat = n.occupant.GetComponent<StatUpdate>();
+                    if(!targetstat.isTimeStop()){
+                        ocstat.attackEn(n.occupant);
+                        if(effect !=""){
+                            targetstat.addStartBuff(effect, play.name,duration);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public void GeneralAreaEffect(GameObject play, Vector3Int center, int range, string name){
+        string tag = "";
+        if(SkillAttributes.ContainsKey(name)){
+            if(SkillAttributes[name]["All"] == 1){
+                tag = play.tag;
+            }
+        }
+        if(tag ==""){
+            foreach(Node n in tileM.GetTilesInArea(center,range)){
+                if(n.occupant != null && n.occupant != play){
+                    StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
+                    if(!ocstat.isTimeStop() &&SkillStats.ContainsKey(name)){
+                        
+                            foreach(KeyValuePair<string,int> p in SkillStats[name]){
+                                if(p.Key == "bonus damage"){
+                                    ocstat.setBonus(p.Value);
+                                }
+                                else{
+                                    ocstat.getStats().modifyStat(p.Key,p.Value);
+                                }
+                            }
+                            ocstat.addEffectStat(new KeyValuePair<string,string>(play.name,name),SkillStats[name]);
+                            ocstat.addStartBuff(name, play.name,(int)SkillAttributes[name]["Duration"]);
+                        }
+                        
+                    
+                }
+            }
+        }
+        else{
+            foreach(Node n in tileM.GetTilesInArea(center,range)){
+                if(n.occupant != null && n.occupant.tag != tag){
+                    StatUpdate ocstat = n.occupant.GetComponent<StatUpdate>();
+                    if(!ocstat.isTimeStop() &&SkillStats.ContainsKey(name)){
+                            foreach(KeyValuePair<string,int> p in SkillStats[name]){
+                                if(p.Key == "bonus damage"){
+                                    ocstat.setBonus(p.Value);
+                                }
+                                else{
+                                    ocstat.getStats().modifyStat(p.Key,p.Value);
+                                }
+                            }
+                            ocstat.addEffectStat(new KeyValuePair<string,string>(play.name,name),SkillStats[name]);
+                            ocstat.addStartBuff(name, play.name,(int)SkillAttributes[name]["Duration"]);
+                        }
+                        
+                    
+                }
+            }
+        }
+    }
+    //Attributes: Type, CoolDown, Radius, CastTime, CastRange, TargetNum, Duration, Effect,Damage
+    //bools: CharacterTarget, sameTag, All
+    public void GeneralSkill(string Skillname, GameObject play, Vector3Int center){
+        //string Skillname = turnM.getUI().getCurrentPlay().GetComponent<Abilities>().getCurrentSkill();
+        if(SkillAttributes.ContainsKey(Skillname)){
+            if(SkillAttributes[Skillname]["Type"] == 0 ||SkillAttributes[Skillname]["Type"] == 1 ){
+                GeneralAreaDamage(play,center,(int)SkillAttributes[Skillname]["Radius"],Skillname);
+            }
+            else if(SkillAttributes[Skillname]["Type"] == 2){
+                GeneralAreaEffect(play,center,(int)SkillAttributes[Skillname]["Radius"],Skillname);
+            }
+            else{
+                tileM.GetNodeFromWorld(center).effectFlag.Add(Skillname, new KeyValuePair<GameObject, int>(play, (int)SkillAttributes[Skillname]["Duration"]));
+                tileM.AddEffectLst(tileM.GetNodeFromWorld(center));
+            }
+        }
+    }
+    public void GeneralAreaDamage(GameObject play, Vector3Int center, int range, string name){
+        string effect = "";
+        int duration = 0;
+        if(SkillAttributes[name].ContainsKey("Effect") && SkillAttributes[name].ContainsKey("Duration")){
+            effect = getEffect((int)SkillAttributes[name]["Effect"]);
+            duration = (int) SkillAttributes[name]["Duration"];
+        }
+        if(SkillAttributes[name]["Type"] == 0){
+            AreaDamage(play, center, range,(int)SkillAttributes[name]["Damage"],name,effect,duration);
+        }
+        else if(SkillAttributes[name]["Type"] == 1){
+            AreaAttack(play, center, range,name,"",duration);
+        }
+    }
+
+    public void GeneralAreaEffect(string name, GameObject play, Vector3Int target){
+        StatUpdate ocstat = play.GetComponent<StatUpdate>();
+        AreaDamage(play, target, 3, (int)SkillAttributes[name]["Damage"],name, "",0);
+    }
+    public void GeneralPassive(string name, GameObject play){
+        setTileM();
+        KeyValuePair<string,string> pair = new KeyValuePair<string, string>(play.name,name);
+        string enemy_tag = "Enemy";
+        if(play.tag == "Enemy"){enemy_tag = "Player";}
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag(enemy_tag)){
+            StatUpdate su = go.GetComponent<StatUpdate>();
+            Vector3Int pos = tileM.WorldToCell(go.transform.position);
+            if(tileM.inArea(tileM.WorldToCell(play.transform.position),pos,2)){
+                if(!su.isTimeStop()&&su.addBuff(name, play.name,-1)){
+                    foreach(KeyValuePair<string,int> spair in SkillStats[name]){
+                        su.getStats().modifyStat(spair.Key,spair.Value);
+                    }
+                    su.addEffectStat(pair, SkillStats[name]);
+
+                }
+            }
+            else{
+                if(!su.isTimeStop()&&su.removeBuff(name, play.name)){
+                    foreach(KeyValuePair<string,int> spair in SkillStats[name]){
+                        su.getStats().modifyStat(spair.Key,-spair.Value);
+                    }
+                }
+            }
+        }
+    }
+    public string getEffect(int i){
+        switch(i){
+            case 0: return "TimeStop";
+            case 1: return "Restrict";
+        }
+        return "";
+    }
+
+    public void addEntry(int type, string name, UDictionary<string,float> attribute,UDictionary<string,float> cost,UDictionary<string,int> stat,UDictionary<string,bool> bools){
+        if(type == 0){AbilitiesLst.Add(name);}
+        else{SkillLst.Add(name);}
+        SkillAttributes.Add(name,attribute);
+        SkillCost.Add(name,cost);
+        SkillStats.Add(name,stat);
+        SkillBools.Add(name,bools);
+    }
+    public void removeEntry(string name){
+        if(AbilitiesLst.Contains(name)){AbilitiesLst.Remove(name);}
+        else{SkillLst.Remove(name);}
+        if(SkillAttributes.ContainsKey(name)){SkillAttirbutes.Remove(name);}
+        if(SkillCost.ContainsKey(name)){SkillCost.Remove(name);}
+        if(SkillStats.ContainsKey(name)){SkillStats.Remove(name);}
+        if(SkillBools.ContainsKey(name)){SkillBools.Remove(name);}
+    }
+    
 }

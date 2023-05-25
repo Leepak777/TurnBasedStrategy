@@ -85,7 +85,7 @@ public class UI : MonoBehaviour
             Debug.Log(lst[i]);
             for(int j = 0; j < effectlst.Count; j++){
                 lst[i].decEffectDuration(effectlst.ElementAt(j).Key);
-                ad.getAreaEffect(effectlst.ElementAt(j).Key).Invoke(effectlst.ElementAt(j).Value.Key, new Vector3Int(lst[j].gridX,lst[j].gridY,lst[j].gridX));
+                ad.getAreaEffect(effectlst.ElementAt(j).Key).Invoke(effectlst.ElementAt(j).Key,effectlst.ElementAt(j).Value.Key, new Vector3Int(lst[j].gridX,lst[j].gridY,lst[j].gridX));
                 
             }
         }
@@ -121,7 +121,7 @@ public class UI : MonoBehaviour
         
     }
     public void EndForeSight(){
-        ad.ForeSight_e.Invoke(currentPlay, Vector3Int.zero);
+        ad.ForeSight_e.Invoke("ForeSight",currentPlay, Vector3Int.zero);
     }
     public bool inForesight(){
         return foresight;
