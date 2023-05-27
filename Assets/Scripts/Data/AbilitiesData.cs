@@ -880,6 +880,7 @@ public class AbilitiesData : ScriptableObject
     }
 
     public void addEntry(int type, string name, UDictionary<string,string> attribute,UDictionary<string,string> cost,UDictionary<string,int> stat,UDictionary<string,bool> bools){
+        removeEntry(name);
         if(type == 0){AbilitiesLst.Add(name);}
         else{SkillLst.Add(name);}
         SkillAttributes.Add(name,attribute);
