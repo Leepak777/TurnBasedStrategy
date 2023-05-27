@@ -342,28 +342,641 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  SkillLst:
-  - ForceBlast
-  - PsychicStorm
-  - ForeSight
-  - WhirlWind
-  - WaterStance
-  - FireStance
-  - Bubble
-  AbilitiesLst:
-  - LeaderShipAura
-  - Charge
-  - CorruptionAura
-  - ColdAura
-  - DeathAura
-  - AssaultAura
-  - Psychometry
   Skills:
-    keys: []
-    values: []
+    keys:
+    - ForceBlast
+    - PsychicStorm
+    - WhirlWind
+    - ForeSight
+    - Bubble
+    - WaterStance
+    - FireStance
+    - TimeStop
+    - Restrict
+    - Accelerate
+    - BorrowedTime
+    - Armageddon
+    - Ripple
+    values:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: ForceBlast
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: PsychicStorm
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: WhirlWind
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: Foresight
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: Bubble
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: WaterStance
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: FireStance
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: TimeStop
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: Restrict
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: Accelerate
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: BorrowedTime
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: Armageddon
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: Ripple
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   SkillEffects:
-    keys: []
-    values: []
+    keys:
+    - PsychicStorm
+    values:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: PsychicStormEffect
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   Abilities:
+    keys:
+    - LeadershipAura
+    - Charge
+    - CorruptionAura
+    - ColdAura
+    - AssaultAura
+    - DeathAura
+    values:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: LeadersshipAura
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: Charge
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: CorruptionAura
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: ColdAura
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: AssaultAura
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+          m_MethodName: DeathAura
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  SkillAttributes:
+    keys:
+    - ForceBlast
+    - PsychicStorm
+    - WhirlWind
+    - WaterStance
+    - FireStance
+    - Bubble
+    - ForeSight
+    - TimeStop
+    - Restrict
+    - Armageddon
+    - Ripple
+    - Meditate
+    - CalmMind
+    - Accelerate
+    - BorrowedTime
+    values:
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 3
+      - 3+acu/4
+      - 1
+      - 0
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 3
+      - 5+acu/4
+      - 1
+      - 2
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 0
+      - 0
+      - 1
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 0
+      - 0
+      - 0
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 0
+      - 0
+      - 0
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 9999
+      - 1
+      - 0
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 9999
+      - 1
+      - 0
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 3
+      - 7+acu
+      - 1
+      - 0
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 5
+      - 1
+      - 1
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 7
+      - 7+acu
+      - 1
+      - 3
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 5
+      - 0
+      - 0
+      - 2
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 0
+      - 0
+      - 1
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - acu
+      - 0
+      - 1
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 7
+      - 0
+      - 0
+    - keys:
+      - Radius
+      - CastRange
+      - TargetNum
+      - CastTime
+      values:
+      - 0
+      - 0
+      - 0
+      - 0
+  SkillBools:
+    keys:
+    - ForceBlast
+    - PsychicStorm
+    - WhirlWind
+    - WaterStance
+    - FireStance
+    - ForeSight
+    - Bubble
+    - TimeStop
+    - Restrict
+    - Accelerate
+    - BorrowedTime
+    values:
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0000
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0000
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0000
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0000
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0000
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0000
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0101
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0000
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0100
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0000
+    - keys:
+      - characterTarget
+      - sameTag
+      values: 0101
+  SkillCost:
+    keys:
+    - ForceBlast
+    - PsychicStorm
+    - WhirlWind
+    - WaterStance
+    - FireStance
+    - Bubble
+    - TimeStop
+    - Restrict
+    - Armageddon
+    - Ripple
+    - CalmMind
+    - Accelerate
+    - BorrowedTime
+    values:
+    - keys:
+      - ene
+      - fat
+      values:
+      - -15
+      - 20
+    - keys:
+      - ene
+      - stb
+      values:
+      - -25
+      - -30
+    - keys:
+      - ene
+      - fat
+      values:
+      - -7
+      - 15
+    - keys:
+      - ene
+      - stb
+      - fat
+      - pv
+      - pr
+      values:
+      - -5
+      - -5
+      - 5
+      - acu
+      - acu
+    - keys:
+      - ene
+      - stb
+      - fat
+      - acu
+      values:
+      - -5
+      - -5
+      - 5
+      - acu+dex
+    - keys:
+      - ene
+      values:
+      - -10
+    - keys:
+      - ene
+      - stb
+      values:
+      - -10
+      - -10
+    - keys:
+      - ene
+      - stb
+      values:
+      - -10
+      - -5
+    - keys:
+      - ene
+      - stb
+      - fat
+      values:
+      - -50
+      - -100
+      - 100
+    - keys:
+      - ene
+      - stb
+      values:
+      - -20
+      - -30
+    - keys:
+      - ene
+      values:
+      - -10
+    - keys:
+      - ene
+      - stb
+      values:
+      - -10
+      - -5
+    - keys:
+      - ene
+      values:
+      - -5
+  SkillStats:
     keys: []
     values: []

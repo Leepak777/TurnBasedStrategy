@@ -1716,8 +1716,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 278f300970f7b7641b7f13589ea35aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UniversalCheck: []
-  IndividualCheck: []
+  UniversalCheck:
+    keys: []
+    values: []
+  IndividualCheck:
+    keys: []
+    values: []
   activeSkill: []
   Skillname: []
   CoolDown:

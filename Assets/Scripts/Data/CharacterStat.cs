@@ -113,7 +113,9 @@ public class CharacterStat : ScriptableObject
         return stats;
     }
     public float getStat(string s){
-        return stats[s];
+        if(stats.ContainsKey(s)){
+        return stats[s];}
+        return 0;
     }
     public string getAttribute(string s){
         if(attributes.ContainsKey(s)){

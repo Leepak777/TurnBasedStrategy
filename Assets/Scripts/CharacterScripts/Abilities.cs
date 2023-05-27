@@ -159,7 +159,7 @@ public class Abilities : MonoBehaviour
             //KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>, int
             KeyValuePair<KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>>, KeyValuePair<string,int>> pair = castList.ElementAt(i);
             KeyValuePair<int,KeyValuePair<GameObject,Vector3Int>> k = pair.Key;
-            int dec = pair.Value.Value-1;
+            int dec = pair.Value.Value-1 -statU.isHasten();
             castList.Remove(k);
             if(dec <= 0){
                 activeSkill[pair.Key.Key].Invoke(pair.Value.Key,pair.Key.Value.Key,pair.Key.Value.Value);

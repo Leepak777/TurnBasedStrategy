@@ -12,11 +12,16 @@ using UnityEngine.Events;
 public class BoxFunc : MonoBehaviour
 {
     public Text fullname;
-
+    public InputField input;
+    public Toggle tog;
     public string stattype;
     public List<string> statslst;
     public Dropdown dd;
     public Image img;
+    //Attributes: Type, CoolDown, Radius, CastTime, CastRange, TargetNum, Duration, Effect,Damage
+    //bools: CharacterTarget, sameTag, All
+    public List<string> bools = new List<string>(){"characterTarget","sameTag","All"};
+    public List<string> attributes = new List<string>(){"Type","CoolDown","Radius","CastTime","CastRange","TargetNum","Duration","Effect","Damage"};
     void Start(){
     }
     public void setSprite(){
@@ -31,6 +36,36 @@ public class BoxFunc : MonoBehaviour
     }
     public void updateText(int i){
         setfullname(dd.options[i].text);
+    }
+    public void setToggle(bool v){
+        tog.isOn = v;
+    }
+    public void setDDBoolList(string name){
+        dd.ClearOptions();
+        dd.AddOptions(bools);
+        for(int i = 0; i < bools.Count; i++){
+            if(bools[i]== name){
+                dd.value = i;
+            }
+        }
+    }
+    public void setDDAttributeList(string name){
+        dd.ClearOptions();
+        dd.AddOptions(attributes);
+        for(int i = 0; i < attributes.Count; i++){
+            if(attributes[i]== name){
+                dd.value = i;
+            }
+        }
+    }
+    public void setTxtVal(int i){
+        input.text = i+"";
+    }
+    public void setTxtValF(float i){
+        input.text = i+"";
+    }
+    public void setTxtValS(string i){
+        input.text = i+"";
     }
     public void setfullname(string i){
         string full = "none";

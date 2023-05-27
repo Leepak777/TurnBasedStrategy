@@ -12,6 +12,7 @@ public class SkillSetter : MonoBehaviour
 {
     string name_inEdit;
     public Dropdown type;
+    public Dropdown skills;
     public InputField input;
 
     public AbilitiesData ad;
@@ -23,9 +24,24 @@ public class SkillSetter : MonoBehaviour
     UDictionary<string, UDictionary<string,float>> SkillCost = new UDictionary<string, UDictionary<string,float>>();
     [SerializeField]
     UDictionary<string, UDictionary<string,int>> SkillStats = new UDictionary<string, UDictionary<string,int>>();
+    List<string> type_lst = new List<string>();
     void Awake(){
+        type_lst = new List<string>(){"none","Active","Passive"};
         type.ClearOptions();
-        type.AddOptions(new List<string>(){"none","Active","Passive"});
+        type.AddOptions(type_lst);
+        type.value = 0;
+
+    }
+    public void setSkilldrop(int option){
+        skills.ClearOptions();
+        List<string> lst = new List<string>();
+        if(option == 1){
+            lst = ad.getSkillList();
+        }
+        else if (option == 2){
+            lst = ad.getAbilList();
+        }
+        skills.AddOptions(lst);
 
     }
     public void newSkill(){
@@ -34,12 +50,105 @@ public class SkillSetter : MonoBehaviour
     }
     public void removeeq(){
         type.options.Remove(type.options[type.value]);
-        ad.removeTypeEntry(type.captionText.text);
+        ad.removeEntry(type.captionText.text);
         type.value = 0;
         //setInput(type.value);
         EditorUtility.SetDirty(ad);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
+    public void setInput(int option){
+        input.text = skills.options[option].text;
+        UDictionary<string, int> stats = new UDictionary<string, int>();
+        stats = ad.getSkillStat(input.text); 
+        UDictionary<string, bool> bools = new UDictionary<string, bool>();
+        bools = ad.getSkillBool(input.text); 
+        UDictionary<string, string> attribute = new UDictionary<string, string>();
+        attribute = ad.getSkillAtt(input.text); 
+        UDictionary<string, string> cost = new UDictionary<string, string>();
+        cost = ad.getSkillCost(input.text); 
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("statbox")){
+            Destroy(go);
+        }
+        if(stats!=null){
+        addStats(stats);}
+        if(bools != null){addBools(bools);}
+        if(attribute!= null){addAttributes(attribute);}
+        if(cost!=null){addCosts(cost);}
+
+    }
+    public void addStats(UDictionary<string, int> stats){
+        foreach(KeyValuePair<string,int> pair in stats){
+            addStat(pair.Key,pair.Value);
+        }
+    }
+    public void addBools(UDictionary<string, bool> bools){
+        foreach(KeyValuePair<string,bool> pair in bools){
+            addBool(pair.Key,pair.Value);
+        }
+    }
+    public void addAttributes(UDictionary<string, string> attributes){
+        foreach(KeyValuePair<string,string> pair in attributes){
+            addAttribute(pair.Key,pair.Value);
+        }
+    }
+    public void addCosts(UDictionary<string, string> costs){
+        foreach(KeyValuePair<string,string> pair in costs){
+            addCost(pair.Key,pair.Value);
+        }
+    }
+    public void addStat(string name, int value){
+
+    }
+    public void addBool(string name, bool value){
+        GameObject goParent = GameObject.Find("scrollPanelBools");
+        GameObject prefab = Resources.Load<GameObject>("BoolBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.GetComponent<BoxFunc>().setToggle(value);
+        player.name = name;
+        player.GetComponent<BoxFunc>().setDDBoolList(name);
+    }
+    public void addCost(string name, string value){
+        GameObject goParent = GameObject.Find("scrollPanelCost");
+        GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.name = name;
+        player.GetComponent<BoxFunc>().setDDAttributeList(name);
+        player.GetComponent<BoxFunc>().setTxtValS(value);
+    }
+    public void addAttribute(string name, string value){
+        GameObject goParent = GameObject.Find("scrollPanelAttributes");
+        GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.name = name;
+        player.GetComponent<BoxFunc>().setDDAttributeList(name);
+        player.GetComponent<BoxFunc>().setTxtValS(value);
+    }
+    public void addBlankBool(){
+        GameObject goParent = GameObject.Find("scrollPanelBools");
+        GameObject prefab = Resources.Load<GameObject>("BoolBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        
+    }
+    public void reset(){
+        ad.reset();
+        ad.resetSkillAtt();
+        ad.resetSkillBools();
+        ad.resetSkillCost();
+        EditorUtility.SetDirty(ad);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+    }
+    public void save(){
+        EditorUtility.SetDirty(ad);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
+
     
 }

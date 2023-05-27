@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.IO;
 using UnityEngine.AI;
+using System.Text.RegularExpressions;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -57,11 +58,11 @@ public class AbilitiesData : ScriptableObject
     UDictionary<string, UnityEvent<string, GameObject>> Abilities = new UDictionary<string, UnityEvent<string, GameObject>>();
 
     [SerializeField]
-    UDictionary<string, UDictionary<string,float>> SkillAttributes = new UDictionary<string, UDictionary<string, float>>();
+    UDictionary<string, UDictionary<string,string>> SkillAttributes = new UDictionary<string, UDictionary<string, string>>();
     [SerializeField]
     UDictionary<string, UDictionary<string,bool>> SkillBools = new UDictionary<string, UDictionary<string, bool>>();
     [SerializeField]
-    UDictionary<string, UDictionary<string,float>> SkillCost = new UDictionary<string, UDictionary<string,float>>();
+    UDictionary<string, UDictionary<string,string>> SkillCost = new UDictionary<string, UDictionary<string,string>>();
     [SerializeField]
     UDictionary<string, UDictionary<string,int>> SkillStats = new UDictionary<string, UDictionary<string,int>>();
     public void setTileM(){
@@ -136,7 +137,7 @@ public class AbilitiesData : ScriptableObject
         }
         return null;
     }
-    public UDictionary<string,float> getSkillAtt(string name){
+    public UDictionary<string,string> getSkillAtt(string name){
         if(SkillAttributes.ContainsKey(name)){
         return SkillAttributes[name];}
         return null;
@@ -146,13 +147,13 @@ public class AbilitiesData : ScriptableObject
         return SkillStats[name];}
         return null;
     }
-     public UDictionary<string,float> getSkillCost(string name){
+     public UDictionary<string,string> getSkillCost(string name){
         if(SkillCost.ContainsKey(name)){
         return SkillCost[name];}
         return null;
     }
     public UDictionary<string,bool> getSkillBool(string name){
-        if(SkillCost.ContainsKey(name)){
+        if(SkillBools.ContainsKey(name)){
         return SkillBools[name];}
         return null;
     }
@@ -541,20 +542,56 @@ public class AbilitiesData : ScriptableObject
             }
         }
     }
+    public static int CalculateExpression(string expression, CharacterStat stats)
+    {
+        // Define the regular expression pattern to match substrings between 'a' and 'z'
+        string pattern = @"([a-z]+)";
 
+        // Create a regular expression object
+        Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+
+        // Match all substrings in the expression that fall within the range of 'a' to 'z'
+        MatchCollection matches = regex.Matches(expression);
+
+        // Iterate through the matches and replace each substring with its corresponding value
+        foreach (Match match in matches)
+        {
+            string substring = match.Value;
+
+            // Retrieve the value of the substring using the stats.getStat method
+            int substringValue = (int)stats.getStat(substring);
+
+            // Replace the substring with its value in the expression
+            expression = expression.Replace(substring, substringValue.ToString());
+        }
+
+        // Evaluate the expression using the DataTable class from System.Data
+        System.Data.DataTable dataTable = new System.Data.DataTable();
+        var result = dataTable.Compute(expression, "");
+
+        // Convert the result to an integer and return it
+        return Convert.ToInt32(result);
+    }
     public UDictionary<string,float> getSkillsFloats(string name, StatUpdate statU){
         CharacterStat stats = statU.getStats();
-        int hastenCast = statU.isHasten();
+        if(SkillAttributes.ContainsKey(name)){
+            UDictionary<string,string> pre = SkillAttributes[name];
+            UDictionary<string,float> result = new UDictionary<string, float>();
+            foreach(KeyValuePair<string,string> pair in pre){
+                result.Add(pair.Key,CalculateExpression(pair.Value,stats));
+            }
+            return result;
+        }
         
         switch(name){
             case "ForceBlast":
                 return new UDictionary<string, float>(){{"Radius",3},{"CastRange",3 + (int) stats.getStat("acu")/4},{"TargetNum",1},{"CastTime",0}};
                 break;
             case "PsychicStorm":
-                return new UDictionary<string, float>(){{"Radius",3},{"CastRange",5 + (int) stats.getStat("acu")/4},{"TargetNum",1},{"CastTime",2-hastenCast}};
+                return new UDictionary<string, float>(){{"Radius",3},{"CastRange",5 + (int) stats.getStat("acu")/4},{"TargetNum",1},{"CastTime",2}};
                 break;
             case "WhirlWind":
-                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",1-hastenCast}};
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",1}};
                 break;
             case "WaterStance":
                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
@@ -571,19 +608,19 @@ public class AbilitiesData : ScriptableObject
                 return new UDictionary<string, float>(){{"Radius",3},{"CastRange",7+(int)stats.getStat("acu")},{"TargetNum",1},{"CastTime",0}};
                 break;
             case "Restrict":
-                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",5},{"TargetNum",1},{"CastTime",1-hastenCast}};
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",5},{"TargetNum",1},{"CastTime",1}};
                 break;
             case "Armageddon":
-                return new UDictionary<string, float>(){{"Radius",7},{"CastRange",7+(int)stats.getStat("acu")},{"TargetNum",1},{"CastTime",3-hastenCast}};
+                return new UDictionary<string, float>(){{"Radius",7},{"CastRange",7+(int)stats.getStat("acu")},{"TargetNum",1},{"CastTime",3}};
                 break;
             case "Ripple":
-                return new UDictionary<string, float>(){{"Radius",5},{"CastRange",0},{"TargetNum",0},{"CastTime",2-hastenCast}};
+                return new UDictionary<string, float>(){{"Radius",5},{"CastRange",0},{"TargetNum",0},{"CastTime",2}};
                 break;
             case "Meditate":
-                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",1-hastenCast}};
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",1}};
                 break;
             case "CalmMind":
-                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",(int)stats.getStat("acu")},{"TargetNum",0},{"CastTime",1-hastenCast}};
+                return new UDictionary<string, float>(){{"Radius",0},{"CastRange",(int)stats.getStat("acu")},{"TargetNum",0},{"CastTime",1}};
                 break;
             case "Accelerate":
                 return new UDictionary<string, float>(){{"Radius",0},{"CastRange",7},{"TargetNum",0},{"CastTime",0}};
@@ -635,76 +672,26 @@ public class AbilitiesData : ScriptableObject
     public void computeCost(GameObject play, string name){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
         CharacterStat chStat = ocstat.getStats();
-        switch(name){
-            case "WhirlWind":
-                chStat.modifyStat("ene",-7*ocstat.getStats().getCostMul());
-                chStat.modifyStat("stb",-15*ocstat.getStats().getCostMul());
-                break;
-            case "ForceBlast":
-                chStat.modifyStat("ene",-15*ocstat.getStats().getCostMul());
-                chStat.modifyStat("fat",20*ocstat.getStats().getCostMul());
-                break;
-            case "PsychicStorm":
-                chStat.modifyStat("ene",-25*ocstat.getStats().getCostMul());
-                chStat.modifyStat("stb",-30*ocstat.getStats().getCostMul());
-                break;
-            case "WaterStance":
-                chStat.modifyStat("ene",-5);
-                chStat.modifyStat("stb",-5);
-                chStat.modifyStat("fat",5);
-                chStat.modifyStat("pv",ocstat.getDictStats("acu"));
-                chStat.modifyStat("pr",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
+        if(SkillCost.ContainsKey(name)){
+            UDictionary<string,string> pre = SkillCost[name];
+            foreach(KeyValuePair<string,string> pair in pre){
+                chStat.modifyStat(pair.Key,(int)CalculateExpression(pair.Value,chStat)*ocstat.getStats().getCostMul());
+            }
+            if(name == "FireStance"){
+                    ocstat.setBonus((int)ocstat.getDictStats("acu"));
+                    ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"FireStance"), new UDictionary<string, int>(){
+                        {"bonus damage",(int)ocstat.getDictStats("acu")},{"acu",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
+            }
+            if(name == "WaterStance"){
                 ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"Water"), new UDictionary<string, int>(){{"pv",(int)ocstat.getDictStats("acu")},{"pr",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
-                break;
-            case "FireStance":
-                chStat.modifyStat("ene",-5);
-                chStat.modifyStat("stb",-5);
-                chStat.modifyStat("hp",-5);
-                ocstat.setBonus((int)ocstat.getDictStats("acu"));
-                chStat.modifyStat("acu",ocstat.getDictStats("acu")+ocstat.getDictStats("dex"));
-                ocstat.addEffectStat(new KeyValuePair<string, string>(play.name,"FireStance"), new UDictionary<string, int>(){
-                    {"bonus damage",(int)ocstat.getDictStats("acu")},{"acu",(int)(ocstat.getDictStats("acu")+ocstat.getDictStats("dex"))}});
-                break;
-            case "Bubble":
-                ocstat.getStats().modifyStat("ene",-10);
-                break;
-            case "TimeStop":
-                ocstat.getStats().modifyStat("ene",-10);
-                ocstat.getStats().modifyStat("stb",-10);
-                break;
-            case "Restrict":
-                ocstat.getStats().modifyStat("ene",-10);
-                ocstat.getStats().modifyStat("stb",-5);
-                break;
-            case "Hasten":
-                ocstat.getStats().modifyStat("ene",-5);
-                ocstat.getStats().modifyStat("stb",-5);
-                break;
-            case "Armageddon":
-                ocstat.getStats().modifyStat("ene",-50);
-                ocstat.getStats().modifyStat("stb",-100);
-                ocstat.getStats().modifyStat("fat",100);
-                break;
-            case "Ripple":
-                ocstat.getStats().modifyStat("ene",-20);
-                ocstat.getStats().modifyStat("stb",-30);
-                break;
-            case "CalmMind":
-                ocstat.getStats().modifyStat("ene",-10);
-                break;
-            case "Accelerate":
-                ocstat.getStats().modifyStat("ene",-10);
-                ocstat.getStats().modifyStat("stb",-5);
-                break;
-            case "BorrowedTime":
-                ocstat.getStats().modifyStat("ene",-5);
-                break;
+            }
         }
+        
     }
     public void AreaDamage(GameObject play, Vector3Int center, int range, int Damage, string name,string effect,int duration){
         string tag = "";
-        if(SkillAttributes.ContainsKey(name)){
-            if(SkillAttributes[name]["All"] == 1){
+        if(SkillBools.ContainsKey(name) && SkillBools[name].ContainsKey("All")){
+            if(SkillBools[name]["All"] == false){
                 tag = play.tag;
             }
         }
@@ -737,8 +724,8 @@ public class AbilitiesData : ScriptableObject
     }
     public void AreaAttack(GameObject play, Vector3Int center, int range, string name,string effect,int duration){
         string tag = "";
-        if(SkillAttributes.ContainsKey(name)){
-            if(SkillAttributes[name]["All"] == 1){
+        if(SkillBools.ContainsKey(name) && SkillBools[name].ContainsKey("All")){
+            if(SkillBools[name]["All"] == false){
                 tag = play.tag;
             }
         }
@@ -773,8 +760,8 @@ public class AbilitiesData : ScriptableObject
     
     public void GeneralAreaEffect(GameObject play, Vector3Int center, int range, string name){
         string tag = "";
-        if(SkillAttributes.ContainsKey(name)){
-            if(SkillAttributes[name]["All"] == 1){
+        if(SkillBools.ContainsKey(name) && SkillBools[name].ContainsKey("All")){
+            if(SkillBools[name]["All"] == false){
                 tag = play.tag;
             }
         }
@@ -793,7 +780,7 @@ public class AbilitiesData : ScriptableObject
                                 }
                             }
                             ocstat.addEffectStat(new KeyValuePair<string,string>(play.name,name),SkillStats[name]);
-                            ocstat.addStartBuff(name, play.name,(int)SkillAttributes[name]["Duration"]);
+                            ocstat.addStartBuff(name, play.name,(int)CalculateExpression(SkillAttributes[name]["Duration"],play.GetComponent<StatUpdate>().getStats()));
                         }
                         
                     
@@ -814,7 +801,7 @@ public class AbilitiesData : ScriptableObject
                                 }
                             }
                             ocstat.addEffectStat(new KeyValuePair<string,string>(play.name,name),SkillStats[name]);
-                            ocstat.addStartBuff(name, play.name,(int)SkillAttributes[name]["Duration"]);
+                            ocstat.addStartBuff(name, play.name,(int)CalculateExpression(SkillAttributes[name]["Duration"],play.GetComponent<StatUpdate>().getStats()));
                         }
                         
                     
@@ -827,14 +814,14 @@ public class AbilitiesData : ScriptableObject
     public void GeneralSkill(string Skillname, GameObject play, Vector3Int center){
         //string Skillname = turnM.getUI().getCurrentPlay().GetComponent<Abilities>().getCurrentSkill();
         if(SkillAttributes.ContainsKey(Skillname)){
-            if(SkillAttributes[Skillname]["Type"] == 0 ||SkillAttributes[Skillname]["Type"] == 1 ){
-                GeneralAreaDamage(play,center,(int)SkillAttributes[Skillname]["Radius"],Skillname);
+            if(SkillAttributes[Skillname]["Type"] == "0" ||SkillAttributes[Skillname]["Type"] == "1" ){
+                GeneralAreaDamage(play,center,(int)CalculateExpression(SkillAttributes[Skillname]["Radius"],play.GetComponent<StatUpdate>().getStats()),Skillname);
             }
-            else if(SkillAttributes[Skillname]["Type"] == 2){
-                GeneralAreaEffect(play,center,(int)SkillAttributes[Skillname]["Radius"],Skillname);
+            else if(SkillAttributes[Skillname]["Type"] == "2"){
+                GeneralAreaEffect(play,center,(int)CalculateExpression(SkillAttributes[Skillname]["Radius"],play.GetComponent<StatUpdate>().getStats()),Skillname);
             }
             else{
-                tileM.GetNodeFromWorld(center).effectFlag.Add(Skillname, new KeyValuePair<GameObject, int>(play, (int)SkillAttributes[Skillname]["Duration"]));
+                tileM.GetNodeFromWorld(center).effectFlag.Add(Skillname, new KeyValuePair<GameObject, int>(play, (int)CalculateExpression(SkillAttributes[Skillname]["Duration"],play.GetComponent<StatUpdate>().getStats())));
                 tileM.AddEffectLst(tileM.GetNodeFromWorld(center));
             }
         }
@@ -843,20 +830,20 @@ public class AbilitiesData : ScriptableObject
         string effect = "";
         int duration = 0;
         if(SkillAttributes[name].ContainsKey("Effect") && SkillAttributes[name].ContainsKey("Duration")){
-            effect = getEffect((int)SkillAttributes[name]["Effect"]);
-            duration = (int) SkillAttributes[name]["Duration"];
+            effect = getEffect((int)CalculateExpression(SkillAttributes[name]["Effect"],play.GetComponent<StatUpdate>().getStats()));
+            duration = (int) CalculateExpression(SkillAttributes[name]["Duration"],play.GetComponent<StatUpdate>().getStats());
         }
-        if(SkillAttributes[name]["Type"] == 0){
-            AreaDamage(play, center, range,(int)SkillAttributes[name]["Damage"],name,effect,duration);
+        if(SkillAttributes[name]["Type"] == "0"){
+            AreaDamage(play, center, range,(int)CalculateExpression(SkillAttributes[name]["Damage"],play.GetComponent<StatUpdate>().getStats()),name,effect,duration);
         }
-        else if(SkillAttributes[name]["Type"] == 1){
+        else if(SkillAttributes[name]["Type"] == "1"){
             AreaAttack(play, center, range,name,"",duration);
         }
     }
 
     public void GeneralAreaEffect(string name, GameObject play, Vector3Int target){
         StatUpdate ocstat = play.GetComponent<StatUpdate>();
-        AreaDamage(play, target, 3, (int)SkillAttributes[name]["Damage"],name, "",0);
+        AreaDamage(play, target, 3, (int)CalculateExpression(SkillAttributes[name]["Damage"],play.GetComponent<StatUpdate>().getStats()),name, "",0);
     }
     public void GeneralPassive(string name, GameObject play){
         setTileM();
@@ -892,7 +879,7 @@ public class AbilitiesData : ScriptableObject
         return "";
     }
 
-    public void addEntry(int type, string name, UDictionary<string,float> attribute,UDictionary<string,float> cost,UDictionary<string,int> stat,UDictionary<string,bool> bools){
+    public void addEntry(int type, string name, UDictionary<string,string> attribute,UDictionary<string,string> cost,UDictionary<string,int> stat,UDictionary<string,bool> bools){
         if(type == 0){AbilitiesLst.Add(name);}
         else{SkillLst.Add(name);}
         SkillAttributes.Add(name,attribute);
@@ -903,10 +890,97 @@ public class AbilitiesData : ScriptableObject
     public void removeEntry(string name){
         if(AbilitiesLst.Contains(name)){AbilitiesLst.Remove(name);}
         else{SkillLst.Remove(name);}
-        if(SkillAttributes.ContainsKey(name)){SkillAttirbutes.Remove(name);}
+        if(SkillAttributes.ContainsKey(name)){SkillAttributes.Remove(name);}
         if(SkillCost.ContainsKey(name)){SkillCost.Remove(name);}
         if(SkillStats.ContainsKey(name)){SkillStats.Remove(name);}
         if(SkillBools.ContainsKey(name)){SkillBools.Remove(name);}
     }
-    
+
+    public void resetSkillAtt(){
+        SkillAttributes.Clear();
+        SkillAttributes.Add( "ForceBlast", 
+        new UDictionary<string, string>(){{"Radius","3"},{"CastRange","3+acu/4"},{"TargetNum","1"},{"CastTime","0"}});
+        SkillAttributes.Add( "PsychicStorm", 
+        new UDictionary<string, string>(){{"Radius","3"},{"CastRange","5+acu/4"},{"TargetNum","1"},{"CastTime","2"}});        
+        SkillAttributes.Add( "WhirlWind", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","0"},{"TargetNum","0"},{"CastTime","1"}});
+        SkillAttributes.Add( "WaterStance", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","0"},{"TargetNum","0"},{"CastTime","0"}});
+        SkillAttributes.Add( "FireStance", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","0"},{"TargetNum","0"},{"CastTime","0"}});
+        SkillAttributes.Add( "Bubble", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","9999"},{"TargetNum","1"},{"CastTime","0"}});
+        SkillAttributes.Add( "ForeSight", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","9999"},{"TargetNum","1"},{"CastTime","0"}});
+        SkillAttributes.Add( "TimeStop", 
+        new UDictionary<string, string>(){{"Radius","3"},{"CastRange","7+acu"},{"TargetNum","1"},{"CastTime","0"}});
+        SkillAttributes.Add( "Restrict", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","5"},{"TargetNum","1"},{"CastTime","1"}});
+        SkillAttributes.Add( "Armageddon", 
+        new UDictionary<string, string>(){{"Radius","7"},{"CastRange","7+acu"},{"TargetNum","1"},{"CastTime","3"}});
+        SkillAttributes.Add( "Ripple", 
+        new UDictionary<string, string>(){{"Radius","5"},{"CastRange","0"},{"TargetNum","0"},{"CastTime","2"}});
+        SkillAttributes.Add( "Meditate", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","0"},{"TargetNum","0"},{"CastTime","1"}});
+        SkillAttributes.Add( "CalmMind", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","acu"},{"TargetNum","0"},{"CastTime","1"}});
+        SkillAttributes.Add( "Accelerate", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","7"},{"TargetNum","0"},{"CastTime","0"}});
+        SkillAttributes.Add( "BorrowedTime", 
+        new UDictionary<string, string>(){{"Radius","0"},{"CastRange","0"},{"TargetNum","0"},{"CastTime","0"}});
+    }
+    public void resetSkillBools(){
+        SkillBools.Clear();
+        SkillBools.Add( "ForceBlast",
+                new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}});
+            SkillBools.Add( "PsychicStorm",
+                new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}});
+            SkillBools.Add( "WhirlWind",
+                new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}});
+            SkillBools.Add( "WaterStance",
+               new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}});
+            SkillBools.Add( "FireStance",
+                new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}});
+            SkillBools.Add( "ForeSight",
+                new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}});
+            SkillBools.Add( "Bubble",
+                new UDictionary<string, bool>(){{"characterTarget",true},{"sameTag",true}});
+            SkillBools.Add( "TimeStop",
+                new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}});
+            SkillBools.Add( "Restrict",
+                new UDictionary<string, bool>(){{"characterTarget",true},{"sameTag",false}});
+            SkillBools.Add( "Accelerate",
+                new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}});
+            SkillBools.Add( "BorrowedTime",
+                new UDictionary<string, bool>(){{"characterTarget",true},{"sameTag",true}});
+    }
+    public void resetSkillCost(){
+        SkillCost.Clear();
+        SkillCost.Add( "ForceBlast", 
+        new UDictionary<string, string>(){{"ene","-15"},{"fat","20"}});
+        SkillCost.Add( "PsychicStorm", 
+        new UDictionary<string, string>(){{"ene","-25"},{"stb","-30"}});        
+        SkillCost.Add( "WhirlWind", 
+        new UDictionary<string, string>(){{"ene","-7"},{"fat","15"}});
+        SkillCost.Add( "WaterStance", 
+        new UDictionary<string, string>(){{"ene","-5"},{"stb","-5"},{"fat","5"},{"pv","acu"},{"pr","acu"}});
+        SkillCost.Add( "FireStance", 
+        new UDictionary<string, string>(){{"ene","-5"},{"stb","-5"},{"fat","5"},{"acu","acu+dex"}});
+        SkillCost.Add( "Bubble", 
+        new UDictionary<string, string>(){{"ene","-10"}});
+        SkillCost.Add( "TimeStop", 
+        new UDictionary<string, string>(){{"ene","-10"},{"stb","-10"}});
+        SkillCost.Add( "Restrict", 
+        new UDictionary<string, string>(){{"ene","-10"},{"stb","-5"}});
+        SkillCost.Add( "Armageddon", 
+        new UDictionary<string, string>(){{"ene","-50"},{"stb","-100"},{"fat","100"}});
+        SkillCost.Add( "Ripple", 
+        new UDictionary<string, string>(){{"ene","-20"},{"stb","-30"}});
+        SkillCost.Add( "CalmMind", 
+        new UDictionary<string, string>(){{"ene","-10"}});
+        SkillCost.Add( "Accelerate", 
+        new UDictionary<string, string>(){{"ene","-10"},{"stb","-5"}});
+        SkillCost.Add( "BorrowedTime", 
+        new UDictionary<string, string>(){{"ene","-5"}});
+    }
 }
