@@ -70,11 +70,10 @@ public class SkillSetter : MonoBehaviour
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("statbox")){
             Destroy(go);
         }
-        if(stats!=null){
-        addStats(stats);}
+        if(stats != null){addStats(stats);}
         if(bools != null){addBools(bools);}
-        if(attribute!= null){addAttributes(attribute);}
-        if(cost!=null){addCosts(cost);}
+        if(attribute != null){addAttributes(attribute);}
+        if(cost != null){addCosts(cost);}
 
     }
     public void addStats(UDictionary<string, int> stats){
@@ -115,7 +114,7 @@ public class SkillSetter : MonoBehaviour
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
         player.name = name;
-        player.GetComponent<BoxFunc>().setDDAttributeList(name);
+        player.GetComponent<BoxFunc>().setDDCostList(name);
         player.GetComponent<BoxFunc>().setTxtValS(value);
     }
     public void addAttribute(string name, string value){
@@ -132,7 +131,22 @@ public class SkillSetter : MonoBehaviour
         GameObject prefab = Resources.Load<GameObject>("BoolBox") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
-        
+        player.GetComponent<BoxFunc>().setToggle(false);
+        player.GetComponent<BoxFunc>().setDDBoolList(name);
+    }
+    public void addBlankCost(){
+        GameObject goParent = GameObject.Find("scrollPanelCost");
+        GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.GetComponent<BoxFunc>().setDDCostList(name);
+    }
+    public void addBlankAttribute(){
+        GameObject goParent = GameObject.Find("scrollPanelAttributes");
+        GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.GetComponent<BoxFunc>().setDDAttributeList(name);
     }
     public void reset(){
         ad.reset();

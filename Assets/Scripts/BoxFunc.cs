@@ -22,6 +22,8 @@ public class BoxFunc : MonoBehaviour
     //bools: CharacterTarget, sameTag, All
     public List<string> bools = new List<string>(){"characterTarget","sameTag","All"};
     public List<string> attributes = new List<string>(){"Type","CoolDown","Radius","CastTime","CastRange","TargetNum","Duration","Effect","Damage"};
+    public List<string> costs = new List<string>(){"pow","dex","tou","acu","mid","ma","ra","md","rd","sa","mr","base_hp","base_move","base_init","base_enc","base_ene","wd","rng","pscal","dscal","sp","ap","acc","pr","pv","w_enc","attack_num","cooldowndec","costmul","av","sv","mdb","rdb","eq_mov","eq_init","eq_enc","hp","ene","fat","stb","maxstb","mov","bite","enc","size"};
+
     void Start(){
     }
     public void setSprite(){
@@ -54,6 +56,15 @@ public class BoxFunc : MonoBehaviour
         dd.AddOptions(attributes);
         for(int i = 0; i < attributes.Count; i++){
             if(attributes[i]== name){
+                dd.value = i;
+            }
+        }
+    }
+    public void setDDCostList(string name){
+        dd.ClearOptions();
+        dd.AddOptions(costs);
+        for(int i = 0; i < costs.Count; i++){
+            if(costs[i]== name){
                 dd.value = i;
             }
         }
