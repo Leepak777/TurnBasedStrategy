@@ -128,9 +128,6 @@ public class SkillSetter : MonoBehaviour
             addCost(pair.Key,pair.Value);
         }
     }
-    public void addStat(string name, int value){
-
-    }
     public void addBool(string name, bool value){
         GameObject goParent = GameObject.Find("scrollPanelBools");
         GameObject prefab = Resources.Load<GameObject>("BoolBox") as GameObject;
@@ -140,6 +137,7 @@ public class SkillSetter : MonoBehaviour
         player.GetComponent<BoxFunc>().setToggle(value);
         player.name = name;
         player.GetComponent<BoxFunc>().setDDBoolList(name);
+        player.GetComponent<BoxFunc>().updateBox();
     }
     public void addCost(string name, string value){
         GameObject goParent = GameObject.Find("scrollPanelCost");
@@ -150,6 +148,7 @@ public class SkillSetter : MonoBehaviour
         player.name = name;
         player.GetComponent<BoxFunc>().setDDCostList(name);
         player.GetComponent<BoxFunc>().setTxtValS(value);
+        player.GetComponent<BoxFunc>().updateBox();
     }
     public void addAttribute(string name, string value){
         GameObject goParent = GameObject.Find("scrollPanelAttributes");
@@ -160,6 +159,18 @@ public class SkillSetter : MonoBehaviour
         player.name = name;
         player.GetComponent<BoxFunc>().setDDAttributeList(name);
         player.GetComponent<BoxFunc>().setTxtValS(value);
+        player.GetComponent<BoxFunc>().updateBox();
+    }
+    public void addStat(string name, int value){
+        GameObject goParent = GameObject.Find("scrollPanelStats");
+        GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.tag = "SkillStat";
+        player.name = name;
+        player.GetComponent<BoxFunc>().setDDCostList(name);
+        player.GetComponent<BoxFunc>().setTxtVal(value);
+        player.GetComponent<BoxFunc>().updateBox();
     }
     public void addBlankBool(){
         GameObject goParent = GameObject.Find("scrollPanelBools");
@@ -169,22 +180,35 @@ public class SkillSetter : MonoBehaviour
         player.tag = "SkillBool";
         player.GetComponent<BoxFunc>().setToggle(false);
         player.GetComponent<BoxFunc>().setDDBoolList(name);
+        player.GetComponent<BoxFunc>().updateBox();
     }
     public void addBlankCost(){
         GameObject goParent = GameObject.Find("scrollPanelCost");
         GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
-        player.GetComponent<BoxFunc>().setDDCostList(name);
+        player.GetComponent<BoxFunc>().setDDCostList("");
         player.tag = "SkillCost";
+        player.GetComponent<BoxFunc>().updateBox();
     }
     public void addBlankAttribute(){
         GameObject goParent = GameObject.Find("scrollPanelAttributes");
         GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
-        player.GetComponent<BoxFunc>().setDDAttributeList(name);
+        player.GetComponent<BoxFunc>().setDDAttributeList("");
         player.tag = "SkillAtt";
+        player.GetComponent<BoxFunc>().updateBox();
+    }
+    public void addBlankStats(){
+        GameObject goParent = GameObject.Find("scrollPanelStat");
+        GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
+        GameObject player = Instantiate(prefab) as GameObject;
+        player.transform.SetParent(goParent.transform);
+        player.tag = "SkillStat";
+        player.name = name;
+        player.GetComponent<BoxFunc>().setDDCostList("");
+        player.GetComponent<BoxFunc>().updateBox();
     }
     public void setText(string name){
         skills.options[skills.value].text = name;

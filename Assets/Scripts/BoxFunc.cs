@@ -45,29 +45,32 @@ public class BoxFunc : MonoBehaviour
     public void setDDBoolList(string name){
         dd.ClearOptions();
         dd.AddOptions(bools);
+        if(name!=""){
         for(int i = 0; i < bools.Count; i++){
             if(bools[i]== name){
                 dd.value = i;
             }
-        }
+        }}
     }
     public void setDDAttributeList(string name){
         dd.ClearOptions();
         dd.AddOptions(attributes);
+        if(name!=""){
         for(int i = 0; i < attributes.Count; i++){
             if(attributes[i]== name){
                 dd.value = i;
             }
-        }
+        }}
     }
     public void setDDCostList(string name){
         dd.ClearOptions();
         dd.AddOptions(costs);
+        if(name!=""){
         for(int i = 0; i < costs.Count; i++){
             if(costs[i]== name){
                 dd.value = i;
             }
-        }
+        }}
     }
     public void setTxtVal(int i){
         input.text = i+"";
