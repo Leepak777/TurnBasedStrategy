@@ -138,7 +138,7 @@ public class AbilitiesData : ScriptableObject
         return null;
     }
     public UDictionary<string,string> getSkillAtt(string name){
-        if(SkillAttributes.ContainsKey(name)){
+       if(SkillAttributes.ContainsKey(name)){
         return SkillAttributes[name];}
         return null;
     }
@@ -411,6 +411,7 @@ public class AbilitiesData : ScriptableObject
         turnM.CurrentSaveOrigin();
     }
     public void foresightEnd(){
+        turnM = GameObject.Find("TurnManager").GetComponent<TurnManager>();
         Debug.Log("Reverted!");
         turnM.revertTurn();
         turnM.EnemyRevert();
@@ -632,6 +633,7 @@ public class AbilitiesData : ScriptableObject
         return new UDictionary<string, float>(){{"Radius",0},{"CastRange",0},{"TargetNum",0},{"CastTime",0}};
     }
     public UDictionary<string,bool> getSkillBool(string name,CharacterStat chstsat){
+        if(SkillBools.ContainsKey(name)){return SkillBools[name];}
         switch(name){
             case "ForceBlast":
                 return new UDictionary<string, bool>(){{"characterTarget",false},{"sameTag",false}};
@@ -765,6 +767,11 @@ public class AbilitiesData : ScriptableObject
                 tag = play.tag;
             }
         }
+        if(SkillBools.ContainsKey(name) && SkillBools[name].ContainsKey("characterTarget")){
+            if(!SkillBools[name]["characterTarget"] && center == Vector3Int.zero){
+                center =tileM.WorldToCell( play.transform.position);
+            }
+        }
         if(tag ==""){
             foreach(Node n in tileM.GetTilesInArea(center,range)){
                 if(n.occupant != null && n.occupant != play){
@@ -881,14 +888,26 @@ public class AbilitiesData : ScriptableObject
 
     public void addEntry(int type, string name, UDictionary<string,string> attribute,UDictionary<string,string> cost,UDictionary<string,int> stat,UDictionary<string,bool> bools){
         removeEntry(name);
-        if(type == 0){AbilitiesLst.Add(name);}
-        else{SkillLst.Add(name);}
+        if(type == 0){
+            AbilitiesLst.Add(name);
+            UnityEvent<string,GameObject> a = new UnityEvent<string, GameObject>();
+            a.AddListener(GeneralPassive);
+            Abilities.Add(name,a);
+        }
+        else{
+            SkillLst.Add(name);
+            UnityEvent<string,GameObject,Vector3Int> e = new UnityEvent<string, GameObject,Vector3Int>();
+            e.AddListener(GeneralSkill);
+            Skills.Add(name,e);
+        }
         SkillAttributes.Add(name,attribute);
         SkillCost.Add(name,cost);
         SkillStats.Add(name,stat);
         SkillBools.Add(name,bools);
     }
     public void removeEntry(string name){
+        if(Skills.ContainsKey(name)){Skills.Remove(name);}
+        else{Abilities.Remove(name);}
         if(AbilitiesLst.Contains(name)){AbilitiesLst.Remove(name);}
         else{SkillLst.Remove(name);}
         if(SkillAttributes.ContainsKey(name)){SkillAttributes.Remove(name);}

@@ -168,7 +168,7 @@ MonoBehaviour:
       - m_Target: {fileID: 11400000}
         m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
         m_MethodName: Foresight
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -357,6 +357,7 @@ MonoBehaviour:
     - BorrowedTime
     - Armageddon
     - Ripple
+    - HornyJail
     values:
     - m_PersistentCalls:
         m_Calls:
@@ -405,7 +406,7 @@ MonoBehaviour:
         - m_Target: {fileID: 11400000}
           m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
           m_MethodName: Foresight
-          m_Mode: 1
+          m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -540,6 +541,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls: []
   SkillEffects:
     keys:
     - PsychicStorm
@@ -668,6 +671,7 @@ MonoBehaviour:
     - CalmMind
     - Accelerate
     - BorrowedTime
+    - HornyJail
     values:
     - keys:
       - Radius
@@ -819,6 +823,22 @@ MonoBehaviour:
       - 0
       - 0
       - 0
+    - keys:
+      - Type
+      - CoolDown
+      - CastTime
+      - Radius
+      - CastRange
+      - Duration
+      - Damage
+      values:
+      - 0
+      - 0
+      - 0
+      - 69
+      - 420
+      - 69
+      - 69420
   SkillBools:
     keys:
     - ForceBlast
@@ -832,6 +852,7 @@ MonoBehaviour:
     - Restrict
     - Accelerate
     - BorrowedTime
+    - HornyJail
     values:
     - keys:
       - characterTarget
@@ -877,6 +898,10 @@ MonoBehaviour:
       - characterTarget
       - sameTag
       values: 0101
+    - keys:
+      - characterTarget
+      - characterTarget
+      values: 0000
   SkillCost:
     keys:
     - ForceBlast
@@ -892,6 +917,7 @@ MonoBehaviour:
     - CalmMind
     - Accelerate
     - BorrowedTime
+    - HornyJail
     values:
     - keys:
       - ene
@@ -977,6 +1003,17 @@ MonoBehaviour:
       - ene
       values:
       - -5
+    - keys:
+      - pow
+      - dex
+      - tou
+      values:
+      - 69
+      - 69
+      - 69
   SkillStats:
-    keys: []
-    values: []
+    keys:
+    - HornyJail
+    values:
+    - keys: []
+      values: 

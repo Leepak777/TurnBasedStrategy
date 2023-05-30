@@ -17,13 +17,13 @@ public class SkillSetter : MonoBehaviour
 
     public AbilitiesData ad;
     [SerializeField]
-    UDictionary<string, UDictionary<string,float>> SkillAttributes = new UDictionary<string, UDictionary<string, float>>();
+    UDictionary<string,string> SkillAttributes = new UDictionary<string, string>();
     [SerializeField]
-    UDictionary<string, UDictionary<string,bool>> SkillBools = new UDictionary<string, UDictionary<string, bool>>();
+    UDictionary<string,bool> SkillBools = new UDictionary<string, bool>();
     [SerializeField]
-    UDictionary<string, UDictionary<string,float>> SkillCost = new UDictionary<string, UDictionary<string,float>>();
+    UDictionary<string,string> SkillCost = new UDictionary<string,string>();
     [SerializeField]
-    UDictionary<string, UDictionary<string,int>> SkillStats = new UDictionary<string, UDictionary<string,int>>();
+    UDictionary<string,int> SkillStats = new UDictionary<string,int>();
     List<string> type_lst = new List<string>();
     void Awake(){
         type_lst = new List<string>(){"none","Active","Passive"};
@@ -34,6 +34,7 @@ public class SkillSetter : MonoBehaviour
     }
     public void setSkilldrop(int option){
         skills.ClearOptions();
+        skills.AddOptions(new List<string>(){"none"});
         List<string> lst = new List<string>();
         if(option == 1){
             lst = ad.getSkillList();
@@ -45,13 +46,28 @@ public class SkillSetter : MonoBehaviour
 
     }
     public void newSkill(){
-        type.AddOptions(new List<string>(){"Skill"});
-        type.value = type.options.Count-1;
+        skills.AddOptions(new List<string>(){"Skill"});
+        skills.value = skills.options.Count-1;
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("statbox")){
+            Destroy(go);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillAtt")){
+            Destroy(go);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillCost")){
+            Destroy(go);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillStat")){
+            Destroy(go);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillBool")){
+            Destroy(go);
+        }
     }
     public void removeeq(){
-        type.options.Remove(type.options[type.value]);
-        ad.removeEntry(type.captionText.text);
-        type.value = 0;
+        skills.options.Remove(skills.options[skills.value]);
+        ad.removeEntry(skills.captionText.text);
+        skills.value = 0;
         //setInput(type.value);
         EditorUtility.SetDirty(ad);
         AssetDatabase.SaveAssets();
@@ -59,6 +75,7 @@ public class SkillSetter : MonoBehaviour
     }
     public void setInput(int option){
         input.text = skills.options[option].text;
+        Debug.Log(input.text);
         UDictionary<string, int> stats = new UDictionary<string, int>();
         stats = ad.getSkillStat(input.text); 
         UDictionary<string, bool> bools = new UDictionary<string, bool>();
@@ -70,24 +87,39 @@ public class SkillSetter : MonoBehaviour
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("statbox")){
             Destroy(go);
         }
-        if(stats != null){addStats(stats);}
-        if(bools != null){addBools(bools);}
-        if(attribute != null){addAttributes(attribute);}
-        if(cost != null){addCosts(cost);}
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillAtt")){
+            Destroy(go);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillCost")){
+            Destroy(go);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillStat")){
+            Destroy(go);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillBool")){
+            Destroy(go);
+        }
+        if(stats != null){Debug.Log(stats);addStats(stats);}
+        if(bools != null){Debug.Log(bools);addBools(bools);}
+        if(attribute != null){Debug.Log(attribute);addAttributes(attribute);}
+        if(cost != null){Debug.Log(cost);addCosts(cost);}
 
     }
     public void addStats(UDictionary<string, int> stats){
         foreach(KeyValuePair<string,int> pair in stats){
+            Debug.Log(pair.Key+","+pair.Value);
             addStat(pair.Key,pair.Value);
         }
     }
     public void addBools(UDictionary<string, bool> bools){
         foreach(KeyValuePair<string,bool> pair in bools){
+            Debug.Log(pair.Key+","+pair.Value);
             addBool(pair.Key,pair.Value);
         }
     }
     public void addAttributes(UDictionary<string, string> attributes){
         foreach(KeyValuePair<string,string> pair in attributes){
+            Debug.Log(pair.Key+","+pair.Value);
             addAttribute(pair.Key,pair.Value);
         }
     }
@@ -103,6 +135,7 @@ public class SkillSetter : MonoBehaviour
         GameObject goParent = GameObject.Find("scrollPanelBools");
         GameObject prefab = Resources.Load<GameObject>("BoolBox") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
+        player.tag = "SkillBool";
         player.transform.SetParent(goParent.transform);
         player.GetComponent<BoxFunc>().setToggle(value);
         player.name = name;
@@ -113,6 +146,7 @@ public class SkillSetter : MonoBehaviour
         GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
+        player.tag = "SkillCost";
         player.name = name;
         player.GetComponent<BoxFunc>().setDDCostList(name);
         player.GetComponent<BoxFunc>().setTxtValS(value);
@@ -122,6 +156,7 @@ public class SkillSetter : MonoBehaviour
         GameObject prefab = Resources.Load<GameObject>("StatBox") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
+        player.tag = "SkillAtt";
         player.name = name;
         player.GetComponent<BoxFunc>().setDDAttributeList(name);
         player.GetComponent<BoxFunc>().setTxtValS(value);
@@ -131,6 +166,7 @@ public class SkillSetter : MonoBehaviour
         GameObject prefab = Resources.Load<GameObject>("BoolBox") as GameObject;
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
+        player.tag = "SkillBool";
         player.GetComponent<BoxFunc>().setToggle(false);
         player.GetComponent<BoxFunc>().setDDBoolList(name);
     }
@@ -140,6 +176,7 @@ public class SkillSetter : MonoBehaviour
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
         player.GetComponent<BoxFunc>().setDDCostList(name);
+        player.tag = "SkillCost";
     }
     public void addBlankAttribute(){
         GameObject goParent = GameObject.Find("scrollPanelAttributes");
@@ -147,21 +184,68 @@ public class SkillSetter : MonoBehaviour
         GameObject player = Instantiate(prefab) as GameObject;
         player.transform.SetParent(goParent.transform);
         player.GetComponent<BoxFunc>().setDDAttributeList(name);
+        player.tag = "SkillAtt";
+    }
+    public void setText(string name){
+        skills.options[skills.value].text = name;
+        skills.captionText.text = name;
+        save();
     }
     public void reset(){
         ad.reset();
         ad.resetSkillAtt();
         ad.resetSkillBools();
         ad.resetSkillCost();
-        EditorUtility.SetDirty(ad);
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        save();
 
     }
     public void save(){
         EditorUtility.SetDirty(ad);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+    }
+    public KeyValuePair<string,string> readStringBox(GameObject box){
+        InputField i = box.GetComponentInChildren<InputField>();
+        Dropdown dd = box.GetComponentInChildren<Dropdown>();
+        return new KeyValuePair<string, string>(dd.captionText.text,i.text);
+    }
+    public KeyValuePair<string,bool> readBoolBox(GameObject box){
+        Toggle i = box.GetComponentInChildren<Toggle>();
+        Dropdown dd = box.GetComponentInChildren<Dropdown>();
+        return new KeyValuePair<string, bool>(dd.captionText.text,i.isOn);
+    }
+    public KeyValuePair<string,int> readIntBox(GameObject box){
+        InputField i = box.GetComponentInChildren<InputField>();
+        Dropdown dd = box.GetComponentInChildren<Dropdown>();
+        return new KeyValuePair<string, int>(dd.captionText.text,int.Parse(i.text));
+    }
+    public void confirm(){
+        SkillAttributes.Clear();
+        SkillCost.Clear();
+        SkillStats.Clear();
+        SkillBools.Clear();
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillAtt")){
+            KeyValuePair<string,string> pair = readStringBox(go);
+            Debug.Log(pair.Key+","+pair.Value);
+            SkillAttributes.Add(pair.Key,pair.Value);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillCost")){
+            KeyValuePair<string,string> pair = readStringBox(go);
+            Debug.Log(pair.Key+","+pair.Value);
+            SkillCost.Add(pair.Key,pair.Value);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillStat")){
+            KeyValuePair<string,int> pair = readIntBox(go);
+            Debug.Log(pair.Key+","+pair.Value);
+            SkillStats.Add(pair.Key,pair.Value);
+        }
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("SkillBool")){
+            KeyValuePair<string,bool> pair = readBoolBox(go);
+            Debug.Log(pair.Key+","+pair.Value);
+            SkillBools.Add(pair.Key,pair.Value);
+        }
+        ad.addEntry(type.value,input.text,SkillAttributes,SkillCost,SkillStats,SkillBools);
+        save();
     }
 
     

@@ -79,7 +79,25 @@ public class BoxFunc : MonoBehaviour
         input.text = i+"";
     }
     public void setfullname(string i){
-        string full = "none";
+        string full = i;
+        if(dd.captionText.text=="Type"){
+            if(i == "0"){
+                fullname.text = "AreaTrueDamage";
+            }
+            else if(i == "1"){
+                fullname.text = "AreaAttack";
+            }
+            else if(i == "2"){
+                fullname.text = "AreaEffect";
+            }
+            else if(i == "3"){
+                fullname.text = "MapEffect";
+            }
+            else{
+                fullname.text = "Ability";
+            }
+            return;
+        }
         switch(i){
             case "wd": full = "Weapon Damage";break;
             case "pow": full = "Power";break;
@@ -120,8 +138,10 @@ public class BoxFunc : MonoBehaviour
             case "attack_num": full = "Attack times";break;
             case "costmul":full = "Cost Multiplier";break;
             case "cooldowndec": full = "CoolDown times";break;
-            default: full = "none";break;
+            
+            //default: full = "none";break;
         }
+        
         fullname.text = full;
     }
 }
