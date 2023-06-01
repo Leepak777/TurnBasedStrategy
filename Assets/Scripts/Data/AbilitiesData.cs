@@ -48,7 +48,9 @@ public class AbilitiesData : ScriptableObject
     TurnManager turnM;
     UI ui;
     int charge_bonus = 0;
+    [SerializeField]
     List<string> SkillLst = new List<string>(){"ForceBlast","PsychicStorm","ForeSight","WhirlWind","WaterStance","FireStance","Bubble","Restrict","TimeStop","Hasten","Armageddon","Ripple","Meditate","Ripple","Accelerate","BorrowedTime"};
+    [SerializeField]
     List<string> AbilitiesLst = new List<string>(){"LeaderShipAura","Charge","CorruptionAura","ColdAura","DeathAura","AssaultAura","Psychometry"};
     [SerializeField]
     UDictionary<string, UnityEvent<string, GameObject,Vector3Int>> Skills = new UDictionary<string, UnityEvent<string, GameObject, Vector3Int>>();
@@ -71,7 +73,7 @@ public class AbilitiesData : ScriptableObject
         ui =  GameObject.Find("UICanvas").GetComponent<UI>();
     }
     void Awake(){
-        reset();
+        //reset();
         //setTileM();
     }
     void Start(){

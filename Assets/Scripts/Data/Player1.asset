@@ -60,7 +60,6 @@ MonoBehaviour:
     - enc
     - size
     - maxHealth
-    - maxStb
     - maxTiles
     values:
     - 8
@@ -86,8 +85,8 @@ MonoBehaviour:
     - 100
     - 0
     - 2
-    - 8
-    - 35
+    - 6
+    - 34
     - 3
     - 2
     - 1
@@ -97,19 +96,18 @@ MonoBehaviour:
     - 3
     - -2
     - 9
-    - 5
-    - -6
+    - 4
+    - -1
     - 88
     - 16
     - 0
     - 41
-    - 0
+    - 58
     - 14
-    - 30
-    - -5
+    - 24
+    - 0
     - 0
     - 88
-    - 58
     - 14
   attributes:
     keys:
@@ -122,7 +120,7 @@ MonoBehaviour:
     - Praetorian Guard
     - Great Sword
     - War Horse
-    - Tower Shield
+    - Kite Shield
     - Buckler
   abilities:
     keys:
@@ -138,5 +136,6 @@ MonoBehaviour:
     - WhirlWind
     - ForceBlast
     - ForeSight
-    values: 000000000000000000000000
+    - HornyJail
+    values: 00000000000000000000000000000000
   sprite: {fileID: 21300000, guid: 067c39d6f99948b45ad0488de2e5b22c, type: 3}

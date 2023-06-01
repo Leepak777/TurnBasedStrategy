@@ -342,6 +342,32 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  SkillLst:
+  - ForceBlast
+  - PsychicStorm
+  - ForeSight
+  - WhirlWind
+  - WaterStance
+  - FireStance
+  - Bubble
+  - Restrict
+  - TimeStop
+  - Hasten
+  - Armageddon
+  - Ripple
+  - Meditate
+  - Ripple
+  - Accelerate
+  - BorrowedTime
+  - HornyJail
+  AbilitiesLst:
+  - LeaderShipAura
+  - Charge
+  - CorruptionAura
+  - ColdAura
+  - DeathAura
+  - AssaultAura
+  - Psychometry
   Skills:
     keys:
     - ForceBlast
@@ -826,19 +852,21 @@ MonoBehaviour:
     - keys:
       - Type
       - CoolDown
-      - CastTime
       - Radius
+      - CastTime
       - CastRange
       - Duration
       - Damage
+      - TargetNum
       values:
       - 0
       - 0
+      - 420
       - 0
-      - 69
       - 420
       - 69
-      - 69420
+      - 69
+      - 1
   SkillBools:
     keys:
     - ForceBlast
@@ -900,8 +928,9 @@ MonoBehaviour:
       values: 0101
     - keys:
       - characterTarget
-      - characterTarget
-      values: 0000
+      - sameTag
+      - All
+      values: 000001
   SkillCost:
     keys:
     - ForceBlast

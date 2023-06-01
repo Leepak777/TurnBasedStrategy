@@ -159,7 +159,9 @@ public class SkillSetter : MonoBehaviour
         player.name = name;
         player.GetComponent<BoxFunc>().setDDAttributeList(name);
         player.GetComponent<BoxFunc>().setTxtValS(value);
-        player.GetComponent<BoxFunc>().updateBox();
+        if(name != "Type"){
+            player.GetComponent<BoxFunc>().updateBox();
+        }
     }
     public void addStat(string name, int value){
         GameObject goParent = GameObject.Find("scrollPanelStats");

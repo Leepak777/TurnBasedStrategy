@@ -31,7 +31,7 @@ MonoBehaviour:
       - Praetorian_Armor
       - Great Sword
       - War Horse
-      - Tower Shield
+      - Kite Shield
       - Buckler
     - keys:
       - Type
@@ -43,9 +43,9 @@ MonoBehaviour:
       values:
       - Imperial Legionary
       - Legionary Armor
-      - Great Sword
+      - Power Sword
       - War Horse
-      - Kite Shield
+      - Tower Shield
       - Buckler
     - keys:
       - Type
@@ -54,9 +54,9 @@ MonoBehaviour:
       - Mount
       values:
       - Imperial Conscript
-      - Half Plate
-      - Pike
-      - Pack Horse
+      - Synthe Armor
+      - Light Glaive
+      - War Horse
     - keys:
       - Type
       - Armor
@@ -64,7 +64,7 @@ MonoBehaviour:
       - Mount
       values:
       - Mercenary
-      - Flak Suit
+      - Plate
       - Mace
       - Pack Horse
   positions:
@@ -74,10 +74,10 @@ MonoBehaviour:
     - Enemy1
     - Enemy2
     values:
-    - {x: 35, y: 44, z: 0}
-    - {x: 32, y: 41, z: 0}
-    - {x: 33, y: 46, z: 0}
-    - {x: 30, y: 43, z: 0}
+    - {x: 30, y: 31, z: 0}
+    - {x: 27, y: 27, z: 0}
+    - {x: 27, y: 33, z: 0}
+    - {x: 25, y: 30, z: 0}
   sprites:
     keys:
     - Player1

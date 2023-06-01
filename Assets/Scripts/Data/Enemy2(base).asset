@@ -60,7 +60,6 @@ MonoBehaviour:
     - enc
     - size
     - maxHealth
-    - maxStb
     - maxTiles
     values:
     - 6
@@ -92,25 +91,24 @@ MonoBehaviour:
     - 2
     - 1
     - 1
-    - 13
-    - 0
+    - 16
     - 0
     - -1
-    - 8
-    - 5
-    - -4
+    - -3
+    - 7
+    - 2
+    - 0
     - 66
     - 10
     - 0
     - 26
-    - 0
-    - 12
-    - 25.5
-    - -1.5
+    - 37
+    - 11
+    - 18.5
+    - 2.5
     - 0
     - 66
-    - 37
-    - 12
+    - 11
   attributes:
     keys:
     - Type
@@ -119,7 +117,7 @@ MonoBehaviour:
     - Mount
     values:
     - Mercenary
-    - Flak Suit
+    - Plate
     - Mace
     - Pack Horse
   abilities:

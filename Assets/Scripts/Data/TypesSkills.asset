@@ -70,7 +70,8 @@ MonoBehaviour:
       - WhirlWind
       - ForceBlast
       - ForeSight
-      values: 000000000000000000000000
+      - HornyJail
+      values: 00000000000000000000000000000000
     - keys:
       - PsychicStorm
       - ForceBlast

@@ -8,7 +8,7 @@ using Random = System.Random;
 using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.Events;
-
+using System.Text.RegularExpressions;
 public class BoxFunc : MonoBehaviour
 {
     public Text fullname;
@@ -99,6 +99,9 @@ public class BoxFunc : MonoBehaviour
             else{
                 fullname.text = "Ability";
             }
+            return;
+        }
+        if(Regex.IsMatch(i, @"^\d+$")){
             return;
         }
         switch(i){
