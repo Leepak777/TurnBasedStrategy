@@ -23,6 +23,7 @@ public class SetMap : MonoBehaviour
     Dictionary<string,Tile> Water = new Dictionary<string,Tile>();
     Dictionary<string,Tile> House = new Dictionary<string,Tile>();
     Random rnd = new Random();
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
 
     
     void Awake()
@@ -130,7 +131,7 @@ public class SetMap : MonoBehaviour
 
     public void setStage()
     {
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        //data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
         if (data.map == "Never Gonna Give You Up")
         {
             createTilemap();

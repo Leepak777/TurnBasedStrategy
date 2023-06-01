@@ -25,6 +25,7 @@ public class SkillSetter : MonoBehaviour
     [SerializeField]
     UDictionary<string,int> SkillStats = new UDictionary<string,int>();
     List<string> type_lst = new List<string>();
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data");
     void Awake(){
         type_lst = new List<string>(){"none","Active","Passive"};
         type.ClearOptions();
@@ -69,9 +70,10 @@ public class SkillSetter : MonoBehaviour
         ad.removeEntry(skills.captionText.text);
         skills.value = 0;
         //setInput(type.value);
-        EditorUtility.SetDirty(ad);
+        /*EditorUtility.SetDirty(ad);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(ad,"AbilitiesData.asset");
     }
     public void setInput(int option){
         input.text = skills.options[option].text;
@@ -226,9 +228,10 @@ public class SkillSetter : MonoBehaviour
 
     }
     public void save(){
-        EditorUtility.SetDirty(ad);
+        /*EditorUtility.SetDirty(ad);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(ad,"AbilitiesData.asset");
     }
     public KeyValuePair<string,string> readStringBox(GameObject box){
         InputField i = box.GetComponentInChildren<InputField>();

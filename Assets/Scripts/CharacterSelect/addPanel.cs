@@ -10,8 +10,10 @@ using UnityEngine.UI;
 public class addPanel : MonoBehaviour
 {
     public Dropdown typeset;
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
+
     public void toggle(){
-        if(AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+"(base).asset") == null){
+        if(som.LoadScriptableObject<CharacterStat>(gameObject.name+"(base).asset") == null){
             return;
         }
         if(GameObject.Find(gameObject.name+"_info") == null){

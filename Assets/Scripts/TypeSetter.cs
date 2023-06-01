@@ -22,6 +22,7 @@ public class TypeSetter : MonoBehaviour
     [SerializeField]
     UDictionary<string,Sprite> sprites = new UDictionary<string,Sprite>();
     Sprite selected;
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data");
     void Awake(){
         Sprite[] allsprites = Resources.LoadAll<Sprite>("CharacterSprites/Crystal_Knight");
         foreach(Sprite s in allsprites){
@@ -38,10 +39,12 @@ public class TypeSetter : MonoBehaviour
         type.AddOptions(ty.type);
         ChangeData = new UDictionary<string, float>();
         Entry  = new KeyValuePair<string, UDictionary<string, float>>();
-        EditorUtility.SetDirty(ty);
+        /*EditorUtility.SetDirty(ty);
         EditorUtility.SetDirty(TYS);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(ty,"Types.asset");
+        som.CreateAndSaveScriptableObject(TYS,"TypesSkills.asset");
     }
 
     public void neweq(){
@@ -53,10 +56,12 @@ public class TypeSetter : MonoBehaviour
         ty.removeTypeEntry(type.captionText.text);
         type.value = 0;
         setInput(type.value);
-        EditorUtility.SetDirty(ty);
+        /*EditorUtility.SetDirty(ty);
         EditorUtility.SetDirty(TYS);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(ty,"Types.asset");
+        som.CreateAndSaveScriptableObject(TYS,"TypesSkills.asset");
     }
     public void setInput(int option){
         
@@ -200,10 +205,12 @@ public class TypeSetter : MonoBehaviour
             ty.changeTypeKey(type.value,name);
             TYS.changeTypeKey(type.value,name);
         }
-        EditorUtility.SetDirty(ty);
+        /*EditorUtility.SetDirty(ty);
         EditorUtility.SetDirty(TYS);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(ty,"Types.asset");
+        som.CreateAndSaveScriptableObject(TYS,"TypesSkills.asset");
     }
     public void SetSprite(Sprite s){
         selected = s;
@@ -243,11 +250,13 @@ public class TypeSetter : MonoBehaviour
         TYS.addTypeAbilities(type.captionText.text,Abilities);
         TYS.addTypeSkill(type.captionText.text,Skills);
         ty.setTypeSprite(type.captionText.text, selected);
-        EditorUtility.SetDirty(ty);
+        /*EditorUtility.SetDirty(ty);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         EditorUtility.SetDirty(TYS);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(ty,"Types.asset");
+        som.CreateAndSaveScriptableObject(TYS,"TypesSkills.asset");
     }
 }

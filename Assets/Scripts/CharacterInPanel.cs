@@ -21,7 +21,14 @@ public class CharacterInPanel : MonoBehaviour
 
     void Start()
     {
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        string filePath = "Assets/Scripts/Data/InGameData";
+        string resourcesPath = filePath.Replace("Assets/", "").Replace(".asset", "");
+
+        data = Resources.Load<InGameData>(resourcesPath);
+        if (data == null)
+        {
+            Debug.LogError("Failed to load InGameData asset.");
+        }
         Sprite[] allsprites = Resources.LoadAll<Sprite>("Daemons");
         foreach(Sprite s in allsprites){
             //Debug.Log(s.name);

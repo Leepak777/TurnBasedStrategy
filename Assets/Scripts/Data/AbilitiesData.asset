@@ -102,6 +102,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  GeneralPassive_e:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000}
+        m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+        m_MethodName: GeneralPassive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   WhirlWind_e:
     m_PersistentCalls:
       m_Calls:
@@ -333,6 +348,21 @@ MonoBehaviour:
       - m_Target: {fileID: 11400000}
         m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
         m_MethodName: BorrowedTime
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  GeneralSkill_e:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000}
+        m_TargetAssemblyTypeName: AbilitiesData, Assembly-CSharp
+        m_MethodName: GeneralSkill
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -575,7 +605,7 @@ MonoBehaviour:
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -867,20 +897,20 @@ MonoBehaviour:
       - Radius
       - CastTime
       - CastRange
-      - Duration
-      - Damage
       - TargetNum
+      - Duration
       - Effect
+      - Damage
       values:
       - 0
       - 0
-      - 42
+      - 69
       - 0
       - 42
-      - 69
-      - 69
       - 1
-      - 1
+      - 69
+      - 0
+      - 69
   SkillBools:
     keys:
     - ForceBlast
@@ -944,7 +974,7 @@ MonoBehaviour:
       - characterTarget
       - sameTag
       - All
-      values: 000001
+      values: 000101
   SkillCost:
     keys:
     - ForceBlast

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Equipments", order = 1)]
+[System.Serializable]
 public class Equipments : ScriptableObject
 {
 

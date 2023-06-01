@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using UnityEditor.Events;
+using UnityEditor;
 using System;
 using System.Linq;
 using System.IO;
@@ -21,6 +21,7 @@ using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/AbilitiesData", order = 3)]
+[System.Serializable]
 public class AbilitiesData : ScriptableObject
 {
     public UnityEvent<string, GameObject> Leadership;
@@ -29,6 +30,7 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<string, GameObject> cold;
     public UnityEvent<string, GameObject> assault;
     public UnityEvent<string, GameObject> death;
+    public UnityEvent<string, GameObject> GeneralPassive_e;
     public UnityEvent<string, GameObject, Vector3Int> WhirlWind_e;
     public UnityEvent<string, GameObject, Vector3Int> ForceBlast_e;
     public UnityEvent<string, GameObject, Vector3Int> PsychiStorm_e;
@@ -45,6 +47,7 @@ public class AbilitiesData : ScriptableObject
     public UnityEvent<string, GameObject, Vector3Int> CalmMind_e;
     public UnityEvent<string, GameObject, Vector3Int> Accelerate_e;
     public UnityEvent<string, GameObject, Vector3Int> BorrowedTime_e;
+    public UnityEvent<string, GameObject, Vector3Int> GeneralSkill_e;
     TileManager tileM;
     TurnManager turnM;
     UI ui;
@@ -896,15 +899,13 @@ public class AbilitiesData : ScriptableObject
         removeEntry(name);
         if(type == 0){
             AbilitiesLst.Add(name);
-            UnityEvent<string,GameObject> a = new UnityEvent<string, GameObject>();
-            UnityEventTools.AddPersistentListener(a,GeneralPassive);
-            Abilities.Add(name,a);
+            //UnityEventTools.AddPersistentListener(a,GeneralPassive);
+            Abilities.Add(name,GeneralPassive_e);
         }
         else{
             SkillLst.Add(name);
-            UnityEvent<string,GameObject,Vector3Int> e = new UnityEvent<string, GameObject,Vector3Int>();
-            Skills.Add(name,e);
-            UnityEventTools.AddPersistentListener(Skills[name],GeneralSkill);
+            Skills.Add(name,GeneralSkill_e);
+            //UnityEventTools.AddPersistentListener(Skills[name],GeneralSkill);
         }
         SkillAttributes.Add(name,attribute);
         SkillCost.Add(name,cost);

@@ -18,6 +18,7 @@ using UnityEditorInternal;
 using Object = UnityEngine.Object;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/InGameData", order = 3)]
+[System.Serializable]
 public class InGameData : ScriptableObject
 {
     public UDictionary<string, UDictionary<string,string>> characterlst = new UDictionary<string, UDictionary<string,string>>();

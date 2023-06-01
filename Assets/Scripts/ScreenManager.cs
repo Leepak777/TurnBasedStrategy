@@ -12,15 +12,11 @@ using UnityEngine.UI;
 using Random = System.Random;
 
 
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditorInternal;
-#endif
-
 using Object = UnityEngine.Object;
 
 public class ScreenManager : MonoBehaviour
 {
+
     Image SceneManagerImage;
     SceneLoader sceneLoader;
     public static Random rnd = new Random();
@@ -49,7 +45,9 @@ public class ScreenManager : MonoBehaviour
     
 
     public static void CreateMapFile() {
-        string[] result = AssetDatabase.FindAssets("InGameData");
+        ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
+
+        string[] result = som.FindFilesByName("InGameData");
              InGameData Data = null;
      
              if (result.Length > 2)
@@ -62,18 +60,18 @@ public class ScreenManager : MonoBehaviour
              {
                  Debug.Log("Create new Asset");
                  Data = ScriptableObject.CreateInstance<InGameData >();
-                 AssetDatabase.CreateAsset(Data, @"Assets/Scripts/InGameData.asset");
+                 som.CreateAndSaveScriptableObject(Data, "InGameData.asset");
              }
              else
              {
-                 string path = AssetDatabase.GUIDToAssetPath(result[0]);
-                 Data= (InGameData )AssetDatabase.LoadAssetAtPath(path, typeof(InGameData ));
+                 Data= som.LoadScriptableObject<InGameData>("InGameData.asset");
                  Debug.Log("Found Asset File !!!");
              }
         Data.map = "Never Gonna Give You Up";
-        EditorUtility.SetDirty(Data);
+        /*EditorUtility.SetDirty(Data);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(Data,"InGameData.asset");
     }
 
 

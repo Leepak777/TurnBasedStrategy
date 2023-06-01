@@ -19,7 +19,7 @@ public class EquipmentSetter : MonoBehaviour
     public KeyValuePair<string, UDictionary<string, float>> Entry  = new KeyValuePair<string, UDictionary<string, float>>();
     public UDictionary<string, float> ChangeData = new UDictionary<string, float>();
     public Equipments eq;
-    
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
     void Awake(){
         eqtype.ClearOptions();
         eqtype.AddOptions(type);
@@ -55,9 +55,10 @@ public class EquipmentSetter : MonoBehaviour
         }
         equipment.value = 0;
         setInput(equipment.value);
-        EditorUtility.SetDirty(eq);
+        /*EditorUtility.SetDirty(eq);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(eq,"Equipments.asset");
     }
     public void setInput(int option){
         input.text = equipment.options[option].text;
@@ -132,9 +133,10 @@ public class EquipmentSetter : MonoBehaviour
             case 4:  if(equipment.options.Count == eq.buckler.Count)eq.changeBucklerKey(equipment.value,name);break;
             case 5:  if(equipment.options.Count == eq.mount.Count)eq.changeMountKey(equipment.value,name);break;
         }
-        EditorUtility.SetDirty(eq);
+        /*EditorUtility.SetDirty(eq);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(eq,"Equipments.asset");
     }
     public void changedata(){
         UDictionary<string,float> newData = new UDictionary<string, float>();
@@ -157,8 +159,9 @@ public class EquipmentSetter : MonoBehaviour
             case 4:  eq.addBucklerEntry(equipment.captionText.text,ChangeData);break;
             case 5:  eq.addMountEntry(equipment.captionText.text,ChangeData);break;
         }
-        EditorUtility.SetDirty(eq);
+        /*EditorUtility.SetDirty(eq);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(eq,"Equipments.asset");
     }
 }

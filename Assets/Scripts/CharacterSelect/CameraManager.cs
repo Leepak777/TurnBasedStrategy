@@ -15,19 +15,22 @@ public class CameraManager : MonoBehaviour
     int prev = 0;
     SceneLoader sceneLoader;
     public InGameData data;
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
+
     void Awake()
     {
-        DeleteAssetsStartingWith("Player");
-        DeleteAssetsStartingWith("Enemy");
-        data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        som.DeleteAllAssetsWithSubstring("Player");
+        som.DeleteAllAssetsWithSubstring("Enemy");
+        data =som.LoadScriptableObject<InGameData>("InGameData.asset");
         data.positions.Clear();
         data.characterlst.Clear();
         data.sprites.Clear();
         data.currentSetCh = null;
         sceneLoader = GetComponent<SceneLoader>();
-        EditorUtility.SetDirty(data);
+        /*EditorUtility.SetDirty(data);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(data,"InGameData.asset");
     }
     
     public void setprev(int i){
@@ -61,21 +64,5 @@ public class CameraManager : MonoBehaviour
         }
         sceneLoader.LoadScene("MapSelection");
     }
-    static void DeleteAssetsStartingWith(string startsWith)
-    {
-        string[] assetPaths = AssetDatabase.GetAllAssetPaths(); // Get all asset paths in the project
-        int count = 0;
-
-        foreach (string path in assetPaths)
-        {
-            if (path.EndsWith(".asset") && Path.GetFileNameWithoutExtension(path).StartsWith(startsWith))
-            {
-                AssetDatabase.DeleteAsset(path);
-                count++;
-            }
-        }
-
-        AssetDatabase.Refresh(); // Refresh the asset database to update the project window
-        Debug.Log("Deleted " + count + " .asset files starting with '" + startsWith + "'");
-    }
+    
 }

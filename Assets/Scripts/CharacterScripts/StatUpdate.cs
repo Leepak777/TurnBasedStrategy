@@ -35,15 +35,16 @@ public class StatUpdate : MonoBehaviour
     Vector3 backupLoc = new Vector3();
     public CharacterStat stats;
     AttackSimulation atkSim;
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
     void Start()
     {   
-        DeleteAssets(gameObject.name);
+        som.DeleteAllAssetsWithSubstring(gameObject.name);
         //stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
-        CharacterStat baseData = (AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+"(base).asset"));
+        CharacterStat baseData = (som.LoadScriptableObject<CharacterStat>(gameObject.name+"(base).asset"));
         //if(baseData!=null){Debug.Log("pog");stats.fetchBase(baseData);}
         stats = Instantiate(baseData);
-        AssetDatabase.CreateAsset(stats, "Assets/Scripts/Data/"+gameObject.name+".asset");
-        AssetDatabase.SaveAssets();
+        
+        som.CreateAndSaveScriptableObject(stats, gameObject.name+".asset");
         gameObject.GetComponent<SpriteRenderer>().sprite = stats.sprite;
         maxHealth = stats.getStat("maxHealth");
         currentHealth = maxHealth;
@@ -282,7 +283,7 @@ public class StatUpdate : MonoBehaviour
     }
     public int getMaxTiles(){
         if(stats == null){
-            stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
+            stats = som.LoadScriptableObject<CharacterStat>(gameObject.name+".asset");
         }
         return (int)stats.getStat("mov")/4 +1;
     }
@@ -458,23 +459,5 @@ public class StatUpdate : MonoBehaviour
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
     }
 
-    static void DeleteAssets(string name)
-    {
-        string targetSubstring = name; // Change this to your desired substring
-
-        string[] assetPaths = AssetDatabase.GetAllAssetPaths(); // Get all asset paths in the project
-        int count = 0;
-
-        foreach (string path in assetPaths)
-        {
-            if (!path.EndsWith("(base).asset") && path.Contains(targetSubstring))
-            {
-                AssetDatabase.DeleteAsset(path);
-                count++;
-            }
-        }
-
-        AssetDatabase.Refresh(); // Refresh the asset database to update the project window
-        //Debug.Log("Deleted " + count + " .asset files with substring '" + targetSubstring + "'");
-    }
+    
 }

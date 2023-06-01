@@ -18,10 +18,12 @@ public class CharacterSelect : MonoBehaviour
     public static List<string> types;
     public Types type;
     public UDictionary<string,string> attributes = new UDictionary<string,string>(); 
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
+
     private void Start()
     {
         types = type.type;
-        data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        data =som.LoadScriptableObject<InGameData>("InGameData.asset");
         Sprite[] allsprites = Resources.LoadAll<Sprite>("CharacterSprites/Crystal_Knight");
         foreach(Sprite s in allsprites){
             //Debug.Log(s.name);
@@ -70,9 +72,10 @@ public class CharacterSelect : MonoBehaviour
             data.sprites.Add(gameObject.name, img.sprite);
         }
         data.currentSetCh = gameObject.name;
-        EditorUtility.SetDirty(data);
+        /*EditorUtility.SetDirty(data);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(data,"InGameData.asset");
     }
 
     public void Confirm(){
@@ -98,9 +101,10 @@ public class CharacterSelect : MonoBehaviour
             data.sprites.Add(gameObject.name, img.sprite);
         }
         data.currentSetCh = gameObject.name;
-        EditorUtility.SetDirty(data);
+        /*EditorUtility.SetDirty(data);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(data,"InGameData.asset");
         gameObject.GetComponent<SetInfo>().GetData();
     }
     public void returnCheck(){

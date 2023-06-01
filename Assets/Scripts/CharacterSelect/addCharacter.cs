@@ -10,6 +10,8 @@ using UnityEngine.UI;
 public class addCharacter : MonoBehaviour
 {
     // Start is called before the first frame update
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
+
     public void addPlayer(){
         GameObject goParent = GameObject.Find("scrollPanel");
         GameObject prefab = Resources.Load<GameObject>("PlayerSetup") as GameObject;
@@ -44,7 +46,7 @@ public class addCharacter : MonoBehaviour
        string name ="Player"+GameObject.Find("scrollPanel").transform.childCount;
        GameObject player = GameObject.Find(name);
        Destroy(player);
-       InGameData data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+       InGameData data =som.LoadScriptableObject<InGameData>("InGameData.asset");
        data.characterlst.Remove(name);
        data.sprites.Remove(name);
     }
@@ -52,7 +54,7 @@ public class addCharacter : MonoBehaviour
         string name = "Enemy"+GameObject.Find("scrollPanel_en").transform.childCount;
         GameObject player = GameObject.Find(name);
         Destroy(player);
-        InGameData data =AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        InGameData data =som.LoadScriptableObject<InGameData>("InGameData.asset");
        data.characterlst.Remove(name);
        data.sprites.Remove(name);
     }

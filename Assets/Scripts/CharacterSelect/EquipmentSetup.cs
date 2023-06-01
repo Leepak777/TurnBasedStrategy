@@ -23,13 +23,14 @@ public class EquipmentSetup : MonoBehaviour
     public Equipments eq;
     public UDictionary<string,string> attributes = new UDictionary<string,string>();
     CharacterStat chStat;
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
+
     void Start()
     {
         
     }
     public void setScene(){
-        AssetDatabase.Refresh();
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        data = som.LoadScriptableObject<InGameData>("InGameData.asset");
         attributes.Clear();
         weapon.ClearOptions();
         armor.ClearOptions();
@@ -42,7 +43,7 @@ public class EquipmentSetup : MonoBehaviour
         buckler.AddOptions(eq.buckler);
         mount.AddOptions(eq.mount);
         UDictionary<string, UDictionary<string,string>> chlst = data.characterlst;
-        chStat = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+data.currentSetCh+"(base).asset");
+        chStat = som.LoadScriptableObject<CharacterStat>(data.currentSetCh+"(base).asset");
         if(chlst.ContainsKey(data.currentSetCh)){
             UDictionary<string,string> curlst = chlst[data.currentSetCh];
             if(curlst.ContainsKey("Weapon")){
@@ -127,9 +128,10 @@ public class EquipmentSetup : MonoBehaviour
             data.characterlst.Add(data.currentSetCh, attributes);
         }
         
-        EditorUtility.SetDirty(data);
+        /*EditorUtility.SetDirty(data);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(data,"InGameData.Asset");
     }
    
     

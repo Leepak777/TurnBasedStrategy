@@ -8669,7 +8669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99b308d10698b9b4e8c9df0c8f70224a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: db69f2b7816b27448bacc53a3b7e4e98, type: 2}
 --- !u!4 &2028058877
 Transform:
   m_ObjectHideFlags: 0

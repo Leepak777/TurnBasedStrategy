@@ -1495,7 +1495,7 @@ MonoBehaviour:
   tile: {fileID: 0}
   mapData: []
   allsprites: []
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: db69f2b7816b27448bacc53a3b7e4e98, type: 2}
 --- !u!114 &1703902256
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/TypesSkills", order = 2)]
+[System.Serializable]
 public class TypesSkills:ScriptableObject
 {
     [SerializeField]

@@ -60,8 +60,9 @@ public class Abilities : MonoBehaviour
         statU =gameObject.GetComponent<StatUpdate>();
         ui = GameObject.Find("UICanvas").GetComponent<UI>();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        stats = AssetDatabase.LoadAssetAtPath<CharacterStat>("Assets/Scripts/Data/"+gameObject.name+".asset");
-        abilitiesData = AssetDatabase.LoadAssetAtPath<AbilitiesData>("Assets/Scripts/Data/AbilitiesData.asset");
+        ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
+        stats = som.LoadScriptableObject<CharacterStat>(gameObject.name+".asset");
+        abilitiesData = som.LoadScriptableObject<AbilitiesData>("AbilitiesData.asset");
         foreach(KeyValuePair<string,string> ability in stats.getAbilities()){
             UnityEvent<string,GameObject> e = abilitiesData.getEvent(ability.Key);
             switch(ability.Value){
@@ -146,7 +147,7 @@ public class Abilities : MonoBehaviour
             if(skillAttributesBool["characterTarget"] && tileM.GetNodeFromWorld(targetV[0]).occupant == null){
                 resetTargeting();
             }
-            if(skillAttributesBool["sameTag"] && tileM.GetNodeFromWorld(targetV[0]).occupant.tag != gameObject.tag){
+            if(skillAttributesBool["sameTag"] &&tileM.GetNodeFromWorld(targetV[0]).occupant!=null &&tileM.GetNodeFromWorld(targetV[0]).occupant.tag != gameObject.tag){
                 resetTargeting();
             }
         }

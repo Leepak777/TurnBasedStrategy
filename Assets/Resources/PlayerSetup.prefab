@@ -2148,7 +2148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1bd8a1d1ce99d4b9916306e7defc03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: db69f2b7816b27448bacc53a3b7e4e98, type: 2}
   dropdown: {fileID: 368192053915357152}
   img: {fileID: 368192052670699838}
   type: {fileID: 11400000, guid: a0419dca955bab445a63118ec68c555a, type: 2}
@@ -2180,6 +2180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03c1ac7c2395974ca05b18c0591faf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: db69f2b7816b27448bacc53a3b7e4e98, type: 2}
   equipments: {fileID: 11400000, guid: fb17da8d5da0fe848a7d3b69fe58a79f, type: 2}
   types: {fileID: 11400000, guid: a0419dca955bab445a63118ec68c555a, type: 2}
   TYS: {fileID: 11400000, guid: 525bb6b611ce15c40b8c5b331e837745, type: 2}

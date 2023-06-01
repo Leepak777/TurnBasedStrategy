@@ -18,11 +18,13 @@ public class PositionSetup : MonoBehaviour
     public InGameData data;
     int index;
     public bool isDragging;
+    ScriptableObjectManager som = new ScriptableObjectManager("Assets/Scripts/Data/");
+
     void Awake()
     { 
         index = gameObject.transform.GetSiblingIndex();
         tileM = GameObject.Find("Tilemanager").GetComponent<TileManager>();
-        data = AssetDatabase.LoadAssetAtPath<InGameData>("Assets/Scripts/Data/InGameData.asset");
+        data = som.LoadScriptableObject<InGameData>("InGameData.asset");
     }
 
     void Update(){
@@ -81,9 +83,10 @@ public class PositionSetup : MonoBehaviour
         else{
             data.positions.Add(gameObject.name, tileM.WorldToCell(transform.position));
         }
-        EditorUtility.SetDirty(data);
+        /*EditorUtility.SetDirty(data);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();*/
+        som.CreateAndSaveScriptableObject(data,"InGameData.asset");
     }
     
     

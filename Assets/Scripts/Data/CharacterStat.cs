@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[System.Serializable]
 public class CharacterStat : ScriptableObject
 {
     public UDictionary<string,float> stats = new UDictionary<string,float>();
