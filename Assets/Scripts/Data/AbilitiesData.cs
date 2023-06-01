@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEditor.Events;
 using System;
 using System.Linq;
 using System.IO;
@@ -128,6 +129,7 @@ public class AbilitiesData : ScriptableObject
 
     public UnityEvent<string, GameObject, Vector3Int> getActiveSkill(string name){
         if(Skills.ContainsKey(name)){
+            Debug.Log(Skills[name].GetPersistentEventCount());
             return Skills[name];
         }
         
@@ -699,6 +701,7 @@ public class AbilitiesData : ScriptableObject
                 tag = play.tag;
             }
         }
+        Debug.Log("pog");
         if(tag == ""){
             foreach(Node n in tileM.GetTilesInArea(center,range)){
                 if(n.occupant != null && n.occupant != play){
@@ -822,6 +825,7 @@ public class AbilitiesData : ScriptableObject
     //bools: CharacterTarget, sameTag, All
     public void GeneralSkill(string Skillname, GameObject play, Vector3Int center){
         //string Skillname = turnM.getUI().getCurrentPlay().GetComponent<Abilities>().getCurrentSkill();
+        Debug.Log(Skillname);
         if(SkillAttributes.ContainsKey(Skillname)){
             if(SkillAttributes[Skillname]["Type"] == "0" ||SkillAttributes[Skillname]["Type"] == "1" ){
                 GeneralAreaDamage(play,center,(int)CalculateExpression(SkillAttributes[Skillname]["Radius"],play.GetComponent<StatUpdate>().getStats()),Skillname);
@@ -893,14 +897,14 @@ public class AbilitiesData : ScriptableObject
         if(type == 0){
             AbilitiesLst.Add(name);
             UnityEvent<string,GameObject> a = new UnityEvent<string, GameObject>();
-            a.AddListener(GeneralPassive);
+            UnityEventTools.AddPersistentListener(a,GeneralPassive);
             Abilities.Add(name,a);
         }
         else{
             SkillLst.Add(name);
             UnityEvent<string,GameObject,Vector3Int> e = new UnityEvent<string, GameObject,Vector3Int>();
-            e.AddListener(GeneralSkill);
             Skills.Add(name,e);
+            UnityEventTools.AddPersistentListener(Skills[name],GeneralSkill);
         }
         SkillAttributes.Add(name,attribute);
         SkillCost.Add(name,cost);

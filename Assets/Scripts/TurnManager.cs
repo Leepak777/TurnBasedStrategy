@@ -55,6 +55,12 @@ public class TurnManager : MonoBehaviour
                 }
             }
             this.player = false;
+             while(!turnOrder2[currentTurnIndex2].activeInHierarchy){
+                currentTurnIndex2++;
+                if(currentTurnIndex2>=turnOrder2.Count){
+                    currentTurnIndex2 =0;
+                }
+            }
             ui.setCurrentPlay(turnOrder2[currentTurnIndex2]);
         }
         else
@@ -72,6 +78,12 @@ public class TurnManager : MonoBehaviour
                 }
             }
             this.player = true; 
+            while(!turnOrder[currentTurnIndex].activeInHierarchy){
+                currentTurnIndex++;
+                if(currentTurnIndex>=turnOrder.Count){
+                    currentTurnIndex =0;
+                }
+            }
             ui.setCurrentPlay(turnOrder[currentTurnIndex]);
         }
     }
