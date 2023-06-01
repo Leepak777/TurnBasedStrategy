@@ -101,6 +101,15 @@ public class BoxFunc : MonoBehaviour
             }
             return;
         }
+        if(dd.captionText.text=="Effect"){
+            if(i == "0"){
+                fullname.text = "TimeStop";
+            }
+            else if(i == "1"){
+                fullname.text = "Restrict";
+            }
+            return;
+        }
         if(Regex.IsMatch(i, @"^\d+$")){
             return;
         }

@@ -870,6 +870,7 @@ MonoBehaviour:
       - Duration
       - Damage
       - TargetNum
+      - Effect
       values:
       - 0
       - 0
@@ -878,6 +879,7 @@ MonoBehaviour:
       - 42
       - 69
       - 69
+      - 1
       - 1
   SkillBools:
     keys:
